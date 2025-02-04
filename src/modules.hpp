@@ -22,9 +22,17 @@ enum class RESSOURCES {
     HULL_PART,
 };
 
+enum class MODULE_TYPE {
+    DOCK,
+    STORAGE,
+    HABITAT,
+    PRODUCTION,
+};
+
 struct Module {
     const std::string               name;
     const std::string               macro;
+    const MODULE_TYPE               type;
     const std::map<RESSOURCES, int> ressources_produced;
     const std::map<RESSOURCES, int> ressources_produced_max;
     const std::map<RESSOURCES, int> ressources_consumed;
@@ -44,6 +52,7 @@ namespace MODULES {
     const Module ARGON_L_STORAGE_CONTAINER = {
             "Argon L Storage Container",
             "storage_arg_l_container_01_macro",
+            MODULE_TYPE::STORAGE,
             {},
             {},
             {},
@@ -54,6 +63,7 @@ namespace MODULES {
     const Module ARGON_L_STORAGE_SOLID = {
             "Argon L Storage Solid",
             "storage_arg_l_solid_01_macro",
+            MODULE_TYPE::STORAGE,
             {},
             {},
             {},
@@ -64,6 +74,7 @@ namespace MODULES {
     const Module ARGON_L_STORAGE_LIQUID = {
             "Argon L Storage Liquid",
             "storage_arg_l_liquid_01_macro",
+            MODULE_TYPE::STORAGE,
             {},
             {},
             {},
@@ -74,6 +85,7 @@ namespace MODULES {
     const Module ARGON_L_HABITAT = {
             "Argon L Habitat",
             "hab_arg_l_01_macro",
+            MODULE_TYPE::HABITAT,
             {},
             {},
             {},
@@ -84,6 +96,7 @@ namespace MODULES {
     const Module SOLAR_POWER_PLANT = {
             "Solar Power Plant",
             "prod_gen_energycells_macro",
+            MODULE_TYPE::PRODUCTION,
             {{RESSOURCES::ENERGY_CELL, 10500}},
             {{RESSOURCES::ENERGY_CELL, 15015}},
             {},
@@ -94,6 +107,7 @@ namespace MODULES {
     const Module GRAPHENE_PRODUCTION = {
             "Graphene Production",
             "prod_gen_graphene_macro",
+            MODULE_TYPE::PRODUCTION,
             {{RESSOURCES::GRAPHENE, 1440}},
             {{RESSOURCES::GRAPHENE, 2102}},
             {
@@ -107,6 +121,7 @@ namespace MODULES {
     const Module REFINED_METHAL_PRODUCTION = {
             "Refined Metals Production",
             "prod_gen_refinedmetals_macro",
+            MODULE_TYPE::PRODUCTION,
             {{RESSOURCES::REFINED_METAL, 2112}},
             {{RESSOURCES::REFINED_METAL, 3020}},
             {
@@ -120,6 +135,7 @@ namespace MODULES {
     const Module HULL_PART_FACTORY = {
             "Hull Part Factory",
             "prod_gen_hullparts_macro",
+            MODULE_TYPE::PRODUCTION,
             {{RESSOURCES::HULL_PART, 1176}},
             {{RESSOURCES::HULL_PART, 1611}},
             {

@@ -1,6 +1,6 @@
 #include "moduleselector.h"
 #include "ui_moduleselector.h"
-#include "qt6/QtCore/QString"
+#include <QString>
 
 ModuleSelector::ModuleSelector(QWidget *parent)
         : QWidget(parent), ui(new Ui::ModuleSelector) {
