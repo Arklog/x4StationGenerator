@@ -11,9 +11,7 @@
 #include "StationBuilder/StationBuilder.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
-{
+        : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
     connect(ui->addModuleButton, &QPushButton::clicked, this, &MainWindow::addModule);
@@ -21,8 +19,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->exportButton, &QPushButton::clicked, this, &MainWindow::exportPlan);
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
@@ -64,10 +61,11 @@ void MainWindow::autoComplete() {
 void MainWindow::exportPlan() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
+    
     if (dialog.exec()) {
-        QFile file(dialog.selectedFiles().first());
+        QFile          file(dialog.selectedFiles().first());
         StationBuilder builder(_modules);
-        builder.generateBuildOrder();
+        builder.generateBuildOrder(priority_generator);
 
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
@@ -85,7 +83,8 @@ void MainWindow::updateProduction() {
         addMap(production, i.first.getTotal(i.second, true));
     }
     for (const auto &i: production) {
-        auto label = new QLabel(QString("%1: %2").arg(ressourcesNames.at(i.first).c_str()).arg(i.second), ui->production);
+        auto label = new QLabel(QString("%1: %2").arg(ressourcesNames.at(i.first).c_str()).arg(i.second),
+                                ui->production);
         label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
         ui->production->layout()->addWidget(label);
     }

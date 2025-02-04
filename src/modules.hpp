@@ -30,23 +30,23 @@ enum class MODULE_TYPE {
 };
 
 struct Module {
-    const std::string               name;
-    const std::string               macro;
-    const MODULE_TYPE               type;
-    const std::map<RESSOURCES, int> ressources_produced;
-    const std::map<RESSOURCES, int> ressources_produced_max;
-    const std::map<RESSOURCES, int> ressources_consumed;
-    const int                       workforce_max;
-    const double                    workforce_efficiency;
+    std::string               name;
+    std::string               macro;
+    MODULE_TYPE               type;
+    std::map<RESSOURCES, int> ressources_produced;
+    std::map<RESSOURCES, int> ressources_produced_max;
+    std::map<RESSOURCES, int> ressources_consumed;
+    int                       workforce_max;
+    double                    workforce_efficiency;
 
     [[nodiscard]] std::map<RESSOURCES, int> getTotal(int nmodules = 1, bool workforce_is_max = false) const;
 };
 
-bool operator<(const Module& a, const Module& b);
+bool operator<(const Module &a, const Module &b);
 
 typedef std::map<RESSOURCES, int> t_ressources;
-typedef std::map<Module, int> t_modules;
-typedef std::vector<Module> t_module_list;
+typedef std::map<Module, int>     t_modules;
+typedef std::vector<Module>       t_module_list;
 
 namespace MODULES {
     const Module ARGON_L_STORAGE_CONTAINER = {
@@ -142,7 +142,7 @@ namespace MODULES {
                     {RESSOURCES::ENERGY_CELL, 320},
                     {RESSOURCES::GRAPHENE, 160},
                     {RESSOURCES::REFINED_METAL, 1120},
-                },
+            },
             270,
             1.36
     };
@@ -151,23 +151,22 @@ namespace MODULES {
 }
 
 const std::map<RESSOURCES, Module> ressourcesMap = {
-        {RESSOURCES::ENERGY_CELL, MODULES::SOLAR_POWER_PLANT},
-        {RESSOURCES::GRAPHENE, MODULES::GRAPHENE_PRODUCTION},
+        {RESSOURCES::ENERGY_CELL,   MODULES::SOLAR_POWER_PLANT},
+        {RESSOURCES::GRAPHENE,      MODULES::GRAPHENE_PRODUCTION},
         {RESSOURCES::REFINED_METAL, MODULES::REFINED_METHAL_PRODUCTION},
-        {RESSOURCES::HULL_PART, MODULES::HULL_PART_FACTORY},
+        {RESSOURCES::HULL_PART,     MODULES::HULL_PART_FACTORY},
 };
 
 const std::map<RESSOURCES, std::string> ressourcesNames = {
-        {RESSOURCES::ENERGY_CELL, "Energy Cell"},
-        {RESSOURCES::ORE, "Ore"},
-        {RESSOURCES::METHANE, "Methane"},
-        {RESSOURCES::GRAPHENE, "Graphene"},
+        {RESSOURCES::ENERGY_CELL,   "Energy Cell"},
+        {RESSOURCES::ORE,           "Ore"},
+        {RESSOURCES::METHANE,       "Methane"},
+        {RESSOURCES::GRAPHENE,      "Graphene"},
         {RESSOURCES::REFINED_METAL, "Refined Metal"},
-        {RESSOURCES::HULL_PART, "Hull Part"},
+        {RESSOURCES::HULL_PART,     "Hull Part"},
 };
 
 
-
-std::string genModulePlan(const std::string &plan_name, const t_module_list& modules);
+std::string genModulePlan(const std::string &plan_name, const t_module_list &modules);
 
 #endif //X4STATIONGENERATOR_MODULES_HPP
