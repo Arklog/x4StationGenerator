@@ -59,8 +59,9 @@ jobs:
         with:
           host: 'windows'
           version: '5.15.2'
-          modules: 'qtbase qttools'
+          #          modules: 'qtbase qttools'
           dir: '${{ github.workspace }}/Qt'
+          install_deps: true
 
 
       - name: Configure CMake
