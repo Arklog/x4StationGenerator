@@ -47,7 +47,6 @@ void MainWindow::exportPlan() {
 
     if (dialog.exec()) {
         QFile file(dialog.selectedFiles().first());
-
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
             file.write(genModulePlan(ui->stationname->toPlainText().toStdString(), _builder.get()).c_str());
