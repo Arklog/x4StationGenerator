@@ -56,12 +56,16 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
           echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
+          echo "qt-version=5.15.2" >> "$GITHUB_OUTPUT"
+          echo "qt-architectures=win64_msvc2019_64" >> "$GITHUB_OUTPUT"
+          echo "qt-bin-dir=${{ steps.strings.outputs.qt-dir }}\${{ steps.string.outputs.qt-version }}\${{ steps.string.outputs.qt-architecture }}\bin" >> "$GITHUB_OUTPUT"
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
           host: 'windows'
-          version: '5.15.2'
+          version: '${{ steps.strings.outputs.qt-version }}'
+          arch: '${{ steps.strings.outputs.qt-architectures }}'
           cache: true
           dir: '${{ steps.strings.outputs.qt-dir }}'
 
@@ -83,7 +87,7 @@ jobs:
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
       - name: Copy Qt DLLs
-        run: tree ${{ steps.strings.outputs.qt-dir }}
+        run: ${{ steps.strings.outputs.qt-bin-dir }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
