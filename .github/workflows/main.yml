@@ -84,7 +84,7 @@ jobs:
       - name: Copy Qt DLLs
         env:
           QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
-        run: D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
+        run: D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe && tree /f ${{ steps.strings.outputs.build-output-dir }}
       #        run: tree /f D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
