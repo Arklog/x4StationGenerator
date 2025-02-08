@@ -55,6 +55,7 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
+          echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -62,7 +63,7 @@ jobs:
           host: 'windows'
           version: '5.15.2'
           cache: true
-          dir: '${{ github.workspace }}/Qt'
+          dir: '${{ steps.strings.outputs.qt-dir }}'
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -92,5 +93,9 @@ jobs:
         if:
           startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
+          files: |
+            ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
+            ${{ steps.strings.outputs.qt-dir }}\Qt5Core.dll
+            ${{ steps.strings.outputs.qt-dir }}\Qt5Gui.dll
+            ${{ steps.strings.outputs.qt-dir }}\Qt5Widgets.dll
           token: ${{ secrets.GITHUB_TOKEN }}
