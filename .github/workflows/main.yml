@@ -23,7 +23,7 @@ jobs:
       #
       # To add more build types (Release, Debug, RelWithDebInfo, etc.) customize the build_type list.
       matrix:
-        os: [ ubuntu-latest, windows-latest ]
+        os: [ windows-latest ]
         build_type: [ Release ]
         c_compiler: [ gcc, clang, cl ]
         include:
@@ -86,3 +86,8 @@ jobs:
         # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest --build-config ${{ matrix.build_type }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ steps.strings.outputs.build-output-dir }}/x4StationGenerator.exe
