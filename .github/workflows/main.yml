@@ -59,7 +59,7 @@ jobs:
         with:
           host: 'windows'
           version: '5.15.2'
-          #          modules: 'qtbase qttools'
+          cache: true
           dir: '${{ github.workspace }}/Qt'
 
       - name: Configure CMake
