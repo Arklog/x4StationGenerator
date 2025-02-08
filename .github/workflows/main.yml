@@ -84,7 +84,7 @@ jobs:
       - name: Copy Qt DLLs
         env:
           QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
-        run: cp ${{ env.QT_BIN_DIR }}\*.dll ${{ steps.strings.outputs.build-output-dir  }}\Release
+        run: tree /f ${{ env.QT_BIN_DIR }}
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
