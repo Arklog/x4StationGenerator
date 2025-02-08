@@ -10,15 +10,14 @@ on:
     tags:
       - 'v*' # Pull request events to matching v*, i.e., v1.0, v20.15.10
 
-env:
-  QT_VERSION: 5.15.2
-  QT_ARCHITECTURE: win64_msvc2019_64
-  QT_DIR: ${{ github.workspace }}\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}
-  QT_BIN_DIR: ${{ github.workspace }}\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}\bin
-
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    env:
+      QT_VERSION: 5.15.2
+      QT_ARCHITECTURE: win64_msvc2019_64
+      QT_DIR: ${{ github.workspace }}\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}
+      QT_BIN_DIR: ${{ github.workspace }}\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}\bin
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
