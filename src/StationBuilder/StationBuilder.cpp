@@ -16,8 +16,8 @@ StationBuilder::StationBuilder(const t_modules &modules, bool workforce) : _base
 
 void StationBuilder::generateBuildOrder() {
     _ordered.clear();
-    std::stack<Module> stack{};
-    t_ressources       produced{};
+    std::vector<Module> stack{};
+    t_ressources        produced{};
 
     // Add dock and storage modules to the vector
     for (auto const &module: _base_modules_map) {
@@ -28,7 +28,6 @@ void StationBuilder::generateBuildOrder() {
         while (i--) {
             _ordered.push_back(module.first);
         }
-//        _base_modules_map.erase(module.first);
     }
 
     // Generate build order for production modules
@@ -37,12 +36,12 @@ void StationBuilder::generateBuildOrder() {
             continue;
         int i = module.second;
         while (i--)
-            this->_pushAndComplete(stack, produced, module.first);
+            this->_pushAndComplete(_ordered, produced, module.first);
     }
 
     // Add ordered production modules to the vector
-    while (!stack.empty())
-        _ordered.push_back(stack.top()), stack.pop();
+//    while (!stack.empty())
+//        _ordered.push_back(stack.top()), stack.pop();
 
     // Generate map
     this->_end_modules_map.clear();
@@ -57,9 +56,8 @@ const t_module_list &StationBuilder::get() const {
     return _ordered;
 }
 
-void StationBuilder::_pushAndComplete(std::stack<Module> &stack, t_ressources &produced, const Module &module) const {
+void StationBuilder::_pushAndComplete(std::vector<Module> &stack, t_ressources &produced, const Module &module) const {
     t_ressources missing{};
-    stack.push(module);
     addRessources(produced, module.getTotal(1, this->_workforce));
 
     while (!_isComplete(produced, missing)) {
@@ -71,11 +69,12 @@ void StationBuilder::_pushAndComplete(std::stack<Module> &stack, t_ressources &p
             int        missing_mods = std::ceil(std::abs(static_cast<double>(iter.second)) / mod_produce);
 
             while (missing_mods--) {
-                stack.push(mod);
+                stack.push_back(mod);
                 addRessources(produced, mod.getTotal(1, this->_workforce));
             }
         }
     }
+    stack.push_back(module);
 }
 
 void StationBuilder::addRessources(t_ressources &ressources, const t_ressources &toAdd) {
