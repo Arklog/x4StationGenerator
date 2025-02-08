@@ -92,5 +92,5 @@ jobs:
         if:
           startsWith(github.ref, 'refs/tags/')
         with:
-          files: ${{ steps.strings.outputs.build-output-dir }}\x4StationGenerator.exe
+          files: ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
           token: ${{ secrets.auth_token }}
