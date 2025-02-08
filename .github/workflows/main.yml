@@ -83,7 +83,7 @@ jobs:
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
 
       - name: Copy Qt DLLs
-        run: cp -r ${{ steps.strings.outputs.qt-dir }}\bin\*.dll ${{ steps.strings.outputs.build-output-dir }}\Release && ls ${{ steps.strings.outputs.build-output-dir }}\Release\
+        run: tree ${{ steps.strings.outputs.qt-dir }}
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
