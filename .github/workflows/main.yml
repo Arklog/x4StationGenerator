@@ -61,8 +61,6 @@ jobs:
           version: '5.15.2'
           #          modules: 'qtbase qttools'
           dir: '${{ github.workspace }}/Qt'
-          install_deps: true
-
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -89,5 +87,7 @@ jobs:
 
       - name: Release
         uses: softprops/action-gh-release@v2
+        if:
+          startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ steps.strings.outputs.build-output-dir }}/x4StationGenerator.exe
