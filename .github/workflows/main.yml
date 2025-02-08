@@ -85,7 +85,7 @@ jobs:
         env:
           QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
         run: tree /f ${{ env.Qt5_Dir }}
-      #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
+      #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe  ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
