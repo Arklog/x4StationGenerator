@@ -7,42 +7,41 @@
 
 #include <functional>
 #include <random>
+#include <stack>
 #include <ctime>
+#include <cmath>
 #include "modules.hpp"
-
-typedef std::function<t_module_list(const t_modules &)> t_module_generator;
-
-/**
- * Generate a basic build order
- * @param modules
- * @return
- */
-t_module_list basic_generator(const t_modules &modules);
-
-/**
- * Generate a build order based on module priority
- * @param modules
- * @return
- */
-t_module_list priority_generator(const t_modules &modules);
-
-/**
- * Randomly generate a build order
- * @param modules
- * @return
- */
-t_module_list rand_generator(const t_modules &modules);
 
 class StationBuilder {
 private:
-    t_modules     _modules;
+    t_modules     _base_modules_map;
+    t_modules     _end_modules_map;
     t_module_list _ordered;
-public:
-    explicit StationBuilder(const t_modules &modules);
+    t_ressources  _ressources_produced;
+    bool          _workforce;
 
-    void generateBuildOrder(t_module_generator generator = basic_generator);
+    static void addRessources(t_ressources &ressources, const t_ressources &toAdd);
+
+    void _pushAndComplete(std::stack<Module> &stack, t_ressources &produced, const Module &module) const;
+
+    bool _isComplete(const t_ressources &produced, t_ressources &missing) const;
+
+public:
+    StationBuilder() = default;
+
+    explicit StationBuilder(const t_modules &modules, bool workforce = false);
+
+    void setModules(t_modules modules);
+
+    void setWorkforce(bool workforce);
+
+    void generateBuildOrder();
 
     [[nodiscard]] const t_module_list &get() const;
+
+    const t_modules &getModulesMap() const;
+
+    const t_ressources &getRessources() const;
 };
 
 #endif //X4STATIONGENERATOR_STATIONBUILDER_HPP

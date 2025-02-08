@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "moduleselector.h"
+#include "StationBuilder/StationBuilder.hpp"
 
 namespace Ui {
     class MainWindow;
@@ -22,16 +23,17 @@ public slots:
 
     void updateModules();
 
-    void autoComplete();
-
     void exportPlan();
 
 private:
     Ui::MainWindow                *ui;
-    std::vector<ModuleSelector *> moduleSelectors;
-    t_modules                     _modules;
+    std::vector<ModuleSelector *> _module_selectors;
+    StationBuilder                _builder;
 
     void updateProduction();
+
+    void updateEndModules();
+
     void clearWidget(QWidget *widget);
 };
 

@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->addModuleButton, &QPushButton::clicked, this, &MainWindow::addModule);
-    connect(ui->autocompleteButton, &QPushButton::clicked, this, &MainWindow::autoComplete);
     connect(ui->exportButton, &QPushButton::clicked, this, &MainWindow::exportPlan);
 }
 
@@ -27,61 +26,39 @@ void MainWindow::addModule() {
     auto moduleSelector = new ModuleSelector(ui->modules);
     connect(moduleSelector, &ModuleSelector::moduleNumberChanged, this, &MainWindow::updateModules);
     ui->modules->layout()->addWidget(moduleSelector);
-    this->moduleSelectors.push_back(moduleSelector);
+    this->_module_selectors.push_back(moduleSelector);
 }
 
 void MainWindow::updateModules() {
-    this->_modules.clear();
+    t_modules base{};
 
-    for (auto i: this->moduleSelectors) {
-        this->_modules[i->getModule()] = i->getModuleNumber();
+    for (auto i: this->_module_selectors) {
+        base[i->getModule()] += i->getModuleNumber();
     }
 
+    this->_builder = StationBuilder(base, false);
     this->updateProduction();
-}
-
-void MainWindow::autoComplete() {
-    t_modules modules;
-
-    for (auto iter: moduleSelectors)
-        modules[iter->getModule()] = iter->getModuleNumber();
-
-    ModuleGenerator generator(modules);
-    generator.generate();
-    _modules = generator.get();
-
-    clearWidget(ui->summary);
-    for (auto const &iter: _modules) {
-        auto label = new QLabel(QString("%1: %2").arg(iter.first.name.c_str()).arg(iter.second), ui->summary);
-        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        ui->summary->layout()->addWidget(label);
-    }
+    this->updateEndModules();
 }
 
 void MainWindow::exportPlan() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::AnyFile);
-    
+
     if (dialog.exec()) {
-        QFile          file(dialog.selectedFiles().first());
-        StationBuilder builder(_modules);
-        builder.generateBuildOrder(priority_generator);
+        QFile file(dialog.selectedFiles().first());
 
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
-            file.write(genModulePlan(ui->stationname->toPlainText().toStdString(), builder.get()).c_str());
+            file.write(genModulePlan(ui->stationname->toPlainText().toStdString(), _builder.get()).c_str());
         }
     }
 }
 
 void MainWindow::updateProduction() {
-    std::map<RESSOURCES, int> production;
-
+    const auto &production = _builder.getRessources();
     clearWidget(ui->production);
 
-    for (const auto &i: this->_modules) {
-        addMap(production, i.first.getTotal(i.second, true));
-    }
     for (const auto &i: production) {
         auto label = new QLabel(QString("%1: %2").arg(ressourcesNames.at(i.first).c_str()).arg(i.second),
                                 ui->production);
@@ -97,5 +74,16 @@ void MainWindow::clearWidget(QWidget *widget) {
             continue;
         widget->layout()->removeWidget(tmp->widget());
         delete tmp->widget();
+    }
+}
+
+void MainWindow::updateEndModules() {
+    clearWidget(ui->summary);
+    const auto &end_modules = _builder.getModulesMap();
+
+    for (auto const &iter: end_modules) {
+        auto label = new QLabel(QString("%1: %2").arg(iter.first.name.c_str()).arg(iter.second));
+        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+        ui->summary->layout()->addWidget(label);
     }
 }

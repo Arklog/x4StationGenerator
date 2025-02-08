@@ -8,7 +8,7 @@ set(CMAKE_AUTOUIC ON)
 
 include_directories(
         src
-        cmake-build-debug/x4StationGenerator_autogen/include
+        cmake-build-debug/include
 )
 
 find_package(Qt5 COMPONENTS
