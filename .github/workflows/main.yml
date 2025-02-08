@@ -93,4 +93,4 @@ jobs:
           startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
-          token: ${{ secrets.auth_token }}
+          token: ${{ secrets.AUTH_TOKEN }}
