@@ -55,7 +55,7 @@ jobs:
           echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
 
       - name: Install Qt
-        uses: jurplel/install-qt-action@v4.1.1
+        uses: jurplel/setup-qt@v4
         with:
           host: 'windows'
           modules: 'qtbase qttools'
