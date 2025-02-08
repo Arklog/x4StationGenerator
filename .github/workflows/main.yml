@@ -101,7 +101,7 @@ jobs:
         with:
           files: |
             ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
-            ${{ steps.strings.outputs.build-output-dir }}\Qt5Core.dll
+            ${{ steps.strings.outputs.build-output-dir }}\Release\*.dll
             ${{ steps.strings.outputs.build-output-dir }}\Qt5Gui.dll
             ${{ steps.strings.outputs.build-output-dir }}\Qt5Widgets.dll
           token: ${{ secrets.GITHUB_TOKEN }}
