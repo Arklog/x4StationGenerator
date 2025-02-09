@@ -18,6 +18,7 @@ jobs:
     env:
       QT_VERSION: 5.15.2
       QT_ARCHITECTURE: win64_msvc2019_64
+      CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${{ github.workspace }}\dist
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -84,7 +85,7 @@ jobs:
       - name: Copy Qt DLLs
         env:
           QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
-        run: D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe && tree /f ${{ steps.strings.outputs.build-output-dir }}
+        run: D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ env.CMAKE_RUNTIME_OUTPUT_DIR }}\x4StationGenerator.exe && tree /f ${{ env.CMAKE_RUNTIME_OUTPUT_DIR }}
       #        run: tree /f D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
@@ -97,7 +98,7 @@ jobs:
       - name: Compress Binary
         env:
           BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
-        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.BIN_DIR }}\x4StationGenerator.exe ${{ env.BIN_DIR }}\*.dll ${{ env.BIN_DIR }}\platforms\qwindows.dll
+        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.CMAKE_RUNTIME_OUTPUT_DIRECTORY }}\
 
       - name: Release binary
         uses: softprops/action-gh-release@v2
@@ -107,3 +108,6 @@ jobs:
           files: |
             ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.zip
           token: ${{ secrets.GITHUB_TOKEN }}
+          body: |
+            Release ${{ github.ref }}
+            ${{ github.event.release.body }}
