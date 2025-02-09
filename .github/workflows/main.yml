@@ -19,6 +19,7 @@ jobs:
       QT_VERSION: 5.15.2
       QT_ARCHITECTURE: win64_msvc2019_64
       CMAKE_RUNTIME_OUTPUT_DIRECTORY: ${{ github.workspace }}\dist
+      ZIP_FILE: ${{ github.workspace }}\dist\x4StationGenerator.zip
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -98,7 +99,7 @@ jobs:
       - name: Compress Binary
         env:
           BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
-        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.CMAKE_RUNTIME_OUTPUT_DIRECTORY }}\
+        run: 7z a -tzip ${{ env.ZIP_FILE }} ${{ env.CMAKE_RUNTIME_OUTPUT_DIRECTORY }}\
 
       - name: Release binary
         uses: softprops/action-gh-release@v2
@@ -106,7 +107,7 @@ jobs:
           startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.zip
+            ${{ env.ZIP_FILE }}
           token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             Release ${{ github.ref }}
