@@ -21,11 +21,13 @@ add_executable(x4StationGenerator
         main.cpp
         moduleselector.h moduleselector.cpp moduleselector.ui
         mainwindow.h mainwindow.cpp mainwindow.ui
+        stationsizewidget.h stationsizewidget.cpp stationsizewidget.ui
         src/ModuleGenerator.hpp
         src/modules.cpp
         src/ModuleGenerator.cpp
         src/StationBuilder/StationBuilder.hpp
         src/StationBuilder/StationBuilder.cpp
+        src/defines.hpp
 )
 target_link_libraries(x4StationGenerator
         Qt5::Core
