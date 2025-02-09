@@ -22,7 +22,7 @@ private:
 
     static void addRessources(t_ressources &ressources, const t_ressources &toAdd);
 
-    void _pushAndComplete(std::stack<Module> &stack, t_ressources &produced, const Module &module) const;
+    void _pushAndComplete(std::vector<Module> &stack, t_ressources &produced, const Module &module) const;
 
     bool _isComplete(const t_ressources &produced, t_ressources &missing) const;
 
