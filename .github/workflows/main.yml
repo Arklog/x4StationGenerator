@@ -97,7 +97,7 @@ jobs:
       - name: Compress Binary
         env:
           BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
-        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.BIN_DIR }}\x4StationGenerator.exe ${{ env.BIN_DIR }}\Qt5Core.dll ${{ env.BIN_DIR }}\Qt5Gui.dll ${{ env.BIN_DIR }}\Qt5Widgets.dll ${{ env.BIN_DIR}}\qwindows.dll ${{ env.BIN_DIR }}\platforms\qwindows.dll
+        run: 7z a -w${{ env.BIN_DIR }} -x -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.BIN_DIR }}\x4StationGenerator.exe ${{ env.BIN_DIR }}\Qt5Core.dll ${{ env.BIN_DIR }}\Qt5Gui.dll ${{ env.BIN_DIR }}\Qt5Widgets.dll ${{ env.BIN_DIR}}\qwindows.dll ${{ env.BIN_DIR }}\platforms\qwindows.dll
 
       - name: Release binary
         uses: softprops/action-gh-release@v2
