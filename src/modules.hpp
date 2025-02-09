@@ -82,6 +82,28 @@ namespace MODULES {
             0
     };
 
+    const Module ARGON_PIER_1 = {
+            "Argon Pier 1",
+            "pier_arg_harbor_02_macro",
+            MODULE_TYPE::DOCK,
+            {},
+            {},
+            {},
+            0,
+            0
+    };
+
+    const Module ARGON_BASIC_DOCK_3M_6S = {
+            "Argon Basic Dock 3M 6S",
+            "dockarea_arg_m_station_02_lowtech_macro",
+            MODULE_TYPE::DOCK,
+            {},
+            {},
+            {},
+            0,
+            0
+    };
+
     const Module ARGON_L_HABITAT = {
             "Argon L Habitat",
             "hab_arg_l_01_macro",
