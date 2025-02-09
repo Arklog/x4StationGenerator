@@ -18,7 +18,7 @@ jobs:
     env:
       QT_VERSION: 5.15.2
       QT_ARCHITECTURE: win64_msvc2019_64
-      DIST_DIRECTORY: ${{ github.workspace }}/dist
+      DIST_DIRECTORY: ${{ github.workspace }}\dist
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
