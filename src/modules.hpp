@@ -37,7 +37,6 @@ struct Module {
     std::map<RESSOURCES, int> ressources_produced_max;
     std::map<RESSOURCES, int> ressources_consumed;
     int                       workforce_max;
-    double                    workforce_efficiency;
 
     [[nodiscard]] std::map<RESSOURCES, int> getTotal(int nmodules = 1, bool workforce_is_max = false) const;
 };
@@ -57,7 +56,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module ARGON_L_STORAGE_SOLID = {
@@ -68,7 +66,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module ARGON_L_STORAGE_LIQUID = {
@@ -79,7 +76,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module ARGON_PIER_1 = {
@@ -90,7 +86,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module ARGON_BASIC_DOCK_3M_6S = {
@@ -101,7 +96,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module ARGON_L_HABITAT = {
@@ -112,7 +106,6 @@ namespace MODULES {
             {},
             {},
             0,
-            0
     };
 
     const Module SOLAR_POWER_PLANT = {
@@ -123,7 +116,6 @@ namespace MODULES {
             {{RESSOURCES::ENERGY_CELL, 15015}},
             {},
             90,
-            1.43
     };
 
     const Module GRAPHENE_PRODUCTION = {
@@ -137,7 +129,6 @@ namespace MODULES {
                     {RESSOURCES::ENERGY_CELL, 1200}
             },
             180,
-            0
     };
 
     const Module REFINED_METHAL_PRODUCTION = {
@@ -151,7 +142,6 @@ namespace MODULES {
                     {RESSOURCES::ENERGY_CELL, 2160}
             },
             225,
-            0
     };
 
     const Module HULL_PART_FACTORY = {
@@ -166,7 +156,6 @@ namespace MODULES {
                     {RESSOURCES::REFINED_METAL, 1120},
             },
             270,
-            1.36
     };
 
     extern const t_module_list MODULES;
