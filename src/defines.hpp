@@ -11,10 +11,17 @@
 enum class RESSOURCE {
     METHANE,
     ORE,
+    ICE,
     ENERGY_CELL,
     GRAPHENE,
     REFINED_METAL,
     HULL_PART,
+    WATER,
+    SPICES,
+    WHEAT,
+    FOOD_RATIONS,
+    MEDICAL_SUPPLIES,
+    MEAT
 };
 
 typedef enum MODULE_TYPE_ENUM {
@@ -36,16 +43,22 @@ struct StationSize {
     int z_minus;
 };
 
-struct Module {
-    std::string              name;
-    std::string              macro;
-    MODULE_TYPE              type;
-    std::map<RESSOURCE, int> ressources_produced;
-    std::map<RESSOURCE, int> ressources_produced_max;
-    std::map<RESSOURCE, int> ressources_consumed;
-    int                      workforce_max;
+typedef std::map<RESSOURCE, int> t_ressources;
+const t_ressources               WORKFORCE_CONSUMPTION = {};
 
-    [[nodiscard]] std::map<RESSOURCE, int> getTotal(int nmodules = 1, bool workforce_is_max = false) const;
+struct Module {
+    std::string  name;
+    std::string  macro;
+    MODULE_TYPE  type;
+    t_ressources ressources_produced;
+    t_ressources ressources_produced_max;
+    t_ressources ressources_consumed;
+    int          workforce_max;
+
+    [[nodiscard]] t_ressources getTotal(int nmodules = 1, bool workforce_is_max = false) const;
 };
+
+typedef std::map<Module, int> t_modules;
+typedef std::vector<Module>   t_module_list;
 
 #endif //X4STATIONGENERATOR_DEFINES_HPP

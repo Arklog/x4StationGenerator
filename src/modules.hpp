@@ -18,9 +18,6 @@
 
 bool operator<(const Module &a, const Module &b);
 
-typedef std::map<RESSOURCE, int> t_ressources;
-typedef std::map<Module, int>    t_modules;
-typedef std::vector<Module>      t_module_list;
 
 namespace MODULES {
     const Module ARGON_L_STORAGE_CONTAINER = {
@@ -91,6 +88,57 @@ namespace MODULES {
             {{RESSOURCE::ENERGY_CELL, 15015}},
             {},
             90,
+    };
+
+    const Module WATER_PRODUCTION = {
+            "Water Production",
+            "prod_gen_water_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::WATER, 5790}},
+            {{RESSOURCE::WATER, 8280}},
+            {
+                    {RESSOURCE::ICE, 9600},
+                    {RESSOURCE::ENERGY_CELL, 1800}
+            },
+            180
+    };
+
+    const Module MEAT_PRODUCTION = {
+            "Meat Production",
+            "prod_gen_meat_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::MEAT, 2320}},
+            {{RESSOURCE::MEAT, 386}},
+            {
+                    {RESSOURCE::WATER, 800},
+                    {RESSOURCE::ENERGY_CELL, 640}
+            },
+            75,
+    };
+
+    const Module SPICE_PRODUCTION = {
+            "Spice Production",
+            "prod_gen_spices_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SPICES, 3000}},
+            {{RESSOURCE::SPICES, 4200}},
+            {
+                    {RESSOURCE::WATER, 480},
+                    {RESSOURCE::ENERGY_CELL, 240}
+            },
+            60,
+    };
+
+    const Module WHEAT_PRODUCTION = {
+            "Wheat Production",
+            "prod_gen_wheat_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::WHEAT, 3720}},
+            {{RESSOURCE::WHEAT, 4762}},
+            {
+                    {RESSOURCE::WATER, 960},
+                    {RESSOURCE::ENERGY_CELL, 720}
+            },
     };
 
     const Module GRAPHENE_PRODUCTION = {
