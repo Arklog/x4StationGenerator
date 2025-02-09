@@ -94,14 +94,16 @@ jobs:
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest --build-config ${{ matrix.build_type }}
 
+      - name: Compress Binary
+        env:
+          BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
+        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ BIN_DIR }}\x4StationGenerator.exe ${{ BIN_DIR }}\Qt5Core.dll ${{ BIN_DIR }}\Qt5Gui.dll ${{ BIN_DIR }}\Qt5Widgets.dll
+
       - name: Release binary
         uses: softprops/action-gh-release@v2
         if:
           startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
-            ${{ steps.strings.outputs.build-output-dir }}\Release\Qt5Core.dll
-            ${{ steps.strings.outputs.build-output-dir }}\Release\Qt5Gui.dll
-            ${{ steps.strings.outputs.build-output-dir }}\Release\Qt5Widgets.dll
+            ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.zip
           token: ${{ secrets.GITHUB_TOKEN }}
