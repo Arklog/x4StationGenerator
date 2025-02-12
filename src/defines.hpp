@@ -44,7 +44,10 @@ struct StationSize {
 };
 
 typedef std::map<RESSOURCE, int> t_ressources;
-const t_ressources               WORKFORCE_CONSUMPTION = {};
+const t_ressources               WORKFORCE_CONSUMPTION_PER_50 = {
+        {RESSOURCE::FOOD_RATIONS, 113},
+        {RESSOURCE::MEDICAL_SUPPLIES, 68}
+};
 
 struct Module {
     std::string  name;
