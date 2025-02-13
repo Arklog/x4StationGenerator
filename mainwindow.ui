@@ -225,7 +225,7 @@
        </attribute>
        <layout class="QVBoxLayout" name="verticalLayout_4">
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="workforce">
           <property name="text">
            <string>Workforce</string>
           </property>
