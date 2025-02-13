@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "moduleselector.h"
+#include "stationsizewidget.h"
 #include "StationBuilder/StationBuilder.hpp"
 
 namespace Ui {
@@ -29,6 +30,7 @@ private:
     Ui::MainWindow                *ui;
     std::vector<ModuleSelector *> _module_selectors;
     StationBuilder                _builder;
+    StationSizeWidget             *_station_size_widget;
 
     void updateProduction();
 

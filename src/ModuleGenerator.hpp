@@ -14,10 +14,13 @@ private:
     t_modules _base;
     t_modules _to_complete;
 
-    std::map<RESSOURCES, int> _getConsumption();
+    std::map<RESSOURCE, int> _getConsumption();
+
     bool _canComplete(t_ressources &ressources);
+
 public:
     ModuleGenerator() = delete;
+
     ModuleGenerator(std::map<Module, int> modules);
 
     void generate();

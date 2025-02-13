@@ -17,10 +17,13 @@ public:
     ~ModuleSelector();
 
     const Module &getModule() const;
+
     int getModuleNumber() const;
 
-    std::map<RESSOURCES, int> getProduction() const;
-    std::map<RESSOURCES, int> getConsumption() const;
+    std::map<RESSOURCE, int> getProduction() const;
+
+    std::map<RESSOURCE, int> getConsumption() const;
+
 signals:
 
     void moduleNumberChanged();
