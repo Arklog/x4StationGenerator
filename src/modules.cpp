@@ -152,7 +152,7 @@ namespace MODULES {
 
     const Module FOOD_RATION_PRODUCTION = {
             "Food Ration Production",
-            "prod_gen_foodrations_macro",
+            "prod_arg_foodrations_macro",
             MODULE_TYPE::PRODUCTION,
             {{RESSOURCE::FOOD_RATIONS, 6900}},
             {{RESSOURCE::FOOD_RATIONS, 9113 + 203}},
@@ -167,7 +167,7 @@ namespace MODULES {
 
     const Module ARGON_MEDICAL_SUPPLY_PRODUCTION = {
             "Medical Supply Production",
-            "prod_gen_medicalsupplies_macro",
+            "prod_arg_medicalsupplies_macro",
             MODULE_TYPE::PRODUCTION,
             {{RESSOURCE::MEDICAL_SUPPLIES, 3000}},
             {{RESSOURCE::MEDICAL_SUPPLIES, 3073}},
