@@ -18,6 +18,7 @@ jobs:
     env:
       QT_VERSION: 5.15.2
       QT_ARCHITECTURE: win64_msvc2019_64
+      DIST_DIRECTORY: ${{ github.workspace }}\dist
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -84,7 +85,11 @@ jobs:
       - name: Copy Qt DLLs
         env:
           QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
-        run: D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe && tree /f ${{ steps.strings.outputs.build-output-dir }}
+        run: |
+          mkdir -p ${{ env.DIST_DIRECTORY }} &&
+          mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
+          D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe && 
+          tree /f ${{ steps.strings.outputs.build-output-dir }}
       #        run: tree /f D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
@@ -97,7 +102,7 @@ jobs:
       - name: Compress Binary
         env:
           BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
-        run: 7z a -tzip ${{ env.BIN_DIR }}\x4StationGenerator.zip ${{ env.BIN_DIR }}\x4StationGenerator.exe ${{ env.BIN_DIR }}\Qt5Core.dll ${{ env.BIN_DIR }}\Qt5Gui.dll ${{ env.BIN_DIR }}\Qt5Widgets.dll
+        run: 7z a -tzip ${{ env.DIST_DIRECTORY}}\x4StationGenerator.zip ${{ env.DIST_DIRECTORY }}\*
 
       - name: Release binary
         uses: softprops/action-gh-release@v2
@@ -105,5 +110,5 @@ jobs:
           startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.zip
+            ${{ env.DIST_DIRECTORY }}\x4StationGenerator.zip
           token: ${{ secrets.GITHUB_TOKEN }}
