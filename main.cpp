@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
         StationBuilder stationBuilder(modules, true);
         auto           plan = genModulePlan("plan", stationBuilder.get(), size);
         std::cout << plan << std::endl;
+      
         return 0;
     }
 
