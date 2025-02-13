@@ -145,7 +145,7 @@ t_ressources StationBuilder::__getRessourcesFromOrdered(const Module &module) co
     for (auto const &iter: WORKFORCE_CONSUMPTION_PER_50)
     {
         std::pair<const RESSOURCE, int> tmp(iter);
-        tmp.second *= workforce;
+        tmp.second *= -static_cast<int>(workforce);
         addItem(ressources, tmp);
     }
     return ressources;
