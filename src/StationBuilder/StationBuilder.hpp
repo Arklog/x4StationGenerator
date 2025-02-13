@@ -11,6 +11,7 @@
 #include <ctime>
 #include <cmath>
 #include "modules.hpp"
+#include "utils.hpp"
 
 class StationBuilder {
 private:
