@@ -44,7 +44,7 @@ void MainWindow::updateModules()
         base[i->getModule()] += i->getModuleNumber();
     }
 
-    this->_builder = StationBuilder(base, false);
+    this->_builder = StationBuilder(base, ui->workforce->isChecked());
     this->updateProduction();
     this->updateEndModules();
 }

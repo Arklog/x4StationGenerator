@@ -56,9 +56,11 @@ int main(int argc, char *argv[])
         }
         modules[*module] = nmodules;
 
+        StationSize    size{.x_plus = 20, .y_plus= 20, .z_plus = 20};
         StationBuilder stationBuilder(modules, true);
-        auto           plan = genModulePlan("plan", stationBuilder.get());
+        auto           plan = genModulePlan("plan", stationBuilder.get(), size);
         std::cout << plan << std::endl;
+      
         return 0;
     }
 

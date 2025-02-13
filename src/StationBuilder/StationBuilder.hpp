@@ -11,6 +11,7 @@
 #include <ctime>
 #include <cmath>
 #include "modules.hpp"
+#include "utils.hpp"
 
 class StationBuilder {
 private:
@@ -20,11 +21,18 @@ private:
     t_ressources  _ressources_produced;
     bool          _workforce;
 
-    static void addRessources(t_ressources &ressources, const t_ressources &toAdd);
+    void _pushAndComplete(const Module &module);
 
-    void _pushAndComplete(std::vector<Module> &stack, t_ressources &produced, const Module &module) const;
+    bool _isComplete(t_ressources &missing, const Module &module) const;
 
-    bool _isComplete(const t_ressources &produced, t_ressources &missing) const;
+    /**
+     * Generate the ressource list from all module in stack
+     * @param module
+     * @return
+     */
+    t_ressources __getRessourcesFromOrdered(const Module &module) const;
+
+    size_t __getAvailableWorkforce() const;
 
 public:
     StationBuilder() = default;
@@ -36,6 +44,8 @@ public:
     void setWorkforce(bool workforce);
 
     void generateBuildOrder();
+
+    size_t getWorkforce() const;
 
     [[nodiscard]] const t_module_list &get() const;
 
