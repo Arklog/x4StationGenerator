@@ -114,7 +114,7 @@ namespace MODULES {
 
     const Module MEAT_PRODUCTION = {
             "Meat Production",
-            "prod_gen_meat_macro",
+            "prod_arg_meat_macro",
             MODULE_TYPE::PRODUCTION,
             {{RESSOURCE::MEAT, 2320}},
             {{RESSOURCE::MEAT, 3086}},
@@ -140,7 +140,7 @@ namespace MODULES {
 
     const Module WHEAT_PRODUCTION = {
             "Wheat Production",
-            "prod_gen_wheat_macro",
+            "prod_arg_wheat_macro",
             MODULE_TYPE::PRODUCTION,
             {{RESSOURCE::WHEAT, 3720}},
             {{RESSOURCE::WHEAT, 4762}},
