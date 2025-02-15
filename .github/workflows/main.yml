@@ -78,6 +78,8 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_COMPILER=${{ sccache }}
+          -DCMAKE_C_COMPILER=${{ sccache }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}
 
