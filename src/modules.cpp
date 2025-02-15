@@ -36,6 +36,11 @@ namespace MODULES {
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 115},
+                    {RESSOURCE::HULL_PART, 421},
+                    {RESSOURCE::ENERGY_CELL, 115}
+            },
             0,
     };
 
@@ -46,6 +51,11 @@ namespace MODULES {
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 115},
+                    {RESSOURCE::HULL_PART, 421},
+                    {RESSOURCE::ENERGY_CELL, 115}
+            },
             0,
     };
 
@@ -56,16 +66,26 @@ namespace MODULES {
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 115},
+                    {RESSOURCE::HULL_PART, 421},
+                    {RESSOURCE::ENERGY_CELL, 115}
+            },
             0,
     };
 
     const Module ARGON_PIER_1 = {
-            "Argon Pier 1",
+            "Argon 1-Dock Pier",
             "pier_arg_harbor_02_macro",
             MODULE_TYPE::PIER,
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 313},
+                    {RESSOURCE::ENERGY_CELL, 625},
+                    {RESSOURCE::HULL_PART, 1143},
+            },
             0,
     };
 
@@ -76,6 +96,11 @@ namespace MODULES {
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 75},
+                    {RESSOURCE::ENERGY_CELL, 150},
+                    {RESSOURCE::HULL_PART, 274},
+            },
             0,
     };
 
@@ -86,16 +111,26 @@ namespace MODULES {
             {},
             {},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 191},
+                    {RESSOURCE::ENERGY_CELL, 383},
+                    {RESSOURCE::HULL_PART, 700},
+            },
             0,
     };
 
     const Module SOLAR_POWER_PLANT = {
-            "Solar Power Plant",
+            "Energy Cell Production",
             "prod_gen_energycells_macro",
             MODULE_TYPE::PRODUCTION,
             {{RESSOURCE::ENERGY_CELL, 10500}},
             {{RESSOURCE::ENERGY_CELL, 15015}},
             {},
+            {
+                    {RESSOURCE::CLAYTRONIC, 260},
+                    {RESSOURCE::ENERGY_CELL, 520},
+                    {RESSOURCE::HULL_PART, 951},
+            },
             90,
     };
 
@@ -108,6 +143,11 @@ namespace MODULES {
             {
                     {RESSOURCE::ICE, 9600},
                     {RESSOURCE::ENERGY_CELL, 1800}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 36},
+                    {RESSOURCE::ENERGY_CELL, 72},
+                    {RESSOURCE::HULL_PART, 132},
             },
             180
     };
@@ -122,6 +162,11 @@ namespace MODULES {
                     {RESSOURCE::WATER, 800},
                     {RESSOURCE::ENERGY_CELL, 640}
             },
+            {
+                    {RESSOURCE::CLAYTRONIC, 248},
+                    {RESSOURCE::ENERGY_CELL, 497},
+                    {RESSOURCE::HULL_PART, 910},
+            },
             75,
     };
 
@@ -134,6 +179,11 @@ namespace MODULES {
             {
                     {RESSOURCE::WATER, 480},
                     {RESSOURCE::ENERGY_CELL, 240}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 139},
+                    {RESSOURCE::ENERGY_CELL, 278},
+                    {RESSOURCE::HULL_PART, 510},
             },
             60,
     };
@@ -148,6 +198,12 @@ namespace MODULES {
                     {RESSOURCE::WATER, 960},
                     {RESSOURCE::ENERGY_CELL, 720}
             },
+            {
+                    {RESSOURCE::CLAYTRONIC, 296},
+                    {RESSOURCE::ENERGY_CELL, 592},
+                    {RESSOURCE::HULL_PART, 1084},
+            },
+            75
     };
 
     const Module FOOD_RATION_PRODUCTION = {
@@ -162,20 +218,30 @@ namespace MODULES {
                     {RESSOURCE::SPICES, 600},
                     {RESSOURCE::ENERGY_CELL, 1500}
             },
+            {
+                    {RESSOURCE::CLAYTRONIC, 262},
+                    {RESSOURCE::ENERGY_CELL, 525},
+                    {RESSOURCE::HULL_PART, 961},
+            },
             90
     };
 
     const Module ARGON_MEDICAL_SUPPLY_PRODUCTION = {
-            "Medical Supply Production",
+            "Argon Medical Supply Production",
             "prod_arg_medicalsupplies_macro",
             MODULE_TYPE::PRODUCTION,
-            {{RESSOURCE::MEDICAL_SUPPLIES, 3000}},
-            {{RESSOURCE::MEDICAL_SUPPLIES, 3073}},
+            {{RESSOURCE::MEDICAL_SUPPLIES, 2496}},
+            {{RESSOURCE::MEDICAL_SUPPLIES, 3073 + 122}},
             {
                     {RESSOURCE::ENERGY_CELL, 1200},
                     {RESSOURCE::WATER, 720},
                     {RESSOURCE::SPICES, 480},
                     {RESSOURCE::WHEAT, 360},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 225},
+                    {RESSOURCE::ENERGY_CELL, 450},
+                    {RESSOURCE::HULL_PART, 823},
             },
             90,
     };
@@ -190,6 +256,11 @@ namespace MODULES {
                     {RESSOURCE::METHANE, 4800},
                     {RESSOURCE::ENERGY_CELL, 1200}
             },
+            {
+                    {RESSOURCE::CLAYTRONIC, 28},
+                    {RESSOURCE::ENERGY_CELL, 57},
+                    {RESSOURCE::HULL_PART, 104},
+            },
             180,
     };
 
@@ -202,6 +273,11 @@ namespace MODULES {
             {
                     {RESSOURCE::ORE, 5760},
                     {RESSOURCE::ENERGY_CELL, 2160}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 36},
+                    {RESSOURCE::ENERGY_CELL, 73},
+                    {RESSOURCE::HULL_PART, 135},
             },
             225,
     };
@@ -216,6 +292,11 @@ namespace MODULES {
                     {RESSOURCE::ENERGY_CELL, 320},
                     {RESSOURCE::GRAPHENE, 160},
                     {RESSOURCE::REFINED_METAL, 1120},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 614},
+                    {RESSOURCE::ENERGY_CELL, 1229},
+                    {RESSOURCE::HULL_PART, 2249},
             },
             270,
     };

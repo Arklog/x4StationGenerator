@@ -21,7 +21,8 @@ enum class RESSOURCE {
     WHEAT,
     FOOD_RATIONS,
     MEDICAL_SUPPLIES,
-    MEAT
+    MEAT,
+    CLAYTRONIC,
 };
 
 typedef enum MODULE_TYPE_ENUM {
@@ -45,7 +46,7 @@ struct StationSize {
 
 typedef std::map<RESSOURCE, int> t_ressources;
 const t_ressources               WORKFORCE_CONSUMPTION_PER_50 = {
-        {RESSOURCE::FOOD_RATIONS, 113},
+        {RESSOURCE::FOOD_RATIONS,     113},
         {RESSOURCE::MEDICAL_SUPPLIES, 68}
 };
 
@@ -56,6 +57,7 @@ struct Module {
     t_ressources ressources_produced;
     t_ressources ressources_produced_max;
     t_ressources ressources_consumed;
+    t_ressources build_cost;
     int          workforce_max;
 
     [[nodiscard]] t_ressources getTotal(int nmodules = 1, bool workforce_is_max = false) const;
