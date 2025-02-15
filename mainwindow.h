@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "moduleselector.h"
-#include "stationsizewidget.h"
+#include "widgets/stationsizewidget.h"
+#include "widgets/modulessection.hpp"
+#include "widgets/ressourceproducedsection.hpp"
+#include "widgets/buildsummarysection.hpp"
 #include "StationBuilder/StationBuilder.hpp"
 
 namespace Ui {
@@ -20,17 +22,12 @@ public:
 
 public slots:
 
-    void addModule();
-
-    void updateModules();
-
     void exportPlan();
 
 private:
-    Ui::MainWindow                *ui;
-    std::vector<ModuleSelector *> _module_selectors;
-    StationBuilder                _builder;
-    StationSizeWidget             *_station_size_widget;
+    Ui::MainWindow    *ui;
+    StationBuilder    _builder;
+    StationSizeWidget *_station_size_widget;
 
     void updateProduction();
 

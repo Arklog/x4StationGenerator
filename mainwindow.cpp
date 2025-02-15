@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "moduleselector.h"
+#include "widgets/moduleselectorwidget.h"
 #include "modules.hpp"
 #include "ModuleGenerator.hpp"
 #include "StationBuilder/StationBuilder.hpp"
@@ -15,38 +15,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    connect(ui->addModuleButton, &QPushButton::clicked, this, &MainWindow::addModule);
-    connect(ui->exportButton, &QPushButton::clicked, this, &MainWindow::exportPlan);
+//    connect(ui->exportButton, &QPushButton::clicked, this, &MainWindow::exportPlan);
 
     this->_station_size_widget = new StationSizeWidget(ui->settings_tab);
     ui->settings_tab->layout()->addWidget(this->_station_size_widget);
+
+    auto module_section = new ModulesSection(ui->modules_tab);
+    ui->module_tab_layout->addWidget(module_section, 0, 0);
+    auto production_section = new RessourceProducedSection(ui->modules_tab);
+    ui->module_tab_layout->addWidget(production_section, 0, 1);
+    auto build_summary_section = new BuildSummarySection(ui->modules_tab);
+    ui->module_tab_layout->addWidget(build_summary_section, 0, 2);
+
+    ui->module_tab_layout->setColumnStretch(0, 1);
+    ui->module_tab_layout->setColumnStretch(1, 1);
+    ui->module_tab_layout->setColumnStretch(2, 1);
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::addModule()
-{
-    auto moduleSelector = new ModuleSelector(ui->modules);
-    connect(moduleSelector, &ModuleSelector::moduleNumberChanged, this, &MainWindow::updateModules);
-    ui->modules->layout()->addWidget(moduleSelector);
-    this->_module_selectors.push_back(moduleSelector);
-}
-
-void MainWindow::updateModules()
-{
-    t_modules base{};
-
-    for (auto i: this->_module_selectors)
-    {
-        base[i->getModule()] += i->getModuleNumber();
-    }
-
-    this->_builder = StationBuilder(base, ui->workforce->isChecked());
-    this->updateProduction();
-    this->updateEndModules();
 }
 
 void MainWindow::exportPlan()
@@ -62,7 +50,7 @@ void MainWindow::exportPlan()
         {
             QTextStream stream(&file);
             auto        data = genModulePlan(
-                    ui->stationname->toPlainText().toStdString(),
+                    "tmp", // TODO: get the station name
                     _builder.get(),
                     this->_station_size_widget->getSize());
             file.write(data.c_str());
@@ -70,21 +58,21 @@ void MainWindow::exportPlan()
     }
 }
 
-void MainWindow::updateProduction()
-{
-    const auto &production = _builder.getRessources();
-    clearWidget(ui->production);
-
-    for (const auto &i: production)
-    {
-        auto label = new QLabel(
-                QString("%1: %2").arg(ressourcesNames.at(i.first).c_str()).arg(i.second),
-                ui->production
-        );
-        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        ui->production->layout()->addWidget(label);
-    }
-}
+//void MainWindow::updateProduction()
+//{
+//    const auto &production = _builder.getRessources();
+//    clearWidget(ui->production);
+//
+//    for (const auto &i: production)
+//    {
+//        auto label = new QLabel(
+//                QString("%1: %2").arg(ressourcesNames.at(i.first).c_str()).arg(i.second),
+//                ui->production
+//        );
+//        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+//        ui->production->layout()->addWidget(label);
+//    }
+//}
 
 void MainWindow::clearWidget(QWidget *widget)
 {
@@ -98,15 +86,15 @@ void MainWindow::clearWidget(QWidget *widget)
     }
 }
 
-void MainWindow::updateEndModules()
-{
-    clearWidget(ui->summary);
-    const auto &end_modules = _builder.getModulesMap();
-
-    for (auto const &iter: end_modules)
-    {
-        auto label = new QLabel(QString("%1: %2").arg(iter.first.name.c_str()).arg(iter.second));
-        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
-        ui->summary->layout()->addWidget(label);
-    }
-}
+//void MainWindow::updateEndModules()
+//{
+//    clearWidget(ui->summary);
+//    const auto &end_modules = _builder.getModulesMap();
+//
+//    for (auto const &iter: end_modules)
+//    {
+//        auto label = new QLabel(QString("%1: %2").arg(iter.first.name.c_str()).arg(iter.second));
+//        label->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
+//        ui->summary->layout()->addWidget(label);
+//    }
+//}

@@ -5,16 +5,16 @@
 #include "modules.hpp"
 
 namespace Ui {
-    class ModuleSelector;
+    class ModuleSelectorWidget;
 }
 
-class ModuleSelector : public QWidget {
+class ModuleSelectorWidget : public QWidget {
 Q_OBJECT
 
 public:
-    explicit ModuleSelector(QWidget *parent = nullptr);
+    explicit ModuleSelectorWidget(QWidget *parent = nullptr);
 
-    ~ModuleSelector();
+    ~ModuleSelectorWidget();
 
     const Module &getModule() const;
 
@@ -26,10 +26,10 @@ public:
 
 signals:
 
-    void moduleNumberChanged();
+    void moduleNumberChanged(const ModuleSelectorWidget &moduleSelector);
 
 private:
-    Ui::ModuleSelector *ui;
+    Ui::ModuleSelectorWidget *ui;
 };
 
 #endif // MODULESELECTOR_H

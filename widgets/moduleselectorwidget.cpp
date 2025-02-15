@@ -1,9 +1,9 @@
-#include "moduleselector.h"
-#include "ui_moduleselector.h"
+#include "moduleselectorwidget.h"
+#include "widgets/ui_moduleselectorwidget.h"
 #include <QString>
 
-ModuleSelector::ModuleSelector(QWidget *parent)
-        : QWidget(parent), ui(new Ui::ModuleSelector)
+ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
+        : QWidget(parent), ui(new Ui::ModuleSelectorWidget)
 {
     ui->setupUi(this);
     this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -15,22 +15,22 @@ ModuleSelector::ModuleSelector(QWidget *parent)
 
     connect(
             ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this]() {
-                emit moduleNumberChanged();
+                emit moduleNumberChanged(*this);
             }
     );
     connect(
             ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
-                emit moduleNumberChanged();
+                emit moduleNumberChanged(*this);
             }
     );
 }
 
-ModuleSelector::~ModuleSelector()
+ModuleSelectorWidget::~ModuleSelectorWidget()
 {
     delete ui;
 }
 
-const Module &ModuleSelector::getModule() const
+const Module &ModuleSelectorWidget::getModule() const
 {
     for (const auto &iter: MODULES::MODULES)
     {
@@ -43,12 +43,12 @@ const Module &ModuleSelector::getModule() const
     return ressourcesMap.begin()->second;
 }
 
-int ModuleSelector::getModuleNumber() const
+int ModuleSelectorWidget::getModuleNumber() const
 {
     return this->ui->spinBox->value();
 }
 
-std::map<RESSOURCE, int> ModuleSelector::getProduction() const
+std::map<RESSOURCE, int> ModuleSelectorWidget::getProduction() const
 {
     auto                     module = this->getModule();
     std::map<RESSOURCE, int> production;
@@ -61,7 +61,7 @@ std::map<RESSOURCE, int> ModuleSelector::getProduction() const
     return production;
 }
 
-std::map<RESSOURCE, int> ModuleSelector::getConsumption() const
+std::map<RESSOURCE, int> ModuleSelectorWidget::getConsumption() const
 {
     auto                     module = this->getModule();
     std::map<RESSOURCE, int> consumption;

@@ -19,9 +19,12 @@ find_package(Qt5 COMPONENTS
 
 add_executable(x4StationGenerator
         main.cpp
-        moduleselector.h moduleselector.cpp moduleselector.ui
+        widgets/moduleselectorwidget.h widgets/moduleselectorwidget.cpp widgets/moduleselectorwidget.ui
         mainwindow.h mainwindow.cpp mainwindow.ui
-        stationsizewidget.h stationsizewidget.cpp stationsizewidget.ui
+        widgets/stationsizewidget.h widgets/stationsizewidget.cpp widgets/stationsizewidget.ui
+        widgets/modulessection.hpp widgets/modulessection.cpp widgets/modulessection.ui
+        widgets/ressourceproducedsection.hpp widgets/ressourceproducedsection.cpp widgets/ressourceproducedsection.ui
+        widgets/buildsummarysection.hpp widgets/buildsummarysection.cpp widgets/buildsummarysection.ui
         src/ModuleGenerator.hpp
         src/modules.cpp
         src/ModuleGenerator.cpp
