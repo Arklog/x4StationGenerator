@@ -22,22 +22,18 @@ void StationBuilder::generateBuildOrder()
     t_ressources        produced{};
 
     // Add dock and storage modules to the vector
-    for (auto const &module: _base_modules_map)
-    {
-        if (!(module.first.type & MODULE_TYPE::DOCK_PIER_STORAGE))
-        {
+    for (auto const &module: _base_modules_map) {
+        if (!(module.first.type & MODULE_TYPE::DOCK_PIER_STORAGE)) {
             continue;
         }
         int i = module.second;
-        while (i--)
-        {
+        while (i--) {
             _ordered.push_back(module.first);
         }
     }
 
     // Generate build order for production modules
-    for (auto const &module: _base_modules_map)
-    {
+    for (auto const &module: _base_modules_map) {
         if (module.first.type != MODULE_TYPE::PRODUCTION)
             continue;
         int i = module.second;
@@ -47,8 +43,7 @@ void StationBuilder::generateBuildOrder()
 
     // Generate map
     this->_end_modules_map.clear();
-    for (auto const &iter: _ordered)
-    {
+    for (auto const &iter: _ordered) {
         this->_end_modules_map[iter] += 1;
     }
 
@@ -64,18 +59,15 @@ void StationBuilder::_pushAndComplete(const Module &module)
 {
     t_ressources missing{};
 
-    while (!_isComplete(missing, module))
-    {
+    while (!_isComplete(missing, module)) {
 
-        for (auto const &iter: missing)
-        {
+        for (auto const &iter: missing) {
 
             const auto &mod         = ressourcesMap.at(iter.first);
             auto       mod_produce  = mod.getTotal(1, this->_workforce).at(iter.first);
             int        missing_mods = std::ceil(std::abs(static_cast<double>(iter.second)) / mod_produce);
 
-            while (missing_mods--)
-            {
+            while (missing_mods--) {
                 _ordered.push_back(mod);
             }
         }
@@ -83,8 +75,7 @@ void StationBuilder::_pushAndComplete(const Module &module)
     _ordered.push_back(module);
 
     int missing_workforce = getWorkforce() - __getAvailableWorkforce();
-    while (missing_workforce > 0)
-    {
+    while (missing_workforce > 0) {
         _ordered.push_back(MODULES::ARGON_L_HABITAT);
         missing_workforce -= 4000;
     }
@@ -94,8 +85,7 @@ bool StationBuilder::_isComplete(t_ressources &missing, const Module &module) co
 {
     auto produced = __getRessourcesFromOrdered(module);
     missing.clear();
-    for (auto const &ressource: produced)
-    {
+    for (auto const &ressource: produced) {
 
         if (ressource.second < 0 && ressourcesMap.find(ressource.first) != ressourcesMap.end())
             missing[ressource.first] = ressource.second;
@@ -108,9 +98,26 @@ const t_modules &StationBuilder::getModulesMap() const
     return _end_modules_map;
 }
 
-const t_ressources &StationBuilder::getRessources() const
+t_ressources StationBuilder::getRessources() const
 {
-    return _ressources_produced;
+    t_ressources ressources{};
+    size_t       workforce = 0;
+
+    for (auto const &iter: _ordered) {
+        addMap(ressources, iter.getTotal(1, _workforce));
+        workforce += iter.workforce_max;
+    }
+
+    if (!_workforce)
+        return ressources;
+
+    workforce = std::ceil(static_cast<double>(workforce) / 50);
+    for (auto const &iter: WORKFORCE_CONSUMPTION_PER_50) {
+        std::pair<const RESSOURCE, int> tmp(iter);
+        tmp.second *= -static_cast<int>(workforce);
+        addItem(ressources, tmp);
+    }
+    return ressources;
 }
 
 void StationBuilder::setModules(t_modules modules)
@@ -132,8 +139,7 @@ t_ressources StationBuilder::__getRessourcesFromOrdered(const Module &module) co
 
     addMap(ressources, module.getTotal(1, _workforce));
     workforce = module.workforce_max;
-    for (auto const &iter: _ordered)
-    {
+    for (auto const &iter: _ordered) {
         addMap(ressources, iter.getTotal(1, _workforce));
         workforce += iter.workforce_max;
     }
@@ -142,8 +148,7 @@ t_ressources StationBuilder::__getRessourcesFromOrdered(const Module &module) co
         return ressources;
 
     workforce = std::ceil(static_cast<double>(workforce) / 50);
-    for (auto const &iter: WORKFORCE_CONSUMPTION_PER_50)
-    {
+    for (auto const &iter: WORKFORCE_CONSUMPTION_PER_50) {
         std::pair<const RESSOURCE, int> tmp(iter);
         tmp.second *= -static_cast<int>(workforce);
         addItem(ressources, tmp);
@@ -167,8 +172,7 @@ size_t StationBuilder::__getAvailableWorkforce() const
 {
     size_t habitats{};
 
-    for (auto iter: _ordered)
-    {
+    for (auto iter: _ordered) {
         if (iter.type == MODULE_TYPE::HABITAT)
             habitats += 1;
     }

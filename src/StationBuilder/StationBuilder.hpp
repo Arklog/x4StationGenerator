@@ -37,7 +37,7 @@ private:
 public:
     StationBuilder() = default;
 
-    explicit StationBuilder(const t_modules &modules, bool workforce = false);
+    explicit StationBuilder(const t_modules &modules, bool workforce = true);
 
     void setModules(t_modules modules);
 
@@ -51,7 +51,7 @@ public:
 
     const t_modules &getModulesMap() const;
 
-    const t_ressources &getRessources() const;
+    t_ressources getRessources() const;
 };
 
 #endif //X4STATIONGENERATOR_STATIONBUILDER_HPP

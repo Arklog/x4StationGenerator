@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include "defines.hpp"
+#include "StationBuilder/StationBuilder.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BuildSummarySection; }
@@ -22,7 +23,7 @@ public:
 
 public slots:
 
-    void modulesUpdated(const t_modules &modules);
+    void modulesUpdated(const StationBuilder &builder);
 
 private:
     Ui::BuildSummarySection *ui;

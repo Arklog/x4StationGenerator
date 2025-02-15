@@ -22,7 +22,13 @@ public:
 
 public slots:
 
+    void updateModules(const t_modules &modules);
+
     void exportPlan();
+
+signals:
+
+    void generatedBuild(const StationBuilder &builder);
 
 private:
     Ui::MainWindow    *ui;

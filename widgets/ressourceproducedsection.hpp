@@ -9,6 +9,7 @@
 #include "utils.hpp"
 #include "defines.hpp"
 #include "modules.hpp"
+#include "StationBuilder/StationBuilder.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -25,7 +26,7 @@ public:
 
 public slots:
 
-    void modulesUpdated(const t_modules &modules);
+    void modulesUpdated(const StationBuilder &builder);
 
 private:
     Ui::RessourceProducedSection *ui;
