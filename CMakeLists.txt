@@ -7,7 +7,11 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 #set(CMAKE_CXX_COMPILER ccache)
-set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+if (WIN32)
+    set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
+else ()
+    set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+endif ()
 
 include_directories(
         src
