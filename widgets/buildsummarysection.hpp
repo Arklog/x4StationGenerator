@@ -6,7 +6,7 @@
 #define X4STATIONGENERATOR_BUILDSUMMARYSECTION_HPP
 
 #include <QWidget>
-
+#include "defines.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class BuildSummarySection; }
@@ -19,6 +19,10 @@ public:
     explicit BuildSummarySection(QWidget *parent = nullptr);
 
     ~BuildSummarySection() override;
+
+public slots:
+
+    void modulesUpdated(const t_modules &modules);
 
 private:
     Ui::BuildSummarySection *ui;

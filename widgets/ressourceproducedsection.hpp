@@ -6,6 +6,9 @@
 #define X4STATIONGENERATOR_RESSOURCEPRODUCEDSECTION_HPP
 
 #include <QWidget>
+#include "utils.hpp"
+#include "defines.hpp"
+#include "modules.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -19,6 +22,10 @@ public:
     explicit RessourceProducedSection(QWidget *parent = nullptr);
 
     ~RessourceProducedSection() override;
+
+public slots:
+
+    void modulesUpdated(const t_modules &modules);
 
 private:
     Ui::RessourceProducedSection *ui;

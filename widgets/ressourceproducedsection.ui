@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <layout class="QFormLayout" name="formLayout"/>
+    <layout class="QFormLayout" name="ressources_produced"/>
    </item>
   </layout>
  </widget>

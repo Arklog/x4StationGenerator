@@ -27,6 +27,19 @@ MainWindow::MainWindow(QWidget *parent)
     auto build_summary_section = new BuildSummarySection(ui->modules_tab);
     ui->module_tab_layout->addWidget(build_summary_section, 0, 2);
 
+    connect(
+            module_section,
+            &ModulesSection::moduleUpdated,
+            build_summary_section,
+            &BuildSummarySection::modulesUpdated
+    );
+    connect(
+            module_section,
+            &ModulesSection::moduleUpdated,
+            production_section,
+            &RessourceProducedSection::modulesUpdated
+    );
+
     ui->module_tab_layout->setColumnStretch(0, 1);
     ui->module_tab_layout->setColumnStretch(1, 1);
     ui->module_tab_layout->setColumnStretch(2, 1);

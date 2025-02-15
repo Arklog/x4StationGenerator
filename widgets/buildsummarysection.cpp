@@ -18,3 +18,8 @@ BuildSummarySection::~BuildSummarySection()
 {
     delete ui;
 }
+
+void BuildSummarySection::modulesUpdated(const t_modules &modules)
+{
+
+}

@@ -30,6 +30,6 @@ void ModulesSection::addModule()
 
 void ModulesSection::updateModules(const ModuleSelectorWidget &widget)
 {
-    _modules.at(widget.getModule()) = widget.getModuleNumber();
+    _modules[widget.getModule()] = widget.getModuleNumber();
     emit moduleUpdated(_modules);
 }
