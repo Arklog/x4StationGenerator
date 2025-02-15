@@ -39,6 +39,7 @@ add_executable(x4StationGenerator
         src/StationBuilder/StationBuilder.cpp
         src/defines.hpp
         src/utils.cpp
+        src/BuildSettings.cpp
 )
 target_link_libraries(x4StationGenerator
         Qt5::Core

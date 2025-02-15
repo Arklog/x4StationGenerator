@@ -26,6 +26,10 @@ public slots:
 
     void modulesUpdated(const StationBuilder &builder);
 
+signals:
+
+    void exportStation();
+
 private:
     Ui::BuildSummarySection *ui;
 };

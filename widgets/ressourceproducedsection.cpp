@@ -8,8 +8,8 @@
 #include "widgets/ui_ressourceproducedsection.h"
 
 
-RessourceProducedSection::RessourceProducedSection(QWidget *parent) :
-        QWidget(parent), ui(new Ui::RessourceProducedSection)
+RessourceProducedSection::RessourceProducedSection(BuildSettings &settings, QWidget *parent) :
+        QWidget(parent), ui(new Ui::RessourceProducedSection), _settings(settings)
 {
     ui->setupUi(this);
 }

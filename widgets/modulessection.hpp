@@ -8,6 +8,7 @@
 #include <QWidget>
 #include "defines.hpp"
 #include "moduleselectorwidget.h"
+#include "BuildSettings.hpp"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ModulesSection; }
@@ -17,7 +18,7 @@ class ModulesSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit ModulesSection(QWidget *parent = nullptr);
+    ModulesSection(BuildSettings &settings, QWidget *parent = nullptr);
 
     ~ModulesSection() override;
 
@@ -27,6 +28,8 @@ public slots:
 
     void updateModules(const ModuleSelectorWidget &widget);
 
+    void updateStationName(const QString &text);
+
 signals:
 
     void moduleUpdated(const t_modules &modules);
@@ -34,6 +37,7 @@ signals:
 private:
     Ui::ModulesSection *ui;
     t_modules          _modules;
+    BuildSettings      &_settings;
 };
 
 

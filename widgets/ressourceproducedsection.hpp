@@ -10,6 +10,7 @@
 #include "defines.hpp"
 #include "modules.hpp"
 #include "StationBuilder/StationBuilder.hpp"
+#include "BuildSettings.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -20,7 +21,7 @@ class RessourceProducedSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit RessourceProducedSection(QWidget *parent = nullptr);
+    RessourceProducedSection(BuildSettings &settings, QWidget *parent = nullptr);
 
     ~RessourceProducedSection() override;
 
@@ -30,6 +31,7 @@ public slots:
 
 private:
     Ui::RessourceProducedSection *ui;
+    BuildSettings                &_settings;
 };
 
 

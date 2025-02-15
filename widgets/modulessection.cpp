@@ -4,15 +4,17 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_ModulesSection.h" resolved
 
+#include <QLineEdit>
 #include "modulessection.hpp"
 #include "ui_modulessection.h"
 
 
-ModulesSection::ModulesSection(QWidget *parent) :
-        QWidget(parent), ui(new Ui::ModulesSection), _modules{}
+ModulesSection::ModulesSection(BuildSettings &settings, QWidget *parent) :
+        QWidget(parent), ui(new Ui::ModulesSection), _modules{}, _settings(settings)
 {
     ui->setupUi(this);
     connect(ui->addModule, &QPushButton::clicked, this, &ModulesSection::addModule);
+    connect(ui->stationName, &QLineEdit::textChanged, this, &ModulesSection::updateStationName);
 }
 
 ModulesSection::~ModulesSection()
@@ -32,4 +34,9 @@ void ModulesSection::updateModules(const ModuleSelectorWidget &widget)
 {
     _modules[widget.getModule()] = widget.getModuleNumber();
     emit moduleUpdated(_modules);
+}
+
+void ModulesSection::updateStationName(const QString &text)
+{
+    _settings.setName(text.toStdString());
 }

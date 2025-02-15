@@ -12,6 +12,7 @@ BuildSummarySection::BuildSummarySection(QWidget *parent) :
         QWidget(parent), ui(new Ui::BuildSummarySection)
 {
     ui->setupUi(this);
+    connect(ui->export_button, &QPushButton::clicked, this, &BuildSummarySection::exportStation);
 }
 
 BuildSummarySection::~BuildSummarySection()
