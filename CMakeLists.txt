@@ -6,6 +6,9 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+#set(CMAKE_CXX_COMPILER ccache)
+set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+
 include_directories(
         src
         cmake-build-debug/include
