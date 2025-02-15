@@ -8,12 +8,10 @@ std::map<RESSOURCE, int> Module::getTotal(int nmodules, bool workforce_is_max) c
     std::map<RESSOURCE, int>       tmp;
     const std::map<RESSOURCE, int> &r = workforce_is_max ? this->ressources_produced_max : this->ressources_produced;
 
-    for (auto i: r)
-    {
+    for (auto i: r) {
         tmp[i.first] = i.second * nmodules;
     }
-    for (auto i: ressources_consumed)
-    {
+    for (auto i: ressources_consumed) {
         tmp[i.first] = -i.second * nmodules;
     }
 
@@ -301,6 +299,117 @@ namespace MODULES {
             270,
     };
 
+    const Module CLAYTRONICS_PRODUCTION = {
+            "Claytronics Production",
+            "prod_gen_claytronics_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::CLAYTRONIC, 432}},
+            {{RESSOURCE::CLAYTRONIC, 579}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 560},
+                    {RESSOURCE::ANTIMATTER_CELL, 400},
+                    {RESSOURCE::MICROCHIP, 640},
+                    {RESSOURCE::QUANTUM_TUBE, 400},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 2822},
+                    {RESSOURCE::ENERGY_CELL, 5642},
+                    {RESSOURCE::HULL_PART, 10327}
+            },
+            1215
+    };
+
+    const Module ANTIMATTER_CELL_PRODUCTION = {
+            "Antimatter Cell Production",
+            "prod_gen_antimattercells_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::ANTIMATTER_CELL, 2970}},
+            {{RESSOURCE::ANTIMATTER_CELL, 4010}},
+            {
+                    {RESSOURCE::HYDROGEN, 9600},
+                    {RESSOURCE::ENERGY_CELL, 3000},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 69},
+                    {RESSOURCE::ENERGY_CELL, 138},
+                    {RESSOURCE::HULL_PART, 253}
+            },
+            180
+    };
+
+    const Module MICROCHIP_PRODUCTION = {
+            "Microchip Production",
+            "prod_gen_microchips_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::MICROCHIP, 432}},
+            {{RESSOURCE::MICROCHIP, 588}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 300},
+                    {RESSOURCE::SILICON_WAFER, 1200},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 758},
+                    {RESSOURCE::ENERGY_CELL, 1516},
+                    {RESSOURCE::HULL_PART, 2774},
+            },
+            450,
+    };
+
+    const Module QUANTUM_TUBE_PRODUCTION = {
+            "Quantum Tube Production",
+            "prod_gen_quantumtubes_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::QUANTUM_TUBE, 470}},
+            {{RESSOURCE::QUANTUM_TUBE, 719}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 200},
+                    {RESSOURCE::GRAPHENE, 580},
+                    {RESSOURCE::SUPERFLUID_COOLANT, 150},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 380},
+                    {RESSOURCE::ENERGY_CELL, 761},
+                    {RESSOURCE::HULL_PART, 1394},
+            },
+            225,
+    };
+
+    const Module SILICON_WAFER_PRODUCTION = {
+            "Silicon Wafer Production",
+            "prod_gen_siliconwafers_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SILICON_WAFER, 2140}},
+            {{RESSOURCE::SILICON_WAFER, 2932}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 1800},
+                    {RESSOURCE::SILICON, 4800}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 74},
+                    {RESSOURCE::ENERGY_CELL, 149},
+                    {RESSOURCE::HULL_PART, 273}
+            },
+            180
+    };
+
+    const Module SUPERFLUID_COOLANT_PRODUCTION = {
+            "Superfluid Coolant Production",
+            "prod_gen_superfluidcoolant_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SUPERFLUID_COOLANT, 1425}},
+            {{RESSOURCE::SUPERFLUID_COOLANT, 2123}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 900},
+                    {RESSOURCE::HELIUM, 4800},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 25},
+                    {RESSOURCE::ENERGY_CELL, 51},
+                    {RESSOURCE::HULL_PART, 94},
+            },
+            225
+    };
+
     const t_module_list MODULES{
             ARGON_L_STORAGE_CONTAINER,
             ARGON_L_STORAGE_SOLID,
@@ -311,39 +420,61 @@ namespace MODULES {
             SOLAR_POWER_PLANT,
             GRAPHENE_PRODUCTION,
             REFINED_METHAL_PRODUCTION,
-            HULL_PART_FACTORY
+            HULL_PART_FACTORY,
+            CLAYTRONICS_PRODUCTION,
+            ANTIMATTER_CELL_PRODUCTION,
+            MICROCHIP_PRODUCTION,
+            QUANTUM_TUBE_PRODUCTION,
+            SILICON_WAFER_PRODUCTION,
+            SUPERFLUID_COOLANT_PRODUCTION,
     };
 
 }
 
 
 const std::map<RESSOURCE, Module> ressourcesMap = {
-        {RESSOURCE::ENERGY_CELL,      MODULES::SOLAR_POWER_PLANT},
-        {RESSOURCE::FOOD_RATIONS,     MODULES::FOOD_RATION_PRODUCTION},
-        {RESSOURCE::GRAPHENE,         MODULES::GRAPHENE_PRODUCTION},
-        {RESSOURCE::HULL_PART,        MODULES::HULL_PART_FACTORY},
-        {RESSOURCE::MEAT,             MODULES::MEAT_PRODUCTION},
-        {RESSOURCE::MEDICAL_SUPPLIES, MODULES::ARGON_MEDICAL_SUPPLY_PRODUCTION},
-        {RESSOURCE::REFINED_METAL,    MODULES::REFINED_METHAL_PRODUCTION},
-        {RESSOURCE::SPICES,           MODULES::SPICE_PRODUCTION},
-        {RESSOURCE::WATER,            MODULES::WATER_PRODUCTION},
-        {RESSOURCE::WHEAT,            MODULES::WHEAT_PRODUCTION},
+        {RESSOURCE::ENERGY_CELL,        MODULES::SOLAR_POWER_PLANT},
+        {RESSOURCE::FOOD_RATIONS,       MODULES::FOOD_RATION_PRODUCTION},
+        {RESSOURCE::GRAPHENE,           MODULES::GRAPHENE_PRODUCTION},
+        {RESSOURCE::HULL_PART,          MODULES::HULL_PART_FACTORY},
+        {RESSOURCE::MEAT,               MODULES::MEAT_PRODUCTION},
+        {RESSOURCE::MEDICAL_SUPPLIES,   MODULES::ARGON_MEDICAL_SUPPLY_PRODUCTION},
+        {RESSOURCE::REFINED_METAL,      MODULES::REFINED_METHAL_PRODUCTION},
+        {RESSOURCE::SPICES,             MODULES::SPICE_PRODUCTION},
+        {RESSOURCE::WATER,              MODULES::WATER_PRODUCTION},
+        {RESSOURCE::WHEAT,              MODULES::WHEAT_PRODUCTION},
+        {RESSOURCE::CLAYTRONIC,         MODULES::CLAYTRONICS_PRODUCTION},
+        {RESSOURCE::ANTIMATTER_CELL,    MODULES::ANTIMATTER_CELL_PRODUCTION},
+        {RESSOURCE::MICROCHIP,          MODULES::MICROCHIP_PRODUCTION},
+        {RESSOURCE::QUANTUM_TUBE,       MODULES::QUANTUM_TUBE_PRODUCTION},
+        {RESSOURCE::SILICON_WAFER,      MODULES::SILICON_WAFER_PRODUCTION},
+        {RESSOURCE::SUPERFLUID_COOLANT, MODULES::SUPERFLUID_COOLANT_PRODUCTION},
 };
 
 const std::map<RESSOURCE, std::string> ressourcesNames = {
-        {RESSOURCE::ENERGY_CELL,      "Energy Cell"},
-        {RESSOURCE::ORE,              "Ore"},
-        {RESSOURCE::ICE,              "Ice"},
-        {RESSOURCE::WATER,            "Water"},
-        {RESSOURCE::SPICES,           "Spices"},
-        {RESSOURCE::WHEAT,            "Wheat"},
-        {RESSOURCE::FOOD_RATIONS,     "Food Rations"},
-        {RESSOURCE::MEDICAL_SUPPLIES, "Medical Supplies"},
-        {RESSOURCE::MEAT,             "Meat"},
-        {RESSOURCE::METHANE,          "Methane"},
-        {RESSOURCE::GRAPHENE,         "Graphene"},
-        {RESSOURCE::REFINED_METAL,    "Refined Metal"},
-        {RESSOURCE::HULL_PART,        "Hull Part"},
+        {RESSOURCE::ENERGY_CELL,          "Energy Cell"},
+        {RESSOURCE::ORE,                  "Ore"},
+        {RESSOURCE::SILICON,              "Silicon"},
+        {RESSOURCE::ICE,                  "Ice"},
+        {RESSOURCE::WATER,                "Water"},
+        {RESSOURCE::SPICES,               "Spices"},
+        {RESSOURCE::WHEAT,                "Wheat"},
+        {RESSOURCE::FOOD_RATIONS,         "Food Rations"},
+        {RESSOURCE::MEDICAL_SUPPLIES,     "Medical Supplies"},
+        {RESSOURCE::MEAT,                 "Meat"},
+        {RESSOURCE::METHANE,              "Methane"},
+        {RESSOURCE::HYDROGEN,             "Hydrogen"},
+        {RESSOURCE::HELIUM,               "Helium"},
+        {RESSOURCE::GRAPHENE,             "Graphene"},
+        {RESSOURCE::REFINED_METAL,        "Refined Metal"},
+        {RESSOURCE::HULL_PART,            "Hull Part"},
+        {RESSOURCE::CLAYTRONIC,           "Claytronic"},
+        {RESSOURCE::ANTIMATTER_CONVERTER, "Antimatter Converter"},
+        {RESSOURCE::ANTIMATTER_CELL,      "Antimatter Cell"},
+        {RESSOURCE::MICROCHIP,            "Microchip"},
+        {RESSOURCE::QUANTUM_TUBE,         "Quantum Tube"},
+        {RESSOURCE::SUPERFLUID_COOLANT,   "Superfluid Coolant"},
+        {RESSOURCE::SILICON_WAFER,        "Silicon Wafer"},
 };
 
 std::string genModulePlan(const std::string &plan_name, const t_module_list &modules, StationSize station_size)
@@ -362,10 +493,8 @@ std::string genModulePlan(const std::string &plan_name, const t_module_list &mod
     station_size.z_plus *= 1000;
     station_size.z_minus *= 1000;
 
-    for (int i = 200 - station_size.y_minus; i < station_size.y_plus; i += 2350)
-    {
-        for (int j = 200 - station_size.z_minus; j < station_size.z_plus; j += 2350)
-        {
+    for (int i = 200 - station_size.y_minus; i < station_size.y_plus; i += 2350) {
+        for (int j = 200 - station_size.z_minus; j < station_size.z_plus; j += 2350) {
             positions_dock.emplace(std::array<int, 3>{xpos_dock, i, j});
             positions_pier.emplace(std::array<int, 3>{xpos_pierr, i, j});
         }
@@ -377,15 +506,12 @@ std::string genModulePlan(const std::string &plan_name, const t_module_list &mod
          << R"(" description="">)" << std::endl;
 
     unsigned int    i = 1;
-    for (auto const &module: modules)
-    {
+    for (auto const &module: modules) {
         std::array<int, 3> pos{0, 0, 0};
-        if (module.type == MODULE_TYPE::PIER)
-        {
+        if (module.type == MODULE_TYPE::PIER) {
             pos = positions_pier.top();
             positions_pier.pop();
-        } else if (module.type == MODULE_TYPE::DOCK)
-        {
+        } else if (module.type == MODULE_TYPE::DOCK) {
             pos = positions_dock.top();
             positions_dock.pop();
         }
