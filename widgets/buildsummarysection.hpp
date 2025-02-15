@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include "defines.hpp"
+#include "utils.hpp"
 #include "StationBuilder/StationBuilder.hpp"
 
 QT_BEGIN_NAMESPACE

@@ -31,7 +31,7 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <layout class="QFormLayout" name="formLayout"/>
+    <layout class="QFormLayout" name="modules"/>
    </item>
    <item row="2" column="0">
     <widget class="QPushButton" name="export_button">
