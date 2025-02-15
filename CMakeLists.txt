@@ -24,23 +24,13 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
+file(GLOB_RECURSE SOURCES src/*.cpp widgets/*.cpp widgets/*.ui)
+include_directories(src widgets)
+
 add_executable(x4StationGenerator
-        main.cpp
-        widgets/moduleselectorwidget.h widgets/moduleselectorwidget.cpp widgets/moduleselectorwidget.ui
-        mainwindow.h mainwindow.cpp mainwindow.ui
-        widgets/stationsizewidget.h widgets/stationsizewidget.cpp widgets/stationsizewidget.ui
-        widgets/modulessection.hpp widgets/modulessection.cpp widgets/modulessection.ui
-        widgets/ressourceproducedsection.hpp widgets/ressourceproducedsection.cpp widgets/ressourceproducedsection.ui
-        widgets/buildsummarysection.hpp widgets/buildsummarysection.cpp widgets/buildsummarysection.ui
-        src/ModuleGenerator.hpp
-        src/modules.cpp
-        src/ModuleGenerator.cpp
-        src/StationBuilder/StationBuilder.hpp
-        src/StationBuilder/StationBuilder.cpp
-        src/defines.hpp
-        src/utils.cpp
-        src/BuildSettings.cpp
+        main.cpp ${SOURCES}
 )
+
 target_link_libraries(x4StationGenerator
         Qt5::Core
         Qt5::Gui

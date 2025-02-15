@@ -4,7 +4,7 @@
 #include <QFileDialog>
 #include <QTextStream>
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "widgets/ui_mainwindow.h"
 #include "widgets/moduleselectorwidget.h"
 #include "modules.hpp"
 #include "ModuleGenerator.hpp"

@@ -7,7 +7,7 @@
 
 #include <QWidget>
 #include "defines.hpp"
-#include "moduleselectorwidget.h"
+#include "widgets/moduleselectorwidget.h"
 #include "BuildSettings.hpp"
 
 QT_BEGIN_NAMESPACE

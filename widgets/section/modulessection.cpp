@@ -6,7 +6,7 @@
 
 #include <QLineEdit>
 #include "modulessection.hpp"
-#include "ui_modulessection.h"
+#include "widgets/section/ui_modulessection.h"
 
 
 ModulesSection::ModulesSection(BuildSettings &settings, QWidget *parent) :

@@ -3,9 +3,10 @@
 //
 
 #include "stationsizewidget.h"
-#include "ui_stationsizewidget.h"
+#include "widgets/widgets/ui_stationsizewidget.h"
 
-StationSizeWidget::StationSizeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::StationSizeWidget) {
+StationSizeWidget::StationSizeWidget(QWidget *parent) : QWidget(parent), ui(new Ui::StationSizeWidget)
+{
     ui->setupUi(this);
 
     connect(ui->x_plus, &QSlider::valueChanged, this, &StationSizeWidget::updateLabels);
@@ -18,7 +19,8 @@ StationSizeWidget::StationSizeWidget(QWidget *parent) : QWidget(parent), ui(new 
     this->updateLabels();
 }
 
-void StationSizeWidget::updateLabels() {
+void StationSizeWidget::updateLabels()
+{
     ui->x_plus->setMaximum(20 - ui->x_minus->value());
     ui->x_minus->setMaximum(20 - ui->x_plus->value());
     ui->y_plus->setMaximum(20 - ui->y_minus->value());
@@ -33,7 +35,8 @@ void StationSizeWidget::updateLabels() {
     ui->z_minus_label->setText(QString("+z: %1").arg(ui->z_minus->value()));
 }
 
-StationSize StationSizeWidget::getSize() {
+StationSize StationSizeWidget::getSize()
+{
     return StationSize{
             ui->x_plus->value(),
             ui->x_minus->value(),
