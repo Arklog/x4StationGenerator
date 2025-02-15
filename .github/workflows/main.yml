@@ -58,10 +58,8 @@ jobs:
         run: |
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
 
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2
-        with:
-          create-symlink: true
+      - name: Run sccache-cache
+        uses: mozilla-actions/sccache-action@v0.0.7
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
