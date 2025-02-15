@@ -410,6 +410,160 @@ namespace MODULES {
             225
     };
 
+    const Module DRONE_COMPONENTS_PRODUCTION = {
+            "Drone Components Production",
+            "prod_gen_dronecomponents_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::DRONE_COMPONENTS, 315}},
+            {{RESSOURCE::DRONE_COMPONENTS, 450}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 180},
+                    {RESSOURCE::ENGINE_PARTS, 60},
+                    {RESSOURCE::HULL_PART, 60},
+                    {RESSOURCE::MICROCHIP, 60},
+                    {RESSOURCE::SCANNING_ARRAY, 120}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 1225},
+                    {RESSOURCE::ENERGY_CELL, 2449},
+                    {RESSOURCE::HULL_PART, 4483},
+            },
+            675
+    };
+
+    const Module ENGINE_PARTS_PRODUCTION = {
+            "Engine Parts Production",
+            "prod_gen_engineparts_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::ENGINE_PARTS, 832}},
+            {{RESSOURCE::ENGINE_PARTS, 1223}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 240},
+                    {RESSOURCE::ANTIMATTER_CELL, 320},
+                    {RESSOURCE::REFINED_METAL, 384}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 389},
+                    {RESSOURCE::ENERGY_CELL, 779},
+                    {RESSOURCE::HULL_PART, 1426},
+            },
+            225
+    };
+
+    const Module SHIELD_COMPONENTS_PRODUCTION = {
+            "Shield Components Production",
+            "prod_gen_shieldcomponents_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SHIELD_COMPONENTS, 579}},
+            {{RESSOURCE::SHIELD_COMPONENTS, 828}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 210},
+                    {RESSOURCE::QUANTUM_TUBE, 60},
+                    {RESSOURCE::PLASMA_CONDUCTOR, 120}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 432},
+                    {RESSOURCE::ENERGY_CELL, 865},
+                    {RESSOURCE::HULL_PART, 1583},
+            },
+            225
+    };
+
+    const Module SCANNING_ARRAY_PRODUCTION = {
+            "Scanning Array Production",
+            "prod_gen_scanningarray_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SCANNING_ARRAY, 216}},
+            {{RESSOURCE::SCANNING_ARRAY, 298}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 360},
+                    {RESSOURCE::REFINED_METAL, 600},
+                    {RESSOURCE::SILICON_WAFER, 360}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 629},
+                    {RESSOURCE::ENERGY_CELL, 1259},
+                    {RESSOURCE::HULL_PART, 2305},
+            },
+            315
+    };
+
+    const Module WEAPON_COMPONENTS_PRODUCTION = {
+            "Weapon Components Production",
+            "prod_gen_weaponcomponents_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::WEAPON_COMPONENTS, 340}},
+            {{RESSOURCE::WEAPON_COMPONENTS, 520}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 120},
+                    {RESSOURCE::HULL_PART, 40},
+                    {RESSOURCE::PLASMA_CONDUCTOR, 60},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 396},
+                    {RESSOURCE::ENERGY_CELL, 793},
+                    {RESSOURCE::HULL_PART, 1452},
+            },
+            225
+    };
+
+    const Module SMARTCHIPS_PRODUCTION = {
+            "Smart Chips Production",
+            "prod_gen_smartchips_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::SMARTCHIPS, 858}},
+            {{RESSOURCE::SMARTCHIPS, 1175}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 300},
+                    {RESSOURCE::SILICON_WAFER, 120},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 126},
+                    {RESSOURCE::ENERGY_CELL, 253},
+                    {RESSOURCE::HULL_PART, 464},
+            },
+            60
+    };
+
+    const Module TURRET_COMPONENTS_PRODUCTION = {
+            "Turret Components Production",
+            "prod_gen_turretcomponents_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::TURRET_COMPONENTS, 340}},
+            {{RESSOURCE::TURRET_COMPONENTS, 520}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 120},
+                    {RESSOURCE::MICROCHIP, 40},
+                    {RESSOURCE::QUANTUM_TUBE, 40},
+                    {RESSOURCE::SCANNING_ARRAY, 20},
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 475},
+                    {RESSOURCE::ENERGY_CELL, 951},
+                    {RESSOURCE::HULL_PART, 1741},
+            },
+            225
+    };
+
+    const Module PLASMA_CONDUCTOR_PRODUCTION = {
+            "Plasma Conductor Production",
+            "prod_gen_plasmaconductors_macro",
+            MODULE_TYPE::PRODUCTION,
+            {{RESSOURCE::PLASMA_CONDUCTOR, 176}},
+            {{RESSOURCE::PLASMA_CONDUCTOR, 252}},
+            {
+                    {RESSOURCE::ENERGY_CELL, 240},
+                    {RESSOURCE::GRAPHENE, 384},
+                    {RESSOURCE::SUPERFLUID_COOLANT, 560}
+            },
+            {
+                    {RESSOURCE::CLAYTRONIC, 473},
+                    {RESSOURCE::ENERGY_CELL, 946},
+                    {RESSOURCE::HULL_PART, 1732},
+            },
+            225
+    };
+
     const t_module_list MODULES{
             ARGON_L_STORAGE_CONTAINER,
             ARGON_L_STORAGE_SOLID,
