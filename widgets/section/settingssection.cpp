@@ -6,6 +6,7 @@
 
 #include <QRadioButton>
 #include <QCheckBox>
+#include <QSpinBox>
 #include "settingssection.hpp"
 #include "widgets/section/ui_settingssection.h"
 #include "widgets/stationsizewidget.h"
@@ -24,6 +25,16 @@ SettingsSection::SettingsSection(BuildSettings &settings, QWidget *parent) :
             }
     );
     ui->col_1->addRow(workforce);
+
+    auto sun_factor = new QSpinBox(this);
+    sun_factor->setRange(0, 2000);
+    connect(
+            sun_factor, QOverload<int>::of(&QSpinBox::valueChanged), [&](int value) {
+                _settings.setSunFactor(value);
+                emit settingsUpdated();
+            }
+    );
+    ui->col_1->addRow("Sun Factor", sun_factor);
 
     auto size_widget = new StationSizeWidget(this);
     connect(

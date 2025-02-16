@@ -78,8 +78,9 @@ struct Module {
     t_ressources ressources_consumed;
     t_ressources build_cost;
     int          workforce_max;
+    bool         sun_factor = false;
 
-    [[nodiscard]] t_ressources getTotal(int nmodules = 1, bool workforce_is_max = false) const;
+    [[nodiscard]] t_ressources getTotal(int nmodules = 1, bool workforce_is_max = false, size_t sun = 100) const;
 };
 
 typedef std::map<Module, int> t_modules;

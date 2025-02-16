@@ -60,7 +60,10 @@ void StationBuilder::_pushAndComplete(const Module &module)
         for (auto const &iter: missing) {
 
             const auto &mod         = ressourcesMap.at(iter.first);
-            auto       mod_produce  = mod.getTotal(1, _settings.getWorkforce()).at(iter.first);
+            auto       mod_produce  = mod.getTotal(
+                    1,
+                    _settings.getWorkforce(),
+                    _settings.getSunFactor()).at(iter.first);
             int        missing_mods = std::ceil(std::abs(static_cast<double>(iter.second)) / mod_produce);
 
             while (missing_mods--) {
@@ -98,7 +101,7 @@ t_ressources StationBuilder::getRessources() const
     size_t       workforce = 0;
 
     for (auto const &iter: _ordered) {
-        addMap(ressources, iter.getTotal(1, _settings.getWorkforce()));
+        addMap(ressources, iter.getTotal(1, _settings.getWorkforce(), _settings.getSunFactor()));
         workforce += iter.workforce_max;
     }
 
@@ -125,10 +128,10 @@ t_ressources StationBuilder::_getRessourcesFromOrdered(const Module &module) con
     t_ressources ressources{};
     size_t       workforce = 0;
 
-    addMap(ressources, module.getTotal(1, _settings.getWorkforce()));
+    addMap(ressources, module.getTotal(1, _settings.getWorkforce(), _settings.getSunFactor()));
     workforce = module.workforce_max;
     for (auto const &iter: _ordered) {
-        addMap(ressources, iter.getTotal(1, _settings.getWorkforce()));
+        addMap(ressources, iter.getTotal(1, _settings.getWorkforce(), _settings.getSunFactor()));
         workforce += iter.workforce_max;
     }
 

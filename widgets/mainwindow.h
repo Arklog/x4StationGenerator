@@ -35,12 +35,6 @@ private:
     BuildSettings     _settings;
     StationBuilder    _builder;
     StationSizeWidget *_station_size_widget;
-
-    void updateProduction();
-
-    void updateEndModules();
-
-    void clearWidget(QWidget *widget);
 };
 
 #endif // MAINWINDOW_H
