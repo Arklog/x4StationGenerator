@@ -12,14 +12,15 @@
 #include <cmath>
 #include "modules.hpp"
 #include "utils.hpp"
+#include "BuildSettings.hpp"
 
 class StationBuilder {
 private:
-    t_modules     _base_modules_map;
-    t_modules     _end_modules_map;
-    t_module_list _ordered;
-    t_ressources  _ressources_produced;
-    bool          _workforce;
+    t_modules           _base_modules_map;
+    t_modules           _end_modules_map;
+    t_module_list       _ordered;
+    t_ressources        _ressources_produced;
+    const BuildSettings &_settings;
 
     void _pushAndComplete(const Module &module);
 
@@ -30,28 +31,24 @@ private:
      * @param module
      * @return
      */
-    t_ressources _getRessourcesFromOrdered(const Module &module) const;
+    [[nodiscard]] t_ressources _getRessourcesFromOrdered(const Module &module) const;
 
-    size_t _getAvailableWorkforce() const;
+    [[nodiscard]] size_t _getAvailableWorkforce() const;
 
 public:
-    StationBuilder() = default;
-
-    explicit StationBuilder(const t_modules &modules, bool workforce = true);
+    explicit StationBuilder(const BuildSettings &settings);
 
     void setModules(t_modules modules);
 
-    void setWorkforce(bool workforce);
-
     void generateBuildOrder();
 
-    size_t getWorkforce() const;
+    [[nodiscard]] size_t getWorkforce() const;
 
     [[nodiscard]] const t_module_list &get() const;
 
-    const t_modules &getModulesMap() const;
+    [[nodiscard]] const t_modules &getModulesMap() const;
 
-    t_ressources getRessources() const;
+    [[nodiscard]] t_ressources getRessources() const;
 };
 
 #endif //X4STATIONGENERATOR_STATIONBUILDER_HPP

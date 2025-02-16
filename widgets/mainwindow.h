@@ -32,9 +32,9 @@ signals:
 
 private:
     Ui::MainWindow    *ui;
+    BuildSettings     _settings;
     StationBuilder    _builder;
     StationSizeWidget *_station_size_widget;
-    BuildSettings     _settings;
 
     void updateProduction();
 

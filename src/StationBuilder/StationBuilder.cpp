@@ -6,13 +6,9 @@
 
 #include <utility>
 
-StationBuilder::StationBuilder(const t_modules &modules, bool workforce) : _base_modules_map(modules),
-                                                                           _end_modules_map{},
-                                                                           _ordered{},
-                                                                           _ressources_produced{},
-                                                                           _workforce(workforce)
+StationBuilder::StationBuilder(const BuildSettings &settings)
+        : _base_modules_map{}, _end_modules_map{}, _ordered{}, _ressources_produced{}, _settings(settings)
 {
-    this->generateBuildOrder();
 }
 
 void StationBuilder::generateBuildOrder()
@@ -64,7 +60,7 @@ void StationBuilder::_pushAndComplete(const Module &module)
         for (auto const &iter: missing) {
 
             const auto &mod         = ressourcesMap.at(iter.first);
-            auto       mod_produce  = mod.getTotal(1, this->_workforce).at(iter.first);
+            auto       mod_produce  = mod.getTotal(1, _settings.getWorkforce()).at(iter.first);
             int        missing_mods = std::ceil(std::abs(static_cast<double>(iter.second)) / mod_produce);
 
             while (missing_mods--) {
@@ -74,10 +70,8 @@ void StationBuilder::_pushAndComplete(const Module &module)
     }
     _ordered.push_back(module);
 
-    int missing_workforce = getWorkforce() - _getAvailableWorkforce();
-    while (missing_workforce > 0) {
+    while (getWorkforce() > _getAvailableWorkforce()) {
         _ordered.push_back(MODULES::ARGON_L_HABITAT);
-        missing_workforce -= 4000;
     }
 }
 
@@ -104,11 +98,11 @@ t_ressources StationBuilder::getRessources() const
     size_t       workforce = 0;
 
     for (auto const &iter: _ordered) {
-        addMap(ressources, iter.getTotal(1, _workforce));
+        addMap(ressources, iter.getTotal(1, _settings.getWorkforce()));
         workforce += iter.workforce_max;
     }
 
-    if (!_workforce)
+    if (!_settings.getWorkforce())
         return ressources;
 
     workforce = std::ceil(static_cast<double>(workforce) / 50);
@@ -126,25 +120,19 @@ void StationBuilder::setModules(t_modules modules)
     this->generateBuildOrder();
 }
 
-void StationBuilder::setWorkforce(bool workforce)
-{
-    _workforce = workforce;
-    this->generateBuildOrder();
-}
-
 t_ressources StationBuilder::_getRessourcesFromOrdered(const Module &module) const
 {
     t_ressources ressources{};
     size_t       workforce = 0;
 
-    addMap(ressources, module.getTotal(1, _workforce));
+    addMap(ressources, module.getTotal(1, _settings.getWorkforce()));
     workforce = module.workforce_max;
     for (auto const &iter: _ordered) {
-        addMap(ressources, iter.getTotal(1, _workforce));
+        addMap(ressources, iter.getTotal(1, _settings.getWorkforce()));
         workforce += iter.workforce_max;
     }
 
-    if (!_workforce)
+    if (!_settings.getWorkforce())
         return ressources;
 
     workforce = std::ceil(static_cast<double>(workforce) / 50);
@@ -160,7 +148,7 @@ size_t StationBuilder::getWorkforce() const
 {
     size_t workforce{};
 
-    if (!_workforce)
+    if (!_settings.getWorkforce())
         return 0;
 
     for (auto const &iter: _ordered)

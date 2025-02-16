@@ -5,14 +5,11 @@
 #include <QTextStream>
 #include "mainwindow.h"
 #include "widgets/ui_mainwindow.h"
-#include "widgets/moduleselectorwidget.h"
 #include "modules.hpp"
-#include "ModuleGenerator.hpp"
-#include "StationBuilder/StationBuilder.hpp"
 #include "section/settingssection.hpp"
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow), _builder(), _settings()
+        : QMainWindow(parent), ui(new Ui::MainWindow), _settings(), _builder(_settings)
 {
     ui->setupUi(this);
 
@@ -71,7 +68,6 @@ void MainWindow::exportPlan()
 
 void MainWindow::updateModules(const t_modules &modules)
 {
-    _builder.setWorkforce(_settings.getWorkforce());
     _builder.setModules(modules);
     emit generatedBuild(_builder);
 }
