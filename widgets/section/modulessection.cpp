@@ -6,7 +6,7 @@
 
 #include <QLineEdit>
 #include "modulessection.hpp"
-#include "ui_modulessection.h"
+#include "widgets/section/ui_modulessection.h"
 
 
 ModulesSection::ModulesSection(BuildSettings &settings, QWidget *parent) :
@@ -39,4 +39,9 @@ void ModulesSection::updateModules(const ModuleSelectorWidget &widget)
 void ModulesSection::updateStationName(const QString &text)
 {
     _settings.setName(text.toStdString());
+}
+
+const t_modules &ModulesSection::getModules() const
+{
+    return _modules;
 }

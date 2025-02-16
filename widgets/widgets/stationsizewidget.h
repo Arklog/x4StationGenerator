@@ -23,6 +23,10 @@ public slots:
 
     void updateLabels();
 
+signals:
+
+    void sizeChanged(StationSize size);
+
 private:
     Ui::StationSizeWidget *ui;
 };

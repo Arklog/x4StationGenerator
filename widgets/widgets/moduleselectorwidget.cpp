@@ -1,5 +1,5 @@
 #include "moduleselectorwidget.h"
-#include "widgets/ui_moduleselectorwidget.h"
+#include "widgets/widgets/ui_moduleselectorwidget.h"
 #include <QString>
 
 ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
@@ -8,8 +8,7 @@ ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
     ui->setupUi(this);
     this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
 
-    for (const auto &item: MODULES::MODULES)
-    {
+    for (const auto &item: MODULES::MODULES) {
         ui->comboBox->addItem(QString(item.name.c_str()));
     }
 
@@ -32,10 +31,8 @@ ModuleSelectorWidget::~ModuleSelectorWidget()
 
 const Module &ModuleSelectorWidget::getModule() const
 {
-    for (const auto &iter: MODULES::MODULES)
-    {
-        if (iter.name == ui->comboBox->currentText().toStdString())
-        {
+    for (const auto &iter: MODULES::MODULES) {
+        if (iter.name == ui->comboBox->currentText().toStdString()) {
             return iter;
         }
     }
@@ -53,8 +50,7 @@ std::map<RESSOURCE, int> ModuleSelectorWidget::getProduction() const
     auto                     module = this->getModule();
     std::map<RESSOURCE, int> production;
 
-    for (auto iter: module.ressources_produced)
-    {
+    for (auto iter: module.ressources_produced) {
         production[iter.first] = iter.second * this->getModuleNumber();
     }
 
@@ -66,8 +62,7 @@ std::map<RESSOURCE, int> ModuleSelectorWidget::getConsumption() const
     auto                     module = this->getModule();
     std::map<RESSOURCE, int> consumption;
 
-    for (auto iter: module.ressources_consumed)
-    {
+    for (auto iter: module.ressources_consumed) {
         consumption[iter.first] = iter.second * this->getModuleNumber();
     }
 

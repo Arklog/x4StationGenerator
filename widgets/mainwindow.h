@@ -3,9 +3,9 @@
 
 #include <QMainWindow>
 #include "widgets/stationsizewidget.h"
-#include "widgets/modulessection.hpp"
-#include "widgets/ressourceproducedsection.hpp"
-#include "widgets/buildsummarysection.hpp"
+#include "section/modulessection.hpp"
+#include "section/ressourceproducedsection.hpp"
+#include "section/buildsummarysection.hpp"
 #include "StationBuilder/StationBuilder.hpp"
 
 namespace Ui {
@@ -32,9 +32,9 @@ signals:
 
 private:
     Ui::MainWindow    *ui;
+    BuildSettings     _settings;
     StationBuilder    _builder;
     StationSizeWidget *_station_size_widget;
-    BuildSettings     _settings;
 
     void updateProduction();
 

@@ -16,3 +16,23 @@ void BuildSettings::setName(const std::string &name)
 {
     _name = name;
 }
+
+const StationSize &BuildSettings::getSize() const
+{
+    return _size;
+}
+
+void BuildSettings::setSize(StationSize size)
+{
+    _size = size;
+}
+
+bool BuildSettings::getWorkforce() const
+{
+    return _workforce;
+}
+
+void BuildSettings::setWorkforce(bool workforce)
+{
+    _workforce = workforce;
+}

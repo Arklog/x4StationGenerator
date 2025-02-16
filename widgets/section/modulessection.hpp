@@ -7,7 +7,7 @@
 
 #include <QWidget>
 #include "defines.hpp"
-#include "moduleselectorwidget.h"
+#include "widgets/moduleselectorwidget.h"
 #include "BuildSettings.hpp"
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +21,8 @@ public:
     ModulesSection(BuildSettings &settings, QWidget *parent = nullptr);
 
     ~ModulesSection() override;
+
+    const t_modules &getModules() const;
 
 public slots:
 

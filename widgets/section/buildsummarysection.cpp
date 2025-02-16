@@ -5,7 +5,7 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_BuildSummarySection.h" resolved
 
 #include "buildsummarysection.hpp"
-#include "widgets/ui_buildsummarysection.h"
+#include "widgets/section/ui_buildsummarysection.h"
 
 
 BuildSummarySection::BuildSummarySection(QWidget *parent) :
