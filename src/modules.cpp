@@ -3,13 +3,16 @@
 //
 #include "modules.hpp"
 
-std::map<RESSOURCE, int> Module::getTotal(int nmodules, bool workforce_is_max) const
+std::map<RESSOURCE, int> Module::getTotal(int nmodules, bool workforce_is_max, size_t sun) const
 {
     std::map<RESSOURCE, int>       tmp;
     const std::map<RESSOURCE, int> &r = workforce_is_max ? this->ressources_produced_max : this->ressources_produced;
 
     for (auto i: r) {
-        tmp[i.first] = i.second * nmodules;
+        int v = i.second * nmodules;
+        if (i.first == RESSOURCE::ENERGY_CELL && this->sun_factor)
+            v = static_cast<int>(static_cast<double>(v) * (static_cast<double>(sun) / 100));
+        tmp[i.first] = v;
     }
     for (auto i: ressources_consumed) {
         tmp[i.first] = -i.second * nmodules;
@@ -130,6 +133,7 @@ namespace MODULES {
                     {RESSOURCE::HULL_PART, 951},
             },
             90,
+            true
     };
 
     const Module WATER_PRODUCTION = {

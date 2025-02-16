@@ -14,9 +14,11 @@ public:
 
     [[nodiscard]] const std::string &getName() const;
 
-    bool getWorkforce() const;
+    [[nodiscard]] bool getWorkforce() const;
 
     [[nodiscard]] const StationSize &getSize() const;
+
+    [[nodiscard]] size_t getSunFactor() const;
 
     void setName(const std::string &name);
 
@@ -24,10 +26,13 @@ public:
 
     void setSize(StationSize size);
 
+    void setSunFactor(size_t sun_factor);
+
 private:
     std::string _name;
     bool        _workforce;
     StationSize _size;
+    size_t      _sun_factor;
 };
 
 

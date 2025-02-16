@@ -36,3 +36,13 @@ void BuildSettings::setWorkforce(bool workforce)
 {
     _workforce = workforce;
 }
+
+size_t BuildSettings::getSunFactor() const
+{
+    return _sun_factor;
+}
+
+void BuildSettings::setSunFactor(size_t sun_factor)
+{
+    _sun_factor = sun_factor;
+}
