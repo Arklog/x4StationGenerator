@@ -25,7 +25,7 @@ find_package(Qt5 COMPONENTS
         REQUIRED)
 
 file(GLOB_RECURSE SOURCES src/*.cpp widgets/*.cpp widgets/*.ui)
-include_directories(src widgets)
+include_directories(src widgets cmake-build-debug/x4StationGenerator_autogen/include)
 
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}

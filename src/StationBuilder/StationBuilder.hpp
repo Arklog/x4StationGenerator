@@ -30,9 +30,9 @@ private:
      * @param module
      * @return
      */
-    t_ressources __getRessourcesFromOrdered(const Module &module) const;
+    t_ressources _getRessourcesFromOrdered(const Module &module) const;
 
-    size_t __getAvailableWorkforce() const;
+    size_t _getAvailableWorkforce() const;
 
 public:
     StationBuilder() = default;

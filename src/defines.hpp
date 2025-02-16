@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 enum class RESSOURCE {
     METHANE,

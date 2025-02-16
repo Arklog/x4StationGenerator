@@ -40,3 +40,8 @@ void ModulesSection::updateStationName(const QString &text)
 {
     _settings.setName(text.toStdString());
 }
+
+const t_modules &ModulesSection::getModules() const
+{
+    return _modules;
+}

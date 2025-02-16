@@ -22,6 +22,8 @@ public:
 
     ~ModulesSection() override;
 
+    const t_modules &getModules() const;
+
 public slots:
 
     void addModule();

@@ -74,7 +74,7 @@ void StationBuilder::_pushAndComplete(const Module &module)
     }
     _ordered.push_back(module);
 
-    int missing_workforce = getWorkforce() - __getAvailableWorkforce();
+    int missing_workforce = getWorkforce() - _getAvailableWorkforce();
     while (missing_workforce > 0) {
         _ordered.push_back(MODULES::ARGON_L_HABITAT);
         missing_workforce -= 4000;
@@ -83,7 +83,7 @@ void StationBuilder::_pushAndComplete(const Module &module)
 
 bool StationBuilder::_isComplete(t_ressources &missing, const Module &module) const
 {
-    auto produced = __getRessourcesFromOrdered(module);
+    auto produced = _getRessourcesFromOrdered(module);
     missing.clear();
     for (auto const &ressource: produced) {
 
@@ -132,7 +132,7 @@ void StationBuilder::setWorkforce(bool workforce)
     this->generateBuildOrder();
 }
 
-t_ressources StationBuilder::__getRessourcesFromOrdered(const Module &module) const
+t_ressources StationBuilder::_getRessourcesFromOrdered(const Module &module) const
 {
     t_ressources ressources{};
     size_t       workforce = 0;
@@ -168,7 +168,7 @@ size_t StationBuilder::getWorkforce() const
     return workforce;
 }
 
-size_t StationBuilder::__getAvailableWorkforce() const
+size_t StationBuilder::_getAvailableWorkforce() const
 {
     size_t habitats{};
 

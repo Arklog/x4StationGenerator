@@ -27,12 +27,8 @@ void StationSizeWidget::updateLabels()
     ui->y_minus->setMaximum(20 - ui->y_plus->value());
     ui->z_plus->setMaximum(20 - ui->z_minus->value());
     ui->z_minus->setMaximum(20 - ui->z_plus->value());
-    ui->x_plus_label->setText(QString("-x: %1").arg(ui->x_plus->value()));
-    ui->x_minus_label->setText(QString("+x: %1").arg(ui->x_minus->value()));
-    ui->y_plus_label->setText(QString("-y: %1").arg(ui->y_plus->value()));
-    ui->y_minus_label->setText(QString("+y: %1").arg(ui->y_minus->value()));
-    ui->z_plus_label->setText(QString("-z: %1").arg(ui->z_plus->value()));
-    ui->z_minus_label->setText(QString("+z: %1").arg(ui->z_minus->value()));
+
+    emit sizeChanged(this->getSize());
 }
 
 StationSize StationSizeWidget::getSize()

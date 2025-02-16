@@ -7,6 +7,7 @@
 
 #include <QWidget>
 #include "BuildSettings.hpp"
+#include "../widgets/ui_stationsizewidget.h"
 
 
 QT_BEGIN_NAMESPACE
@@ -17,12 +18,17 @@ class SettingsSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit SettingsSection(QWidget *parent = nullptr);
+    explicit SettingsSection(BuildSettings &settings, QWidget *parent = nullptr);
 
     ~SettingsSection() override;
 
+signals:
+
+    void settingsUpdated();
+
 private:
     Ui::SettingsSection *ui;
+    BuildSettings       &_settings;
 };
 
 
