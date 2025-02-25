@@ -27,7 +27,8 @@ SettingsSection::SettingsSection(BuildSettings &settings, QWidget *parent) :
     ui->col_1->addRow(workforce);
 
     auto sun_factor = new QSpinBox(this);
-    sun_factor->setRange(0, 2000);
+    sun_factor->setRange(1, 2000);
+    sun_factor->setValue(100);
     connect(
             sun_factor, QOverload<int>::of(&QSpinBox::valueChanged), [&](int value) {
                 _settings.setSunFactor(value);
