@@ -28,6 +28,8 @@ signals:
 
     void moduleNumberChanged(const ModuleSelectorWidget &moduleSelector);
 
+    void deleteModule(ModuleSelectorWidget *moduleSelector);
+
 private:
     Ui::ModuleSelectorWidget *ui;
 };

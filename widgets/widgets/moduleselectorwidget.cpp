@@ -22,6 +22,11 @@ ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
                 emit moduleNumberChanged(*this);
             }
     );
+    connect(
+            ui->pushButton, &QPushButton::clicked, [this]() {
+                emit deleteModule(this);
+            }
+    );
 }
 
 ModuleSelectorWidget::~ModuleSelectorWidget()
