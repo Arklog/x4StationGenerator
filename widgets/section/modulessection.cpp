@@ -26,6 +26,15 @@ void ModulesSection::addModule()
 {
     auto module_selector = new ModuleSelectorWidget(this);
     connect(module_selector, &ModuleSelectorWidget::moduleUpdated, this, &ModulesSection::updateModules);
+    connect(
+            module_selector, &ModuleSelectorWidget::deleteModule, [module_selector, this]() {
+                auto &module = module_selector->getModule();
+                _modules.erase(module);
+                this->ui->modules->removeWidget(module_selector);
+                delete module_selector;
+                emit moduleUpdated(_modules);
+            }
+    );
     this->ui->modules->addWidget(module_selector);
     module_selector->show();
 }

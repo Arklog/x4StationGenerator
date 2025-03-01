@@ -30,6 +30,8 @@ signals:
 
     void moduleUpdated(const ModuleSelectorWidget &moduleSelector);
 
+    void deleteModule(ModuleSelectorWidget *moduleSelector);
+
 private:
     Ui::ModuleSelectorWidget *ui;
     const Module             *_former_type;

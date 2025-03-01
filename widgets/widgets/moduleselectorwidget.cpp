@@ -24,7 +24,11 @@ ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
                 this->_former_type = &(this->getModule());
             }
     );
-
+    connect(
+            ui->pushButton, &QPushButton::clicked, [this]() {
+                emit deleteModule(this);
+            }
+    );
 }
 
 ModuleSelectorWidget::~ModuleSelectorWidget()
