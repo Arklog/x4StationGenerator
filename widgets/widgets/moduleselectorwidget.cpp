@@ -3,7 +3,7 @@
 #include <QString>
 
 ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
-        : QWidget(parent), ui(new Ui::ModuleSelectorWidget)
+        : QWidget(parent), ui(new Ui::ModuleSelectorWidget), _former_type(nullptr)
 {
     ui->setupUi(this);
     this->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Fixed);
@@ -11,15 +11,17 @@ ModuleSelectorWidget::ModuleSelectorWidget(QWidget *parent)
     for (const auto &item: MODULES::MODULES) {
         ui->comboBox->addItem(QString(item.name.c_str()));
     }
+    this->_former_type = &getModule();
 
     connect(
             ui->spinBox, QOverload<int>::of(&QSpinBox::valueChanged), [this]() {
-                emit moduleNumberChanged(*this);
+                emit moduleUpdated(*this);
             }
     );
     connect(
             ui->comboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), [this]() {
-                emit moduleNumberChanged(*this);
+                emit moduleUpdated(*this);
+                this->_former_type = &(this->getModule());
             }
     );
     connect(
@@ -72,4 +74,9 @@ std::map<RESSOURCE, int> ModuleSelectorWidget::getConsumption() const
     }
 
     return consumption;
+}
+
+const Module *ModuleSelectorWidget::getFormerType() const
+{
+    return _former_type;
 }

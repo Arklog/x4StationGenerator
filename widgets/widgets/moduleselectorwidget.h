@@ -16,22 +16,25 @@ public:
 
     ~ModuleSelectorWidget();
 
-    const Module &getModule() const;
+    [[nodiscard]] const Module &getModule() const;
 
-    int getModuleNumber() const;
+    [[nodiscard]] int getModuleNumber() const;
 
-    std::map<RESSOURCE, int> getProduction() const;
+    [[nodiscard]] std::map<RESSOURCE, int> getProduction() const;
 
-    std::map<RESSOURCE, int> getConsumption() const;
+    [[nodiscard]] std::map<RESSOURCE, int> getConsumption() const;
+
+    [[nodiscard]] const Module *getFormerType() const;
 
 signals:
 
-    void moduleNumberChanged(const ModuleSelectorWidget &moduleSelector);
+    void moduleUpdated(const ModuleSelectorWidget &moduleSelector);
 
     void deleteModule(ModuleSelectorWidget *moduleSelector);
 
 private:
     Ui::ModuleSelectorWidget *ui;
+    const Module             *_former_type;
 };
 
 #endif // MODULESELECTOR_H
