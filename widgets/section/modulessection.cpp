@@ -25,13 +25,17 @@ ModulesSection::~ModulesSection()
 void ModulesSection::addModule()
 {
     auto module_selector = new ModuleSelectorWidget(this);
-    connect(module_selector, &ModuleSelectorWidget::moduleNumberChanged, this, &ModulesSection::updateModules);
+    connect(module_selector, &ModuleSelectorWidget::moduleUpdated, this, &ModulesSection::updateModules);
     this->ui->modules->addWidget(module_selector);
     module_selector->show();
 }
 
 void ModulesSection::updateModules(const ModuleSelectorWidget &widget)
 {
+    auto &module = widget.getModule();
+    if (module.name != widget.getFormerType()->name) {
+        _modules.erase(*widget.getFormerType());
+    }
     _modules[widget.getModule()] = widget.getModuleNumber();
     emit moduleUpdated(_modules);
 }

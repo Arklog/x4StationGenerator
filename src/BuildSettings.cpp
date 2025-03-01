@@ -4,7 +4,7 @@
 
 #include "BuildSettings.hpp"
 
-BuildSettings::BuildSettings() : _name("default")
+BuildSettings::BuildSettings() : _name("default"), _sun_factor(100), _workforce(false)
 {}
 
 const std::string &BuildSettings::getName() const
