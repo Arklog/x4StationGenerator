@@ -12,6 +12,7 @@ properties:
       - production
       - dock
       - storage
+      - habitat
   construction_cost:
     type: array
     anyOf:
@@ -25,6 +26,16 @@ properties:
           required:
             - name
             - quantity
+  workforce:
+    type: object
+    properties:
+      optimal:
+        type: integer
+      effect:
+        type: number
+    required:
+      - optimal
+      - effect
   resource_consumption:
     type: array
     anyOf:
