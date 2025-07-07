@@ -1,0 +1,25 @@
+type: object
+title: ressource
+description: An X4 ressource
+properties:
+  name:
+    type: string
+  is_produced:
+    type: boolean
+  volume:
+    type: integer
+  price:
+    type: object
+    properties:
+      min:
+        type: integer
+      max:
+        type: integer
+    required:
+      - min
+      - max
+required:
+  - name
+  - is_produced
+  - volume
+  - price

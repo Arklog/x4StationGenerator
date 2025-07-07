@@ -1,0 +1,6 @@
+name: "Ore"
+is_produced: false
+volume: 10
+price:
+  min: 43
+  max: 50

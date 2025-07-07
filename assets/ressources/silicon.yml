@@ -1,0 +1,6 @@
+name: "Silicon"
+is_produced: false
+volume: 10
+price:
+  min: 111
+  max: 150

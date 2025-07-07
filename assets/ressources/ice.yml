@@ -1,0 +1,6 @@
+name: "Ice"
+is_produced: false
+volume: 8
+price:
+  min: 26
+  max: 35

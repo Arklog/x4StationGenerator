@@ -1,0 +1,6 @@
+name: "Nividium"
+is_produced: false
+volume: 10
+price:
+  min: 434
+  max: 587

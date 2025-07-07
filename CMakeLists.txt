@@ -1,10 +1,21 @@
 cmake_minimum_required(VERSION 3.28)
 project(x4StationGenerator)
 
+include(FetchContent)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
+
+FetchContent_Declare(
+        yaml-cpp
+        GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
+        GIT_TAG 0.8.0
+)
+FetchContent_MakeAvailable(
+        yaml-cpp
+)
 
 #set(CMAKE_CXX_COMPILER ccache)
 #if (WIN32)
@@ -35,5 +46,6 @@ target_link_libraries(x4StationGenerator
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
+        yaml-cpp::yaml-cpp
 )
 
