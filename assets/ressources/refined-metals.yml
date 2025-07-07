@@ -1,10 +1,10 @@
-name: "Energy Cells"
+name: "Refined Metals"
 category:
-  - energy
+  - refined
   - station building
 is_raw: false
-volume: 1
+volume: 14
 container_type: container
 price:
-  min: 10
-  max: 22
+  min: 89
+  max: 207

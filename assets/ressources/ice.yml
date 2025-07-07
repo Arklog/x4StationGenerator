@@ -3,6 +3,7 @@ category:
   - ore
 is_raw: true
 volume: 8
+container_type: solid
 price:
   min: 26
   max: 35

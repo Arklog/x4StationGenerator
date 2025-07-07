@@ -13,10 +13,18 @@ properties:
             - ore
             - gas
             - energy
+            - refined
+            - station building
   is_raw:
     type: boolean
   volume:
     type: integer
+  container_type:
+    type: string
+    enum:
+      - solid
+      - liquid
+      - container
   price:
     type: object
     properties:
@@ -32,4 +40,5 @@ required:
   - category
   - is_raw
   - volume
+  - container_type
   - price

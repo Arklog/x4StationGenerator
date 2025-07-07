@@ -3,6 +3,7 @@ category:
   - gas
 is_raw: true
 volume: 6
+container_type: liquid
 price:
   min: 37
   max: 51

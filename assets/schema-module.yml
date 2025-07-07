@@ -1,0 +1,59 @@
+title: module
+properties:
+  name:
+    type: string
+  macro:
+    type: string
+  cycle_time:
+    type: integer
+  module_type:
+    type: string
+    enum:
+      - production
+      - dock
+      - storage
+  construction_cost:
+    type: array
+    anyOf:
+      - items:
+          type: object
+          properties:
+            name:
+              type: string
+            quantity:
+              type: integer
+          required:
+            - name
+            - quantity
+  resource_consumption:
+    type: array
+    anyOf:
+      - items:
+          type: object
+          properties:
+            name:
+              type: string
+            quantity:
+              type: integer
+          required:
+            - name
+            - quantity
+  resource_production:
+    type: array
+    anyOf:
+      - items:
+          type: object
+          properties:
+            name:
+              type: string
+            quantity:
+              type: integer
+          required:
+            - name
+            - quantity
+required:
+  - name
+  - macro
+  - module_type
+  - cycle_time
+  - construction_cost
