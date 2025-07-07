@@ -4,7 +4,16 @@ description: An X4 ressource
 properties:
   name:
     type: string
-  is_produced:
+  category:
+    type: array
+    anyOf:
+      - items:
+          type: string
+          enum:
+            - ore
+            - gas
+            - energy
+  is_raw:
     type: boolean
   volume:
     type: integer
@@ -20,6 +29,7 @@ properties:
       - max
 required:
   - name
-  - is_produced
+  - category
+  - is_raw
   - volume
   - price

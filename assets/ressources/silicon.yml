@@ -1,5 +1,7 @@
 name: "Silicon"
-is_produced: false
+category:
+  - ore
+is_raw: true
 volume: 10
 price:
   min: 111

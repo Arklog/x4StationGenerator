@@ -1,0 +1,8 @@
+name: "Hydrogen"
+category:
+  - gas
+is_raw: true
+volume: 6
+price:
+  min: 49
+  max: 67

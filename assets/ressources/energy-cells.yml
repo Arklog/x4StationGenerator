@@ -1,0 +1,8 @@
+name: "Energy Cells"
+category:
+  - energy
+is_produced: true
+volume: 1
+price:
+  min: 10
+  max: 22

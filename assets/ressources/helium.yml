@@ -1,0 +1,8 @@
+name: "Helium"
+category:
+  - gas
+is_raw: true
+volume: 6
+price:
+  min: 37
+  max: 51

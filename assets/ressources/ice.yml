@@ -1,5 +1,7 @@
 name: "Ice"
-is_produced: false
+category:
+  - ore
+is_raw: true
 volume: 8
 price:
   min: 26
