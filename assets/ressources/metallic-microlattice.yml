@@ -1,9 +1,9 @@
-name: Energy Cells
+name: Metallic Microlattice
 category:
-  - energy
+  - hightech
 volume: 1
 price:
-  min: 10
-  max: 22
+  min: 42
+  max: 57
 container_type: container
 is_raw: false

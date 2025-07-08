@@ -1,9 +1,9 @@
-name: Ice
+name: Soja Husk
 category:
-  - ice
-volume: 8
+  - food
+volume: 1
 price:
-  min: 26
-  max: 35
+  min: 19
+  max: 45
 container_type: container
 is_raw: false

@@ -1,0 +1,9 @@
+name: Advanced Composites
+category:
+  - hightech
+volume: 32
+price:
+  min: 432
+  max: 648
+container_type: container
+is_raw: false

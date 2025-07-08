@@ -1,9 +1,9 @@
-name: Refined Metals
+name: Teladianium
 category:
   - refined
-volume: 14
+volume: 16
 price:
-  min: 89
-  max: 207
+  min: 121
+  max: 283
 container_type: container
 is_raw: false

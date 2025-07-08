@@ -1,0 +1,9 @@
+name: Missile Components
+category:
+  - shiptech
+volume: 2
+price:
+  min: 6
+  max: 13
+container_type: container
+is_raw: false

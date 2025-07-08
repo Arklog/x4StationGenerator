@@ -1,0 +1,9 @@
+name: Silicon Carbide
+category:
+  - hightech
+volume: 20
+price:
+  min: 1202
+  max: 1627
+container_type: container
+is_raw: false

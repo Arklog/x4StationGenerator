@@ -1,0 +1,9 @@
+name: Meat
+category:
+  - agricultural
+volume: 6
+price:
+  min: 29
+  max: 68
+container_type: container
+is_raw: false

@@ -1,9 +1,9 @@
-name: Energy Cells
+name: Food Rations
 category:
-  - energy
+  - food
 volume: 1
 price:
-  min: 10
-  max: 22
+  min: 12
+  max: 29
 container_type: container
 is_raw: false

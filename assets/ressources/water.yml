@@ -1,9 +1,9 @@
-name: Ice
+name: Water
 category:
-  - ice
-volume: 8
+  - water
+volume: 6
 price:
-  min: 26
-  max: 35
+  min: 32
+  max: 74
 container_type: container
 is_raw: false

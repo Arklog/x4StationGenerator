@@ -1,0 +1,9 @@
+name: Chelt Meat
+category:
+  - agricultural
+volume: 7
+price:
+  min: 31
+  max: 72
+container_type: container
+is_raw: false

@@ -1,0 +1,9 @@
+name: Maja Snails
+category:
+  - agricultural
+volume: 6
+price:
+  min: 35
+  max: 81
+container_type: container
+is_raw: false

@@ -1,9 +1,9 @@
-name: Refined Metals
+name: Antimatter Cells
 category:
   - refined
-volume: 14
+volume: 18
 price:
-  min: 89
-  max: 207
+  min: 121
+  max: 282
 container_type: container
 is_raw: false

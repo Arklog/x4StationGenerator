@@ -1,9 +1,9 @@
-name: Energy Cells
+name: Plankton
 category:
-  - energy
+  - agricultural
 volume: 1
 price:
-  min: 10
-  max: 22
+  min: 11
+  max: 25
 container_type: container
 is_raw: false

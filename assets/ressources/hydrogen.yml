@@ -1,9 +1,9 @@
-name: "Hydrogen"
+name: Hydrogen
 category:
-  - gas
-is_raw: true
+  - gases
 volume: 6
-container_type: liquid
 price:
   min: 49
   max: 67
+container_type: liquid
+is_raw: true

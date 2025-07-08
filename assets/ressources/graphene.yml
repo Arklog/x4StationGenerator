@@ -1,9 +1,9 @@
-name: Refined Metals
+name: Graphene
 category:
   - refined
-volume: 14
+volume: 20
 price:
-  min: 89
-  max: 207
+  min: 100
+  max: 233
 container_type: container
 is_raw: false

@@ -1,0 +1,9 @@
+name: Antimatter Converters
+category:
+  - shiptech
+volume: 10
+price:
+  min: 248
+  max: 461
+container_type: container
+is_raw: false

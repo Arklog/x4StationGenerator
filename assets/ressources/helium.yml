@@ -1,9 +1,9 @@
-name: "Helium"
+name: Helium
 category:
-  - gas
-is_raw: true
+  - gases
 volume: 6
-container_type: liquid
 price:
   min: 37
   max: 51
+container_type: liquid
+is_raw: true

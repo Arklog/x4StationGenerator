@@ -1,0 +1,9 @@
+name: Drone Components
+category:
+  - shiptech
+volume: 30
+price:
+  min: 685
+  max: 1142
+container_type: container
+is_raw: false

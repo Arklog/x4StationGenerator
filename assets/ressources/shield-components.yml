@@ -1,0 +1,9 @@
+name: Shield Components
+category:
+  - shiptech
+volume: 10
+price:
+  min: 113
+  max: 264
+container_type: container
+is_raw: false

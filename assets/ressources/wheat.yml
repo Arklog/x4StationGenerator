@@ -1,0 +1,9 @@
+name: Wheat
+category:
+  - agricultural
+volume: 4
+price:
+  min: 19
+  max: 44
+container_type: container
+is_raw: false

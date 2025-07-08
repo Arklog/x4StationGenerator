@@ -1,9 +1,9 @@
-name: "Ore"
+name: Ore
 category:
-  - ore
-is_raw: true
+  - minerals
 volume: 10
-container_type: solid
 price:
   min: 43
-  max: 50
+  max: 58
+container_type: solid
+is_raw: true

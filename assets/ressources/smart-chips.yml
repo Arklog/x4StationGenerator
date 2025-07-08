@@ -1,0 +1,9 @@
+name: Smart Chips
+category:
+  - shiptech
+volume: 2
+price:
+  min: 46
+  max: 69
+container_type: container
+is_raw: false

@@ -1,0 +1,9 @@
+name: Soja Beans
+category:
+  - agricultural
+volume: 5
+price:
+  min: 40
+  max: 93
+container_type: container
+is_raw: false

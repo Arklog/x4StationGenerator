@@ -1,0 +1,9 @@
+name: Swamp Plant
+category:
+  - agricultural
+volume: 6
+price:
+  min: 50
+  max: 117
+container_type: container
+is_raw: false

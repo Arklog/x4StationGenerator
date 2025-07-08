@@ -1,9 +1,9 @@
-name: Refined Metals
+name: Scrap Metal
 category:
   - refined
-volume: 14
+volume: 10
 price:
-  min: 89
-  max: 207
+  min: 318
+  max: 431
 container_type: container
 is_raw: false

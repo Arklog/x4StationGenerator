@@ -1,9 +1,9 @@
-name: "Nividium"
+name: Nividium
 category:
-  - ore
-is_raw: true
+  - minerals
 volume: 10
-container_type: solid
 price:
   min: 434
   max: 587
+container_type: solid
+is_raw: true

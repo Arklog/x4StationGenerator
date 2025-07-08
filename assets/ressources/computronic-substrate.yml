@@ -1,0 +1,9 @@
+name: Computronic Substrate
+category:
+  - hightech
+volume: 50
+price:
+  min: 7452
+  max: 9108
+container_type: container
+is_raw: false

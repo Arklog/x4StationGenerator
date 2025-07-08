@@ -1,9 +1,9 @@
-name: "Silicon"
+name: Silicon
 category:
-  - ore
-is_raw: true
+  - minerals
 volume: 10
-container_type: solid
 price:
   min: 111
   max: 150
+container_type: solid
+is_raw: true
