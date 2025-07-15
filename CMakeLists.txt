@@ -38,13 +38,13 @@ include_directories(
         cmake-build-debug/include
 )
 
-find_package(Qt5 COMPONENTS
+find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
         REQUIRED)
 
-file(GLOB_RECURSE SOURCES src/*.cpp widgets/*.cpp widgets/*.ui)
+file(GLOB_RECURSE SOURCES src/*.cpp src/**/*.cpp widgets/*.cpp widgets/*.ui)
 include_directories(src widgets cmake-build-debug/x4StationGenerator_autogen/include)
 
 add_executable(x4StationGenerator
@@ -54,9 +54,9 @@ add_executable(x4StationGenerator
 )
 
 target_link_libraries(x4StationGenerator PRIVATE
-        Qt5::Core
-        Qt5::Gui
-        Qt5::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
         nlohmann_json::nlohmann_json
 #        spdlog::spdlog
 )

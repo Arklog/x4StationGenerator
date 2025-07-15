@@ -5,15 +5,20 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-
+#include "nlohmann/json.hpp"
 
 class Loader {
 private:
-    void __load_wares();
-    void __load_modules();
+    std::vector<nlohmann::json> _wares_json;
+    std::vector<nlohmann::json> _modules_json;
+
+    void _load_wares();
+    void _load_modules();
 
 public:
-    Loader();
+    Loader() = default;
+
+    void load();
 };
 
 
