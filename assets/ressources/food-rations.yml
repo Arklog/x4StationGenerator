@@ -1,9 +1,0 @@
-name: Food Rations
-category:
-  - food
-volume: 1
-price:
-  min: 12
-  max: 29
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Silicon
-category:
-  - minerals
-volume: 10
-price:
-  min: 111
-  max: 150
-container_type: solid
-is_raw: true

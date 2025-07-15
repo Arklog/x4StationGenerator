@@ -9,13 +9,22 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 FetchContent_Declare(
-        yaml-cpp
-        GIT_REPOSITORY https://github.com/jbeder/yaml-cpp
-        GIT_TAG 0.8.0
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json
+        GIT_TAG v3.12.0
 )
 FetchContent_MakeAvailable(
-        yaml-cpp
+        json
 )
+#
+#FetchContent_Declare(
+#        spdlog
+#        GIT_REPOSITORY https://github.com/gabime/spdlog
+#        GIT_TAG v1.15.3
+#)
+#FetchContent_MakeAvailable(
+#        spdlog
+#)
 
 #set(CMAKE_CXX_COMPILER ccache)
 #if (WIN32)
@@ -40,12 +49,15 @@ include_directories(src widgets cmake-build-debug/x4StationGenerator_autogen/inc
 
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}
+        src/Data/Loader.cpp
+        src/Data/Loader.h
 )
 
-target_link_libraries(x4StationGenerator
+target_link_libraries(x4StationGenerator PRIVATE
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
-        yaml-cpp::yaml-cpp
+        nlohmann_json::nlohmann_json
+#        spdlog::spdlog
 )
 

@@ -4,67 +4,36 @@ properties:
     type: string
   macro:
     type: string
-  cycle_time:
-    type: integer
-  module_type:
-    type: string
-    enum:
-      - production
-      - dock
-      - storage
-      - habitat
-  construction_cost:
+  build:
     type: array
-    anyOf:
+    allOf:
       - items:
           type: object
           properties:
+            time:
+              type: integer
+            amount:
+              type: integer
+            method:
+              type: string
             name:
               type: string
-            quantity:
-              type: integer
+            wares:
+              type: array
+              allOf:
+                - items:
+                    type: object
+                    properties:
+                      ware:
+                        type: string
+                      amount:
+                        type: integer
+                    required:
+                      - ware
+                      - amount
           required:
+            - time
+            - amount
+            - method
             - name
-            - quantity
-  workforce:
-    type: object
-    properties:
-      optimal:
-        type: integer
-      effect:
-        type: number
-    required:
-      - optimal
-      - effect
-  resource_consumption:
-    type: array
-    anyOf:
-      - items:
-          type: object
-          properties:
-            name:
-              type: string
-            quantity:
-              type: integer
-          required:
-            - name
-            - quantity
-  resource_production:
-    type: array
-    anyOf:
-      - items:
-          type: object
-          properties:
-            name:
-              type: string
-            quantity:
-              type: integer
-          required:
-            - name
-            - quantity
-required:
-  - name
-  - macro
-  - module_type
-  - cycle_time
-  - construction_cost
+            - wares

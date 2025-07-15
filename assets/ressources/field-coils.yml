@@ -1,9 +1,0 @@
-name: Field Coils
-category:
-  - shiptech
-volume: 15
-price:
-  min: 247
-  max: 576
-container_type: container
-is_raw: false

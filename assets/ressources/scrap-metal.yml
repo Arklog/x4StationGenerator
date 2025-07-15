@@ -1,9 +1,0 @@
-name: Scrap Metal
-category:
-  - refined
-volume: 10
-price:
-  min: 318
-  max: 431
-container_type: container
-is_raw: false

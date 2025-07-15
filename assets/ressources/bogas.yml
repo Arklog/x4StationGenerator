@@ -1,9 +1,0 @@
-name: BoGas
-category:
-  - refined
-volume: 4
-price:
-  min: 44
-  max: 102
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Terran MRE
-category:
-  - food
-volume: 2
-price:
-  min: 32
-  max: 75
-container_type: container
-is_raw: false

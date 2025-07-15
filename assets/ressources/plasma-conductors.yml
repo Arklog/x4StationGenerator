@@ -1,9 +1,0 @@
-name: Plasma Conductors
-category:
-  - hightech
-volume: 32
-price:
-  min: 769
-  max: 1282
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Methane
-category:
-  - gases
-volume: 6
-price:
-  min: 41
-  max: 55
-container_type: liquid
-is_raw: true

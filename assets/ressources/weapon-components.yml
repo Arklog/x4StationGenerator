@@ -1,9 +1,0 @@
-name: Weapon Components
-category:
-  - shiptech
-volume: 20
-price:
-  min: 171
-  max: 399
-container_type: container
-is_raw: false

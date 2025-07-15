@@ -1,9 +1,0 @@
-name: Engine Parts
-category:
-  - hightech
-volume: 15
-price:
-  min: 128
-  max: 237
-container_type: container
-is_raw: false

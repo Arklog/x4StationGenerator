@@ -1,9 +1,0 @@
-name: Claytronics
-category:
-  - shiptech
-volume: 24
-price:
-  min: 1734
-  max: 2346
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Quantum Tubes
-category:
-  - hightech
-volume: 22
-price:
-  min: 225
-  max: 375
-container_type: container
-is_raw: false

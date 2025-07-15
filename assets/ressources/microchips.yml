@@ -1,9 +1,0 @@
-name: Microchips
-category:
-  - hightech
-volume: 22
-price:
-  min: 805
-  max: 1090
-container_type: container
-is_raw: false

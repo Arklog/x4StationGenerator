@@ -1,9 +1,0 @@
-name: Hull Parts
-category:
-  - hightech
-volume: 12
-price:
-  min: 146
-  max: 272
-container_type: container
-is_raw: false

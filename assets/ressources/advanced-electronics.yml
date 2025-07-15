@@ -1,9 +1,0 @@
-name: Advanced Electronics
-category:
-  - shiptech
-volume: 30
-price:
-  min: 710
-  max: 1318
-container_type: container
-is_raw: false

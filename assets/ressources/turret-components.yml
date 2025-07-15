@@ -1,9 +1,0 @@
-name: Turret Components
-category:
-  - shiptech
-volume: 20
-price:
-  min: 164
-  max: 383
-container_type: container
-is_raw: false

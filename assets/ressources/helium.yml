@@ -1,9 +1,0 @@
-name: Helium
-category:
-  - gases
-volume: 6
-price:
-  min: 37
-  max: 51
-container_type: liquid
-is_raw: true

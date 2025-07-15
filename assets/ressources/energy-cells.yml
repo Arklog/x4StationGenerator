@@ -1,9 +1,0 @@
-name: Energy Cells
-category:
-  - energy
-volume: 1
-price:
-  min: 10
-  max: 22
-container_type: container
-is_raw: false

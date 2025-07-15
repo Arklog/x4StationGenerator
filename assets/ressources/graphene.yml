@@ -1,9 +1,0 @@
-name: Graphene
-category:
-  - refined
-volume: 20
-price:
-  min: 100
-  max: 233
-container_type: container
-is_raw: false

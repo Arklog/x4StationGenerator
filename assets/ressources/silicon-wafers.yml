@@ -1,9 +1,0 @@
-name: Silicon Wafers
-category:
-  - refined
-volume: 18
-price:
-  min: 180
-  max: 419
-container_type: container
-is_raw: false

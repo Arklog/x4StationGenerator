@@ -1,9 +1,0 @@
-name: Protein Paste
-category:
-  - agricultural
-volume: 4
-price:
-  min: 57
-  max: 134
-container_type: container
-is_raw: false

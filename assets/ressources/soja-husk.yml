@@ -1,9 +1,0 @@
-name: Soja Husk
-category:
-  - food
-volume: 1
-price:
-  min: 19
-  max: 45
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Nostrop Oil
-category:
-  - food
-volume: 1
-price:
-  min: 20
-  max: 47
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: BoFu
-category:
-  - food
-volume: 4
-price:
-  min: 61
-  max: 142
-container_type: container
-is_raw: false

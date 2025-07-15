@@ -1,9 +1,0 @@
-name: Scanning Arrays
-category:
-  - hightech
-volume: 38
-price:
-  min: 842
-  max: 1264
-container_type: container
-is_raw: false

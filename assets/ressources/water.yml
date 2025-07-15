@@ -1,9 +1,0 @@
-name: Water
-category:
-  - water
-volume: 6
-price:
-  min: 32
-  max: 74
-container_type: container
-is_raw: false

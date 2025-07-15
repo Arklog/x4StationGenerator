@@ -1,9 +1,0 @@
-name: Spices
-category:
-  - agricultural
-volume: 3
-price:
-  min: 12
-  max: 28
-container_type: container
-is_raw: false

@@ -1,9 +1,0 @@
-name: Sunrise Flowers
-category:
-  - agricultural
-volume: 5
-price:
-  min: 48
-  max: 112
-container_type: container
-is_raw: false

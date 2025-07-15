@@ -1,9 +1,0 @@
-name: Raw Scrap
-category:
-  - refined
-volume: 10
-price:
-  min: 153
-  max: 207
-container_type: container
-is_raw: false

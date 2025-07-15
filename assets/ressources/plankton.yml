@@ -1,9 +1,0 @@
-name: Plankton
-category:
-  - agricultural
-volume: 1
-price:
-  min: 11
-  max: 25
-container_type: container
-is_raw: false

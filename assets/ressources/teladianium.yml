@@ -1,9 +1,0 @@
-name: Teladianium
-category:
-  - refined
-volume: 16
-price:
-  min: 121
-  max: 283
-container_type: container
-is_raw: false

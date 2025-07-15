@@ -1,9 +1,0 @@
-name: Scruffin Fruit
-category:
-  - agricultural
-volume: 6
-price:
-  min: 17
-  max: 40
-container_type: container
-is_raw: false
