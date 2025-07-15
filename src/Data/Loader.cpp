@@ -9,25 +9,32 @@
 #include <qdirlisting.h>
 #include <qstring.h>
 
+#include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
 void Loader::_load_wares() {
+    spdlog::info("Loading wares");
 
     for (const auto &file_iterator: QDirListing(QString("assets/wares/"), QDirListing::IteratorFlag::FilesOnly)) {
-        std::cout << file_iterator.absoluteFilePath().toStdString() << std::endl;
-
         auto file = std::ifstream(file_iterator.absoluteFilePath().toStdString());
-        this->_wares_json.push_back(nlohmann::json::parse(file));
+        this->_wares_json.push_back(Ware::load(file_iterator.absoluteFilePath().toStdString()));
+
+        spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
     }
 }
 
 void Loader::_load_modules() {
-    for (const auto &file_iterator: QDirListing(QString("assets/modules"), QDirListing::IteratorFlag::FilesOnly)) {
-        std::cout << file_iterator.absoluteFilePath().toStdString() << std::endl;
+    spdlog::info("Loading modules");
 
+    for (const auto &file_iterator: QDirListing(QString("assets/modules"), QDirListing::IteratorFlag::FilesOnly)) {
         auto file = std::ifstream(file_iterator.absoluteFilePath().toStdString());
         this->_modules_json.push_back(nlohmann::json::parse(file));
+
+        spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
     }
+}
+
+void Loader::_parse_wares() {
 }
 
 void Loader::load() {
