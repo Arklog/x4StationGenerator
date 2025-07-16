@@ -58,6 +58,7 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
+          echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
       - name: Setup cache
         uses: actions/cache@v3
@@ -99,9 +100,9 @@ jobs:
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }} &&
           tree /f ${{ steps.strings.outputs.qt-dir }} &&
-          tree /f D:\a\X4StationGenerator\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE}} &&
+          tree /f ${{ env.QT_BIN_DIR }} &&
           mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
-          D:\a\X4StationGenerator\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}\bin\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
+          ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
