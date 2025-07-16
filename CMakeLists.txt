@@ -40,7 +40,7 @@ set(CMAKE_AUTOUIC ON)
 
 include_directories(
         src
-        cmake-build-debug/include
+        cmake-build-debug/x4StationGenerator_autogen/include
 )
 
 find_package(Qt6 COMPONENTS
@@ -49,8 +49,8 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-file(GLOB_RECURSE SOURCES src/*.cpp src/**/*.cpp widgets/*.cpp widgets/*.ui)
-include_directories(src widgets cmake-build-debug/x4StationGenerator_autogen/include)
+file(GLOB_RECURSE SOURCES src/*.cpp src/**/*.cpp src/ui/*.cpp src/ui/*.ui)
+include_directories(src src/ui cmake-build-debug/x4StationGenerator_autogen/include)
 
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}
@@ -60,6 +60,9 @@ add_executable(x4StationGenerator
         src/Data/Data.hpp
         src/Data/Wares.cpp
         src/Data/Wares.hpp
+        src/ui/section/wareselectionsection.cpp
+        src/ui/section/wareselectionsection.h
+        src/ui/section/wareselectionsection.ui
 )
 
 target_link_libraries(x4StationGenerator PRIVATE

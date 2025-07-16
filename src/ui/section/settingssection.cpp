@@ -8,8 +8,8 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include "settingssection.hpp"
-#include "widgets/section/ui_settingssection.h"
-#include "widgets/stationsizewidget.h"
+#include "ui/section/ui_settingssection.h"
+#include "ui/widgets/stationsizewidget.h"
 
 
 SettingsSection::SettingsSection(BuildSettings &settings, QWidget *parent) :
