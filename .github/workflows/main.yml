@@ -86,8 +86,9 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -j 4
           -S ${{ github.workspace }}
-
+          
 
       - name: Build
         # Build your program  with the given configuration. Note that --config is needed because the default  Windows generator is a multi-config generator (Visual Studio generator).
@@ -99,7 +100,7 @@ jobs:
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }} &&
           mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
-          D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
+          D:\a\X4StationGenerator\Qt\${{ env.QT_VERSION }}\${{ env.QT_ARCHITECTURE }}\bin\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
       #        run: tree /f D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
