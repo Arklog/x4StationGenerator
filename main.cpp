@@ -5,7 +5,7 @@
 #include <iostream>
 #include "mainwindow.h"
 #include "modules.hpp"
-#include "Data/Loader.h"
+#include "Data/Loader.hpp"
 
 int main(int argc, char *argv[])
 {

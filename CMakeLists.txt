@@ -55,9 +55,11 @@ include_directories(src widgets cmake-build-debug/x4StationGenerator_autogen/inc
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}
         src/Data/Loader.cpp
-        src/Data/Loader.h
+        src/Data/Loader.hpp
         src/Data/Data.cpp
-        src/Data/Data.h
+        src/Data/Data.hpp
+        src/Data/Wares.cpp
+        src/Data/Wares.hpp
 )
 
 target_link_libraries(x4StationGenerator PRIVATE

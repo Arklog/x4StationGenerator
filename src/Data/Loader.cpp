@@ -2,7 +2,7 @@
 // Created by pierre on 7/15/25.
 //
 
-#include "Loader.h"
+#include "Loader.hpp"
 
 #include <fstream>
 #include <iostream>

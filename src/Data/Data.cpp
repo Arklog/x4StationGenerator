@@ -2,7 +2,7 @@
 // Created by pierre on 7/15/25.
 //
 
-#include "Data.h"
+#include "Data.hpp"
 #include "nlohmann/json.hpp"
 
 #include <fstream>
