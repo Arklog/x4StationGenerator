@@ -9,19 +9,19 @@
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class wareselectionsection; }
+namespace Ui { class WareSelectionSection; }
 QT_END_NAMESPACE
 
-class wareselectionsection : public QWidget {
+class WareSelectionSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit wareselectionsection(QWidget *parent = nullptr);
-    ~wareselectionsection() override;
+    explicit WareSelectionSection(QWidget *parent = nullptr);
+    ~WareSelectionSection() override;
 
 private:
-    Ui::wareselectionsection *ui;
+    Ui::WareSelectionSection *ui;
 };
 
 
-#endif //WARESELECTIONSECTION_H
+#endif //WareSelectionSection_H

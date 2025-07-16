@@ -34,14 +34,18 @@ else ()
     set(CMAKE_C_COMPILER_LAUNCHER ccache)
 endif ()
 
+get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if (_isMultiConfig)
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include_$<CONFIG>)
+else ()
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
+endif ()
+
+include_directories(src cmake-build-debug/x4StationGenerator_autogen/include)
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
-
-include_directories(
-        src
-        cmake-build-debug/x4StationGenerator_autogen/include
-)
 
 find_package(Qt6 COMPONENTS
         Core
@@ -49,21 +53,31 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-file(GLOB_RECURSE SOURCES src/*.cpp src/**/*.cpp src/ui/*.cpp src/ui/*.ui)
-include_directories(src src/ui cmake-build-debug/x4StationGenerator_autogen/include)
+file(GLOB_RECURSE SOURCES
+        src/*.cpp
+        src/**/*.cpp
+        src/*.ui
+        src/**/*.ui
+)
 
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}
-        src/Data/Loader.cpp
-        src/Data/Loader.hpp
-        src/Data/Data.cpp
-        src/Data/Data.hpp
-        src/Data/Wares.cpp
-        src/Data/Wares.hpp
-        src/ui/section/wareselectionsection.cpp
-        src/ui/section/wareselectionsection.h
-        src/ui/section/wareselectionsection.ui
+        src/Data/Modules.cpp
+        src/Data/Modules.hpp
+        #        src/Data/Loader.cpp
+        #        src/Data/Loader.hpp
+        #        src/Data/Data.cpp
+        #        src/Data/Data.hpp
+        #        src/Data/Wares.cpp
+        #        src/Data/Wares.hpp
+        #        src/ui/section/wareselectionsection.cpp
+        #        src/ui/section/wareselectionsection.h
+        #        src/ui/section/wareselectionsection.ui
 )
+
+#target_include_directories(x4StationGenerator INTERFACE
+#        $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
+#)
 
 target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Core

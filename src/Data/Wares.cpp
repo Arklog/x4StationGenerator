@@ -7,7 +7,7 @@
 static std::vector<Ware> _g_wares{};
 
 void setWares(std::vector<Ware> wares) {
-    std::ranges::move(wares, std::back_inserter(_g_wares));
+    _g_wares = wares;
 }
 
 const std::vector<Ware> &getWares() {
