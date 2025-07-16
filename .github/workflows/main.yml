@@ -99,8 +99,6 @@ jobs:
           QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }} &&
-#          tree /f ${{ steps.strings.outputs.qt-dir }} &&
-#          tree /f ${{ env.QT_BIN_DIR }} &&
           mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
           ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
