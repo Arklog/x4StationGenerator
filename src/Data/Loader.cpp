@@ -16,7 +16,6 @@ void Loader::_load_wares() {
     spdlog::info("Loading wares");
 
     for (const auto &file_iterator: QDirListing(QString("assets/wares/"), QDirListing::IteratorFlag::FilesOnly)) {
-        auto file = std::ifstream(file_iterator.absoluteFilePath().toStdString());
         this->_wares_json.push_back(Ware::load(file_iterator.absoluteFilePath().toStdString()));
 
         spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
@@ -27,10 +26,13 @@ void Loader::_load_modules() {
     spdlog::info("Loading modules");
 
     for (const auto &file_iterator: QDirListing(QString("assets/modules"), QDirListing::IteratorFlag::FilesOnly)) {
-        auto file = std::ifstream(file_iterator.absoluteFilePath().toStdString());
-        this->_modules_json.push_back(nlohmann::json::parse(file));
+        try {
+            this->_modules_json.push_back(TmpModule::load(file_iterator.absoluteFilePath().toStdString()));
 
-        spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
+            spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
+        } catch (const std::exception &e) {
+            spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
+        }
     }
 }
 

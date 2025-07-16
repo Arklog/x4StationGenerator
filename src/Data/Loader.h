@@ -11,7 +11,7 @@
 class Loader {
 private:
     std::vector<Ware> _wares_json;
-    std::vector<nlohmann::json> _modules_json;
+    std::vector<TmpModule> _modules_json;
 
     /**
      * Load ware files

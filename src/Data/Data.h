@@ -4,6 +4,7 @@
 
 #ifndef WARE_H
 #define WARE_H
+#include <optional>
 #include <string>
 
 struct Price {
@@ -25,8 +26,16 @@ struct Ware {
     const std::string transport;
 };
 
-struct Module {
+struct TmpModule {
+    static TmpModule load(const std::string &filename);
 
+    const std::string id;
+    const std::string name;
+    const std::string macro;
+    const std::string description;
+    const std::optional<std::string> type;
+
+    const Price price;
 };
 
 
