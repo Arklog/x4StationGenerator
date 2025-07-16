@@ -96,7 +96,7 @@ jobs:
 
       - name: Copy Qt DLLs
         env:
-          QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
+          QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\msvc2022_64\bin
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }} &&
           tree /f ${{ steps.strings.outputs.qt-dir }} &&
