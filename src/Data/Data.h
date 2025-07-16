@@ -7,6 +7,9 @@
 #include <optional>
 #include <string>
 
+#include "nlohmann/json.hpp"
+#include "nlohmann/json_fwd.hpp"
+
 struct Price {
     unsigned int min;
     unsigned int avg;
@@ -26,6 +29,20 @@ struct Ware {
     const std::string transport;
 };
 
+struct WareAmount {
+    static WareAmount load(const nlohmann::json &j);
+    static std::vector<WareAmount> loads(const nlohmann::json &j);
+
+    const std::string ware;
+    const unsigned int amount;
+};
+
+struct ModuleProduction {
+    std::string name;
+    std::string method;
+    unsigned int time;
+};
+
 struct TmpModule {
     static TmpModule load(const std::string &filename);
 
@@ -36,7 +53,7 @@ struct TmpModule {
     const std::optional<std::string> type;
 
     const Price price;
+    const std::vector<ModuleProduction> production;
 };
-
 
 #endif //WARE_H
