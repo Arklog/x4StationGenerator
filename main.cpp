@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "modules.hpp"
 #include "Data/Loader.hpp"
+#include "Data/Wares.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +14,7 @@ int main(int argc, char *argv[])
 
     Loader loader{};
     loader.load();
+    setWares(loader._wares_json);
 
     MainWindow w;
     w.show();

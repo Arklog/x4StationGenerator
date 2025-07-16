@@ -6,4 +6,9 @@
 #define WARES_H
 
 #include "Data/Data.hpp"
+
+void setWares(std::vector<Ware> wares);
+
+const std::vector<Ware> &getWares();
+
 #endif //WARES_H

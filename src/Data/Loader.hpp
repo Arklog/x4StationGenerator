@@ -10,27 +10,31 @@
 
 class Loader {
 private:
-    std::vector<Ware> _wares_json;
-    std::vector<TmpModule> _modules_json;
-
     /**
      * Load ware files
      */
     void _load_wares();
+
 
     /**
      * Load module files
      */
     void _load_modules();
 
+
     /**
      * Parse raw json ware
      */
     void _parse_wares();
+
 public:
     Loader() = default;
 
     void load();
+
+
+    std::vector<Ware> _wares_json;
+    std::vector<TmpModule> _modules_json;
 };
 
 
