@@ -17,43 +17,52 @@ struct Price {
 };
 
 struct Ware {
-    static Ware load(const std::string &filename);
-
-    const std::string id;
-    const std::string name;
-
-    const unsigned int volume;
-    const Price price;
-
-    const std::string description;
-    const std::string transport;
+    std::string id;
+    std::string name;
+    std::string description;
+    std::string transport;
+    Price price;
+    unsigned int volume;
 };
 
 struct WareAmount {
-    static WareAmount load(const nlohmann::json &j);
-    static std::vector<WareAmount> loads(const nlohmann::json &j);
-
-    const std::string ware;
-    const unsigned int amount;
+    std::string id;
+    unsigned int amount;
 };
 
 struct ModuleProduction {
     std::string name;
     std::string method;
+    std::vector<WareAmount> wares;
     unsigned int time;
+    unsigned int amount;
+};
+
+struct ModuleProduct {
+    std::string id;
+    std::vector<ModuleProduction> production;
 };
 
 struct TmpModule {
-    static TmpModule load(const std::string &filename);
+    std::string id;
+    std::string name;
+    std::string macro;
+    std::string description;
+    std::optional<std::string> type;
 
-    const std::string id;
-    const std::string name;
-    const std::string macro;
-    const std::string description;
-    const std::optional<std::string> type;
-
-    const Price price;
-    const std::vector<ModuleProduction> production;
+    Price price;
+    std::optional<ModuleProduct> product;
 };
 
+void from_json(const nlohmann::json &j, Price &price);
+
+void from_json(const nlohmann::json &j, Ware &w);
+
+void from_json(const nlohmann::json &j, WareAmount &w);
+
+void from_json(const nlohmann::json &j, ModuleProduction &m);
+
+void from_json(const nlohmann::json &j, TmpModule &m);
+
+void from_json(const nlohmann::json &j, ModuleProduct &p);
 #endif //WARE_H
