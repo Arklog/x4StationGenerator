@@ -30,3 +30,15 @@ void buildDataFrom(const std::vector<TmpModule> &modules) {
         parse_wares(module.product);
     }
 }
+
+const t_modules_container & getModules() {
+    return _g_modules;
+}
+
+const t_ware_container & getWares() {
+    return _g_ware;
+}
+
+const t_ware_groups_container & getWareGroups() {
+    return _g_groups;
+}

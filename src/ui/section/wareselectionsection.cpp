@@ -9,6 +9,8 @@
 #include <QLabel>
 #include <QLayout>
 
+#include "Data/WaresAndModules.hpp"
+
 
 #include "ui/section/ui_wareselectionsection.h"
 
@@ -17,13 +19,13 @@ WareSelectionSection::WareSelectionSection(QWidget *parent) :
     QWidget(parent), ui(new Ui::WareSelectionSection) {
     ui->setupUi(this);
 
-    // auto &wares = getWares();
-    // auto &modules = getModules();
+    auto &wares = getWares();
 
-    // for (auto &iter: modules) {
-        // const auto tmp = new QLabel(iter.name.c_str(), this);
-        // ui->verticalLayout->addWidget(tmp);
-    // }
+    for (auto &iter: wares) {
+        const auto& ware = iter.second;
+        const auto tmp = new QLabel(ware->name.c_str(), this);
+        ui->verticalLayout->addWidget(tmp);
+    }
 }
 
 WareSelectionSection::~WareSelectionSection() {
