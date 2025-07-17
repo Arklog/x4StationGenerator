@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>WareSelectionSection</class>
- <widget class="QWidget" name="WareSelectionSection">
+ <class>WaresSelector</class>
+ <widget class="QWidget" name="WaresSelector">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,9 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>WareSelectionSection</string>
+   <string>WaresSelector</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_2"/>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTabWidget" name="categories"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

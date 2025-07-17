@@ -13,19 +13,16 @@
 
 
 #include "ui/section/ui_wareselectionsection.h"
+#include "ui/widgets/waresselector.hpp"
 
 
 WareSelectionSection::WareSelectionSection(QWidget *parent) :
     QWidget(parent), ui(new Ui::WareSelectionSection) {
     ui->setupUi(this);
+    this->setLayout(new QHBoxLayout(this));
 
-    auto &wares = getWares();
-
-    for (auto &iter: wares) {
-        const auto& ware = iter.second;
-        const auto tmp = new QLabel(ware->name.c_str(), this);
-        ui->verticalLayout->addWidget(tmp);
-    }
+    auto ware_selector = new WaresSelector(this);
+    this->layout()->addWidget(ware_selector);
 }
 
 WareSelectionSection::~WareSelectionSection() {
