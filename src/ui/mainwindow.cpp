@@ -17,32 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // auto module_section = new ModulesSection(_settings, ui->modules_tab);
     auto module_section = new WareSelectionSection(this);
     ui->module_tab_layout->addWidget(module_section, 0, 0);
-    // auto production_section = new RessourceProducedSection(_settings, ui->modules_tab);
-    // ui->module_tab_layout->addWidget(production_section, 0, 1);
-    // auto build_summary_section = new BuildSummarySection(ui->modules_tab);
-    // ui->module_tab_layout->addWidget(build_summary_section, 0, 2);
 
     ui->module_tab_layout->setColumnStretch(0, 1);
-    // ui->module_tab_layout->setColumnStretch(1, 1);
-    // ui->module_tab_layout->setColumnStretch(2, 1);
-
-    // auto settings_section = new SettingsSection(_settings, ui->settings_tab);
-    // ui->settings_tab->layout()->addWidget(settings_section);
-
-    // connect(module_section, &ModulesSection::moduleUpdated, this, &MainWindow::updateModules);
-    // connect(build_summary_section, &BuildSummarySection::exportStation, this, &MainWindow::exportPlan);
-    // connect(
-            // settings_section, &SettingsSection::settingsUpdated, [this, module_section]() {
-                // this->updateModules(module_section->getModules());
-            // }
-    // );
-
-
-    // connect(this, &MainWindow::generatedBuild, build_summary_section, &BuildSummarySection::modulesUpdated);
-    // connect(this, &MainWindow::generatedBuild, production_section, &RessourceProducedSection::modulesUpdated);
 }
 
 MainWindow::~MainWindow()

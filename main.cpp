@@ -1,6 +1,7 @@
 #include <QApplication>
 #include "ui/mainwindow.h"
 #include "Data/Loader.hpp"
+#include "Data/WaresAndModules.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -8,6 +9,7 @@ int main(int argc, char *argv[])
 
     Loader loader{};
     loader.load();
+    buildDataFrom(loader._modules_json);
 
     MainWindow w;
     w.show();

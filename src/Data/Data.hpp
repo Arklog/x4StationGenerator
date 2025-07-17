@@ -10,6 +10,10 @@
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
 
+typedef std::string t_ware_id;
+typedef std::string t_ware_group_id;
+typedef std::string t_module_id;
+
 struct Price {
     unsigned int min;
     unsigned int avg;
@@ -17,13 +21,13 @@ struct Price {
 };
 
 struct WareGroup {
-    std::string id;
+    t_ware_group_id id;
     std::string name;
     unsigned int tier;
 };
 
 struct WareAmount {
-    std::string id;
+    t_ware_id id;
     unsigned int amount;
 };
 
@@ -36,7 +40,7 @@ struct ModuleProduction {
 };
 
 struct Ware {
-    std::string id;
+    t_ware_id id;
     std::string name;
     std::string description;
     std::string transport;
@@ -48,21 +52,21 @@ struct Ware {
 };
 
 struct TmpModule {
-    std::string id;
+    t_module_id id;
     std::string name;
     std::string macro;
     std::string description;
     std::optional<std::string> type;
 
     Price price;
-    std::optional<std::vector<Ware> > product;
+    std::vector<Ware> product;
 };
 
 void from_json(const nlohmann::json &j, Price &price);
 
 void from_json(const nlohmann::json &j, WareGroup &ware_group);
 
-void from_json(const nlohmann::json &j, WareAmount &w);
+void from_json(const nlohmann::json &j, WareAmount &ware_amount);
 
 void from_json(const nlohmann::json &j, ModuleProduction &m);
 
