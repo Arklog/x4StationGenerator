@@ -53,15 +53,37 @@ find_package(Qt6 COMPONENTS
         Widgets
         REQUIRED)
 
-file(GLOB_RECURSE SOURCES
-        src/*.cpp
-        src/**/*.cpp
-        src/*.ui
-        src/**/*.ui
-)
-
 add_executable(x4StationGenerator
-        main.cpp ${SOURCES}
+        main.cpp
+        src/modules.cpp
+        src/BuildSettings.cpp
+        src/ui/mainwindow.cpp
+        src/ui/widgets/wareconfiguratorpanel.ui
+        src/ui/widgets/waresselector.ui
+        src/ui/widgets/wareconfiguratorpanel.cpp
+        src/ui/widgets/wareconfigurator.cpp
+        src/ui/widgets/waresselector.cpp
+        src/ui/widgets/stationsizewidget.cpp
+        src/ui/widgets/wareconfigurator.ui
+        src/ui/widgets/moduleselectorwidget.ui
+        src/ui/widgets/moduleselectorwidget.cpp
+        src/ui/widgets/stationsizewidget.ui
+        src/ui/section/wareselectionsection.cpp
+        src/ui/section/settingssection.cpp
+        src/ui/section/settingssection.ui
+        src/ui/section/wareselectionsection.ui
+        src/ui/section/ressourceproducedsection.cpp
+        src/ui/section/modulessection.ui
+        src/ui/section/ressourceproducedsection.ui
+        src/ui/section/buildsummarysection.ui
+        src/ui/section/buildsummarysection.cpp
+        src/ui/section/modulessection.cpp
+        src/ui/mainwindow.ui
+        src/utils.cpp
+        src/StationBuilder/StationBuilder.cpp
+        src/Data/WaresAndModules.cpp
+        src/Data/Loader.cpp
+        src/Data/Data.cpp
 )
 
 #target_include_directories(x4StationGenerator INTERFACE
