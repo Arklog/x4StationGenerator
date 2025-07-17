@@ -16,13 +16,10 @@ struct Price {
     unsigned int max;
 };
 
-struct Ware {
+struct WareGroup {
     std::string id;
     std::string name;
-    std::string description;
-    std::string transport;
-    Price price;
-    unsigned int volume;
+    unsigned int tier;
 };
 
 struct WareAmount {
@@ -38,9 +35,16 @@ struct ModuleProduction {
     unsigned int amount;
 };
 
-struct ModuleProduct {
+struct Ware {
     std::string id;
+    std::string name;
+    std::string description;
+    std::string transport;
+    Price price;
+    WareGroup group;
     std::vector<ModuleProduction> production;
+
+    unsigned int volume;
 };
 
 struct TmpModule {
@@ -51,18 +55,19 @@ struct TmpModule {
     std::optional<std::string> type;
 
     Price price;
-    std::optional<std::vector<ModuleProduct>> product;
+    std::optional<std::vector<Ware> > product;
 };
 
 void from_json(const nlohmann::json &j, Price &price);
 
-void from_json(const nlohmann::json &j, Ware &w);
+void from_json(const nlohmann::json &j, WareGroup &ware_group);
 
 void from_json(const nlohmann::json &j, WareAmount &w);
 
 void from_json(const nlohmann::json &j, ModuleProduction &m);
 
+void from_json(const nlohmann::json &j, Ware &ware);
+
 void from_json(const nlohmann::json &j, TmpModule &m);
 
-void from_json(const nlohmann::json &j, ModuleProduct &p);
 #endif //WARE_H

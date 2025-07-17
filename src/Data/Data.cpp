@@ -23,6 +23,20 @@ void from_json(const nlohmann::json &j, Price &price) {
     }
 }
 
+void from_json(const nlohmann::json &j, WareGroup &ware_group) {
+    try {
+        spdlog::info("parsing ware group from json");
+
+        ware_group.id = j["id"].get<std::string>();
+        ware_group.name = j["name"].get<std::string>();
+        ware_group.tier = j.contains("tier") ? j["tier"].get<unsigned int>() : 0;
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse ware group id: {}", e.what());
+        throw;
+    }
+}
+
+
 void from_json(const nlohmann::json &j, WareAmount &w) {
     try {
         spdlog::info("parsing ware amount from json");
@@ -44,24 +58,33 @@ void from_json(const nlohmann::json &j, ModuleProduction &m) {
         m.time = j["time"].get<unsigned int>();
         m.amount = j["amount"].get<unsigned int>();
         m.wares = j["wares"].get<std::vector<WareAmount> >();
-
     } catch (std::exception &e) {
         spdlog::error("Failed to parse module production from json: {}", e.what());
         throw;
     }
 }
 
-void from_json(const nlohmann::json &j, ModuleProduct &p) {
+void from_json(const nlohmann::json &j, Ware &ware) {
     try {
-        spdlog::info("parsing module product from json");
+        spdlog::info("parsing ware production from json");
 
-        p.id = j["id"].get<std::string>();
-        p.production = j["production"].get<std::vector<ModuleProduction> >();
+        ware.id = j["id"].get<std::string>();
+        ware.name = j["name"].get<std::string>();
+        ware.description = j["description"].get<std::string>();
+        ware.volume = j["volume"].get<unsigned int>();
+        ware.transport = j["transport"].get<std::string>();
+
+        ware.price = j["price"].get<Price>();
+        ware.group = j["group"].get<WareGroup>();
+        ware.production = j.contains("production")
+                              ? j["production"].get<std::vector<ModuleProduction> >()
+                              : std::vector<ModuleProduction>();
     } catch (std::exception &e) {
-        spdlog::error("Failed to parse module product from json: {}", e.what());
+        spdlog::error("Failed to parse ware production from json: {}", e.what());
         throw;
     }
 }
+
 
 void from_json(const nlohmann::json &j, TmpModule &m) {
     try {
@@ -73,8 +96,8 @@ void from_json(const nlohmann::json &j, TmpModule &m) {
         m.macro = j["macro"].get<std::string>();
         m.description = j["description"].get<std::string>();
         m.product = j.contains("product")
-                        ? j.at("product").get<std::vector<ModuleProduct> >()
-                        : std::optional<std::vector<ModuleProduct> >{};
+                        ? j.at("product").get<std::vector<Ware> >()
+                        : std::optional<std::vector<Ware> >{};
         m.type = j.contains("type") ? j["type"].get<std::string>() : std::optional<std::string>{};
     } catch (std::exception &e) {
         spdlog::error("Failed to parse module from json: {}", e.what());

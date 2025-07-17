@@ -62,17 +62,6 @@ file(GLOB_RECURSE SOURCES
 
 add_executable(x4StationGenerator
         main.cpp ${SOURCES}
-        src/Data/Modules.cpp
-        src/Data/Modules.hpp
-        #        src/Data/Loader.cpp
-        #        src/Data/Loader.hpp
-        #        src/Data/Data.cpp
-        #        src/Data/Data.hpp
-        #        src/Data/Wares.cpp
-        #        src/Data/Wares.hpp
-        #        src/ui/section/wareselectionsection.cpp
-        #        src/ui/section/wareselectionsection.h
-        #        src/ui/section/wareselectionsection.ui
 )
 
 #target_include_directories(x4StationGenerator INTERFACE
