@@ -12,16 +12,6 @@
 #include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
-void Loader::_load_wares() {
-    spdlog::info("Loading wares");
-
-    for (const auto &file_iterator: QDirListing(QString("assets/wares/"), QDirListing::IteratorFlag::FilesOnly)) {
-        // this->_wares_json.push_back(Ware::load(file_iterator.absoluteFilePath().toStdString()));
-
-        spdlog::info("loaded : {}", file_iterator.fileName().toStdString());
-    }
-}
-
 void Loader::_load_modules() {
     spdlog::info("Loading modules");
 
@@ -50,6 +40,5 @@ void Loader::_parse_wares() {
 }
 
 void Loader::load() {
-    this->_load_wares();
     this->_load_modules();
 }

@@ -19,4 +19,13 @@ const t_ware_container &getWares();
 
 const t_ware_groups_container &getWareGroups();
 
+/**
+ * Access the module producing the ware identified by id using the production method identified by production_method
+ *
+ * @param id The id of the ware produced by the module
+ * @param production_method The id of the production method used by the module
+ * @return
+ */
+const TmpModule *getModule(const t_ware_id &id, const t_production_method_id &production_method);
+
 #endif //WARESANDMODULES_HPP

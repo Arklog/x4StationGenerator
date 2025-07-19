@@ -13,6 +13,7 @@
 typedef std::string t_ware_id;
 typedef std::string t_ware_group_id;
 typedef std::string t_module_id;
+typedef std::string t_production_method_id;
 
 struct Price {
     unsigned int min;
@@ -32,7 +33,7 @@ struct WareAmount {
 };
 
 struct ModuleProduction {
-    std::string name;
+    t_production_method_id name;
     std::string method;
     std::vector<WareAmount> wares;
     unsigned int time;

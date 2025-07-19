@@ -11,12 +11,6 @@
 class Loader {
 private:
     /**
-     * Load ware files
-     */
-    void _load_wares();
-
-
-    /**
      * Load module files
      */
     void _load_modules();
