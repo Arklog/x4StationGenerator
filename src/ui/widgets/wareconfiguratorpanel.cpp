@@ -34,4 +34,11 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
 
     this->ware_configurators[ware_id] = ware_configurator;
     this->layout()->addWidget(ware_configurator);
+
+    connect(ware_configurator, &WareConfigurator::shouldRemove, [this] (t_ware_id wid) {
+        auto widget = this->ware_configurators[wid];
+        this->ware_configurators.erase(wid);
+        this->layout()->removeWidget(widget);
+        delete widget;
+    });
 }

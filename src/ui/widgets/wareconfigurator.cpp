@@ -10,6 +10,8 @@
 #include "Data/Data.hpp"
 #include "Data/WaresAndModules.hpp"
 
+#include "spdlog/spdlog.h"
+
 
 WareConfigurator::WareConfigurator(const t_ware_id& ware_id, QWidget *parent) :
     QFrame(parent), ui(new Ui::WareConfigurator), ware_id(ware_id) {
@@ -26,6 +28,11 @@ WareConfigurator::WareConfigurator(const t_ware_id& ware_id, QWidget *parent) :
         auto text = QString(production_method.name.c_str());
         ui->production_method_combo_box->addItem(text);
     }
+
+    connect(ui->remove_button, &QPushButton::clicked, [this, ware_id] (bool clicked) {
+        spdlog::info("Removing ware {}", ware_id);
+        this->shouldRemove(this->ware_id);
+    });
 }
 
 WareConfigurator::~WareConfigurator() {

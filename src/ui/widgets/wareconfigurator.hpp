@@ -27,6 +27,9 @@ public:
 
     ~WareConfigurator() override;
 
+signals:
+    void shouldRemove(t_ware_id ware_id);
+
 private:
     Ui::WareConfigurator *ui;
     t_ware_id ware_id;
