@@ -13,9 +13,13 @@
 
 
 WareConfiguratorPanel::WareConfiguratorPanel(QWidget *parent) :
-    QWidget(parent), ui(new Ui::WareConfiguratorPanel) {
+    QFrame(parent), ui(new Ui::WareConfiguratorPanel) {
     ui->setupUi(this);
-    this->setLayout(new QVBoxLayout());
+    QFrame::setFrameShape(QFrame::StyledPanel);
+
+    auto layout = new QVBoxLayout();
+    layout->setAlignment(Qt::AlignTop);
+    this->setLayout(layout);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() {
@@ -23,6 +27,11 @@ WareConfiguratorPanel::~WareConfiguratorPanel() {
 }
 
 void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
+    if (this->ware_configurators.contains(ware_id))
+        return ;
+
     auto ware_configurator = new WareConfigurator(ware_id, this);
+
+    this->ware_configurators[ware_id] = ware_configurator;
     this->layout()->addWidget(ware_configurator);
 }

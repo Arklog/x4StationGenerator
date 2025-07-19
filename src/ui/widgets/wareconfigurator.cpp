@@ -8,11 +8,24 @@
 #include "ui_wareconfigurator.h"
 
 #include "Data/Data.hpp"
+#include "Data/WaresAndModules.hpp"
 
 
-WareConfigurator::WareConfigurator(t_ware_id ware_id, QWidget *parent) :
-    QWidget(parent), ui(new Ui::WareConfigurator) {
+WareConfigurator::WareConfigurator(const t_ware_id& ware_id, QWidget *parent) :
+    QFrame(parent), ui(new Ui::WareConfigurator), ware_id(ware_id) {
     ui->setupUi(this);
+    QFrame::setFrameShape(QFrame::StyledPanel);
+
+    const auto& ware = getWares().at(ware_id);
+    const auto& ware_name = ware->name;
+    const auto& production_methods = ware->production;
+
+    ui->ware_label->setText(QString(ware_name.c_str()));
+
+    for (const auto& production_method : production_methods) {
+        auto text = QString(production_method.name.c_str());
+        ui->production_method_combo_box->addItem(text);
+    }
 }
 
 WareConfigurator::~WareConfigurator() {

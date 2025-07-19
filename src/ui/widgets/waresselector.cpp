@@ -8,21 +8,23 @@
 
 #include <QLabel>
 #include <QPushButton>
+#include <QVBoxLayout>
 
 #include "ui_waresselector.h"
 
 #include "Data/WaresAndModules.hpp"
 
+#include "spdlog/spdlog.h"
 
-WaresSelector::WaresSelector(QWidget *parent) :
-    QWidget(parent), ui(new Ui::WaresSelector), category_tabs{} {
+
+WaresSelector::WaresSelector(QWidget *parent) : QWidget(parent), ui(new Ui::WaresSelector), category_tabs{} {
     ui->setupUi(this);
 
-    const auto& ware_groups = getWareGroups();
-    const auto& wares = getWares();
+    const auto &ware_groups = getWareGroups();
+    const auto &wares = getWares();
 
-    for (const auto& iter: ware_groups) {
-        const auto& group = iter.second;
+    for (const auto &iter: ware_groups) {
+        const auto &group = iter.second;
         auto widget = new QWidget(ui->categories);
         widget->setLayout(new QVBoxLayout(widget));
 
@@ -30,12 +32,16 @@ WaresSelector::WaresSelector(QWidget *parent) :
         ui->categories->addTab(widget, QString(group->name.c_str()));
     }
 
-    for (const auto& iter: wares) {
-        const auto& ware = iter.second;
-        const auto& group = ware->group;
-        const auto& tab = this->category_tabs[group.id];
-        const auto& widget = new QPushButton(QString(ware->name.c_str()), tab);
+    for (const auto &iter: wares) {
+        const auto &ware = iter.second;
+        const auto &group = ware->group;
+        const auto &tab = this->category_tabs[group.id];
+        const auto &widget = new QPushButton(QString(ware->name.c_str()), tab);
 
+        connect(widget, &QPushButton::clicked, [this, &ware] {
+            spdlog::info("ware {} clicked", ware->name);
+            this->wareSelected(ware->id);
+        });
         tab->layout()->addWidget(widget);
     }
 }

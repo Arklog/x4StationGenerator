@@ -86,9 +86,9 @@ add_executable(x4StationGenerator
         src/Data/Data.cpp
 )
 
-#target_include_directories(x4StationGenerator INTERFACE
-#        $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
-#)
+target_include_directories(x4StationGenerator INTERFACE
+        $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
+)
 
 target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Core

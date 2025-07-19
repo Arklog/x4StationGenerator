@@ -5,6 +5,7 @@
 #ifndef WARECONFIGURATOR_HPP
 #define WARECONFIGURATOR_HPP
 
+#include <QFrame>
 #include <QWidget>
 
 #include "Data/Data.hpp"
@@ -18,11 +19,11 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-class WareConfigurator : public QWidget {
+class WareConfigurator : public QFrame {
     Q_OBJECT
 
 public:
-    explicit WareConfigurator(t_ware_id ware_id, QWidget *parent = nullptr);
+    explicit WareConfigurator(const t_ware_id& ware_id, QWidget *parent = nullptr);
 
     ~WareConfigurator() override;
 

@@ -26,9 +26,6 @@ public:
 
     ~WaresSelector() override;
 
-private slots:
-    void wareClicked(t_ware_id ware_id);
-
 signals:
     void wareSelected(t_ware_id);
 

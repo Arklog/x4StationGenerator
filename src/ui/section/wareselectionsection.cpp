@@ -6,12 +6,6 @@
 
 #include "wareselectionsection.h"
 
-#include <QLabel>
-#include <QLayout>
-
-#include "Data/WaresAndModules.hpp"
-
-
 #include "ui/section/ui_wareselectionsection.h"
 #include "ui/widgets/wareconfiguratorpanel.hpp"
 #include "ui/widgets/waresselector.hpp"
@@ -19,13 +13,15 @@
 
 WareSelectionSection::WareSelectionSection(QWidget *parent) : QWidget(parent), ui(new Ui::WareSelectionSection) {
     ui->setupUi(this);
-    this->setLayout(new QHBoxLayout(this));
-
+    auto layout = new QGridLayout(this);
     auto ware_selector = new WaresSelector(this);
-    this->layout()->addWidget(ware_selector);
-
     auto ware_configurator_panel = new WareConfiguratorPanel(this);
-    this->layout()->addWidget(ware_configurator_panel);
+
+    this->setLayout(layout);
+    layout->setColumnStretch(0, 2);
+    layout->setColumnStretch(1, 1);
+    layout->addWidget(ware_selector, 0, 0);
+    layout->addWidget(ware_configurator_panel, 0, 1);
 
     connect(ware_selector, &WaresSelector::wareSelected, ware_configurator_panel, &WareConfiguratorPanel::addWare);
 }
