@@ -81,6 +81,7 @@ add_executable(x4StationGenerator
         src/ui/mainwindow.ui
         src/utils.cpp
         src/StationBuilder/StationBuilder.cpp
+        src/StationBuilder/Generator/ComplexGeneratorBase.cpp
         src/Data/WaresAndModules.cpp
         src/Data/Loader.cpp
         src/Data/Data.cpp

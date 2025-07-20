@@ -60,7 +60,8 @@ struct TmpModule {
     std::optional<std::string> type;
 
     Price price;
-    std::vector<Ware> product;
+    std::vector<Ware> production;
+    ModuleProduction build_cost;
 };
 
 void from_json(const nlohmann::json &j, Price &price);

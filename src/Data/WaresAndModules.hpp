@@ -28,4 +28,12 @@ const t_ware_groups_container &getWareGroups();
  */
 const TmpModule *getModule(const t_ware_id &id, const t_production_method_id &production_method);
 
+/**
+ * Check if a ware identified by id is produced by a module
+ *
+ * @param id The ware id to check
+ * @return true if the ware identified by id is produced by a module, false else
+ */
+bool isWareProduced(const t_ware_id &id);
+
 #endif //WARESANDMODULES_HPP

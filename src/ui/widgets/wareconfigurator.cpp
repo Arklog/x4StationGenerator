@@ -30,13 +30,13 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent) : 
         ui->production_method_combo_box->addItem(text);
     }
 
-    this->ware_target.target = ui->target_input->value();
+    this->ware_target.prodution = ui->target_input->value();
     this->ware_target.production_method_id = ui->production_method_combo_box->currentText().toStdString();
 
 
     auto trigger_update_target = [this](int value) -> void {
         spdlog::info("{} target value changed {}", this->ware_target.ware_id, value);
-        this->ware_target.target = value;
+        this->ware_target.prodution = value;
         this->shouldUpdate();
     };
     auto trigger_update_production_method = [this](const QString& new_id) -> void {

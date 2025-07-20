@@ -95,10 +95,11 @@ void from_json(const nlohmann::json &j, TmpModule &m) {
         m.price = j["price"].get<Price>();
         m.macro = j["macro"].get<std::string>();
         m.description = j["description"].get<std::string>();
-        m.product = j.contains("product")
+        m.production = j.contains("product")
                         ? j.at("product").get<std::vector<Ware> >()
                         : std::vector<Ware>{};
         m.type = j.contains("type") ? j["type"].get<std::string>() : std::optional<std::string>{};
+        m.build_cost = j["production"].get<std::vector<ModuleProduction>>()[0];
     } catch (std::exception &e) {
         spdlog::error("Failed to parse module from json: {}", e.what());
         throw;

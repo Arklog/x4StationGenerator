@@ -15,7 +15,7 @@ static std::map<std::pair<t_ware_id, t_production_method_id>, t_module_id> _g_wa
  * @param module
  */
 static void parse_wares(const TmpModule &module) {
-    const auto &wares = module.product;
+    const auto &wares = module.production;
 
     for (auto &ware: wares) {
         auto &group = ware.group;
@@ -27,7 +27,8 @@ static void parse_wares(const TmpModule &module) {
             _g_groups[group.id] = &group;
 
         for (auto &production: ware.production) {
-            _g_ware_to_modules[{ware.id, production.name}] = module.id;
+            if (production.name == module.build_cost.name)
+                _g_ware_to_modules[{ware.id, production.name}] = module.id;
         }
     }
 }
@@ -57,4 +58,8 @@ const t_ware_groups_container &getWareGroups() {
 
 const TmpModule *getModule(const t_ware_id &id, const t_production_method_id &production_method) {
     return getModules().at(_g_ware_to_modules[{id, production_method}]);
+}
+
+bool isWareProduced(const t_ware_id &id) {
+    return getWares().contains(id);
 }

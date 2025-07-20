@@ -10,7 +10,7 @@
 struct WareTarget {
     t_ware_id ware_id;
     t_production_method_id production_method_id;
-    unsigned int target;
+    long int prodution;
 };
 
 typedef std::vector<const WareTarget*> t_target_list;
