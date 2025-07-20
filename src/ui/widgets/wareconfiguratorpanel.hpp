@@ -11,6 +11,8 @@
 
 #include "Data/Data.hpp"
 
+#include "StationBuilder/defines.hpp"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WareConfiguratorPanel; }
@@ -28,9 +30,13 @@ public:
 public slots:
     void addWare(t_ware_id ware_id);
 
+signals:
+    void shouldUpdate();
+
 private:
     Ui::WareConfiguratorPanel *ui;
     std::unordered_map<t_ware_id, WareConfigurator *> ware_configurators;
+    std::vector<const WareTarget*> ware_targets;
 };
 
 

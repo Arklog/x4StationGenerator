@@ -33,12 +33,22 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
     auto ware_configurator = new WareConfigurator(ware_id, this);
 
     this->ware_configurators[ware_id] = ware_configurator;
+    this->ware_targets.push_back(ware_configurator->getWareTarget());
     this->layout()->addWidget(ware_configurator);
 
-    connect(ware_configurator, &WareConfigurator::shouldRemove, [this] (t_ware_id wid) {
+    connect(ware_configurator, &WareConfigurator::shouldRemove, [this] (t_ware_id wid) -> void {
         auto widget = this->ware_configurators[wid];
+
         this->ware_configurators.erase(wid);
+        for (auto iter = this->ware_targets.begin(); iter != this->ware_targets.end(); ++iter) {
+            if (*iter == widget->getWareTarget()) {
+                this->ware_targets.erase(iter);
+                break;
+            }
+        }
         this->layout()->removeWidget(widget);
+
         delete widget;
     });
+
 }

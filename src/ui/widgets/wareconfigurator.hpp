@@ -10,6 +10,8 @@
 
 #include "Data/Data.hpp"
 
+#include "StationBuilder/defines.hpp"
+
 
 QT_BEGIN_NAMESPACE
 
@@ -27,12 +29,15 @@ public:
 
     ~WareConfigurator() override;
 
+    const WareTarget* getWareTarget() const;
+
 signals:
     void shouldRemove(t_ware_id ware_id);
+    void shouldUpdate();
 
 private:
     Ui::WareConfigurator *ui;
-    t_ware_id ware_id;
+    WareTarget ware_target;
 };
 
 
