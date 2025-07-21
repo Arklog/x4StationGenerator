@@ -1,6 +1,4 @@
-#include <QLabel>
 #include <cmath>
-#include <QFileSelector>
 #include <QFileDialog>
 #include <QTextStream>
 #include "mainwindow.h"
@@ -9,11 +7,9 @@
 
 #include "ui/widgets/ui_mainwindow.h"
 #include "modules.hpp"
-#include "section/settingssection.hpp"
-#include "section/wareselectionsection.h"
 
 MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow), _settings(), _builder(_settings)
+        : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
@@ -38,19 +34,19 @@ void MainWindow::exportPlan()
 
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
-            auto        data = genModulePlan(
-                    _settings.getName(),
-                    _builder.get(),
-                    _settings.getSize()
-            );
+            // auto        data = genModulePlan(
+                    // _settings.getName(),
+                    // _builder.get(),
+                    // _settings.getSize()
+            // );
 
-            file.write(data.c_str());
+            // file.write(data.c_str());
         }
     }
 }
 
-void MainWindow::updateModules(const t_modules &modules)
-{
-    _builder.setModules(modules);
-    emit generatedBuild(_builder);
-}
+// void MainWindow::updateModules(const t_modules &modules)
+// {
+    // _builder.setModules(modules);
+    // emit generatedBuild(_builder);
+// }
