@@ -26,5 +26,5 @@ DockAndPierrConfiguration::~DockAndPierrConfiguration() {
 }
 
 ModuleTarget DockAndPierrConfiguration::getModuleTarget() const {
-    return {.module_id = dock_or_pierr->id, .amount = ui->quantity->value()};
+    return {.module_id = dock_or_pierr->id, .amount = static_cast<size_t>(ui->quantity->value())};
 }
