@@ -29,7 +29,7 @@ struct WareGroup {
 
 struct WareAmount {
     t_ware_id id;
-    unsigned int amount;
+    long int amount;
 };
 
 struct ModuleProduction {
@@ -37,7 +37,7 @@ struct ModuleProduction {
     std::string method;
     std::vector<WareAmount> wares;
     unsigned int time;
-    unsigned int amount;
+    long int amount;
 };
 
 struct Ware {
@@ -62,6 +62,9 @@ struct TmpModule {
     Price price;
     std::vector<Ware> production;
     ModuleProduction build_cost;
+
+    const Ware& getWare() const;
+    const ModuleProduction& getProduction() const;
 };
 
 void from_json(const nlohmann::json &j, Price &price);

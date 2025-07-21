@@ -52,7 +52,7 @@ protected:
      * @param ware_id The identifier of the ware to update
      * @param value The value by which to update the ware, must be negative when the ware is consumed.
      */
-    void _updateCurrentProduction(const t_ware_id &ware_id, long int value);
+    void _updateCurrentProduction(const t_ware_id &ware_id, long int value, long int cycle_time);
 
     t_target_map _targets;
     t_target_map _current_production;

@@ -10,6 +10,23 @@
 
 #include "spdlog/spdlog.h"
 
+const Ware & TmpModule::getWare() const {
+    return this->production[0];
+}
+
+const ModuleProduction & TmpModule::getProduction() const {
+    const auto& production = this->build_cost.name;
+    const auto& ware = this->production[0];
+
+    for (const auto& ware_production: ware.production) {
+        if (ware_production.name == production)
+            return ware_production;
+    }
+
+    spdlog::error("{} no matching prodution method found for {}", this->id, production);
+    throw std::runtime_error("Production not found");
+}
+
 void from_json(const nlohmann::json &j, Price &price) {
     try {
         spdlog::info("parsing price from json");
@@ -100,6 +117,9 @@ void from_json(const nlohmann::json &j, TmpModule &m) {
                         : std::vector<Ware>{};
         m.type = j.contains("type") ? j["type"].get<std::string>() : std::optional<std::string>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction>>()[0];
+
+        if (m.production.size() > 1)
+            throw std::runtime_error("No more than 1 ware produced");
     } catch (std::exception &e) {
         spdlog::error("Failed to parse module from json: {}", e.what());
         throw;

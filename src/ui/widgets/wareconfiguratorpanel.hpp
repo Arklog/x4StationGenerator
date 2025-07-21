@@ -29,6 +29,7 @@ public:
 
 public slots:
     void addWare(t_ware_id ware_id);
+    void productionTargetUpdate();
 
 signals:
     void shouldUpdate();
@@ -36,7 +37,7 @@ signals:
 private:
     Ui::WareConfiguratorPanel *ui;
     std::unordered_map<t_ware_id, WareConfigurator *> ware_configurators;
-    std::vector<const WareTarget*> ware_targets;
+    t_target_list ware_targets;
 };
 
 

@@ -11,6 +11,8 @@
 #include "ui_wareconfiguratorpanel.h"
 #include "wareconfigurator.hpp"
 
+#include "StationBuilder/Generator/ComplexGeneratorBase.hpp"
+
 
 WareConfiguratorPanel::WareConfiguratorPanel(QWidget *parent) :
     QFrame(parent), ui(new Ui::WareConfiguratorPanel) {
@@ -50,5 +52,10 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
 
         delete widget;
     });
+    connect(ware_configurator, &WareConfigurator::shouldUpdate, this, &WareConfiguratorPanel::productionTargetUpdate);
+}
 
+void WareConfiguratorPanel::productionTargetUpdate() {
+    ComplexGeneratorBase test(this->ware_targets);
+    test.build();
 }

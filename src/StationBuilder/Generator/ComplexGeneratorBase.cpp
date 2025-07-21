@@ -27,11 +27,18 @@ bool ComplexGeneratorBase::_done(const t_target_map &targets, t_target_map &curr
 }
 
 void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &current_state, t_x4_complex &modules) {
+    spdlog::info("Step ComplexGeneratorBase");
     const auto &wares = getWares();
-    auto ware = this->_nextTarget(targets, current_state, modules);
+    const auto &ware = this->_nextTarget(targets, current_state, modules);
 
     const auto &module_to_add = getModule(ware.ware_id, ware.production_method_id);
+    const auto &module_production = module_to_add->getProduction();
 
+    this->_updateCurrentProduction(ware.ware_id, module_production.amount, module_production.time);
+    for (const auto& i: module_production.wares) {
+        this->_updateCurrentProduction(i.id, -(i.amount), module_production.time);
+    }
+    modules.push_back(module_to_add->id);
 }
 
 WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_target_map &current_state,
@@ -49,7 +56,7 @@ WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_tar
         auto const &key = ware_checked.first;
         auto const &ware = ware_checked.second;
         auto is_base_target = targets.contains(key);
-        auto is_done = is_base_target ? targets.at(key).prodution >= ware.prodution : ware.prodution < 0;
+        auto is_done = is_base_target ? targets.at(key).prodution <= ware.prodution : ware.prodution >= 0;
 
         if (!is_done)
             ids.push_back(key);
@@ -75,8 +82,11 @@ WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_tar
     return current_state[ids[0]];
 }
 
-void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, long int value) {
+void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, long int value, long int cycle_time) {
     auto is_produced = this->_current_production.contains(ware_id);
+    double mult = 3600.0f / (double)(cycle_time);
+    value *= mult;
+
 
     if (is_produced) {
         this->_current_production.at(ware_id).prodution += value;
@@ -88,10 +98,10 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, lo
     });
 }
 
-ComplexGeneratorBase::ComplexGeneratorBase(const t_target_list &targets): _targets{}, _current_production{} {
+ComplexGeneratorBase::ComplexGeneratorBase(const t_target_list &targets): _targets(), _current_production() {
     for (const auto target: targets) {
         _targets[target->ware_id] = *target;
-        _current_production[target->ware_id] = _current_production[target->ware_id];
+        _current_production[target->ware_id] = *target;
         _current_production[target->ware_id].prodution = 0;
     }
 }
