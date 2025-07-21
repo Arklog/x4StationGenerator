@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 
+class DockAndPierrSection;
+class WareSelectionSection;
+
 namespace Ui {
     class MainWindow;
 }
@@ -21,9 +24,11 @@ public slots:
     void exportPlan();
 
 signals:
-
 private:
     Ui::MainWindow    *ui;
+
+    WareSelectionSection *ware_selection_section_;
+    DockAndPierrSection *dock_and_pierr_section_;
 };
 
 #endif // MAINWINDOW_H

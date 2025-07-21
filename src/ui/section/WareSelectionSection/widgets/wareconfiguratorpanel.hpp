@@ -32,7 +32,7 @@ public slots:
     void productionTargetUpdate();
 
 signals:
-    void shouldUpdate();
+    void shouldUpdate(t_x4_complex complex);
 
 private:
     Ui::WareConfiguratorPanel *ui;

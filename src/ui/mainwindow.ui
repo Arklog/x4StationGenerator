@@ -44,21 +44,33 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="QWidget" name="modules_tab">
+      <widget class="QWidget" name="wares_selection_tab">
        <attribute name="title">
         <string>Modules</string>
        </attribute>
-       <layout class="QGridLayout" name="module_tab_layout">
+       <layout class="QGridLayout" name="ware_selection_tab_layout">
         <property name="sizeConstraint">
          <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
         </property>
        </layout>
       </widget>
+      <widget class="QWidget" name="docks_and_pierr_tab">
+       <attribute name="title">
+        <string>Docks And Pierr</string>
+       </attribute>
+       <layout class="QGridLayout" name="dock_and_pierr_tab_layout"/>
+      </widget>
+      <widget class="QWidget" name="resume_tab">
+       <attribute name="title">
+        <string>Resume</string>
+       </attribute>
+       <layout class="QGridLayout" name="resume_tab_layout"/>
+      </widget>
       <widget class="QWidget" name="settings_tab">
        <attribute name="title">
         <string>Settings</string>
        </attribute>
-       <layout class="QVBoxLayout" name="verticalLayout_4"/>
+       <layout class="QVBoxLayout" name="settings_tab_layout"/>
       </widget>
      </widget>
     </item>
@@ -73,8 +85,20 @@
      <height>23</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu_file">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="action_export"/>
+   </widget>
+   <addaction name="menu_file"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_export">
+   <property name="text">
+    <string>Export</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

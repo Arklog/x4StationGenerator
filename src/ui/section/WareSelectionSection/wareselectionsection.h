@@ -7,6 +7,8 @@
 
 #include <QWidget>
 
+#include "StationBuilder/defines.hpp"
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WareSelectionSection; }
@@ -19,8 +21,11 @@ public:
     explicit WareSelectionSection(QWidget *parent = nullptr);
     ~WareSelectionSection() override;
 
+    const t_x4_complex& getComplex();
+
 private:
     Ui::WareSelectionSection *ui;
+    t_x4_complex complex_;
 };
 
 

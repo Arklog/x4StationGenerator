@@ -6,9 +6,9 @@
 
 #include "wareselectionsection.h"
 
-#include "ui/section/ui_wareselectionsection.h"
-#include "ui/widgets/wareconfiguratorpanel.hpp"
-#include "ui/widgets/waresselector.hpp"
+#include "ui_wareselectionsection.h"
+#include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
+#include "ui/section/WareSelectionSection/widgets/waresselector.hpp"
 
 
 WareSelectionSection::WareSelectionSection(QWidget *parent) : QWidget(parent), ui(new Ui::WareSelectionSection) {
@@ -24,8 +24,15 @@ WareSelectionSection::WareSelectionSection(QWidget *parent) : QWidget(parent), u
     layout->addWidget(ware_configurator_panel, 0, 1);
 
     connect(ware_selector, &WaresSelector::wareSelected, ware_configurator_panel, &WareConfiguratorPanel::addWare);
+    connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this] (t_x4_complex complex) {
+        this->complex_ = std::move(complex);
+    });
 }
 
 WareSelectionSection::~WareSelectionSection() {
     delete ui;
+}
+
+const t_x4_complex & WareSelectionSection::getComplex() {
+    return this->complex_;
 }

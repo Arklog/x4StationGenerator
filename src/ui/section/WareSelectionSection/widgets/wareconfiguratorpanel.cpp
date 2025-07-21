@@ -57,5 +57,6 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
 
 void WareConfiguratorPanel::productionTargetUpdate() {
     ComplexGeneratorBase test(this->ware_targets);
-    test.build();
+    auto build_result = test.build();
+    emit shouldUpdate(build_result);
 }

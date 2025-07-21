@@ -41,8 +41,6 @@ else ()
     set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
 endif ()
 
-include_directories(src cmake-build-debug/x4StationGenerator_autogen/include)
-
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -57,24 +55,37 @@ add_executable(x4StationGenerator
         main.cpp
         src/modules.cpp
         src/ui/mainwindow.cpp
-        src/ui/widgets/wareconfiguratorpanel.ui
-        src/ui/widgets/waresselector.ui
-        src/ui/widgets/wareconfiguratorpanel.cpp
-        src/ui/widgets/wareconfigurator.cpp
-        src/ui/widgets/waresselector.cpp
-        src/ui/widgets/wareconfigurator.ui
-        src/ui/section/wareselectionsection.cpp
-        src/ui/section/wareselectionsection.ui
+        src/ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.ui
+        src/ui/section/WareSelectionSection/widgets/waresselector.ui
+        src/ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.cpp
+        src/ui/section/WareSelectionSection/widgets/wareconfigurator.cpp
+        src/ui/section/WareSelectionSection/widgets/waresselector.cpp
+        src/ui/section/WareSelectionSection/widgets/wareconfigurator.ui
+        src/ui/section/WareSelectionSection/wareselectionsection.cpp
+        src/ui/section/WareSelectionSection/wareselectionsection.ui
         src/ui/mainwindow.ui
         src/StationBuilder/Generator/ComplexGeneratorBase.cpp
         src/Data/WaresAndModules.cpp
         src/Data/Loader.cpp
         src/Data/Data.cpp
+        src/ui/section/DockAndPierrSection/dockandpierrsection.cpp
+        src/ui/section/DockAndPierrSection/dockandpierrsection.hpp
+        src/ui/section/DockAndPierrSection/dockandpierrsection.ui
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.cpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.hpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.ui
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.cpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.hpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.ui
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.cpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.hpp
+        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.ui
 )
 
-target_include_directories(x4StationGenerator INTERFACE
-        $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
+target_include_directories(x4StationGenerator
+        INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
 )
+target_include_directories(x4StationGenerator PRIVATE src)
 
 target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Core

@@ -13,8 +13,14 @@ struct WareTarget {
     long int prodution;
 };
 
-typedef std::vector<const WareTarget*> t_target_list;
+struct ModuleTarget {
+    t_module_id module_id;
+    size_t amount;
+};
+
+typedef std::vector<const WareTarget *> t_target_list;
 typedef std::vector<t_module_id> t_x4_complex;
+typedef std::vector<ModuleTarget> t_module_target_list;
 
 
 #endif //DEFINES_HPP
