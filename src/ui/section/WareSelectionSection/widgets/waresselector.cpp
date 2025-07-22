@@ -8,7 +8,6 @@
 
 #include <QLabel>
 #include <QPushButton>
-#include <QVBoxLayout>
 
 #include "ui_waresselector.h"
 
@@ -27,9 +26,11 @@ WaresSelector::WaresSelector(QWidget *parent) : QWidget(parent), ui(new Ui::Ware
         const auto &group = iter.second;
         auto widget = new QWidget(ui->categories);
         widget->setLayout(new QVBoxLayout(widget));
+        widget->layout()->setAlignment(Qt::AlignTop);
 
         this->category_tabs[group->id] = widget;
         ui->categories->addTab(widget, QString(group->name.c_str()));
+
     }
 
     for (const auto &iter: wares) {

@@ -60,6 +60,12 @@
        </attribute>
        <layout class="QGridLayout" name="dock_and_pierr_tab_layout"/>
       </widget>
+      <widget class="QWidget" name="storage_tab">
+       <attribute name="title">
+        <string>Storage</string>
+       </attribute>
+       <layout class="QGridLayout" name="storage_tab_layout"/>
+      </widget>
       <widget class="QWidget" name="resume_tab">
        <attribute name="title">
         <string>Resume</string>

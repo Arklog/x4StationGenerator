@@ -10,6 +10,7 @@
 #include "ui_mainwindow.h"
 
 #include "section/DockAndPierrSection/dockandpierrsection.hpp"
+#include "section/StorageSelectionSection/storagesection.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -19,12 +20,15 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto ware_selection_section = new WareSelectionSection(this);
     auto dock_and_pierr_section = new DockAndPierrSection(this);
+    auto storage_section = new StorageSection(this);
 
     ui->ware_selection_tab_layout->addWidget(ware_selection_section);
     ui->dock_and_pierr_tab_layout->addWidget(dock_and_pierr_section);
+    ui->storage_tab_layout->addWidget(storage_section);
 
     this->ware_selection_section_ = ware_selection_section;
     this->dock_and_pierr_section_ = dock_and_pierr_section;
+    this->storage_section_ = storage_section;
 
     connect(ui->action_export, &QAction::triggered, this, &MainWindow::exportPlan);
 }
@@ -41,12 +45,18 @@ void MainWindow::exportPlan() {
 
     auto built_complex = this->ware_selection_section_->getComplex();
     auto dock_and_pierr = this->dock_and_pierr_section_->getModuleTargetList();
+    auto storages = this->storage_section_->getModuleTargetList();
     t_x4_complex real_complex{};
 
     for (const auto &dock_or_pierr: dock_and_pierr) {
         for (size_t i = 0; i < dock_or_pierr.amount; ++i)
             real_complex.push_back(dock_or_pierr.module_id);
     }
+    for (const auto &storage : storages) {
+        for (size_t i = 0; i < storage.amount; ++i)
+            real_complex.push_back(storage.module_id);
+    }
+
     real_complex.insert(real_complex.end(), built_complex.begin(), built_complex.end());
 
     if (dialog.exec()) {

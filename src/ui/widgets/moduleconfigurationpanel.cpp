@@ -20,7 +20,7 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-t_module_target_list ModuleConfigurationPanel::getDocksAndPierr() const {
+t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
     t_module_target_list docks_and_pierr_list{};
 
     // for (auto i: ui->layout->children()) {
@@ -47,7 +47,7 @@ t_module_target_list ModuleConfigurationPanel::getDocksAndPierr() const {
     return docks_and_pierr_list;
 }
 
-void ModuleConfigurationPanel::addDockOrPierr(const TmpModule *dock_or_pierr) {
+void ModuleConfigurationPanel::addModule(const TmpModule *dock_or_pierr) {
     auto widget = new ModuleConfiguration(dock_or_pierr, this);
     ui->layout->addWidget(widget);
 

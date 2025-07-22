@@ -5,11 +5,20 @@
 #ifndef WARESANDMODULES_HPP
 #define WARESANDMODULES_HPP
 
+#include <set>
+
 #include "Data/Data.hpp"
+
+struct TmpModulePtrCompare {
+    bool operator()(const TmpModule *a, const TmpModule *b) const {
+        return a->name < b->name;
+    }
+};
 
 typedef std::unordered_map<t_ware_group_id, const WareGroup *> t_ware_groups_container;
 typedef std::unordered_map<t_ware_id, const Ware *> t_ware_container;
 typedef std::unordered_map<t_module_id, const TmpModule *> t_modules_container;
+typedef std::set<const TmpModule *, TmpModulePtrCompare> t_module_list;
 
 struct Workforce {
 

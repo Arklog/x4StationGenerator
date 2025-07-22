@@ -80,12 +80,9 @@ add_executable(x4StationGenerator
         src/ui/widgets/moduleconfiguration.cpp
         src/ui/widgets/moduleconfiguration.hpp
         src/ui/widgets/moduleconfiguration.ui
-        src/ui/section/StorageSelectionSection/storageselectionsection.cpp
-        src/ui/section/StorageSelectionSection/storageselectionsection.hpp
-        src/ui/section/StorageSelectionSection/storageselectionsection.ui
-        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.cpp
-        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.hpp
-        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.ui
+        src/ui/section/StorageSelectionSection/storagesection.cpp
+        src/ui/section/StorageSelectionSection/storagesection.hpp
+        src/ui/section/StorageSelectionSection/storagesection.ui
 )
 
 target_include_directories(x4StationGenerator

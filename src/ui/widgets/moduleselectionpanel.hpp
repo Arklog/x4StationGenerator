@@ -8,6 +8,10 @@
 #include <QFrame>
 #include <QWidget>
 
+#include "Data/WareModuleAndWorkforce.hpp"
+
+#include "StationBuilder/defines.hpp"
+
 struct TmpModule;
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +26,7 @@ class ModuleSelectionPanel : public QFrame {
     Q_OBJECT
 
 public:
-    explicit ModuleSelectionPanel(QWidget *parent = nullptr);
+    explicit ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent = nullptr);
 
     ~ModuleSelectionPanel() override;
 

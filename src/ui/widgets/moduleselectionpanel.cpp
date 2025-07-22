@@ -13,29 +13,14 @@
 #include "Data/WareModuleAndWorkforce.hpp"
 
 
-ModuleSelectionPanel::ModuleSelectionPanel(QWidget *parent) :
+ModuleSelectionPanel::ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent) :
     QFrame(parent), ui(new Ui::ModuleSelectionPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
 
     ui->setupUi(this);
+    ui->layout->setAlignment(Qt::AlignTop);
 
-    const auto& module = getModules();
-    std::vector<const TmpModule*> pierr_and_dock{};
-
-    for (const auto& iterator : module) {
-        const auto& key = iterator.first;
-        const auto& module = iterator.second;
-
-        if (module->type == "pierr" || module->type == "dockarea") {
-            pierr_and_dock.push_back(module);
-        }
-    }
-
-    std::sort(pierr_and_dock.begin(), pierr_and_dock.end(), [] (const TmpModule *a, const TmpModule *b) {
-        return a->name < b->name;
-    });
-
-    for (const auto& module: pierr_and_dock) {
+    for (const auto& module: module_list) {
         auto module_button = new QPushButton(QString::fromStdString(module->name));
         this->layout()->addWidget(module_button);
 

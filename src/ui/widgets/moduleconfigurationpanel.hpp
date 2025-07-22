@@ -29,10 +29,10 @@ public:
 
     ~ModuleConfigurationPanel() override;
 
-    t_module_target_list getDocksAndPierr() const;
+    t_module_target_list getModuleTargets() const;
 
 public slots:
-    void addDockOrPierr(const TmpModule *dock_or_pierr);
+    void addModule(const TmpModule *dock_or_pierr);
 
 private:
     Ui::ModuleConfigurationPanel *ui;

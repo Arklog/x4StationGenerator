@@ -13,21 +13,36 @@
 #include "../../widgets/moduleconfigurationpanel.hpp"
 #include "../../widgets/moduleselectionpanel.hpp"
 
+#include "Data/WareModuleAndWorkforce.hpp"
+
 
 DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(new Ui::DockAndPierrSection) {
     ui->setupUi(this);
 
-    ui->gridLayout_2->setColumnStretch(0, 1);
-    ui->gridLayout_2->setColumnStretch(1, 2);
+    const auto& modules = getModules();
+    t_module_list dock_and_pierr_list{};
 
-    auto dock_and_pierr_selection_panel = new ModuleSelectionPanel(this);
+    for (const auto &iter : modules) {
+        const auto& key = iter.first;
+        const auto& module = iter.second;
+
+        if (module->type == "dockarea" || module->type == "pierr")
+            dock_and_pierr_list.insert(module);
+    }
+
+    auto dock_and_pierr_selection_panel = new ModuleSelectionPanel(dock_and_pierr_list, this);
     auto dock_and_pierr_configuration_panel = new ModuleConfigurationPanel(this);
 
-    ui->gridLayout_2->addWidget(dock_and_pierr_selection_panel, 0, 0, 1, 1);
-    ui->gridLayout_2->addWidget(dock_and_pierr_configuration_panel, 0, 1, 1, 1);
+    ui->dock_and_pierr_selection_scroll_area->setWidget(dock_and_pierr_selection_panel);
+    ui->dock_and_pierr_selection_scroll_area->setWidgetResizable(true);
+    ui->dock_and_pierr_selection_scroll_area->setLayoutDirection(Qt::RightToLeft);
+
+    ui->dock_and_pierr_configuration_scroll_area->setWidget(dock_and_pierr_configuration_panel);
+    ui->dock_and_pierr_configuration_scroll_area->setWidgetResizable(true);
+    ui->dock_and_pierr_configuration_scroll_area->setLayoutDirection(Qt::RightToLeft);
 
     this->dock_and_pierr_configuration_panel = dock_and_pierr_configuration_panel;
-    connect(dock_and_pierr_selection_panel, &ModuleSelectionPanel::moduleSelected, dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::addDockOrPierr);
+    connect(dock_and_pierr_selection_panel, &ModuleSelectionPanel::moduleSelected, dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::addModule);
 }
 
 DockAndPierrSection::~DockAndPierrSection() {
@@ -35,5 +50,5 @@ DockAndPierrSection::~DockAndPierrSection() {
 }
 
 t_module_target_list DockAndPierrSection::getModuleTargetList() const {
-    return dock_and_pierr_configuration_panel->getDocksAndPierr();
+    return dock_and_pierr_configuration_panel->getModuleTargets();
 }
