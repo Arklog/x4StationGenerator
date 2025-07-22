@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DockAndPierrConfigurationPanel</class>
- <widget class="QWidget" name="DockAndPierrConfigurationPanel">
+ <class>ModuleSelectionPanel</class>
+ <widget class="QWidget" name="ModuleSelectionPanel">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,9 +11,9 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DockAndPierrConfigurationPanel</string>
+   <string>ModuleSelectionPanel</string>
   </property>
-  <layout class="QVBoxLayout" name="layout"/>
+  <layout class="QVBoxLayout" name="verticalLayout"/>
  </widget>
  <resources/>
  <connections/>

@@ -13,24 +13,24 @@ struct TmpModule;
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class DockAndPierrSelectionPanel;
+    class ModuleSelectionPanel;
 }
 
 QT_END_NAMESPACE
 
-class DockAndPierrSelectionPanel : public QFrame {
+class ModuleSelectionPanel : public QFrame {
     Q_OBJECT
 
 public:
-    explicit DockAndPierrSelectionPanel(QWidget *parent = nullptr);
+    explicit ModuleSelectionPanel(QWidget *parent = nullptr);
 
-    ~DockAndPierrSelectionPanel() override;
+    ~ModuleSelectionPanel() override;
 
 signals:
     void moduleSelected(const TmpModule *module);
 
 private:
-    Ui::DockAndPierrSelectionPanel *ui;
+    Ui::ModuleSelectionPanel *ui;
 };
 
 

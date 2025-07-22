@@ -4,14 +4,14 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_DockAndPierrConfiguration.h" resolved
 
-#include "dockandpierrconfiguration.hpp"
-#include "ui_dockandpierrconfiguration.h"
+#include "moduleconfiguration.hpp"
+#include "ui_moduleconfiguration.h"
 
 #include "Data/Data.hpp"
 
 
-DockAndPierrConfiguration::DockAndPierrConfiguration(const TmpModule *dock_or_pierr, QWidget *parent) :
-    QWidget(parent), ui(new Ui::DockAndPierrConfiguration), dock_or_pierr{dock_or_pierr} {
+ModuleConfiguration::ModuleConfiguration(const TmpModule *dock_or_pierr, QWidget *parent) :
+    QWidget(parent), ui(new Ui::ModuleConfiguration), dock_or_pierr{dock_or_pierr} {
     ui->setupUi(this);
 
     ui->name_label->setText(QString::fromStdString(dock_or_pierr->name));
@@ -21,10 +21,10 @@ DockAndPierrConfiguration::DockAndPierrConfiguration(const TmpModule *dock_or_pi
     });
 }
 
-DockAndPierrConfiguration::~DockAndPierrConfiguration() {
+ModuleConfiguration::~ModuleConfiguration() {
     delete ui;
 }
 
-ModuleTarget DockAndPierrConfiguration::getModuleTarget() const {
+ModuleTarget ModuleConfiguration::getModuleTarget() const {
     return {.module_id = dock_or_pierr->id, .amount = static_cast<size_t>(ui->quantity->value())};
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DockAndPierrConfiguration</class>
- <widget class="QWidget" name="DockAndPierrConfiguration">
+ <class>ModuleConfiguration</class>
+ <widget class="QWidget" name="ModuleConfiguration">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>DockAndPierrConfiguration</string>
+   <string>ModuleConfiguration</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">

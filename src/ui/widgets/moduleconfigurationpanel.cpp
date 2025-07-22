@@ -4,24 +4,23 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_DockAndPierrConfigurationPanel.h" resolved
 
-#include "dockandpierrconfigurationpanel.hpp"
+#include "moduleconfiguration.hpp"
+#include "moduleconfigurationpanel.hpp"
+#include "ui_moduleconfigurationpanel.h"
 
-#include "dockandpierrconfiguration.hpp"
-#include "ui_dockandpierrconfigurationpanel.h"
 
-
-DockAndPierrConfigurationPanel::DockAndPierrConfigurationPanel(QWidget *parent) :
-    QFrame(parent), ui(new Ui::DockAndPierrConfigurationPanel) {
+ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) :
+    QFrame(parent), ui(new Ui::ModuleConfigurationPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
 }
 
-DockAndPierrConfigurationPanel::~DockAndPierrConfigurationPanel() {
+ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-t_module_target_list DockAndPierrConfigurationPanel::getDocksAndPierr() const {
+t_module_target_list ModuleConfigurationPanel::getDocksAndPierr() const {
     t_module_target_list docks_and_pierr_list{};
 
     // for (auto i: ui->layout->children()) {
@@ -37,7 +36,7 @@ t_module_target_list DockAndPierrConfigurationPanel::getDocksAndPierr() const {
         if (!widget)
             continue;
 
-        auto config = static_cast<DockAndPierrConfiguration*>(widget);
+        auto config = static_cast<ModuleConfiguration*>(widget);
         auto target = config->getModuleTarget();
 
         if (target.amount == 0)
@@ -48,11 +47,11 @@ t_module_target_list DockAndPierrConfigurationPanel::getDocksAndPierr() const {
     return docks_and_pierr_list;
 }
 
-void DockAndPierrConfigurationPanel::addDockOrPierr(const TmpModule *dock_or_pierr) {
-    auto widget = new DockAndPierrConfiguration(dock_or_pierr, this);
+void ModuleConfigurationPanel::addDockOrPierr(const TmpModule *dock_or_pierr) {
+    auto widget = new ModuleConfiguration(dock_or_pierr, this);
     ui->layout->addWidget(widget);
 
-    connect(widget, &DockAndPierrConfiguration::shouldRemove, [this, widget] () -> void {
+    connect(widget, &ModuleConfiguration::shouldRemove, [this, widget] () -> void {
         ui->layout->removeWidget(widget);
         delete widget;
     });

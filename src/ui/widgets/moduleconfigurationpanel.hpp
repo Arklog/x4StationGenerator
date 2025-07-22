@@ -16,18 +16,18 @@
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class DockAndPierrConfigurationPanel;
+    class ModuleConfigurationPanel;
 }
 
 QT_END_NAMESPACE
 
-class DockAndPierrConfigurationPanel : public QFrame {
+class ModuleConfigurationPanel : public QFrame {
     Q_OBJECT
 
 public:
-    explicit DockAndPierrConfigurationPanel(QWidget *parent = nullptr);
+    explicit ModuleConfigurationPanel(QWidget *parent = nullptr);
 
-    ~DockAndPierrConfigurationPanel() override;
+    ~ModuleConfigurationPanel() override;
 
     t_module_target_list getDocksAndPierr() const;
 
@@ -35,7 +35,7 @@ public slots:
     void addDockOrPierr(const TmpModule *dock_or_pierr);
 
 private:
-    Ui::DockAndPierrConfigurationPanel *ui;
+    Ui::ModuleConfigurationPanel *ui;
 };
 
 

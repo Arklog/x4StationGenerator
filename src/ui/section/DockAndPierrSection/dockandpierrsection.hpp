@@ -10,7 +10,7 @@
 #include "StationBuilder/defines.hpp"
 
 
-class DockAndPierrConfigurationPanel;
+class ModuleConfigurationPanel;
 QT_BEGIN_NAMESPACE
 namespace Ui { class DockAndPierrSection; }
 QT_END_NAMESPACE
@@ -26,7 +26,7 @@ public:
 
 private:
     Ui::DockAndPierrSection *ui;
-    DockAndPierrConfigurationPanel *dock_and_pierr_configuration_panel;
+    ModuleConfigurationPanel *dock_and_pierr_configuration_panel;
 };
 
 

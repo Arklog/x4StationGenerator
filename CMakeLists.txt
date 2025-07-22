@@ -71,15 +71,21 @@ add_executable(x4StationGenerator
         src/ui/section/DockAndPierrSection/dockandpierrsection.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.hpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.ui
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.cpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.hpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrselectionpanel.ui
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.cpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.hpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfigurationpanel.ui
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.cpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.hpp
-        src/ui/section/DockAndPierrSection/widgets/dockandpierrconfiguration.ui
+        src/ui/widgets/moduleselectionpanel.cpp
+        src/ui/widgets/moduleselectionpanel.hpp
+        src/ui/widgets/moduleselectionpanel.ui
+        src/ui/widgets/moduleconfigurationpanel.cpp
+        src/ui/widgets/moduleconfigurationpanel.hpp
+        src/ui/widgets/moduleconfigurationpanel.ui
+        src/ui/widgets/moduleconfiguration.cpp
+        src/ui/widgets/moduleconfiguration.hpp
+        src/ui/widgets/moduleconfiguration.ui
+        src/ui/section/StorageSelectionSection/storageselectionsection.cpp
+        src/ui/section/StorageSelectionSection/storageselectionsection.hpp
+        src/ui/section/StorageSelectionSection/storageselectionsection.ui
+        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.cpp
+        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.hpp
+        src/ui/section/StorageSelectionSection/widgets/storageselectionpanel.ui
 )
 
 target_include_directories(x4StationGenerator

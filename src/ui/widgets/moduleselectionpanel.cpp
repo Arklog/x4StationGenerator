@@ -4,17 +4,17 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_DockAndPierrSelectionPanel.h" resolved
 
-#include "dockandpierrselectionpanel.hpp"
 
 #include <QPushButton>
 
-#include "ui_dockandpierrselectionpanel.h"
+#include "moduleselectionpanel.hpp"
+#include "ui_moduleselectionpanel.h"
 
 #include "Data/WareModuleAndWorkforce.hpp"
 
 
-DockAndPierrSelectionPanel::DockAndPierrSelectionPanel(QWidget *parent) :
-    QFrame(parent), ui(new Ui::DockAndPierrSelectionPanel) {
+ModuleSelectionPanel::ModuleSelectionPanel(QWidget *parent) :
+    QFrame(parent), ui(new Ui::ModuleSelectionPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
 
     ui->setupUi(this);
@@ -45,6 +45,6 @@ DockAndPierrSelectionPanel::DockAndPierrSelectionPanel(QWidget *parent) :
     }
 }
 
-DockAndPierrSelectionPanel::~DockAndPierrSelectionPanel() {
+ModuleSelectionPanel::~ModuleSelectionPanel() {
     delete ui;
 }
