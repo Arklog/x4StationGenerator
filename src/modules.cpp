@@ -5,7 +5,7 @@
 
 #include <stack>
 
-#include "Data/WaresAndModules.hpp"
+#include "Data/WareModuleAndWorkforce.hpp"
 
 std::string genModulePlan(const std::string &plan_name, const t_x4_complex &complex)
 {

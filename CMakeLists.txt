@@ -65,7 +65,7 @@ add_executable(x4StationGenerator
         src/ui/section/WareSelectionSection/wareselectionsection.ui
         src/ui/mainwindow.ui
         src/StationBuilder/Generator/ComplexGeneratorBase.cpp
-        src/Data/WaresAndModules.cpp
+        src/Data/WareModuleAndWorkforce.cpp
         src/Data/Loader.cpp
         src/Data/Data.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.cpp

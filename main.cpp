@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "ui/mainwindow.h"
 #include "Data/Loader.hpp"
-#include "Data/WaresAndModules.hpp"
+#include "Data/WareModuleAndWorkforce.hpp"
 
 int main(int argc, char *argv[])
 {

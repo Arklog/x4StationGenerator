@@ -2,7 +2,7 @@
 // Created by pierre on 7/17/25.
 //
 
-#include "WaresAndModules.hpp"
+#include "WareModuleAndWorkforce.hpp"
 
 static t_modules_container _g_modules{};
 static t_ware_container _g_ware{};
