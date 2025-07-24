@@ -20,11 +20,16 @@ class CategoryXmlModel(BaseXmlModel, tag='category'):
     race: Optional[str] = attr(default=None)
     faction: Optional[str] = attr(default=None)
 
+    @property
+    def type(self) -> str:
+        tmp = self.tags.replace("[", "").replace("]", "").split(",")
+        return tmp[0]
+
 
 class ModuleXmlModel(BaseXmlModel, tag='module'):
     id: str = attr()
     group: str = attr()
-    category: CategoryXmlModel = element()
+    category: CategoryXmlModel = element(tag='category')
     compatibilities: Optional[CompatibilitiesXmlModel] = element(default=None)
 
 class ModuleFileXmlModel(BaseXmlModel, tag='modules'):

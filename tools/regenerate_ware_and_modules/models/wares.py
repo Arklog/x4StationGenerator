@@ -53,7 +53,6 @@ class WareProductionXmlModel(BaseXmlModel):
     amount: int = attr("amount")
     name: str = attr("name")
 
-
     wares: List[WareAmountXmlModel] = wrapped(
         "primary", element(tag="ware", default_factory=list)
     )
@@ -68,8 +67,22 @@ class WareProductionXmlModel(BaseXmlModel):
         return self.model_dump_json()
 
 
-class ComponentXmlModel(BaseXmlModel, tag='component'):
+class ComponentXmlModel(BaseXmlModel, tag="component"):
     ref: str = attr()
+
+
+class ResearchWareXmlModel(BaseXmlModel, tag="ware"):
+    ware: str = attr(name="ware")
+
+
+class InnerResearchXmlModel(BaseXmlModel, tag="research"):
+    ware: ResearchWareXmlModel = element()
+
+
+class ResearchXmlModel(BaseXmlModel, tag="research"):
+    time: Optional[int] = attr(default=None)
+    research: Optional[InnerResearchXmlModel] = element(default=None)
+
 
 class WareXmlModel(BaseXmlModel, tag="ware"):
     model_config = ConfigDict(extra="ignore")
@@ -82,8 +95,10 @@ class WareXmlModel(BaseXmlModel, tag="ware"):
     tags: Optional[str] = attr(name="tags", default=None)
 
     price: PriceXmlModel = element(tag="price")
-    production: Optional[List[WareProductionXmlModel]] = element(tag="production", default_factory=list)
-    # research: Optional[Research] = element(tag="research", default=None)
+    production: Optional[List[WareProductionXmlModel]] = element(
+        tag="production", default_factory=list
+    )
+    research: Optional[ResearchXmlModel] = element(tag="research", default=None)
     components: List[ComponentXmlModel] = element(tag="component", default_factory=list)
 
     @property

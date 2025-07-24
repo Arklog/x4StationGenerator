@@ -1,11 +1,12 @@
 import re
 from typing import Dict
 
-from models.wares import LangData
 from xml.dom.minidom import parse
 
+LangData = Dict[str, Dict[str, str]]
+current_lang: LangData = {}
 
-def parse_lang_file(filename: str) -> LangData:
+def parse_lang_file(filename: str) -> None:
     filecontent = parse(filename)
     retv: LangData = {}
 
@@ -21,10 +22,14 @@ def parse_lang_file(filename: str) -> LangData:
 
             page_data[item_id] = item_value
 
-    return retv
+    global current_lang
+    current_lang = retv
 
 
-def get_loc(field: str, lang: LangData) -> str:
+def get_loc(field: str) -> str:
+    global current_lang
+
+    lang = current_lang
     reg = re.compile(r"({\d+,\d+})", flags=re.NOFLAG)
     match = re.search(reg, field)
 
