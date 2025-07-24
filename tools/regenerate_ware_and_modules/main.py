@@ -3,8 +3,9 @@ import os
 import pathlib
 
 from models.modules import ModuleFileXmlModel
-from models.wares import parse_lang_file, WareFileXmlModel, WareXmlModel
+from models.wares import WareFileXmlModel, WareXmlModel
 from models.models_out import Module
+from utils.lang import parse_lang_file
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--x4-root", help="X4 root directory", type=str, required=True)
