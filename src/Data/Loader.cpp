@@ -12,10 +12,13 @@
 #include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
+// static const auto module_path = QString("assets/modules");
+static const auto module_path = QString("tools/regenerate_ware_and_modules/output");
+
 void Loader::_load_modules() {
     spdlog::info("Loading modules");
 
-    for (const auto &file_iterator: QDirListing(QString("assets/modules"), QDirListing::IteratorFlag::FilesOnly)) {
+    for (const auto &file_iterator: QDirListing(module_path, QDirListing::IteratorFlag::FilesOnly)) {
         try {
             spdlog::info("loading: {}", file_iterator.fileName().toStdString());
             std::fstream file(file_iterator.absoluteFilePath().toStdString(), std::fstream::in);

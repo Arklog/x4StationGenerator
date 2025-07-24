@@ -34,7 +34,7 @@ struct WareAmount {
 
 struct ModuleProduction {
     t_production_method_id name;
-    std::string method;
+    // std::string method;
     std::vector<WareAmount> wares;
     unsigned int time;
     long int amount;
@@ -43,7 +43,7 @@ struct ModuleProduction {
 struct Ware {
     t_ware_id id;
     std::string name;
-    std::string description;
+    // std::string description;
     std::string transport;
     Price price;
     WareGroup group;
@@ -56,7 +56,6 @@ struct TmpModule {
     t_module_id id;
     std::string name;
     std::string macro;
-    std::string description;
     std::optional<std::string> type;
 
     Price price;
