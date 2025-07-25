@@ -10,11 +10,11 @@
 
 #include "spdlog/spdlog.h"
 
-const Ware &TmpModule::getWare() const {
+const Ware &Module::getWare() const {
     return this->production[0];
 }
 
-const ModuleProduction &TmpModule::getProduction() const {
+const ModuleProduction &Module::getProduction() const {
     const auto &production = this->build_cost.name;
     const auto &ware = this->production[0];
 
@@ -125,7 +125,7 @@ void from_json(const nlohmann::json &j, Ware &ware) {
 }
 
 
-void from_json(const nlohmann::json &j, TmpModule &m) {
+void from_json(const nlohmann::json &j, Module &m) {
     try {
         spdlog::info("parsing module from json");
 

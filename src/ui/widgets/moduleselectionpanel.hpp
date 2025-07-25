@@ -12,7 +12,7 @@
 
 #include "StationBuilder/defines.hpp"
 
-struct TmpModule;
+struct Module;
 
 QT_BEGIN_NAMESPACE
 
@@ -31,7 +31,7 @@ public:
     ~ModuleSelectionPanel() override;
 
 signals:
-    void moduleSelected(const TmpModule *module);
+    void moduleSelected(const Module *module);
 
 private:
     Ui::ModuleSelectionPanel *ui;

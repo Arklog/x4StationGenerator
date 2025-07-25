@@ -30,7 +30,7 @@ void Loader::_load_modules() {
 
 
             auto j = nlohmann::json::parse(file);
-            this->_modules_json.push_back(j.get<TmpModule>());
+            this->_modules_json.push_back(j.get<Module>());
             file.close();
 
         } catch (const std::exception &e) {

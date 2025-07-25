@@ -32,7 +32,7 @@ public:
     t_module_target_list getModuleTargets() const;
 
 public slots:
-    void addModule(const TmpModule *dock_or_pierr);
+    void addModule(const Module *dock_or_pierr);
 
 private:
     Ui::ModuleConfigurationPanel *ui;

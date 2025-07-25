@@ -52,7 +52,7 @@ struct Ware {
     unsigned int volume;
 };
 
-struct TmpModule {
+struct Module {
     t_module_id id;
     std::string name;
     std::string macro;
@@ -77,6 +77,6 @@ void from_json(const nlohmann::json &j, ModuleProduction &m);
 
 void from_json(const nlohmann::json &j, Ware &ware);
 
-void from_json(const nlohmann::json &j, TmpModule &m);
+void from_json(const nlohmann::json &j, Module &m);
 
 #endif //WARE_H

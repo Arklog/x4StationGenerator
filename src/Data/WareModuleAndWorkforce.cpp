@@ -14,7 +14,7 @@ static std::map<std::pair<t_ware_id, t_production_method_id>, t_module_id> _g_wa
  *
  * @param module
  */
-static void parse_wares(const TmpModule &module) {
+static void parse_wares(const Module &module) {
     const auto &wares = module.production;
 
     for (auto &ware: wares) {
@@ -33,7 +33,7 @@ static void parse_wares(const TmpModule &module) {
     }
 }
 
-void buildDataFrom(const std::vector<TmpModule> &modules) {
+void buildDataFrom(const std::vector<Module> &modules) {
     _g_modules.clear();
     _g_ware.clear();
     _g_groups.clear();
@@ -56,7 +56,7 @@ const t_ware_groups_container &getWareGroups() {
     return _g_groups;
 }
 
-const TmpModule *getModule(const t_ware_id &id, const t_production_method_id &production_method) {
+const Module *getModule(const t_ware_id &id, const t_production_method_id &production_method) {
     return getModules().at(_g_ware_to_modules[{id, production_method}]);
 }
 

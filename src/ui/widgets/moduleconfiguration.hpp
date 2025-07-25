@@ -10,7 +10,7 @@
 #include "StationBuilder/defines.hpp"
 
 
-struct TmpModule;
+struct Module;
 
 QT_BEGIN_NAMESPACE
 
@@ -24,7 +24,7 @@ class ModuleConfiguration : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ModuleConfiguration(const TmpModule *module, QWidget *parent = nullptr);
+    explicit ModuleConfiguration(const Module *module, QWidget *parent = nullptr);
 
     ~ModuleConfiguration() override;
 
@@ -35,7 +35,7 @@ signals:
 
 private:
     Ui::ModuleConfiguration *ui;
-    const TmpModule *dock_or_pierr;
+    const Module *dock_or_pierr;
 };
 
 

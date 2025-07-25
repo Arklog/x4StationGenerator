@@ -47,7 +47,7 @@ t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
     return docks_and_pierr_list;
 }
 
-void ModuleConfigurationPanel::addModule(const TmpModule *dock_or_pierr) {
+void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
     auto widget = new ModuleConfiguration(dock_or_pierr, this);
     ui->layout->addWidget(widget);
 

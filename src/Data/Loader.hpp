@@ -28,7 +28,7 @@ public:
 
 
     std::vector<Ware> _wares_json;
-    std::vector<TmpModule> _modules_json;
+    std::vector<Module> _modules_json;
 };
 
 

@@ -10,7 +10,7 @@
 #include "Data/Data.hpp"
 
 
-ModuleConfiguration::ModuleConfiguration(const TmpModule *dock_or_pierr, QWidget *parent) :
+ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, QWidget *parent) :
     QWidget(parent), ui(new Ui::ModuleConfiguration), dock_or_pierr{dock_or_pierr} {
     ui->setupUi(this);
 

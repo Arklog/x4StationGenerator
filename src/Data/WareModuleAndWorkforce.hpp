@@ -10,21 +10,21 @@
 #include "Data/Data.hpp"
 
 struct TmpModulePtrCompare {
-    bool operator()(const TmpModule *a, const TmpModule *b) const {
+    bool operator()(const Module *a, const Module *b) const {
         return a->name < b->name;
     }
 };
 
 typedef std::unordered_map<t_ware_group_id, const WareGroup *> t_ware_groups_container;
 typedef std::unordered_map<t_ware_id, const Ware *> t_ware_container;
-typedef std::unordered_map<t_module_id, const TmpModule *> t_modules_container;
-typedef std::set<const TmpModule *, TmpModulePtrCompare> t_module_list;
+typedef std::unordered_map<t_module_id, const Module *> t_modules_container;
+typedef std::set<const Module *, TmpModulePtrCompare> t_module_list;
 
 struct Workforce {
 
 };
 
-void buildDataFrom(const std::vector<TmpModule> &modules);
+void buildDataFrom(const std::vector<Module> &modules);
 
 const t_modules_container &getModules();
 
@@ -39,7 +39,7 @@ const t_ware_groups_container &getWareGroups();
  * @param production_method The id of the production method used by the module
  * @return
  */
-const TmpModule *getModule(const t_ware_id &id, const t_production_method_id &production_method);
+const Module *getModule(const t_ware_id &id, const t_production_method_id &production_method);
 
 /**
  * Check if a ware identified by id is produced by a module
