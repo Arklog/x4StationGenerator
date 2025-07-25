@@ -10,15 +10,15 @@
 
 #include "spdlog/spdlog.h"
 
-const Ware & TmpModule::getWare() const {
+const Ware &TmpModule::getWare() const {
     return this->production[0];
 }
 
-const ModuleProduction & TmpModule::getProduction() const {
-    const auto& production = this->build_cost.name;
-    const auto& ware = this->production[0];
+const ModuleProduction &TmpModule::getProduction() const {
+    const auto &production = this->build_cost.name;
+    const auto &ware = this->production[0];
 
-    for (const auto& ware_production: ware.production) {
+    for (const auto &ware_production: ware.production) {
         if (ware_production.name == production)
             return ware_production;
     }
@@ -138,12 +138,15 @@ void from_json(const nlohmann::json &j, TmpModule &m) {
         m.macro = j["macro"].get<std::string>();
         spdlog::info("parsed macro");
         m.production = j.contains("product")
-                        ? j.at("product").get<std::vector<Ware> >()
-                        : std::vector<Ware>{};
+                           ? j.at("product").get<std::vector<Ware> >()
+                           : std::vector<Ware>{};
         spdlog::info("parsed module product");
         m.type = j.contains("type") ? j["type"].get<std::string>() : std::optional<std::string>{};
         spdlog::info("parsed module type");
-        m.build_cost = j["production"].get<std::vector<ModuleProduction>>()[0];
+        m.production_method = j.contains("production_method")
+                                  ? j["production_method"].get<std::string>()
+                                  : std::optional<std::string>{};
+        m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         spdlog::info("parsed module build_cost");
 
         if (m.production.size() > 1)

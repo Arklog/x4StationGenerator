@@ -57,6 +57,7 @@ struct TmpModule {
     std::string name;
     std::string macro;
     std::optional<std::string> type;
+    std::optional<std::string> production_method;
 
     Price price;
     std::vector<Ware> production;
