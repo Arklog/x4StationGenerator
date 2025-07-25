@@ -7,11 +7,13 @@ from utils.lang import get_loc
 
 LangData = Dict[str, Dict[str, str]]
 
+class ProductionDefaultXmlModel(BaseXmlModel, tag="default"):
+    race: str = attr()
 
 class ProductionMethodXmlModel(BaseXmlModel, tag="method"):
     id: str = attr("id")
     name: str = attr("name")
-
+    default: Optional[ProductionDefaultXmlModel] = element(default=None)
     # tags: List[str] = attr("tags")
 
 
@@ -28,9 +30,6 @@ class PriceXmlModel(BaseXmlModel, tag="price"):
     max: int = attr("max")
     avg: int = attr("average")
 
-    def to_json(self):
-        return self.model_dump_json()
-
 
 class WareAmountXmlModel(BaseXmlModel, tag="ware"):
     ware: str = attr()
@@ -44,14 +43,12 @@ class WareProductionEffectXmlModel(BaseXmlModel, tag="effect"):
     type: str = attr()
     product: float = attr()
 
-    def to_json(self):
-        return self.model_dump_json()
-
 
 class WareProductionXmlModel(BaseXmlModel):
     time: float = attr("time")
     amount: int = attr("amount")
     name: str = attr("name")
+    method: str = attr("method")
 
     wares: List[WareAmountXmlModel] = wrapped(
         "primary", element(tag="ware", default_factory=list)
@@ -59,12 +56,6 @@ class WareProductionXmlModel(BaseXmlModel):
     effects: List[WareProductionEffectXmlModel] = wrapped(
         "effects", element(tag="effect", default_factory=list)
     )
-
-    def translate_fields(self, lang: LangData) -> None:
-        self.name = get_loc(self.name, lang)
-
-    def to_json(self):
-        return self.model_dump_json()
 
 
 class ComponentXmlModel(BaseXmlModel, tag="component"):
@@ -83,6 +74,11 @@ class ResearchXmlModel(BaseXmlModel, tag="research"):
     time: Optional[int] = attr(default=None)
     research: Optional[InnerResearchXmlModel] = element(default=None)
 
+class RestrictionXmlModel(BaseXmlModel):
+    licence: str = attr()
+
+class WareOwnerXmlModel(BaseXmlModel, tag="owner"):
+    faction: str = attr()
 
 class WareXmlModel(BaseXmlModel, tag="ware"):
     model_config = ConfigDict(extra="ignore")
@@ -100,6 +96,8 @@ class WareXmlModel(BaseXmlModel, tag="ware"):
     )
     research: Optional[ResearchXmlModel] = element(tag="research", default=None)
     components: List[ComponentXmlModel] = element(tag="component", default_factory=list)
+    restriction: Optional[RestrictionXmlModel] = element(tag="restriction", default=None)
+    owners: List[WareOwnerXmlModel] = element(tag="owner", default_factory=list)
 
     @property
     def macro(self) -> str:
@@ -113,16 +111,6 @@ class WareXmlModel(BaseXmlModel, tag="ware"):
             and self.production is not None
             and "module" in self.tags
         )
-
-    # def is_ware(self) -> bool:
-    #     return self.production is not None
-
-    def translate_fields(self, lang: LangData) -> None:
-        self.name = get_loc(self.name, lang)
-
-        if self.production:
-            for p in self.production:
-                p.translate_fields(lang)
 
 
 class WareFileXmlModel(BaseXmlModel, tag="wares"):

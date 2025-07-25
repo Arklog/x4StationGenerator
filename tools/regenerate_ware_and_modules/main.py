@@ -1,13 +1,14 @@
 import argparse
 import os
 import pathlib
+import shutil
 
 from models.groups import GroupsFileXmlModel
 from models.modules import ModuleFileXmlModel
 from models.waregroups import WareGroupFileXmlModel
-from models.wares import WareFileXmlModel, WareXmlModel
+from models.wares import WareFileXmlModel
 from models.models_out import Module
-from utils.lang import parse_lang_file, get_loc
+from utils.lang import parse_lang_file
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--x4-root", help="X4 root directory", type=str, required=True)
@@ -20,8 +21,14 @@ print(args.xrcattool)
 print(args.output)
 print()
 
+outdir = "output"
+modules_outdir = f"{outdir}/modules"
+
+if os.path.exists(outdir):
+    shutil.rmtree(outdir)
+
 os.makedirs(args.output, exist_ok=True)
-os.makedirs("output", exist_ok=True)
+os.makedirs(modules_outdir, exist_ok=True)
 
 win_path = fr"z:{args.x4_root.replace('/', '\\\\')}\\"
 win_path_wares = f"{win_path}\\08.cat"
@@ -78,6 +85,9 @@ for i in modules:
     if len(item.production) == 0:
         continue
 
-    outfilename = f"output/{item.id}.json"
+    outfilename = f"{modules_outdir}/{item.id}.json"
     with open(outfilename, "w", encoding="utf-8") as f:
         f.write(item.model_dump_json(exclude_none=True))
+
+with open(f"{outdir}/production_method.json", "w", encoding="utf-8") as f:
+    f.write(input_ware.productions.model_dump_json(exclude_none=True))
