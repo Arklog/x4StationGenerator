@@ -43,10 +43,10 @@ std::string genModulePlan(const std::string &plan_name, const t_x4_complex &comp
         auto const& module = modules.at(module_id);
 
         std::array<int, 3> pos{0, 0, 0};
-        if (module->type == "pierr") {
+        if (module->type == ModuleType::pier) {
             pos = positions_pier.top();
             positions_pier.pop();
-        } else if (module->type == "dockarea") {
+        } else if (module->type == ModuleType::dock) {
             pos = positions_dock.top();
             positions_dock.pop();
         }

@@ -26,7 +26,7 @@ DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(
         const auto& key = iter.first;
         const auto& module = iter.second;
 
-        if (module->type == "dockarea" || module->type == "pierr")
+        if (module->type == ModuleType::pier || module->type == ModuleType::dock)
             dock_and_pierr_list.insert(module);
     }
 

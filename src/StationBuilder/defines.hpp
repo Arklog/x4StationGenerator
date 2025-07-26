@@ -7,6 +7,12 @@
 
 #include "Data/Data.hpp"
 
+namespace ModuleType {
+    extern const std::string pier;
+    extern const std::string dock;
+    extern const std::string storage;
+}
+
 struct WareTarget {
     t_ware_id ware_id;
     t_production_method_id production_method_id;

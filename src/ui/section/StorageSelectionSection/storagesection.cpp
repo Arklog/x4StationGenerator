@@ -26,7 +26,7 @@ StorageSection::StorageSection(QWidget *parent) :
         const auto& key = iter.first;
         const auto& module = iter.second;
 
-        if (module->type == "storage")
+        if (module->type == ModuleType::storage)
             storage_list.insert(module);
     }
 

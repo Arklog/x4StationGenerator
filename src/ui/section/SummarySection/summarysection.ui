@@ -13,15 +13,7 @@
   <property name="windowTitle">
    <string>SummarySection</string>
   </property>
-  <layout class="QVBoxLayout" name="layout">
-   <item>
-    <widget class="QPushButton" name="pushButton">
-     <property name="text">
-      <string>PushButton</string>
-     </property>
-    </widget>
-   </item>
-  </layout>
+  <layout class="QVBoxLayout" name="layout"/>
  </widget>
  <resources/>
  <connections/>
