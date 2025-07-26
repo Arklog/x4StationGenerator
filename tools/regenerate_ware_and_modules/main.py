@@ -73,7 +73,7 @@ ware_id_to_ware = {
 waregroup_id_to_waregroup = {
     group.id: group for group in input_waregroup.group
 }
-modules = [m for m in input_ware.wares if m.is_module()]
+modules = [m for m in input_ware.wares if m.is_module() and not "xenon" in m.macro.lower()]
 
 for i in modules:
     module_group = module_macro_to_module_group.get(i.macro)
