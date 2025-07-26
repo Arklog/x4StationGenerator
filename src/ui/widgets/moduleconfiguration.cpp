@@ -10,14 +10,19 @@
 #include "Data/Data.hpp"
 
 
-ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, QWidget *parent) :
-    QWidget(parent), ui(new Ui::ModuleConfiguration), dock_or_pierr{dock_or_pierr} {
+ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, ModuleTarget& target, QWidget *parent) :
+    QWidget(parent), ui(new Ui::ModuleConfiguration), dock_or_pierr{dock_or_pierr}, module_target_(target) {
     ui->setupUi(this);
 
     ui->name_label->setText(QString::fromStdString(dock_or_pierr->name));
 
     connect(ui->remove_button, &QPushButton::clicked, [this] (bool clicked) -> void {
-        emit shouldRemove();
+        emit shouldRemove(this->module_target_);
+    });
+
+    connect(ui->quantity, &QSpinBox::valueChanged, [this] (int value) -> void {
+        this->module_target_.amount = value;
+        emit moduleTargetUpdated(module_target_);
     });
 }
 

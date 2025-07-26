@@ -42,7 +42,7 @@
        <enum>QTabWidget::TabShape::Rounded</enum>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>3</number>
       </property>
       <widget class="QWidget" name="wares_selection_tab">
        <attribute name="title">
@@ -66,11 +66,11 @@
        </attribute>
        <layout class="QGridLayout" name="storage_tab_layout"/>
       </widget>
-      <widget class="QWidget" name="resume_tab">
+      <widget class="QWidget" name="summary_tab">
        <attribute name="title">
         <string>Resume</string>
        </attribute>
-       <layout class="QGridLayout" name="resume_tab_layout"/>
+       <layout class="QGridLayout" name="summary_tab_layout"/>
       </widget>
       <widget class="QWidget" name="settings_tab">
        <attribute name="title">

@@ -83,8 +83,12 @@ add_executable(x4StationGenerator
         src/ui/section/StorageSelectionSection/storagesection.cpp
         src/ui/section/StorageSelectionSection/storagesection.hpp
         src/ui/section/StorageSelectionSection/storagesection.ui
+        src/ui/section/SummarySection/summarysection.cpp
+        src/ui/section/SummarySection/summarysection.hpp
+        src/ui/section/SummarySection/summarysection.ui
+        src/StationBuilder/defines.cpp
 )
-
+target_compile_options(x4StationGenerator PRIVATE -O0 -DDEBUG)
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
 )

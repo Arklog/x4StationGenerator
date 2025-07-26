@@ -24,18 +24,20 @@ class ModuleConfiguration : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ModuleConfiguration(const Module *module, QWidget *parent = nullptr);
+    explicit ModuleConfiguration(const Module *module, ModuleTarget &target, QWidget *parent = nullptr);
 
     ~ModuleConfiguration() override;
 
     ModuleTarget getModuleTarget() const;
 
 signals:
-    void shouldRemove();
+    void shouldRemove(const ModuleTarget &target);
+    void moduleTargetUpdated(const ModuleTarget &target);
 
 private:
     Ui::ModuleConfiguration *ui;
     const Module *dock_or_pierr;
+    ModuleTarget &module_target_;
 };
 
 

@@ -9,8 +9,8 @@
 #include "ui_moduleconfigurationpanel.h"
 
 
-ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) :
-    QFrame(parent), ui(new Ui::ModuleConfigurationPanel) {
+ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) : QFrame(parent),
+                                                                      ui(new Ui::ModuleConfigurationPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
@@ -23,12 +23,6 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
 t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
     t_module_target_list docks_and_pierr_list{};
 
-    // for (auto i: ui->layout->children()) {
-        // auto widget = qobject_cast<DockAndPierrConfiguration*>(i);
-        // auto value = widget->getModuleTarget();
-        // docks_and_pierr_list.push_back(value);
-    // }
-
     for (auto i = 0; i < ui->layout->count(); ++i) {
         auto item = ui->layout->itemAt(i);
         auto widget = item->widget();
@@ -36,7 +30,7 @@ t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
         if (!widget)
             continue;
 
-        auto config = static_cast<ModuleConfiguration*>(widget);
+        auto config = static_cast<ModuleConfiguration *>(widget);
         auto target = config->getModuleTarget();
 
         if (target.amount == 0)
@@ -48,11 +42,20 @@ t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
 }
 
 void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
-    auto widget = new ModuleConfiguration(dock_or_pierr, this);
+    auto iter = std::find(module_targets_.begin(), module_targets_.end(), dock_or_pierr->id);
+    if (iter != module_targets_.end())
+        return;
+
+    auto &module_target = this->module_targets_.emplace_back(dock_or_pierr->id, 1);
+    auto widget = new ModuleConfiguration(dock_or_pierr, module_target, this);
+
     ui->layout->addWidget(widget);
 
-    connect(widget, &ModuleConfiguration::shouldRemove, [this, widget] () -> void {
+    connect(widget, &ModuleConfiguration::shouldRemove, [this, widget, module_target]() -> void {
         ui->layout->removeWidget(widget);
+        const auto iter = std::find(module_targets_.begin(), module_targets_.end(), module_target);
+        this->module_targets_.erase(iter);
+
         delete widget;
     });
 }

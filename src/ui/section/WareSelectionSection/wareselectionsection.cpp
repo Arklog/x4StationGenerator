@@ -26,6 +26,7 @@ WareSelectionSection::WareSelectionSection(QWidget *parent) : QWidget(parent), u
     connect(ware_selector, &WaresSelector::wareSelected, ware_configurator_panel, &WareConfiguratorPanel::addWare);
     connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this] (t_x4_complex complex) {
         this->complex_ = std::move(complex);
+        emit complexUpdated(complex_);
     });
 }
 

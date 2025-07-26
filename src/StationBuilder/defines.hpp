@@ -16,6 +16,9 @@ struct WareTarget {
 struct ModuleTarget {
     t_module_id module_id;
     size_t amount;
+
+    bool operator==(const ModuleTarget &other) const;
+    bool operator==(const t_module_id &module_id) const;
 };
 
 typedef std::vector<const WareTarget *> t_target_list;

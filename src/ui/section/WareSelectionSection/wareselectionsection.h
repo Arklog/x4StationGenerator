@@ -23,6 +23,9 @@ public:
 
     const t_x4_complex& getComplex();
 
+signals:
+    void complexUpdated(const t_x4_complex&);
+
 private:
     Ui::WareSelectionSection *ui;
     t_x4_complex complex_;

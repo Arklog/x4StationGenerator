@@ -34,8 +34,12 @@ public:
 public slots:
     void addModule(const Module *dock_or_pierr);
 
+signals:
+    void targetListUpdated(t_module_target_list targets);
+
 private:
     Ui::ModuleConfigurationPanel *ui;
+    std::vector<ModuleTarget> module_targets_{};
 };
 
 
