@@ -24,9 +24,6 @@ FetchContent_MakeAvailable(
         spdlog
 )
 
-
-#set(CMAKE_CXX_COMPILER ccache)
-#set(CMAKE_C_COMPILER ccache)
 if (WIN32)
     set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
 else ()
@@ -88,7 +85,6 @@ add_executable(x4StationGenerator
         src/ui/section/SummarySection/summarysection.ui
         src/StationBuilder/defines.cpp
 )
-target_compile_options(x4StationGenerator PRIVATE -O0 -DDEBUG)
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
 )

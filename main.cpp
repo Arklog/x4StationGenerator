@@ -9,7 +9,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-# ifdef DEBUG
+# ifdef NDEBUG
+    spdlog::set_level(spdlog::level::info);
+# else
     spdlog::set_level(spdlog::level::debug);
 # endif
 
