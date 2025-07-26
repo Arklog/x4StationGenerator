@@ -65,7 +65,7 @@ module_production_map = {
     module.id: module for module in input_modules.modules
 }
 module_macro_to_module_group = {
-    group.select.macro: group for group in input_modulegroups.group
+    select.macro: group for group in input_modulegroups.group for select in group.select
 }
 ware_id_to_ware = {
     ware.id: ware for ware in input_ware.wares

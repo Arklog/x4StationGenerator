@@ -6,7 +6,7 @@ class SelectXmlModel(BaseXmlModel, tag="select"):
 
 class GroupXmlModel(BaseXmlModel, tag="group"):
     name: str = attr()
-    select: SelectXmlModel = element()
+    select: List[SelectXmlModel] = element(tag="select", default_factory=list)
 
 class GroupsFileXmlModel(BaseXmlModel, tag="groups"):
     group: List[GroupXmlModel] = element()
