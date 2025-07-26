@@ -18,8 +18,8 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     env:
-      QT_VERSION: 5.15.2
-      QT_ARCHITECTURE: win64_msvc2019_64
+      QT_VERSION: 6.9.0
+      QT_ARCHITECTURE: win64_msvc2022_64
       DIST_DIRECTORY: ${{ github.workspace }}\dist
       SCCACHE_GHA_ENABLED: "true"
 
@@ -58,6 +58,7 @@ jobs:
         shell: bash
         run: |
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
+          echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
       - name: Setup cache
         uses: actions/cache@v3
@@ -87,20 +88,19 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}
-
+          
 
       - name: Build
         # Build your program  with the given configuration. Note that --config is needed because the default  Windows generator is a multi-config generator (Visual Studio generator).
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -j 4
 
       - name: Copy Qt DLLs
         env:
-          QT_BIN_DIR: ${{ github.workspace }}\Qt\${{env.QT_VERSION}}\${{env.QT_ARCHITECTURE}}\bin
+          QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\msvc2022_64\bin
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }} &&
           mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
-          D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64\bin\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
-      #        run: tree /f D:\a\X4StationGenerator\Qt\5.15.2\msvc2019_64
+          ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
@@ -112,7 +112,7 @@ jobs:
       - name: Compress Binary
         env:
           BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
-        run: 7z a -tzip ${{ env.DIST_DIRECTORY}}\x4StationGenerator.zip ${{ env.DIST_DIRECTORY }}\*
+        run: 7z a -tzip ${{ env.DIST_DIRECTORY}}\x4StationGenerator.zip ${{ env.DIST_DIRECTORY }}\* ${{ github.workspace }}\assets
 
       - name: Release binary
         uses: softprops/action-gh-release@v2

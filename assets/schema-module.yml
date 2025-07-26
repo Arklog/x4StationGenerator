@@ -1,0 +1,39 @@
+title: module
+properties:
+  name:
+    type: string
+  macro:
+    type: string
+  build:
+    type: array
+    allOf:
+      - items:
+          type: object
+          properties:
+            time:
+              type: integer
+            amount:
+              type: integer
+            method:
+              type: string
+            name:
+              type: string
+            wares:
+              type: array
+              allOf:
+                - items:
+                    type: object
+                    properties:
+                      ware:
+                        type: string
+                      amount:
+                        type: integer
+                    required:
+                      - ware
+                      - amount
+          required:
+            - time
+            - amount
+            - method
+            - name
+            - wares
