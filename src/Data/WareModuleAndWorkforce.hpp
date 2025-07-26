@@ -49,4 +49,6 @@ const Module *getModule(const t_ware_id &id, const t_production_method_id &produ
  */
 bool isWareProduced(const t_ware_id &id);
 
+const t_production_method_id &getProductionMethodFromName(const std::string &name);
+
 #endif //WARESANDMODULES_HPP

@@ -25,6 +25,7 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent) : 
 
     ui->ware_label->setText(QString(ware_name.c_str()));
 
+    this->ware_target.production_method_id = production_methods[0].method;
     for (const auto &production_method: production_methods) {
         auto text = QString(production_method.name.c_str());
         ui->production_method_combo_box->addItem(text);
@@ -41,6 +42,7 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent) : 
     };
     auto trigger_update_production_method = [this](const QString& new_id) -> void {
         spdlog::info("{} production method changed {}", this->ware_target.ware_id, new_id.toStdString());
+        const auto &production_method = getProductionMethodFromName(new_id.toStdString());
         this->ware_target.production_method_id = new_id.toStdString();
         this->shouldUpdate();
     };

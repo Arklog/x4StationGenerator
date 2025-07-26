@@ -33,11 +33,13 @@ struct WareAmount {
 };
 
 struct ModuleProduction {
-    t_production_method_id name;
-    // std::string method;
+    std::string name;
+    t_production_method_id method;
     std::vector<WareAmount> wares;
     unsigned int time;
     long int amount;
+
+    bool operator==(const t_production_method_id& production_method_id) const;
 };
 
 struct Ware {
@@ -50,6 +52,8 @@ struct Ware {
     std::vector<ModuleProduction> production;
 
     unsigned int volume;
+
+    bool operator==(const t_ware_id &ware_id) const;
 };
 
 struct Module {
@@ -62,6 +66,8 @@ struct Module {
     Price price;
     std::vector<Ware> production;
     ModuleProduction build_cost;
+
+    bool operator==(const t_module_id& module_id) const;
 
     const Ware& getWare() const;
     const ModuleProduction& getProduction() const;

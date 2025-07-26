@@ -4,9 +4,12 @@
 
 #include "WareModuleAndWorkforce.hpp"
 
+#include "spdlog/spdlog.h"
+
 static t_modules_container _g_modules{};
 static t_ware_container _g_ware{};
 static t_ware_groups_container _g_groups{};
+static std::map<std::string, t_production_method_id> _g_production_methods{};
 static std::map<std::pair<t_ware_id, t_production_method_id>, t_module_id> _g_ware_to_modules{};
 
 /**
@@ -15,25 +18,38 @@ static std::map<std::pair<t_ware_id, t_production_method_id>, t_module_id> _g_wa
  * @param module
  */
 static void parse_wares(const Module &module) {
+    spdlog::debug("building data from {}", module.id);
     const auto &wares = module.production;
 
     for (auto &ware: wares) {
         auto &group = ware.group;
 
-        if (!_g_ware.contains(ware.id))
+        if (!_g_ware.contains(ware.id)) {
+            spdlog::debug("registered new ware {}", ware.id);
             _g_ware[ware.id] = &ware;
+        }
 
-        if (!_g_groups.contains(group.id))
+        if (!_g_groups.contains(group.id)) {
+            spdlog::debug("registered new group {}", group.id);
             _g_groups[group.id] = &group;
+        }
 
         for (auto &production: ware.production) {
-            if (production.name == module.build_cost.name)
+            if (!_g_production_methods.contains(production.name)) {
+                spdlog::debug("registered new production method {}", production.method);
+                _g_production_methods.emplace(production.name, production.method);
+            }
+
+            if (production.method == module.production_method) {
+                spdlog::debug("bound module {} to combination {}, {}", module.id, ware.id, production.method);
                 _g_ware_to_modules[{ware.id, production.name}] = module.id;
+            }
         }
     }
 }
 
 void buildDataFrom(const std::vector<Module> &modules) {
+    spdlog::info("Building data");
     _g_modules.clear();
     _g_ware.clear();
     _g_groups.clear();
@@ -62,4 +78,8 @@ const Module *getModule(const t_ware_id &id, const t_production_method_id &produ
 
 bool isWareProduced(const t_ware_id &id) {
     return getWares().contains(id);
+}
+
+const t_production_method_id & getProductionMethodFromName(const std::string &name) {
+    return _g_production_methods[name];
 }

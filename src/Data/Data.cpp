@@ -10,21 +10,38 @@
 
 #include "spdlog/spdlog.h"
 
+bool ModuleProduction::operator==(const t_production_method_id &production_method_id) const {
+    return this->method == production_method_id;
+}
+
+bool Ware::operator==(const t_ware_id &ware_id) const {
+    return this->id == ware_id;
+}
+
 const Ware &Module::getWare() const {
     return this->production[0];
 }
 
-const ModuleProduction &Module::getProduction() const {
-    const auto &production = this->build_cost.name;
-    const auto &ware = this->production[0];
+bool Module::operator==(const t_module_id &module_id) const {
+    return this->id == module_id;
+}
 
-    for (const auto &ware_production: ware.production) {
-        if (ware_production.name == production)
-            return ware_production;
+const ModuleProduction &Module::getProduction() const {
+    if (!this->production_method.has_value()) {
+        spdlog::error("{} no production method found", this->id);
+        throw std::runtime_error("Production method not found");
     }
 
-    spdlog::error("{} no matching prodution method found for {}", this->id, production);
-    throw std::runtime_error("Production not found");
+    const auto &production_method = this->production_method;
+    const auto &ware = this->production[0].production;
+
+    const auto iter = std::find(ware.cbegin(), ware.cend(), production_method);
+    if (iter == ware.cend()) {
+        spdlog::error("{} no production method found", this->id);
+        throw std::runtime_error("Production method not found");
+    }
+
+    return *iter;
 }
 
 void from_json(const nlohmann::json &j, Price &price) {
@@ -78,8 +95,8 @@ void from_json(const nlohmann::json &j, ModuleProduction &m) {
 
         m.name = j["name"].get<std::string>();
         spdlog::debug("parsed module production name from json");
-        // m.method = j["method"].get<std::string>();
-        // spdlog::debug("parsed module production method from json");
+        m.method = j["method"].get<std::string>();
+        spdlog::debug("parsed module production method from json");
         m.time = j["time"].get<unsigned int>();
         spdlog::debug("parsed module production time from json");
         m.amount = j["amount"].get<unsigned int>();
