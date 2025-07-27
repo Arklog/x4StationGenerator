@@ -84,6 +84,9 @@ add_executable(x4StationGenerator
         src/ui/section/SummarySection/summarysection.hpp
         src/ui/section/SummarySection/summarysection.ui
         src/StationBuilder/defines.cpp
+        src/ui/section/SettingsSection/settingssection.cpp
+        src/ui/section/SettingsSection/settingssection.hpp
+        src/ui/section/SettingsSection/settingssection.ui
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

@@ -10,29 +10,33 @@
 
 #include "section/WareSelectionSection/wareselectionsection.h"
 #include "section/DockAndPierrSection/dockandpierrsection.hpp"
+#include "section/SettingsSection/settingssection.hpp"
 #include "section/StorageSelectionSection/storagesection.hpp"
 #include "section/SummarySection/summarysection.hpp"
 
 #include "spdlog/spdlog.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent), ui(new Ui::MainWindow), complex_{} {
+    : QMainWindow(parent), ui(new Ui::MainWindow), settings_{}, complex_{} {
     ui->setupUi(this);
 
     auto ware_selection_section = new WareSelectionSection(this);
     auto dock_and_pierr_section = new DockAndPierrSection(this);
     auto storage_section = new StorageSection(this);
+    auto settings_section = new SettingsSection(settings_, this);
     auto summary_section = new SummarySection(this);
 
     ui->ware_selection_tab_layout->addWidget(ware_selection_section);
     ui->dock_and_pierr_tab_layout->addWidget(dock_and_pierr_section);
     ui->storage_tab_layout->addWidget(storage_section);
     ui->summary_tab_layout->addWidget(summary_section);
+    ui->settings_tab_layout->addWidget(settings_section);
 
     this->ware_selection_section_ = ware_selection_section;
     this->dock_and_pierr_section_ = dock_and_pierr_section;
     this->storage_section_ = storage_section;
     this->summary_section_ = summary_section;
+    this->settings_section_ = settings_section;
 
     connect(ware_selection_section_, &WareSelectionSection::complexUpdated, this, &MainWindow::complexUpdated);
     connect(ui->action_export, &QAction::triggered, this, &MainWindow::exportPlan);
@@ -46,7 +50,8 @@ void MainWindow::exportPlan() {
     spdlog::info("Exporting plan");
 
     QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::AnyFile);
+    dialog.setFileMode(QFileDialog::FileMode::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptMode::AcceptSave);
 
     if (dialog.exec()) {
         auto selected_file = dialog.selectedFiles().first();
@@ -72,8 +77,8 @@ void MainWindow::exportPlan() {
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
             auto data = genModulePlan(
-                "tmp",
-                complex_
+                complex_,
+                settings_
             );
 
             file.write(data.c_str());

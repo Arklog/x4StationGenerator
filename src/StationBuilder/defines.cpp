@@ -14,3 +14,7 @@ bool ModuleTarget::operator==(const ModuleTarget &other) const {
 bool ModuleTarget::operator==(const t_module_id &module_id) const {
     return this->module_id == module_id;
 }
+
+const Settings default_settings{
+    .name = "<station_name>"
+};

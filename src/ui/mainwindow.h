@@ -9,6 +9,7 @@ class SummarySection;
 class DockAndPierrSection;
 class StorageSection;
 class WareSelectionSection;
+class SettingsSection;
 
 namespace Ui {
     class MainWindow;
@@ -24,7 +25,8 @@ public:
 
 public slots:
     void exportPlan();
-    void complexUpdated(const t_x4_complex& complex);
+
+    void complexUpdated(const t_x4_complex &complex);
 
 private:
     Ui::MainWindow *ui;
@@ -33,7 +35,9 @@ private:
     DockAndPierrSection *dock_and_pierr_section_;
     StorageSection *storage_section_;
     SummarySection *summary_section_;
+    SettingsSection *settings_section_;
 
+    Settings settings_;
     t_x4_complex complex_;
 };
 
