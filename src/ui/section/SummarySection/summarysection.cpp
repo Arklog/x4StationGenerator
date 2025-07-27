@@ -14,24 +14,31 @@
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QChartView>
+#include <sstream>
 
 #include "spdlog/spdlog.h"
+
+static void clearLayout(QLayout *layout) {
+    while (auto item = layout->takeAt(0)) {
+        if (auto widget = item->widget()) {
+            widget->deleteLater();
+        }
+    }
+}
 
 SummarySection::SummarySection(QWidget *parent) :
     QWidget(parent), ui(new Ui::SummarySection) {
     ui->setupUi(this);
 
-    auto cost_series = new QStackedBarSeries(this);
-    auto cost_chart = new QChart();
-    cost_chart->addSeries(cost_series);
-    auto cost_chart_view = new QChartView(cost_chart, this);
+    auto cost_chart_view = new QChartView(this);
 
     // auto revenue_chart = new QStackedBarSeries();
-    ui->cost_tab_layout->addWidget(cost_chart_view);
-    cost_series_ = cost_series;
+    ui->cost_tab_layout->setColumnStretch(0, 2);
+    ui->cost_tab_layout->setColumnStretch(1, 1);
+    ui->cost_tab_layout->addWidget(cost_chart_view, 0, 0);
+    ui->cost_tab_layout->removeWidget(ui->modules_group);
+    ui->cost_tab_layout->addWidget(ui->modules_group, 0, 1);
 
-    cost_series_ = cost_series;
-    cost_chart_ = cost_chart;
     cost_view_ = cost_chart_view;
 }
 
@@ -52,7 +59,10 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
 void SummarySection::updateCostTab(const t_module_quantity &modules) {
     const auto& all_modules = getModules();
     const auto& all_wares = getWares();
-    cost_series_->clear();
+    cost_view_->deleteLater();
+    cost_view_ = new QChartView(this);
+    ui->cost_tab_layout->addWidget(cost_view_, 0, 0);
+
 
     // extract all wares for build
     auto categories = QStringList();
@@ -99,4 +109,33 @@ void SummarySection::updateCostTab(const t_module_quantity &modules) {
     chart->legend()->setAlignment(Qt::AlignBottom);
 
     cost_view_->setChart(chart);
+
+    clearLayout(ui->module_group_layout);
+    unsigned int sum = 0;
+    for (auto [module_id, module_amount]: modules) {
+        auto module = all_modules.at(module_id);
+        auto price = module->price.avg * module_amount;
+        std::stringstream ss;
+
+        ss.imbue(std::locale("en_US.UTF-8"));
+        ss << module_amount << "x " << module->name;
+        auto label_string = QString::fromStdString(ss.str());
+        auto label = new QLabel(label_string);
+
+        ss.str(std::string());
+        ss << price;
+        auto value_string = QString::fromStdString(ss.str());
+        auto value_label = new QLabel(value_string);
+
+        ui->module_group_layout->addRow(label, value_label);
+        sum += price;
+    }
+    std::stringstream ss;
+    ss.imbue(std::locale("en_US.UTF-8"));
+    ss << sum;
+
+    auto label = new QLabel("Total");
+    auto value_string = QString::fromStdString(ss.str());
+    auto value_label = new QLabel(value_string);
+    ui->module_group_layout->addRow(label, value_label);
 }
