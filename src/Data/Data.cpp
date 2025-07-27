@@ -44,6 +44,16 @@ const ModuleProduction &Module::getProduction() const {
     return *iter;
 }
 
+t_ware_quantity Module::getBuildCost() const {
+    t_ware_quantity w_quantity{};
+
+    for (const auto &[ware_id, ware_amount]: this->build_cost.wares) {
+        w_quantity[ware_id] += ware_amount;
+    }
+
+    return w_quantity;
+}
+
 void from_json(const nlohmann::json &j, Price &price) {
     try {
         spdlog::debug("parsing price from json");

@@ -51,58 +51,50 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
 
 void SummarySection::updateCostTab(const t_module_quantity &modules) {
     const auto& all_modules = getModules();
+    const auto& all_wares = getWares();
     cost_series_->clear();
 
     // extract all wares for build
     auto categories = QStringList();
+    std::map<t_ware_id, QBarSet*> bar_sets;
 
     for (const auto &[module_id, module_amount]: modules) {
         const auto& module = all_modules.at(module_id);
         const auto& wares = module->build_cost.wares;
 
-        for (auto const &[ware_id, ware_amount]: wares) {
-            auto iter = std::find(categories.cbegin(), categories.cend(), QString::fromStdString(ware_id));
-
-            if (iter != categories.cend())
+        categories.append(QString::fromStdString(module->name));
+        for (const auto &ware: wares) {
+            if (bar_sets.contains(ware.id))
                 continue;
-            categories.append(QString::fromStdString(ware_id));
+            auto label = QString::fromStdString(all_wares.at(ware.id)->name);
+            bar_sets[ware.id] = new QBarSet(label);
         }
     }
 
-    // generate ressource map
-    std::vector<QBarSet*> bar_sets{};
-
-    for (const auto &[module_id, module_amount]: modules) {
-        std::unordered_map<t_ware_id, unsigned int> ware_quantity;
-        auto module = all_modules.at(module_id);
-        auto bar_set = new QBarSet(QString::fromStdString(module->name));
-
-        const auto& wares = module->build_cost.wares;
-        for (auto const &[ware_id, ware_amount]: wares) {
+    for (auto &[ware_id, bar_set]: bar_sets) {
+        for (const auto &[module_id, module_amount]: modules) {
+            auto module = getModules().at(module_id);
             auto ware = getWares().at(ware_id);
-            ware_quantity[ware_id] += ware_amount * module_amount * ware->price.avg;
-        }
 
-        for (auto & ware_id : categories) {
-            auto string = ware_id.toStdString();
-            *bar_set << ware_quantity[string];
-        }
+            auto production = module->getBuildCost();
+            auto cost = production[ware_id] * module_amount * ware->price.avg;
 
-        bar_sets.push_back(bar_set);
+            *bar_set << cost;
+        }
     }
 
     auto serie = new QStackedBarSeries(this);
     auto chart = new QChart();
     auto axis = new QBarCategoryAxis();
 
-    for (auto iter: bar_sets)
-        serie->append(iter);
+    for (auto [ware_id, bar_set]: bar_sets)
+        serie->append(bar_set);
 
     chart->addSeries(serie);
     axis->append(categories);
+    chart->createDefaultAxes();
     chart->addAxis(axis, Qt::AlignBottom);
     serie->attachAxis(axis);
-    chart->createDefaultAxes();
     chart->legend()->setVisible(true);
     chart->legend()->setAlignment(Qt::AlignBottom);
 
