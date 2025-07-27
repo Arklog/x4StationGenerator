@@ -32,7 +32,8 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent) : 
     }
 
     this->ware_target.prodution = ui->target_input->value();
-    this->ware_target.production_method_id = ui->production_method_combo_box->currentText().toStdString();
+    this->ware_target.production_method_id = getProductionMethodFromName(
+        ui->production_method_combo_box->currentText().toStdString());
 
 
     auto trigger_update_target = [this](int value) -> void {
@@ -40,7 +41,7 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent) : 
         this->ware_target.prodution = value;
         this->shouldUpdate();
     };
-    auto trigger_update_production_method = [this](const QString& new_id) -> void {
+    auto trigger_update_production_method = [this](const QString &new_id) -> void {
         spdlog::info("{} production method changed {}", this->ware_target.ware_id, new_id.toStdString());
         const auto &production_method = getProductionMethodFromName(new_id.toStdString());
         this->ware_target.production_method_id = new_id.toStdString();
@@ -58,6 +59,6 @@ WareConfigurator::~WareConfigurator() {
     delete ui;
 }
 
-const WareTarget * WareConfigurator::getWareTarget() const {
+const WareTarget *WareConfigurator::getWareTarget() const {
     return &(this->ware_target);
 }
