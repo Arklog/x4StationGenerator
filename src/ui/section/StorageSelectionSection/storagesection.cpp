@@ -43,6 +43,7 @@ StorageSection::StorageSection(QWidget *parent) :
     ui->configuration_scroll_area->setLayoutDirection(Qt::RightToLeft);
 
     connect(storage_selection_panel, &ModuleSelectionPanel::moduleSelected, storage_configuration_panel, &ModuleConfigurationPanel::addModule);
+    connect(storage_configuration_panel, &ModuleConfigurationPanel::targetListUpdated, this, &StorageSection::storageUpdated);
 }
 
 StorageSection::~StorageSection() {

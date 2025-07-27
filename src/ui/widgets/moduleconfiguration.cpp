@@ -15,6 +15,8 @@ ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, ModuleTarg
     ui->setupUi(this);
 
     ui->name_label->setText(QString::fromStdString(dock_or_pierr->name));
+    ui->quantity->setValue(1);
+    target.amount = 1;
 
     connect(ui->remove_button, &QPushButton::clicked, [this] (bool clicked) -> void {
         emit shouldRemove(this->module_target_);

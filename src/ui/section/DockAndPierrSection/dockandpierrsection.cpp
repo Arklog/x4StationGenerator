@@ -43,6 +43,7 @@ DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(
 
     this->dock_and_pierr_configuration_panel = dock_and_pierr_configuration_panel;
     connect(dock_and_pierr_selection_panel, &ModuleSelectionPanel::moduleSelected, dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::addModule);
+    connect(dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::targetListUpdated, this, &DockAndPierrSection::dockAndPierrUpdated);
 }
 
 DockAndPierrSection::~DockAndPierrSection() {

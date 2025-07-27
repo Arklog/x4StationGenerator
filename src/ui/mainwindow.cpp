@@ -39,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent)
     this->settings_section_ = settings_section;
 
     connect(ware_selection_section_, &WareSelectionSection::complexUpdated, this, &MainWindow::complexUpdated);
+    connect(storage_section_, &StorageSection::storageUpdated, this, &MainWindow::complexUpdated);
+    connect(dock_and_pierr_section_, &DockAndPierrSection::dockAndPierrUpdated, this, &MainWindow::complexUpdated);
     connect(ui->action_export, &QAction::triggered, this, &MainWindow::exportPlan);
 }
 
@@ -86,8 +88,8 @@ void MainWindow::exportPlan() {
     }
 }
 
-void MainWindow::complexUpdated(const t_x4_complex &complex) {
-    (void) complex;
+void MainWindow::complexUpdated() {
+    spdlog::debug("complex update triggered");
 
     complex_.clear();
     const auto &base_complex = this->ware_selection_section_->getComplex();

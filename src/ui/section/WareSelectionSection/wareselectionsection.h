@@ -24,7 +24,7 @@ public:
     const t_x4_complex& getComplex();
 
 signals:
-    void complexUpdated(const t_x4_complex&);
+    void complexUpdated();
 
 private:
     Ui::WareSelectionSection *ui;
