@@ -27,6 +27,12 @@ struct ModuleTarget {
     bool operator==(const t_module_id &module_id) const;
 };
 
+struct Settings {
+    std::string name;
+};
+
+extern const Settings default_settings;
+
 typedef std::vector<const WareTarget *> t_target_list;
 typedef std::vector<t_module_id> t_x4_complex;
 typedef std::vector<ModuleTarget> t_module_target_list;

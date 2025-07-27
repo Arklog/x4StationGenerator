@@ -18,6 +18,6 @@ struct StationSize {
     int z_minus;
 };
 
-std::string genModulePlan(const std::string &plan_name, const t_x4_complex &complex);
+std::string genModulePlan(const t_x4_complex &complex, Settings &settings);
 
 #endif //X4STATIONGENERATOR_MODULES_HPP
