@@ -58,4 +58,10 @@ void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
 
         delete widget;
     });
+
+    connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this] (const ModuleTarget& target) {
+        emit this->targetListUpdated();
+    });
+
+    emit targetListUpdated();
 }

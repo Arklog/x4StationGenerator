@@ -26,7 +26,7 @@ public:
 public slots:
     void exportPlan();
 
-    void complexUpdated(const t_x4_complex &complex);
+    void complexUpdated();
 
 private:
     Ui::MainWindow *ui;

@@ -25,6 +25,10 @@ public:
     ~StorageSection() override;
 
     t_module_target_list getModuleTargetList() const;
+
+signals:
+    void storageUpdated();
+
 private:
     Ui::StorageSection *ui;
 
