@@ -1,1 +1,0 @@
-{"id":"module_arg_pier_l_02","name":"Argon 1-Dock Pier","macro":"pier_arg_harbor_02_macro","type":"pier","price":{"min":1701192,"max":2301612,"avg":2001402},"production":[{"time":433,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":313},{"ware":"energycells","amount":625},{"ware":"hullparts","amount":1143}]}]}

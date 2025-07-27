@@ -1,1 +1,0 @@
-{"id":"module_par_conn_vertical_02","name":"Paranid Vertical Connection Structure 02","macro":"struct_par_vertical_02_macro","type":"connection","price":{"min":70888,"max":95908,"avg":83398},"production":[{"time":52,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":13},{"ware":"energycells","amount":26},{"ware":"hullparts","amount":48}]}]}

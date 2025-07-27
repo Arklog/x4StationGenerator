@@ -1,1 +1,0 @@
-{"id":"module_arg_dock_tradestation_02","name":"8M Luxury Dock Area","macro":"dockarea_arg_m_02_tradestation_01_macro","type":"dockarea","price":{"min":630652,"max":853236,"avg":741944},"production":[{"time":908,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":116},{"ware":"energycells","amount":232},{"ware":"hullparts","amount":424}]}]}

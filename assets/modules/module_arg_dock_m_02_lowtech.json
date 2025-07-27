@@ -1,1 +1,0 @@
-{"id":"module_arg_dock_m_02_lowtech","name":"3M6S Basic Dock Area","macro":"dockarea_arg_m_station_02_lowtech_macro","type":"dockarea","price":{"min":407689,"max":551579,"avg":479634},"production":[{"time":587,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":75},{"ware":"energycells","amount":150},{"ware":"hullparts","amount":274}]}]}

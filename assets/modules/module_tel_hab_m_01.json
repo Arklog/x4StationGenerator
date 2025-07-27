@@ -1,1 +1,0 @@
-{"id":"module_tel_hab_m_01","name":"Teladi M Biome","macro":"hab_tel_m_01_macro","type":"habitation","production_method":"teladi","price":{"min":10530453,"max":14247083,"avg":12388768},"production":[{"time":474,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":121},{"ware":"energycells","amount":242},{"ware":"hullparts","amount":443}]}]}
