@@ -4,8 +4,11 @@
 #include "modules.hpp"
 
 #include <stack>
-
+#include <chrono>
+#include <QUuid>
 #include "Data/WareModuleAndWorkforce.hpp"
+
+#include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
 
 std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
     std::stringstream plan;
@@ -32,9 +35,22 @@ std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
         }
     }
 
+    // std::random_device rd;
+    // std::mt19937 eng{rd()};
+    // UUIDv4::UUIDGenerator<std::mt19937_64> gen{};
+    // auto uuid = gen.getUUID();
+    auto uuid = QUuid::createUuid().toString().toStdString();
+    auto now = std::chrono::system_clock::now();
+    auto timestamp = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
+
+    for (auto &c: uuid)
+        c = toupper(c);
+    uuid.erase(uuid.begin());
+    uuid.erase(uuid.end() - 1);
+
     plan << R"(<?xml version="1.0" encoding="UTF-8"?>)" << std::endl;
     plan << R"(<plans>)" << std::endl;
-    plan << R"(  <plan id="E678E734-BA20-4345-85BE-FCDD151DED9C_1619859416" name=")" << settings.name
+    plan << R"(  <plan id=")" << uuid << "_" << timestamp << R"(" name=")" << settings.name
             << R"(" description="">)" << std::endl;
 
     unsigned int i = 1;
