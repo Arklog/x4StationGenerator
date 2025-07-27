@@ -1,0 +1,1 @@
+{"id":"module_arg_stor_tradestation_l_01","name":"Argon L Universal Storage","macro":"storage_arg_l_tradestation_01_macro","type":"storage","price":{"min":668452,"max":904376,"avg":786414},"production":[{"time":621,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":123},{"ware":"energycells","amount":246},{"ware":"hullparts","amount":449}]}]}
