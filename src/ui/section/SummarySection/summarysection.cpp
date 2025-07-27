@@ -5,17 +5,34 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_SummarySection.h" resolved
 
 #include "summarysection.hpp"
+
 #include "ui_summarysection.h"
 
 #include "Data/WareModuleAndWorkforce.hpp"
-#include <QString>
 #include <QLabel>
+#include <QStackedBarSeries>
+#include <QBarCategoryAxis>
+#include <QBarSet>
+#include <QChartView>
 
 #include "spdlog/spdlog.h"
 
 SummarySection::SummarySection(QWidget *parent) :
     QWidget(parent), ui(new Ui::SummarySection) {
     ui->setupUi(this);
+
+    auto cost_series = new QStackedBarSeries(this);
+    auto cost_chart = new QChart();
+    cost_chart->addSeries(cost_series);
+    auto cost_chart_view = new QChartView(cost_chart, this);
+
+    // auto revenue_chart = new QStackedBarSeries();
+    ui->cost_tab_layout->addWidget(cost_chart_view);
+    cost_series_ = cost_series;
+
+    cost_series_ = cost_series;
+    cost_chart_ = cost_chart;
+    cost_view_ = cost_chart_view;
 }
 
 SummarySection::~SummarySection() {
@@ -24,12 +41,62 @@ SummarySection::~SummarySection() {
 
 void SummarySection::updateTargetList(const t_x4_complex &targets) {
     auto modules = getModules();
+    t_module_quantity modules_recap{};
 
-    spdlog::debug("Generating summary");
-    for (const auto &target : targets) {
-        spdlog::debug("{}", target);
-        const auto& module = modules.at(target);
-        auto label = new QLabel(QString::fromStdString(module->name), this);
-        ui->layout->addWidget(label);
+    for (const auto &target: targets)
+        modules_recap[target] += 1;
+
+    updateCostTab(modules_recap);
+}
+
+void SummarySection::updateCostTab(const t_module_quantity &modules) {
+    const auto& all_modules = getModules();
+    const auto& all_wares = getWares();
+    cost_series_->clear();
+
+    // extract all wares for build
+    auto categories = QStringList();
+    std::map<t_ware_id, QBarSet*> bar_sets;
+
+    for (const auto &[module_id, module_amount]: modules) {
+        const auto& module = all_modules.at(module_id);
+        const auto& wares = module->build_cost.wares;
+
+        categories.append(QString::fromStdString(module->name));
+        for (const auto &ware: wares) {
+            if (bar_sets.contains(ware.id))
+                continue;
+            auto label = QString::fromStdString(all_wares.at(ware.id)->name);
+            bar_sets[ware.id] = new QBarSet(label);
+        }
     }
+
+    for (auto &[ware_id, bar_set]: bar_sets) {
+        for (const auto &[module_id, module_amount]: modules) {
+            auto module = getModules().at(module_id);
+            auto ware = getWares().at(ware_id);
+
+            auto production = module->getBuildCost();
+            auto cost = production[ware_id] * module_amount * ware->price.avg;
+
+            *bar_set << cost;
+        }
+    }
+
+    auto serie = new QStackedBarSeries(this);
+    auto chart = new QChart();
+    auto axis = new QBarCategoryAxis();
+
+    for (auto [ware_id, bar_set]: bar_sets)
+        serie->append(bar_set);
+
+    chart->addSeries(serie);
+    axis->append(categories);
+    chart->createDefaultAxes();
+    chart->addAxis(axis, Qt::AlignBottom);
+    serie->attachAxis(axis);
+    chart->legend()->setVisible(true);
+    chart->legend()->setAlignment(Qt::AlignBottom);
+
+    cost_view_->setChart(chart);
 }

@@ -14,6 +14,7 @@ typedef std::string t_ware_id;
 typedef std::string t_ware_group_id;
 typedef std::string t_module_id;
 typedef std::string t_production_method_id;
+using t_ware_quantity = std::unordered_map<t_ware_id, unsigned int>;
 
 struct Price {
     unsigned int min;
@@ -71,6 +72,7 @@ struct Module {
 
     const Ware& getWare() const;
     const ModuleProduction& getProduction() const;
+    t_ware_quantity getBuildCost() const;
 };
 
 void from_json(const nlohmann::json &j, Price &price);

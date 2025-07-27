@@ -46,6 +46,7 @@ find_package(Qt6 COMPONENTS
         Core
         Gui
         Widgets
+        Charts
         REQUIRED)
 
 add_executable(x4StationGenerator
@@ -97,6 +98,7 @@ target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
+        Qt6::Charts
         nlohmann_json::nlohmann_json
         spdlog::spdlog
 )

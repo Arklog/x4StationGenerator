@@ -8,14 +8,16 @@
 #include <QWidget>
 
 #include "StationBuilder/defines.hpp"
-
+class QChart;
+class QChartView;
+class QStackedBarSeries;
 QT_BEGIN_NAMESPACE
 namespace Ui { class SummarySection; }
 QT_END_NAMESPACE
 
 class SummarySection : public QWidget {
 Q_OBJECT
-
+    using t_module_quantity = std::map<t_module_id, unsigned int>;
 public:
     explicit SummarySection(QWidget *parent = nullptr);
     ~SummarySection() override;
@@ -24,6 +26,12 @@ public:
 
 private:
     Ui::SummarySection *ui;
+
+    QStackedBarSeries *cost_series_;
+    QChart *cost_chart_;
+    QChartView *cost_view_;
+
+    void updateCostTab(const t_module_quantity &modules);
 };
 
 

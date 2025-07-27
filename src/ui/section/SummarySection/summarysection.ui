@@ -13,7 +13,31 @@
   <property name="windowTitle">
    <string>SummarySection</string>
   </property>
-  <layout class="QVBoxLayout" name="layout"/>
+  <layout class="QVBoxLayout" name="layout">
+   <item>
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="summary_tab">
+      <attribute name="title">
+       <string>Summary</string>
+      </attribute>
+     </widget>
+     <widget class="QWidget" name="cost_tab">
+      <attribute name="title">
+       <string>Cost</string>
+      </attribute>
+      <layout class="QGridLayout" name="cost_tab_layout"/>
+     </widget>
+     <widget class="QWidget" name="revenue_tab">
+      <attribute name="title">
+       <string>Revenue</string>
+      </attribute>
+     </widget>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
