@@ -1,0 +1,1 @@
+{"id":"module_tel_def_tube_01","name":"Teladi Bridge Defence Platform","macro":"defence_tel_tube_01_macro","type":"defence","price":{"min":462691,"max":625993,"avg":544342},"production":[{"time":334,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":85},{"ware":"energycells","amount":170},{"ware":"hullparts","amount":312}]}]}

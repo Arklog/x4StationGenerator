@@ -1,0 +1,1 @@
+{"id":"module_arg_conn_cross_01","name":"Argon Cross Connection Structure 01","macro":"struct_arg_cross_01_macro","type":"connection","price":{"min":65300,"max":88348,"avg":76824},"production":[{"time":47,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":12},{"ware":"energycells","amount":24},{"ware":"hullparts","amount":44}]}]}

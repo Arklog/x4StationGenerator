@@ -1,0 +1,1 @@
+{"id":"module_gen_ventureplatform_cross_01","name":"Venture Platform","macro":"ventureplatform_gen_cross_01_macro","type":"venturer","price":{"min":257465,"max":348335,"avg":302900},"production":[{"time":179,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":50},{"ware":"energycells","amount":100},{"ware":"hullparts","amount":150}]}]}

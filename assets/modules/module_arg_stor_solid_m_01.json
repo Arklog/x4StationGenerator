@@ -1,0 +1,1 @@
+{"id":"module_arg_stor_solid_m_01","name":"Argon M Solid Storage","macro":"storage_arg_m_solid_01_macro","type":"storage","price":{"min":445475,"max":602701,"avg":524088},"production":[{"time":414,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":82},{"ware":"energycells","amount":163},{"ware":"hullparts","amount":299}]}]}
