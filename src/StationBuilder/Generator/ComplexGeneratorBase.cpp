@@ -79,10 +79,12 @@ WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_tar
         return a_ware_data->group.tier > b_ware_data->group.tier;
     });
 
+    spdlog::debug("next target {}", ids[0]);
     return current_state[ids[0]];
 }
 
 void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, long int value, long int cycle_time) {
+    spdlog::debug("update current production {}", ware_id);
     auto is_produced = this->_current_production.contains(ware_id);
     double mult = 3600.0f / (double)(cycle_time);
     value *= mult;
@@ -93,8 +95,9 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, lo
         return;
     }
 
+    spdlog::debug("adding ware in list {}", ware_id);
     this->_current_production.emplace(std::pair<t_ware_id, WareTarget>{
-        ware_id, WareTarget{.ware_id = ware_id, .production_method_id = "Universal", .prodution = value}
+        ware_id, WareTarget{.ware_id = ware_id, .production_method_id = "default", .prodution = value}
     });
 }
 

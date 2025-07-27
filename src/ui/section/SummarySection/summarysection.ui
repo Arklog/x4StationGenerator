@@ -32,7 +32,7 @@
        <item row="0" column="0">
         <widget class="QGroupBox" name="modules_group">
          <property name="title">
-          <string>GroupBox</string>
+          <string>Summary</string>
          </property>
          <layout class="QFormLayout" name="module_group_layout"/>
         </widget>
