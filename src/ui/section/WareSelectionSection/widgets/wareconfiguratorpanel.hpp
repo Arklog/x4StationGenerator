@@ -12,7 +12,7 @@
 #include "Data/Data.hpp"
 
 #include "StationBuilder/defines.hpp"
-
+#include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class WareConfiguratorPanel; }
@@ -20,11 +20,11 @@ QT_END_NAMESPACE
 
 class WareConfigurator;
 
-class WareConfiguratorPanel : public QFrame {
+class WareConfiguratorPanel : public QGroupBox {
 Q_OBJECT
 
 public:
-    explicit WareConfiguratorPanel(QWidget *parent = nullptr);
+    WareConfiguratorPanel(const Settings& settings, QWidget *parent = nullptr);
     ~WareConfiguratorPanel() override;
 
 public slots:
@@ -38,6 +38,7 @@ private:
     Ui::WareConfiguratorPanel *ui;
     std::unordered_map<t_ware_id, WareConfigurator *> ware_configurators;
     t_target_list ware_targets;
+    const Settings &settings_;
 };
 
 

@@ -7,26 +7,50 @@
 #include "wareselectionsection.h"
 
 #include "ui_wareselectionsection.h"
+
+#include "Data/WareModuleAndWorkforce.hpp"
+
 #include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
 #include "ui/section/WareSelectionSection/widgets/waresselector.hpp"
 
 
-WareSelectionSection::WareSelectionSection(QWidget *parent) : QWidget(parent), ui(new Ui::WareSelectionSection) {
+WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) : QWidget(parent),
+    ui(new Ui::WareSelectionSection), settings_{settings} {
     ui->setupUi(this);
-    auto layout = new QGridLayout(this);
     auto ware_selector = new WaresSelector(this);
-    auto ware_configurator_panel = new WareConfiguratorPanel(this);
+    auto ware_configurator_panel = new WareConfiguratorPanel(settings, this);
 
-    this->setLayout(layout);
-    layout->setColumnStretch(0, 2);
-    layout->setColumnStretch(1, 1);
-    layout->addWidget(ware_selector, 0, 0);
-    layout->addWidget(ware_configurator_panel, 0, 1);
+    auto const &modules = getModules();
+    for (auto const &[module_id, module] : modules) {
+        if (module->type == ModuleType::habitat)
+            ui->habitat_input->addItem(QString::fromStdString(module->name));
+    }
+
+    ui->main_layout->setColumnStretch(0, 2);
+    ui->main_layout->setColumnStretch(1, 1);
+    ui->main_layout->addWidget(ware_selector, 0, 0);
+    ui->main_layout->addWidget(ware_configurator_panel, 0, 1);
 
     connect(ware_selector, &WaresSelector::wareSelected, ware_configurator_panel, &WareConfiguratorPanel::addWare);
-    connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this] (t_x4_complex complex) {
+    connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this](t_x4_complex complex) {
         this->complex_ = std::move(complex);
         emit complexUpdated();
+    });
+    connect(ui->workforce_input, &QCheckBox::toggled, [this, ware_configurator_panel](bool checked) {
+        this->settings_.workforce_enables = checked;
+        ware_configurator_panel->productionTargetUpdate();
+    });
+    connect(ui->habitat_input, &QComboBox::currentTextChanged, [this, ware_configurator_panel](QString text) {
+        const auto &modules = getModules();
+        auto name = text.toStdString();
+
+        for (auto const &[module_id, module] : modules) {
+            if (module->name != name)
+                continue;
+            this->settings_.workforce_module = module_id;
+            break;
+        }
+        ware_configurator_panel->productionTargetUpdate();
     });
 }
 
@@ -34,6 +58,6 @@ WareSelectionSection::~WareSelectionSection() {
     delete ui;
 }
 
-const t_x4_complex & WareSelectionSection::getComplex() {
+const t_x4_complex &WareSelectionSection::getComplex() {
     return this->complex_;
 }
