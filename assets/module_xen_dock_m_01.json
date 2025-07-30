@@ -1,0 +1,1 @@
+{"id":"module_xen_dock_m_01","name":"Xenon Dock","macro":"dockarea_xen_m_station_01_macro","type":"dockarea","price":{"min":103180,"max":139596,"avg":121388},"production":[{"time":1424,"amount":1,"name":"Xenon","method":"default","wares":[{"ware":"energycells","amount":363},{"ware":"ore","amount":918},{"ware":"silicon","amount":536}],"effects":[]}]}

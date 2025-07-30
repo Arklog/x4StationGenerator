@@ -1,1 +1,0 @@
-{"id":"module_tel_def_claim_01","name":"Teladi Administrative Centre","macro":"defence_tel_claim_01_macro","type":"claim","price":{"min":749625,"max":1014199,"avg":881912},"production":[{"time":538,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":138},{"ware":"energycells","amount":275},{"ware":"hullparts","amount":503}]}]}

@@ -1,0 +1,1 @@
+{"id":"module_arg_dock_m_02","name":"3M6S Standard Dock Area","macro":"dockarea_arg_m_station_02_macro","type":"dockarea","price":{"min":423562,"max":573054,"avg":498308},"production":[{"time":609,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":78},{"ware":"energycells","amount":155},{"ware":"hullparts","amount":284}],"effects":[]}]}

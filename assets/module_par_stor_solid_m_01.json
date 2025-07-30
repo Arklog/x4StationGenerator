@@ -1,0 +1,1 @@
+{"id":"module_par_stor_solid_m_01","name":"Paranid M Solid Storage","macro":"storage_par_m_solid_01_macro","type":"storage","price":{"min":457555,"max":619045,"avg":538300},"production":[{"time":427,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":84},{"ware":"energycells","amount":169},{"ware":"hullparts","amount":309}],"effects":[]}]}

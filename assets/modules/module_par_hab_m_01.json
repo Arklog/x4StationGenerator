@@ -1,1 +1,0 @@
-{"id":"module_par_hab_m_01","name":"Paranid M Dome","macro":"hab_par_m_01_macro","type":"habitation","price":{"min":11754290,"max":15902862,"avg":13828576},"production":[{"time":530,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":135},{"ware":"energycells","amount":271},{"ware":"hullparts","amount":495}]}]}

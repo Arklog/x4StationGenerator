@@ -1,0 +1,1 @@
+{"id":"module_par_conn_base_01","name":"Paranid Base Connection Structure 01","macro":"struct_par_base_01_macro","type":"connection","price":{"min":64410,"max":87142,"avg":75776},"production":[{"time":45,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":12},{"ware":"energycells","amount":23},{"ware":"hullparts","amount":42}],"effects":[]}]}

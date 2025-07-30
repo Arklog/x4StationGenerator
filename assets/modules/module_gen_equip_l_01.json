@@ -1,1 +1,0 @@
-{"id":"module_gen_equip_l_01","name":"L Ship Maintenance Bay","macro":"buildmodule_gen_equip_l_macro","price":{"min":47705459,"max":64542680,"avg":56124070},"production":[{"time":364,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":931},{"ware":"energycells","amount":1866},{"ware":"hullparts","amount":3731}]}]}

@@ -1,0 +1,1 @@
+{"id":"module_gen_build_l_01","name":"L Ship Fabrication Bay","macro":"buildmodule_gen_ships_l_macro","price":{"min":180147181,"max":243728539,"avg":211937860},"production":[{"time":731,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":1866},{"ware":"energycells","amount":3731},{"ware":"hullparts","amount":6826}],"effects":[]}]}

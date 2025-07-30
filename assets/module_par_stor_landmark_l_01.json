@@ -1,0 +1,1 @@
+{"id":"module_par_stor_landmark_l_01","name":"Argon L Container Storage","macro":"landmarks_par_storage_01_macro","price":{"min":717414,"max":970618,"avg":844016},"production":[{"time":666,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":132},{"ware":"energycells","amount":263},{"ware":"hullparts","amount":482}],"effects":[]}]}

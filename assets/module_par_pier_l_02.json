@@ -1,0 +1,1 @@
+{"id":"module_par_pier_l_02","name":"Paranid 1-Dock Pier","macro":"pier_par_harbor_02_macro","type":"pier","price":{"min":1766944,"max":2390572,"avg":2078758},"production":[{"time":450,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":325},{"ware":"energycells","amount":650},{"ware":"hullparts","amount":1188}],"effects":[]}]}

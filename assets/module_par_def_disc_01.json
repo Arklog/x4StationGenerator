@@ -1,0 +1,1 @@
+{"id":"module_par_def_disc_01","name":"Paranid Disc Defence Platform","macro":"defence_par_disc_01_macro","type":"defence","price":{"min":533140,"max":721308,"avg":627224},"production":[{"time":384,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":98},{"ware":"energycells","amount":196},{"ware":"hullparts","amount":359}],"effects":[]}]}

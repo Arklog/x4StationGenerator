@@ -1,1 +1,0 @@
-{"id":"module_gen_build_xl_01","name":"XL Ship Fabrication Bay","macro":"buildmodule_gen_ships_xl_macro","price":{"min":183235129,"max":247906351,"avg":215570740},"production":[{"time":954,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":2434},{"ware":"energycells","amount":4866},{"ware":"hullparts","amount":8902}]}]}

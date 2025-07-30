@@ -1,1 +1,0 @@
-{"id":"module_arg_stor_liquid_s_01","name":"Argon S Liquid Storage","macro":"storage_arg_s_liquid_01_macro","type":"storage","price":{"min":282224,"max":381832,"avg":332028},"production":[{"time":261,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":52},{"ware":"energycells","amount":103},{"ware":"hullparts","amount":189}]}]}

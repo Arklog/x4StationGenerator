@@ -1,0 +1,1 @@
+{"id":"module_arg_def_claim_01","name":"Argon Administrative Centre","macro":"defence_arg_claim_01_macro","type":"claim","price":{"min":744928,"max":1007844,"avg":876386},"production":[{"time":536,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":137},{"ware":"energycells","amount":274},{"ware":"hullparts","amount":501}],"effects":[]}]}

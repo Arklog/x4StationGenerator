@@ -1,0 +1,1 @@
+{"id":"module_xen_build_xl_01","name":"XL Ship Assembly Matrix","macro":"buildmodule_xen_ships_xl_macro","type":"build","price":{"min":1383023,"max":1871149,"avg":1627086},"production":[{"time":954,"amount":1,"name":"Xenon","method":"default","wares":[{"ware":"energycells","amount":4866},{"ware":"ore","amount":12301},{"ware":"silicon","amount":7186}],"effects":[]}]}

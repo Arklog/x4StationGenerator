@@ -12,7 +12,7 @@
 #include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
-static const auto module_path = QString("assets/modules");
+static const auto module_path = QString("assets");
 // static const auto module_path = QString("tools/regenerate_ware_and_modules/output/modules");
 
 void Loader::_load_modules() {
