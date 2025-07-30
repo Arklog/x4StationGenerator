@@ -10,3 +10,6 @@ class GroupXmlModel(BaseXmlModel, tag="group"):
 
 class GroupsFileXmlModel(BaseXmlModel, tag="groups"):
     group: List[GroupXmlModel] = element()
+
+class GroupsFileDiffXmlModel(BaseXmlModel, tag="diff"):
+    group: List[GroupXmlModel] = element()

@@ -14,3 +14,7 @@ class WareGroupXmlModel(BaseXmlModel, tag="group"):
 
 class WareGroupFileXmlModel(BaseXmlModel, tag="groups"):
     group: List[WareGroupXmlModel] = element()
+
+class WareGroupFileDiffXmlModel(BaseXmlModel, tag="diff"):
+    group: List[WareGroupXmlModel] = element()
+

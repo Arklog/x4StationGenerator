@@ -23,7 +23,7 @@ def parse_lang_file(filename: str) -> None:
             page_data[item_id] = item_value
 
     global current_lang
-    current_lang = retv
+    current_lang.update(retv)
 
 
 def get_loc(field: str) -> str:
