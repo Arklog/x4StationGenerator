@@ -14,6 +14,15 @@ bool ModuleProduction::operator==(const t_production_method_id &production_metho
     return this->method == production_method_id;
 }
 
+double ModuleProduction::getWorkforceFactor() const {
+    for (auto i: effects) {
+        if (i.type != "work")
+            continue;
+        return i.product + 1;
+    }
+    return 1;
+}
+
 bool Ware::operator==(const t_ware_id &ware_id) const {
     return this->id == ware_id;
 }
@@ -127,6 +136,7 @@ void from_json(const nlohmann::json &j, ModuleProduction &m) {
         spdlog::debug("parsed module production amount from json");
         m.wares = j["wares"].get<std::vector<WareAmount> >();
         spdlog::debug("parsed module production wares from json");
+        m.effects = j["effects"];
 
         spdlog::debug("parsed module production from json");
     } catch (std::exception &e) {

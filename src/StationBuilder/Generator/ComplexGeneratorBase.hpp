@@ -57,6 +57,7 @@ protected:
     t_target_map targets_;
     t_target_map current_production_;
     const Settings& settings_;
+    long int workforce_;
 
 public:
     ComplexGeneratorBase(const Settings &settings, const t_target_list &targets);

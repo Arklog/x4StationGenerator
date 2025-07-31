@@ -47,6 +47,7 @@ struct ModuleProduction {
     long int amount;
 
     bool operator==(const t_production_method_id &production_method_id) const;
+    double getWorkforceFactor() const;
 };
 
 struct Ware {

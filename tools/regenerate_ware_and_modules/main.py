@@ -8,6 +8,7 @@ from typing import List, Dict, Tuple
 
 from groups import GroupsFileDiffXmlModel
 from loader.habitat import load_habitats, set_habitats
+from loader.production import set_production, load_productions
 from models.groups import GroupsFileXmlModel, GroupXmlModel
 from models.modules import ModuleFileXmlModel, ModuleXmlModel
 from models.waregroups import WareGroupFileXmlModel, WareGroupXmlModel
@@ -136,6 +137,7 @@ def parse_root(root: str):
     root_waregroups_file = f"{root}{waregroups_file}"
 
     load_habitats(root)
+    load_productions(root)
     with open(root_wares_file, "r", encoding="utf-8") as f:
         input_ware = WareFileXmlModel.from_xml(f.read())
     with open(root_modules_file, "r", encoding="utf-8") as f:
@@ -184,6 +186,8 @@ for i in modules:
     output_modules.append(item)
 
 set_habitats(output_modules)
+set_production(output_modules)
+
 for item in output_modules:
     outfilename = f"{modules_outdir}/{item.id}.json"
     with open(outfilename, "w", encoding="utf-8") as f:

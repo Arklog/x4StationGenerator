@@ -8,6 +8,8 @@
 
 #include "ui_wareselectionsection.h"
 
+#include "../../../../cmake-build-release/_deps/spdlog-src/include/spdlog/spdlog.h"
+
 #include "Data/WareModuleAndWorkforce.hpp"
 
 #include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
@@ -38,6 +40,7 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
     });
     connect(ui->workforce_input, &QCheckBox::toggled, [this, ware_configurator_panel](bool checked) {
         this->settings_.workforce_enables = checked;
+        spdlog::debug("workforce enabled: {}", this->settings_.workforce_enables);
         ware_configurator_panel->productionTargetUpdate();
     });
     connect(ui->habitat_input, &QComboBox::currentTextChanged, [this, ware_configurator_panel](QString text) {
@@ -50,8 +53,10 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
             this->settings_.workforce_module = module_id;
             break;
         }
+        spdlog::debug("default habitat changed: {}", this->settings_.workforce_module);
         ware_configurator_panel->productionTargetUpdate();
     });
+    ui->habitat_input->currentTextChanged(ui->habitat_input->currentText());
 }
 
 WareSelectionSection::~WareSelectionSection() {

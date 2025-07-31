@@ -63,6 +63,10 @@ void buildDataFrom(const std::vector<Module> &modules) {
     }
 }
 
+void buildDataFrom(const std::map<std::string, std::vector<std::pair<t_ware_id, double>>> &workforce) {
+    _g_workforce = workforce;
+}
+
 const t_modules_container &getModules() {
     return _g_modules;
 }

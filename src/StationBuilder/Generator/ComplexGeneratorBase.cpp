@@ -34,7 +34,13 @@ void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &curr
     const auto &module_to_add = getModule(ware.ware_id, ware.production_method_id);
     const auto &module_production = module_to_add->getProduction();
 
-    this->_updateCurrentProduction(ware.ware_id, module_production.amount, module_production.time);
+    auto amount_produced = module_production.amount;
+    if (settings_.workforce_enables) {
+        amount_produced = static_cast<long>(static_cast<double>(amount_produced) * module_production.
+                                            getWorkforceFactor());
+    }
+
+    this->_updateCurrentProduction(ware.ware_id, amount_produced, module_production.time);
     for (const auto &i: module_production.wares) {
         this->_updateCurrentProduction(i.id, -(i.amount), module_production.time);
     }
@@ -48,6 +54,12 @@ void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &curr
     auto consumption = getWorkforceUsage(habitat->race.value(), module_to_add->workforce_max.value());
     for (const auto &i: consumption) {
         this->_updateCurrentProduction(i.id, -(i.amount), 3600);
+    }
+    workforce_ -= module_to_add->workforce_max.value();
+
+    while (workforce_ < 0) {
+        workforce_ += habitat->workforce_capacity.value();
+        modules.push_back(habitat->id);
     }
 }
 
@@ -122,6 +134,7 @@ ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings, const t_tar
 
 t_x4_complex ComplexGeneratorBase::build() {
     t_x4_complex result{};
+    workforce_ = 0;
     spdlog::info("staring complex generation");
 
     while (!_done(this->targets_, this->current_production_, result)) {
