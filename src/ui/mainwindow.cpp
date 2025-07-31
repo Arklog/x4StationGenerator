@@ -20,7 +20,7 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow), settings_{}, complex_{} {
     ui->setupUi(this);
 
-    auto ware_selection_section = new WareSelectionSection(this);
+    auto ware_selection_section = new WareSelectionSection(settings_, this);
     auto dock_and_pierr_section = new DockAndPierrSection(this);
     auto storage_section = new StorageSection(this);
     auto settings_section = new SettingsSection(settings_, this);

@@ -34,11 +34,33 @@ void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &curr
     const auto &module_to_add = getModule(ware.ware_id, ware.production_method_id);
     const auto &module_production = module_to_add->getProduction();
 
-    this->_updateCurrentProduction(ware.ware_id, module_production.amount, module_production.time);
-    for (const auto& i: module_production.wares) {
+    auto amount_produced = module_production.amount;
+    if (settings_.workforce_enables) {
+        amount_produced = static_cast<long>(static_cast<double>(amount_produced) * module_production.
+                                            getWorkforceFactor());
+    }
+
+    this->_updateCurrentProduction(ware.ware_id, amount_produced, module_production.time);
+    for (const auto &i: module_production.wares) {
         this->_updateCurrentProduction(i.id, -(i.amount), module_production.time);
     }
     modules.push_back(module_to_add->id);
+
+    if (!settings_.workforce_enables)
+        return;
+
+    // deal with workforce
+    auto habitat = getModules().at(settings_.workforce_module);
+    auto consumption = getWorkforceUsage(habitat->race.value(), module_to_add->workforce_max.value());
+    for (const auto &i: consumption) {
+        this->_updateCurrentProduction(i.id, -(i.amount), 3600);
+    }
+    workforce_ -= module_to_add->workforce_max.value();
+
+    while (workforce_ < 0) {
+        workforce_ += habitat->workforce_capacity.value();
+        modules.push_back(habitat->id);
+    }
 }
 
 WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_target_map &current_state,
@@ -85,37 +107,39 @@ WareTarget &ComplexGeneratorBase::_nextTarget(const t_target_map &targets, t_tar
 
 void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, long int value, long int cycle_time) {
     spdlog::debug("update current production {}", ware_id);
-    auto is_produced = this->_current_production.contains(ware_id);
-    double mult = 3600.0f / (double)(cycle_time);
+    auto is_produced = this->current_production_.contains(ware_id);
+    double mult = 3600.0f / (double) (cycle_time);
     value *= mult;
 
 
     if (is_produced) {
-        this->_current_production.at(ware_id).prodution += value;
+        this->current_production_.at(ware_id).prodution += value;
         return;
     }
 
     spdlog::debug("adding ware in list {}", ware_id);
-    this->_current_production.emplace(std::pair<t_ware_id, WareTarget>{
+    this->current_production_.emplace(std::pair<t_ware_id, WareTarget>{
         ware_id, WareTarget{.ware_id = ware_id, .production_method_id = "default", .prodution = value}
     });
 }
 
-ComplexGeneratorBase::ComplexGeneratorBase(const t_target_list &targets): _targets(), _current_production() {
+ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings, const t_target_list &targets): targets_(),
+    current_production_(), settings_(settings) {
     for (const auto target: targets) {
-        _targets[target->ware_id] = *target;
-        _current_production[target->ware_id] = *target;
-        _current_production[target->ware_id].prodution = 0;
+        targets_[target->ware_id] = *target;
+        current_production_[target->ware_id] = *target;
+        current_production_[target->ware_id].prodution = 0;
     }
 }
 
 t_x4_complex ComplexGeneratorBase::build() {
     t_x4_complex result{};
+    workforce_ = 0;
     spdlog::info("staring complex generation");
 
-    while (!_done(this->_targets, this->_current_production, result)) {
+    while (!_done(this->targets_, this->current_production_, result)) {
         spdlog::info("entering new step in complex generation");
-        _step(this->_targets, this->_current_production, result);
+        _step(this->targets_, this->current_production_, result);
     }
 
     spdlog::info("finished complex generation");

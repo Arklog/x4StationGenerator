@@ -14,10 +14,11 @@
 #include "StationBuilder/Generator/ComplexGeneratorBase.hpp"
 
 
-WareConfiguratorPanel::WareConfiguratorPanel(QWidget *parent) :
-    QFrame(parent), ui(new Ui::WareConfiguratorPanel) {
+WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings, QWidget *parent) :
+    QGroupBox(parent), ui(new Ui::WareConfiguratorPanel), settings_(settings) {
     ui->setupUi(this);
-    QFrame::setFrameShape(QFrame::StyledPanel);
+    // QGroupBox::setFrameShape(QFrame::StyledPanel);
+    this->setWindowTitle({"Configuration"});
 
     auto layout = new QVBoxLayout();
     layout->setAlignment(Qt::AlignTop);
@@ -56,7 +57,7 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {
-    ComplexGeneratorBase test(this->ware_targets);
+    ComplexGeneratorBase test(settings_, this->ware_targets);
     auto build_result = test.build();
     emit shouldUpdate(build_result);
 }

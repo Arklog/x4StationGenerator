@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     Loader loader{};
     loader.load();
     buildDataFrom(loader._modules_json);
+    buildDataFrom(loader._workforce);
 
     MainWindow w;
     w.show();

@@ -11,6 +11,7 @@ namespace ModuleType {
     extern const std::string pier;
     extern const std::string dock;
     extern const std::string storage;
+    extern const std::string habitat;
 }
 
 struct WareTarget {
@@ -29,6 +30,8 @@ struct ModuleTarget {
 
 struct Settings {
     std::string name;
+    bool workforce_enables;
+    t_module_id workforce_module;
 };
 
 extern const Settings default_settings;

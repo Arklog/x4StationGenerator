@@ -1,1 +1,78 @@
-{"id":"module_arg_prod_meat_01","name":"Meat Production","macro":"prod_arg_meat_macro","type":"production","production_method":"default","price":{"min":1349848,"max":1826264,"avg":1588056},"product":[{"id":"meat","name":"Meat","volume":6,"transport":"container","price":{"min":29,"max":68,"avg":48},"group":{"id":"agricultural","name":"Agricultural Goods","tier":5},"production":[{"time":450,"amount":290,"name":"Argon","method":"default","wares":[{"ware":"energycells","amount":80},{"ware":"water","amount":100}]}]}],"production":[{"time":750,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":248},{"ware":"energycells","amount":497},{"ware":"hullparts","amount":910}]}]}
+{
+  "id": "module_arg_prod_meat_01",
+  "name": "Meat Production",
+  "macro": "prod_arg_meat_macro",
+  "type": "production",
+  "production_method": "default",
+  "price": {
+    "min": 1349848,
+    "max": 1826264,
+    "avg": 1588056
+  },
+  "product": [
+    {
+      "id": "meat",
+      "name": "Meat",
+      "volume": 6,
+      "transport": "container",
+      "price": {
+        "min": 29,
+        "max": 68,
+        "avg": 48
+      },
+      "group": {
+        "id": "agricultural",
+        "name": "Agricultural Goods",
+        "tier": 5
+      },
+      "production": [
+        {
+          "time": 450,
+          "amount": 290,
+          "name": "Argon",
+          "method": "default",
+          "wares": [
+            {
+              "ware": "energycells",
+              "amount": 80
+            },
+            {
+              "ware": "water",
+              "amount": 100
+            }
+          ],
+          "effects": [
+            {
+              "type": "work",
+              "product": 0.33
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "production": [
+    {
+      "time": 750,
+      "amount": 1,
+      "name": "Universal",
+      "method": "default",
+      "wares": [
+        {
+          "ware": "claytronics",
+          "amount": 248
+        },
+        {
+          "ware": "energycells",
+          "amount": 497
+        },
+        {
+          "ware": "hullparts",
+          "amount": 910
+        }
+      ],
+      "effects": []
+    }
+  ],
+  "workforce_max": 75
+}

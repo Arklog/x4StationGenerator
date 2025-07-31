@@ -14,6 +14,15 @@ bool ModuleProduction::operator==(const t_production_method_id &production_metho
     return this->method == production_method_id;
 }
 
+double ModuleProduction::getWorkforceFactor() const {
+    for (auto i: effects) {
+        if (i.type != "work")
+            continue;
+        return i.product + 1;
+    }
+    return 1;
+}
+
 bool Ware::operator==(const t_ware_id &ware_id) const {
     return this->id == ware_id;
 }
@@ -84,6 +93,20 @@ void from_json(const nlohmann::json &j, WareGroup &ware_group) {
     }
 }
 
+void from_json(const nlohmann::json &j, ProductionEffect &production_effect) {
+    try {
+        spdlog::debug("parsing production effect from json");
+
+        production_effect.type = j["type"].get<std::string>();
+        spdlog::debug("parsed production effect from json");
+        production_effect.product = j["product"].get<double>();
+        spdlog::debug("parsed production effect from json");
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse production effect type: {}", e.what());
+        throw;
+    }
+}
+
 
 void from_json(const nlohmann::json &j, WareAmount &ware_amount) {
     try {
@@ -113,6 +136,7 @@ void from_json(const nlohmann::json &j, ModuleProduction &m) {
         spdlog::debug("parsed module production amount from json");
         m.wares = j["wares"].get<std::vector<WareAmount> >();
         spdlog::debug("parsed module production wares from json");
+        m.effects = j["effects"];
 
         spdlog::debug("parsed module production from json");
     } catch (std::exception &e) {
@@ -175,6 +199,11 @@ void from_json(const nlohmann::json &j, Module &m) {
                                   : std::optional<std::string>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         spdlog::debug("parsed module build_cost");
+        m.workforce_capacity = j.contains("workforce_capacity") ? j["workforce_capacity"].get<unsigned int>() : std::optional<unsigned int>{};
+        spdlog::debug("parsed module workforce_capacity");
+        m.workforce_max = j.contains("workforce_max") ? j["workforce_max"].get<unsigned int>() : std::optional<unsigned int>{};
+        m.race = j.contains("race") ? j["race"].get<std::string>() : std::optional<std::string>{};
+        spdlog::debug("parsed module race");
 
         if (m.production.size() > 1)
             throw std::runtime_error("No more than 1 ware produced");

@@ -4,6 +4,8 @@
 
 #include "WareModuleAndWorkforce.hpp"
 
+#include <qguiapplication_platform.h>
+
 #include "spdlog/spdlog.h"
 
 static t_modules_container _g_modules{};
@@ -11,6 +13,7 @@ static t_ware_container _g_ware{};
 static t_ware_groups_container _g_groups{};
 static std::map<std::string, t_production_method_id> _g_production_methods{};
 std::map<std::pair<t_ware_id, t_production_method_id>, t_module_id> _g_ware_to_modules{};
+std::map<std::string, std::vector<std::pair<t_ware_id, double>>> _g_workforce{};
 
 /**
  * Parse multiples wares from the given module
@@ -60,6 +63,10 @@ void buildDataFrom(const std::vector<Module> &modules) {
     }
 }
 
+void buildDataFrom(const std::map<std::string, std::vector<std::pair<t_ware_id, double>>> &workforce) {
+    _g_workforce = workforce;
+}
+
 const t_modules_container &getModules() {
     return _g_modules;
 }
@@ -85,6 +92,26 @@ bool isWareProduced(const t_ware_id &id) {
     return getWares().contains(id);
 }
 
-const t_production_method_id & getProductionMethodFromName(const std::string &name) {
+const t_production_method_id &getProductionMethodFromName(const std::string &name) {
     return _g_production_methods[name];
+}
+
+std::vector<WareAmount> getWorkforceUsage(std::string race, unsigned int workforce_amount) {
+    try {
+        std::vector<WareAmount> ware_amounts;
+        auto pair_data = _g_workforce.at(race);
+
+        for (const auto &item: pair_data) {
+            const auto &ware = item.first;
+            const auto &consumption = item.second;
+
+            long int final_consumption = std::ceil(consumption * workforce_amount);
+            ware_amounts.emplace_back(ware, final_consumption);
+        }
+
+        return ware_amounts;
+    } catch (const std::out_of_range &e) {
+        spdlog::error("could not find production method {}", race);
+        throw;
+    }
 }

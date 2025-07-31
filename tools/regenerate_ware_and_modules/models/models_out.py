@@ -1,3 +1,4 @@
+from time import struct_time
 from typing import List, Dict, Optional
 
 from pydantic import BaseModel, field_validator
@@ -11,6 +12,7 @@ from models.wares import (
     PriceXmlModel,
 )
 from utils.lang import get_loc
+from wares import WareProductionEffectXmlModel
 
 
 class Price(BaseModel):
@@ -61,6 +63,13 @@ class Effect(BaseModel):
     type: str
     product: float
 
+    @staticmethod
+    def from_xml_model(model: WareProductionEffectXmlModel):
+        return Effect(
+            type=model.type,
+            product=model.product,
+        )
+
 
 class Production(BaseModel):
     time: int
@@ -68,6 +77,7 @@ class Production(BaseModel):
     name: str
     method: str
     wares: List[WareProduction]
+    effects: List[Effect]
 
     @staticmethod
     def from_xml_model(model: WareProductionXmlModel) -> "Production":
@@ -77,6 +87,7 @@ class Production(BaseModel):
             name=model.name,
             method=model.method,
             wares=[WareProduction.from_xml_model(model) for model in model.wares],
+            effects=[Effect.from_xml_model(model) for model in model.effects],
         )
 
     @field_validator("name", mode="after")
@@ -129,6 +140,10 @@ class Module(BaseModel):
     price: Price
     product: Optional[List[Product]]
     production: List[Production]
+
+    workforce_capacity: Optional[int] = None
+    workforce_max: Optional[int] = None
+    race: Optional[str] = None
 
     @staticmethod
     def from_xml_model(

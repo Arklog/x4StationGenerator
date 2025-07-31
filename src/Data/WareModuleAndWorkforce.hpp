@@ -26,6 +26,8 @@ struct Workforce {
 
 void buildDataFrom(const std::vector<Module> &modules);
 
+void buildDataFrom(const std::map<std::string, std::vector<std::pair<t_ware_id, double>>> &workforce);
+
 const t_modules_container &getModules();
 
 const t_ware_container &getWares();
@@ -50,5 +52,7 @@ const Module *getModule(const t_ware_id &id, const t_production_method_id &produ
 bool isWareProduced(const t_ware_id &id);
 
 const t_production_method_id &getProductionMethodFromName(const std::string &name);
+
+std::vector<WareAmount> getWorkforceUsage(std::string race, unsigned int workforce_amount);
 
 #endif //WARESANDMODULES_HPP

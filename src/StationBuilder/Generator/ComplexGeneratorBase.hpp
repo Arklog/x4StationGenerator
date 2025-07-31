@@ -54,11 +54,13 @@ protected:
      */
     void _updateCurrentProduction(const t_ware_id &ware_id, long int value, long int cycle_time);
 
-    t_target_map _targets;
-    t_target_map _current_production;
+    t_target_map targets_;
+    t_target_map current_production_;
+    const Settings& settings_;
+    long int workforce_;
 
 public:
-    ComplexGeneratorBase(const t_target_list &targets);
+    ComplexGeneratorBase(const Settings &settings, const t_target_list &targets);
 
     ComplexGeneratorBase(const ComplexGeneratorBase &complex_generator) = delete;
 

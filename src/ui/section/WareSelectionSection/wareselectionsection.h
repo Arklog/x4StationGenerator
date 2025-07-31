@@ -18,7 +18,7 @@ class WareSelectionSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit WareSelectionSection(QWidget *parent = nullptr);
+    explicit WareSelectionSection(Settings &settings, QWidget *parent = nullptr);
     ~WareSelectionSection() override;
 
     const t_x4_complex& getComplex();
@@ -29,6 +29,7 @@ signals:
 private:
     Ui::WareSelectionSection *ui;
     t_x4_complex complex_;
+    Settings &settings_;
 };
 
 

@@ -1,5 +1,5 @@
-from pydantic import ConfigDict
-from pydantic_xml import BaseXmlModel, attr, element
+from pydantic import ConfigDict, model_validator
+from pydantic_xml import BaseXmlModel, attr, element, wrapped
 from typing import List, Optional
 
 class ProductionXmlModel(BaseXmlModel, tag='production'):
@@ -36,3 +36,19 @@ class ModuleFileXmlModel(BaseXmlModel, tag='modules'):
     model_config = ConfigDict(extra="ignore")
 
     modules: List[ModuleXmlModel] = element(tag='module')
+
+    @model_validator(mode='after')
+    def check_self(cls, v):
+        print("ModuleFileXmlModel checking")
+        print(f"Found {len(v.modules)} modules")
+        return v
+
+class ModuleFileDiffXmlModel(BaseXmlModel, tag='diff'):
+    model_config = ConfigDict(extra="ignore")
+
+    modules: List[ModuleXmlModel] = wrapped('add', element(tag='module'))
+
+    @model_validator(mode='after')
+    def check_self(cls, v):
+        print(f"Found {len(v.modules)} modules in diff")
+        return v
