@@ -141,7 +141,9 @@ class Module(BaseModel):
     product: Optional[List[Product]]
     production: List[Production]
 
-    workforce: Optional[int] = None
+    workforce_capacity: Optional[int] = None
+    workforce_max: Optional[int] = None
+    race: Optional[str] = None
 
     @staticmethod
     def from_xml_model(

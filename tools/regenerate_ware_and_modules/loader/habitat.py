@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from macros.habitation import HabitatMacrosXmlModel, HabitatMacroXmlModel
+from macros.habitat import HabitatMacrosXmlModel, HabitatMacroXmlModel
 from data_types import HabitatsDict, ModuleList
 
 HABITATS_ROOT = "assets/structures/habitat/macros"
@@ -17,6 +17,7 @@ def load_habitats(root: str, habitats_map: HabitatsDict = habitats_map) -> None:
     """
     lookup_folder = os.path.join(root, HABITATS_ROOT)
 
+    print("Loading habitat macros")
     if not os.path.exists(lookup_folder):
         raise FileNotFoundError(f"Habitat macros directory not found: {lookup_folder}")
 
@@ -51,4 +52,5 @@ def set_habitats(modules: ModuleList, habitats_map: HabitatsDict = habitats_map)
         if not habitat:
             continue
 
-        module.workforce = habitat.properties.workforce.capacity
+        module.workforce_capacity = habitat.properties.workforce.capacity
+        module.race = habitat.properties.identification.makerrace

@@ -52,6 +52,8 @@ void Loader::_loadWorkforce() {
 
         auto j = nlohmann::json::parse(file);
         this->_workforce = j.get<std::map<std::string, std::vector<std::pair<t_ware_id, double>>>>();
+        file.close();
+
         spdlog::debug("found {} workforce", this->_workforce.size());
     } catch (const std::exception &e) {
         spdlog::error("could not parse workforce");

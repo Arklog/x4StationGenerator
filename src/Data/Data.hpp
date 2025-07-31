@@ -73,7 +73,8 @@ struct Module {
     Price price;
     std::vector<Ware> production;
     ModuleProduction build_cost;
-    std::optional<unsigned int> workforce;
+    std::optional<unsigned int> workforce_capacity;
+    std::optional<unsigned int> workforce_max;
     std::optional<std::string> race;
 
     bool operator==(const t_module_id &module_id) const;

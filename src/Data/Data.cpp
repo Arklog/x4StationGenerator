@@ -189,8 +189,9 @@ void from_json(const nlohmann::json &j, Module &m) {
                                   : std::optional<std::string>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         spdlog::debug("parsed module build_cost");
-        m.workforce = j.contains("workforce") ? j["workforce"].get<unsigned int>() : std::optional<unsigned int>{};
-        spdlog::debug("parsed module workforce");
+        m.workforce_capacity = j.contains("workforce_capacity") ? j["workforce_capacity"].get<unsigned int>() : std::optional<unsigned int>{};
+        spdlog::debug("parsed module workforce_capacity");
+        m.workforce_max = j.contains("workforce_max") ? j["workforce_max"].get<unsigned int>() : std::optional<unsigned int>{};
         m.race = j.contains("race") ? j["race"].get<std::string>() : std::optional<std::string>{};
         spdlog::debug("parsed module race");
 
