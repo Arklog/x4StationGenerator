@@ -33,14 +33,20 @@ struct WareAmount {
     long int amount;
 };
 
+struct ProductionEffect {
+    std::string type;
+    double product;
+};
+
 struct ModuleProduction {
     std::string name;
     t_production_method_id method;
     std::vector<WareAmount> wares;
+    std::vector<ProductionEffect> effects;
     unsigned int time;
     long int amount;
 
-    bool operator==(const t_production_method_id& production_method_id) const;
+    bool operator==(const t_production_method_id &production_method_id) const;
 };
 
 struct Ware {
@@ -67,17 +73,23 @@ struct Module {
     Price price;
     std::vector<Ware> production;
     ModuleProduction build_cost;
+    std::optional<unsigned int> workforce;
+    std::optional<std::string> race;
 
-    bool operator==(const t_module_id& module_id) const;
+    bool operator==(const t_module_id &module_id) const;
 
-    const Ware& getWare() const;
-    const ModuleProduction& getProduction() const;
+    const Ware &getWare() const;
+
+    const ModuleProduction &getProduction() const;
+
     t_ware_quantity getBuildCost() const;
 };
 
 void from_json(const nlohmann::json &j, Price &price);
 
 void from_json(const nlohmann::json &j, WareGroup &ware_group);
+
+void from_json(const nlohmann::json&, ProductionEffect &production_effect);
 
 void from_json(const nlohmann::json &j, WareAmount &ware_amount);
 

@@ -85,6 +85,6 @@ bool isWareProduced(const t_ware_id &id) {
     return getWares().contains(id);
 }
 
-const t_production_method_id & getProductionMethodFromName(const std::string &name) {
+const t_production_method_id &getProductionMethodFromName(const std::string &name) {
     return _g_production_methods[name];
 }

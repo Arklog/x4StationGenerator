@@ -84,6 +84,20 @@ void from_json(const nlohmann::json &j, WareGroup &ware_group) {
     }
 }
 
+void from_json(const nlohmann::json &j, ProductionEffect &production_effect) {
+    try {
+        spdlog::debug("parsing production effect from json");
+
+        production_effect.type = j["type"].get<std::string>();
+        spdlog::debug("parsed production effect from json");
+        production_effect.product = j["product"].get<double>();
+        spdlog::debug("parsed production effect from json");
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse production effect type: {}", e.what());
+        throw;
+    }
+}
+
 
 void from_json(const nlohmann::json &j, WareAmount &ware_amount) {
     try {
@@ -175,6 +189,10 @@ void from_json(const nlohmann::json &j, Module &m) {
                                   : std::optional<std::string>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         spdlog::debug("parsed module build_cost");
+        m.workforce = j.contains("workforce") ? j["workforce"].get<unsigned int>() : std::optional<unsigned int>{};
+        spdlog::debug("parsed module workforce");
+        m.race = j.contains("race") ? j["race"].get<std::string>() : std::optional<std::string>{};
+        spdlog::debug("parsed module race");
 
         if (m.production.size() > 1)
             throw std::runtime_error("No more than 1 ware produced");

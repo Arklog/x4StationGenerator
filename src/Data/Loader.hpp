@@ -13,7 +13,9 @@ private:
     /**
      * Load module files
      */
-    void _load_modules();
+    void _loadModules();
+
+    void _loadWorkforce();
 
 
     /**
@@ -28,6 +30,7 @@ public:
 
 
     std::vector<Ware> _wares_json;
+    std::map<std::string, std::vector<std::pair<t_ware_id, double>>> _workforce;
     std::vector<Module> _modules_json;
 };
 
