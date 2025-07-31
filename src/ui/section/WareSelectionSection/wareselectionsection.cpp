@@ -8,7 +8,7 @@
 
 #include "ui_wareselectionsection.h"
 
-#include "../../../../cmake-build-release/_deps/spdlog-src/include/spdlog/spdlog.h"
+#include"spdlog/spdlog.h"
 
 #include "Data/WareModuleAndWorkforce.hpp"
 
