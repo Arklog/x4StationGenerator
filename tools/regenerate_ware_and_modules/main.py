@@ -7,8 +7,10 @@ from multiprocessing import Pool, cpu_count
 from typing import List, Dict, Tuple
 
 from groups import GroupsFileDiffXmlModel
+from loader.extension import load_extension
 from loader.habitat import load_habitats, set_habitats
 from loader.production import set_production, load_productions
+from loader.structure import set_structure
 from models.groups import GroupsFileXmlModel, GroupXmlModel
 from models.modules import ModuleFileXmlModel, ModuleXmlModel
 from models.waregroups import WareGroupFileXmlModel, WareGroupXmlModel
@@ -49,11 +51,11 @@ def to_win_path(p: str, no_prefix: bool = False) -> str:
 root_paths: List[str] = [
     "/",
     "/extensions/ego_dlc_boron/",
-    "/extensions/ego_dlc_mini_01/",
+    # "/extensions/ego_dlc_mini_01/",
     "/extensions/ego_dlc_pirate/",
     "/extensions/ego_dlc_split/",
     "/extensions/ego_dlc_terran/",
-    "/extensions/ego_dlc_terran/"
+    "/extensions/ego_dlc_timelines/"
 ]
 win_paths: List[str] = []
 
@@ -172,6 +174,10 @@ for root_path in root_paths[:1]:
     root_path = os.path.join(args.output, root_path.lstrip("/"))
     parse_root(root_path.lstrip("/"))
 
+for extension_path in root_paths[1:]:
+    extension_path = os.path.join(args.output, extension_path.lstrip("/"))
+    load_extension(extension_path, wares, module_production_map, module_macro_to_module_group, ware_id_to_ware, waregroup_id_to_waregroup)
+
 modules = [m for m in wares if m.is_module() and not "xenon" in m.macro.lower()]
 output_modules: List[Module] = []
 for i in modules:
@@ -187,6 +193,7 @@ for i in modules:
 
 set_habitats(output_modules)
 set_production(output_modules)
+set_structure(output_modules)
 
 for item in output_modules:
     outfilename = f"{modules_outdir}/{item.id}.json"

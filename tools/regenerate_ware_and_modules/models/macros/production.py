@@ -57,7 +57,7 @@ class ProductionMacroPropertiesXmlModel(BaseXmlModel, tag="properties"):
     build: ProductionMacroBuildXmlModel = element()
     explosiondamage: ProductionMacroExplosionDamageXmlModel = element()
     hull: ProductionMacroHullXmlModel = element()
-    secrecy: ProductionMacroSecrecyXmlModel = element()
+    secrecy: ProductionMacroSecrecyXmlModel = element(default=ProductionMacroSecrecyXmlModel(level=0))
     production: ProductionMacroProductionXmlModel = element()
     workforce: ProductionMacroWorkforceXmlModel = element()
 
