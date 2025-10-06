@@ -5,30 +5,58 @@ include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 20)
 
+#################################################################################
+# External Libraries
+#################################################################################
 
-FetchContent_Declare(
-        json
-        GIT_REPOSITORY https://github.com/nlohmann/json
-        GIT_TAG v3.12.0
-)
-FetchContent_MakeAvailable(
-        json
-)
+include(FetchContent)
 
 FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog
         GIT_TAG v1.15.3
 )
+
+FetchContent_Declare(
+        argparse
+        GIT_REPOSITORY https://github.com/p-ranav/argparse
+        GIT_TAG v3.2
+)
+
+FetchContent_Declare(
+        nlohmann_json
+        GIT_REPOSITORY https://github.com/nlohmann/json
+        GIT_TAG v3.12.0
+)
+
+FetchContent_Declare(
+        plugixml
+        GIT_REPOSITORY https://github.com/zeux/pugixml
+        GIT_TAG v1.15
+)
+
 FetchContent_MakeAvailable(
         spdlog
+        argparse
+        nlohmann_json
+        plugixml
 )
+
+#################################################################################
+# Qt6
+#################################################################################
 
 if (WIN32)
     set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
 else ()
-    set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-    set(CMAKE_C_COMPILER_LAUNCHER ccache)
+    find_program(CCACHE_PROGRAM ccache)
+    if (CCACHE_PROGRAM STREQUAL "CCACHE_PROGRAM-NOTFOUND")
+        message(WARNING "ccache not found!")
+    else()
+        message(STATUS "ccache found: ${CCACHE_PROGRAM}")
+        set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+        set(CMAKE_C_COMPILER_LAUNCHER ccache)
+    endif ()
 endif ()
 
 get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
@@ -42,12 +70,18 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt6 COMPONENTS
+find_package(
+        Qt6 COMPONENTS
         Core
         Gui
         Widgets
         Charts
-        REQUIRED)
+        REQUIRED
+)
+
+#################################################################################
+# Application
+#################################################################################
 
 add_executable(x4StationGenerator
         main.cpp
@@ -103,3 +137,8 @@ target_link_libraries(x4StationGenerator PRIVATE
         spdlog::spdlog
 )
 
+###############################################################################
+# Tools
+###############################################################################
+
+add_subdirectory(tools/dataextractor)
