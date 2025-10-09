@@ -31,7 +31,7 @@ void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &curr
     const auto &wares = getWares();
     const auto &ware = this->_nextTarget(targets, current_state, modules);
 
-    const auto &module_to_add = getModule(ware.ware_id, ware.production_method_id);
+    const auto &module_to_add = getModule(ware.ware_id, ware.source_module);
     const auto &module_production = module_to_add->getProduction();
 
     auto amount_produced = module_production.amount;
@@ -119,7 +119,7 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id, lo
 
     spdlog::debug("adding ware in list {}", ware_id);
     this->current_production_.emplace(std::pair<t_ware_id, WareTarget>{
-        ware_id, WareTarget{.ware_id = ware_id, .production_method_id = "default", .prodution = value}
+        ware_id, WareTarget{.ware_id = ware_id, .source_module = "default", .prodution = value}
     });
 }
 
