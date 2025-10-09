@@ -89,6 +89,14 @@ const t_production_method_id &
 getProductionMethodFromName(const std::string &name);
 
 /**
+ * Return the module id from its name
+ *
+ * @param name
+ * @return The module id, raise std::out_of_range exception if no match
+ */
+const t_module_id& getModuleIdFromName(const std::string& name);
+
+/**
  * Get the amount of ware consumed to employ an amount of a given race workforce
  *
  * @param race The race of the workforce

@@ -40,16 +40,17 @@ void ComplexGeneratorBase::_step(const t_target_map &targets, t_target_map &curr
                                             getWorkforceFactor());
     }
 
+    // Update production value of all ware produced and consumed by module_to_add
     this->_updateCurrentProduction(ware.ware_id, amount_produced, module_production.time);
     for (const auto &i: module_production.wares) {
         this->_updateCurrentProduction(i.id, -(i.amount), module_production.time);
     }
     modules.push_back(module_to_add->id);
 
+    // deal with workforce
     if (!settings_.workforce_enables)
         return;
 
-    // deal with workforce
     auto habitat = getModules().at(settings_.workforce_module);
     auto consumption = getWorkforceUsage(habitat->race.value(), module_to_add->workforce_max.value());
     for (const auto &i: consumption) {

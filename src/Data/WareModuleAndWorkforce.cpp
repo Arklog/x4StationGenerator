@@ -110,6 +110,16 @@ const t_production_method_id &
 getProductionMethodFromName(const std::string &name) {
   return _g_production_methods[name];
 }
+const t_module_id &getModuleIdFromName(const std::string &name) {
+  auto &modules = getModules();
+
+  for (const auto &[module_id, module] : modules) {
+    if (module->name == name)
+      return module_id;
+  }
+
+  throw std::out_of_range("could not find module with name " + name);
+}
 
 std::vector<WareAmount> getWorkforceUsage(std::string race,
                                           unsigned int workforce_amount) {

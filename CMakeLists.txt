@@ -27,8 +27,12 @@ FetchContent_MakeAvailable(
 if (WIN32)
     set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
 else ()
-    set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
-    set(CMAKE_C_COMPILER_LAUNCHER ccache)
+    find_program(CCACHE ccache)
+
+    if ("${CCACHE_BIN}" STREQUAL "CCACHE-NOTFOUND")
+        set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
+        set(CMAKE_C_COMPILER_LAUNCHER ccache)
+    endif()
 endif ()
 
 get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
