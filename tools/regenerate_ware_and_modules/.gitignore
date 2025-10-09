@@ -1,1 +1,6 @@
 *.xml
+*.pyc
+
+.idea
+x4_sources
+.env

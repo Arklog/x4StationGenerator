@@ -1,11 +1,14 @@
 import os
 from typing import List
 
-from macros.habitat import HabitatMacrosXmlModel, HabitatMacroXmlModel
-from data_types import HabitatsDict, ModuleList
+from loguru import logger
+
+from models.macros.habitat import HabitatMacrosXmlModel, HabitatMacroXmlModel
+from utils.data_types import HabitatsDict, ModuleList
 
 HABITATS_ROOT = "assets/structures/habitat/macros"
 habitats_map: HabitatsDict = {}
+
 
 def load_habitats(root: str, habitats_map: HabitatsDict = habitats_map) -> None:
     """
@@ -17,7 +20,7 @@ def load_habitats(root: str, habitats_map: HabitatsDict = habitats_map) -> None:
     """
     lookup_folder = os.path.join(root, HABITATS_ROOT)
 
-    print("Loading habitat macros")
+    logger.info("loading habitat macros")
     if not os.path.exists(lookup_folder):
         raise FileNotFoundError(f"Habitat macros directory not found: {lookup_folder}")
 
@@ -37,6 +40,7 @@ def load_habitats(root: str, habitats_map: HabitatsDict = habitats_map) -> None:
             habitats_map.update({
                 macro.name: macro for macro in macros
             })
+
 
 def set_habitats(modules: ModuleList, habitats_map: HabitatsDict = habitats_map) -> None:
     """

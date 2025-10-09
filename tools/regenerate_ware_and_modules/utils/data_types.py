@@ -1,7 +1,7 @@
 from typing import Dict, List
 
-from macros.habitat import HabitatMacroXmlModel
-from macros.production import ProductionMacroMacroXmlModel
+from models.macros.habitat import HabitatMacroXmlModel
+from models.macros.production import ProductionMacroMacroXmlModel
 from models.models_out import Module
 
 ModuleList = List[Module]

@@ -1,6 +1,9 @@
-from pydantic import ConfigDict, model_validator
-from pydantic_xml import BaseXmlModel, attr, element, wrapped
 from typing import List, Optional
+
+from loguru import logger
+from pydantic import ConfigDict, model_validator
+from pydantic_xml import BaseXmlModel, attr, element
+
 
 class ProductionXmlModel(BaseXmlModel, tag='production'):
     ware: Optional[str] = attr(default=None)
@@ -32,6 +35,12 @@ class ModuleXmlModel(BaseXmlModel, tag='module'):
     category: CategoryXmlModel = element(tag='category')
     compatibilities: Optional[CompatibilitiesXmlModel] = element(default=None)
 
+    @model_validator(mode='after')
+    def check_self(cls, v):
+        logger.info(f"parsed module: {v.id}")
+        return v
+
+
 class ModuleFileXmlModel(BaseXmlModel, tag='modules'):
     model_config = ConfigDict(extra="ignore")
 
@@ -39,16 +48,5 @@ class ModuleFileXmlModel(BaseXmlModel, tag='modules'):
 
     @model_validator(mode='after')
     def check_self(cls, v):
-        print("ModuleFileXmlModel checking")
-        print(f"Found {len(v.modules)} modules")
-        return v
-
-class ModuleFileDiffXmlModel(BaseXmlModel, tag='diff'):
-    model_config = ConfigDict(extra="ignore")
-
-    modules: List[ModuleXmlModel] = wrapped('add', element(tag='module'))
-
-    @model_validator(mode='after')
-    def check_self(cls, v):
-        print(f"Found {len(v.modules)} modules in diff")
+        logger.info(f"found {len(v.modules)} modules")
         return v

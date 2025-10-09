@@ -1,10 +1,11 @@
-from time import struct_time
 from typing import List, Dict, Optional
 
+from loguru import logger
 from pydantic import BaseModel, field_validator
 
 from models.modules import ModuleXmlModel
 from models.waregroups import WareGroupXmlModel
+from models.wares import WareProductionEffectXmlModel
 from models.wares import (
     WareXmlModel,
     WareProductionXmlModel,
@@ -12,7 +13,6 @@ from models.wares import (
     PriceXmlModel,
 )
 from utils.lang import get_loc
-from wares import WareProductionEffectXmlModel
 
 
 class Price(BaseModel):
@@ -107,10 +107,10 @@ class Product(BaseModel):
 
     @staticmethod
     def from_xml_model(
-        xml_product_model: WareProductionXmlModel,
-        xml_module_model: ModuleXmlModel,
-        wares: Dict[str, WareXmlModel],
-        waregroups: Dict[str, WareGroupXmlModel],
+            xml_product_model: WareProductionXmlModel,
+            xml_module_model: ModuleXmlModel,
+            wares: Dict[str, WareXmlModel],
+            waregroups: Dict[str, WareGroupXmlModel],
     ) -> "Product":
         ware = wares[xml_module_model.category.ware]
         group = waregroups.get(ware.group)
@@ -130,6 +130,7 @@ class Product(BaseModel):
     def validate_name(cls, value: str) -> str:
         return get_loc(value)
 
+
 class Module(BaseModel):
     id: str
     name: str
@@ -147,11 +148,14 @@ class Module(BaseModel):
 
     @staticmethod
     def from_xml_model(
-        xml_ware_model: WareXmlModel,
-        xml_module_model: ModuleXmlModel | None,
-        wares: Dict[str, WareXmlModel],
-        waregroups: Dict[str, WareGroupXmlModel],
+            xml_ware_model: WareXmlModel,
+            xml_module_model: ModuleXmlModel | None,
+            wares: Dict[str, WareXmlModel],
+            waregroups: Dict[str, WareGroupXmlModel],
     ) -> "Module":
+
+        if xml_module_model is None:
+            logger.warning(f"module is None: {xml_ware_model.id}")
 
         module_type = xml_module_model.category.type if xml_module_model else None
         product = [
@@ -160,6 +164,7 @@ class Module(BaseModel):
             if (xml_module_model and xml_module_model.category.ware)
         ]
         if len(product) == 0:
+            logger.warning(f"no product found: {xml_ware_model.id}")
             product = None
 
         production_method = None
