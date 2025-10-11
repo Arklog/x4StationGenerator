@@ -10,27 +10,28 @@
 #include "Data/Data.hpp"
 
 struct TmpModulePtrCompare {
-  bool operator()(const Module *a, const Module *b) const {
-    return a->name < b->name;
-  }
+    bool operator()(const Module *a, const Module *b) const {
+        return a->name < b->name;
+    }
 };
 
 typedef std::unordered_map<t_ware_group_id, const WareGroup *>
-    t_ware_groups_container;
-typedef std::unordered_map<t_ware_id, const Ware *, std::hash<std::string>>
-    t_ware_container;
+t_ware_groups_container;
+typedef std::unordered_map<t_ware_id, const Ware *, std::hash<std::string> >
+t_ware_container;
 typedef std::unordered_map<t_module_id, const Module *> t_modules_container;
 typedef std::set<const Module *, TmpModulePtrCompare> t_module_list;
-typedef std::unordered_map<t_ware_id, t_modules_container>
-    t_ware_to_modules_map;
+typedef std::unordered_map<t_ware_id, t_modules_container, std::hash<std::string> >
+t_ware_to_modules_map;
 
-struct Workforce {};
+struct Workforce {
+};
 
 void buildDataFrom(const std::vector<Module> &modules);
 
 void buildDataFrom(
-    const std::map<std::string, std::vector<std::pair<t_ware_id, double>>>
-        &workforce);
+    const std::map<std::string, std::vector<std::pair<t_ware_id, double> > >
+    &workforce);
 
 /**
  * Get all modules

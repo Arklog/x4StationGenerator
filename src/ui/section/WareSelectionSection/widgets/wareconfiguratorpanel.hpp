@@ -17,33 +17,37 @@
 #include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
-class WareConfiguratorPanel;
+    class WareConfiguratorPanel;
 }
+
 QT_END_NAMESPACE
 
 class WareConfigurator;
 
 class WareConfiguratorPanel : public QGroupBox {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-  WareConfiguratorPanel(const Settings &settings, QWidget *parent = nullptr);
-  ~WareConfiguratorPanel() override;
+    WareConfiguratorPanel(const Settings &settings, QWidget *parent = nullptr);
+
+    ~WareConfiguratorPanel() override;
 
 public slots:
-  void addWare(t_ware_id ware_id);
-  void productionTargetUpdate();
+    void addWare(t_ware_id ware_id);
+
+    void productionTargetUpdate();
 
 signals:
-  void shouldUpdate(t_x4_complex complex);
+    void shouldUpdate(t_x4_complex complex);
 
 private:
-  Ui::WareConfiguratorPanel *ui;
-  std::unordered_map<t_ware_id, WareConfigurator *> ware_configurators;
-  WareTargetContainer ware_target_container;
-  t_target_list ware_targets;
-  const Settings &settings_;
+    Ui::WareConfiguratorPanel *ui;
+    std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> > ware_configurators;
+    WareTargetContainer ware_target_container;
+    t_target_list ware_targets;
+    const Settings &settings_;
 };
 
 #endif // WARECONFIGURATORPANEL_HPP
