@@ -32,7 +32,7 @@ else ()
     if ("${CCACHE_BIN}" STREQUAL "CCACHE-NOTFOUND")
         set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
         set(CMAKE_C_COMPILER_LAUNCHER ccache)
-    endif()
+    endif ()
 endif ()
 
 get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
@@ -92,6 +92,10 @@ add_executable(x4StationGenerator
         src/ui/section/SettingsSection/settingssection.cpp
         src/ui/section/SettingsSection/settingssection.hpp
         src/ui/section/SettingsSection/settingssection.ui
+        src/utils/WareTargetContainer.cpp
+        src/utils/WareTargetContainer.hpp
+        src/Data/ID.cpp
+        src/Data/ID.h
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

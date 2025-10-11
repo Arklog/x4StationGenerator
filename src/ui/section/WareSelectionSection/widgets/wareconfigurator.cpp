@@ -14,19 +14,17 @@
 
 #include "spdlog/spdlog.h"
 
-WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent)
-    : QFrame(parent), ui(new Ui::WareConfigurator),
-      ware_target{.ware_id = ware_id} {
+WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
+    : QFrame(parent), ui(new Ui::WareConfigurator), ware_target{ware_target} {
   ui->setupUi(this);
   QFrame::setFrameShape(QFrame::StyledPanel);
 
+  const auto &ware_id = this->ware_target->ware_id;
   const auto &ware = getWares().at(ware_id);
   const auto &ware_name = ware->name;
   const auto &possible_source_modules = getModules(ware_id);
 
   ui->ware_label->setText(QString(ware_name.c_str()));
-
-  this->ware_target.source_module = possible_source_modules.begin()->first;
 
   // Create combobox of possible modules
   for (const auto &[module_id, module] : possible_source_modules) {
@@ -34,41 +32,51 @@ WareConfigurator::WareConfigurator(const t_ware_id &ware_id, QWidget *parent)
     ui->production_method_combo_box->addItem(text);
   }
 
-  this->ware_target.prodution = ui->target_input->value();
-  this->ware_target.source_module = getModuleIdFromName(
+  this->ware_target->prodution = ui->target_input->value();
+  this->ware_target->source_module = getModuleIdFromName(
       ui->production_method_combo_box->currentText().toStdString());
 
   // Is triggered when the ware amount required is changed
   auto trigger_update_target = [this](int value) -> void {
-    spdlog::info("{} target value changed {}", this->ware_target.ware_id,
-                 value);
-    this->ware_target.prodution = value;
+    spdlog::info("{} target value changed {}",
+                 std::string(this->ware_target->ware_id), value);
+    this->ware_target->prodution = value;
     this->shouldUpdate();
   };
 
   // Is triggered when the source module is changed
-  auto trigger_update_source_module =
-      [this](const QString &new_id) -> void {
-    spdlog::info("{} production method changed {}", this->ware_target.ware_id,
-                 new_id.toStdString());
-    const auto &production_method =
-        getModuleIdFromName(new_id.toStdString());
-    this->ware_target.source_module = new_id.toStdString();
+  auto trigger_update_source_module = [this](const QString &new_id) -> void {
+    const auto &production_method = getModuleIdFromName(new_id.toStdString());
+    spdlog::info("{} production method changed {}", this->ware_target->ware_id,
+                 production_method);
+    this->ware_target->source_module = production_method;
     this->shouldUpdate();
   };
 
   connect(ui->remove_button, &QPushButton::clicked,
           [this, ware_id](bool clicked) {
             spdlog::info("Removing ware {}", ware_id);
-            this->shouldRemove(this->ware_target.ware_id);
+            this->shouldRemove(this->ware_target->ware_id);
           });
   connect(ui->production_method_combo_box, &QComboBox::currentTextChanged,
           trigger_update_source_module);
   connect(ui->target_input, &QSpinBox::valueChanged, trigger_update_target);
+
+  // in case of secondary ware, we gray out the widget and disable input
+  // except for the source module selection
+  if (!ware_target->is_secondary)
+    return;
+  auto palete = this->palette();
+  palete.setColor(QPalette::Window, QColor(200, 200, 200));
+  this->setAutoFillBackground(true);
+  this->setPalette(palete);
+
+  ui->target_input->setReadOnly(true);
+  ui->remove_button->setDisabled(true);
 }
 
 WareConfigurator::~WareConfigurator() { delete ui; }
 
 const WareTarget *WareConfigurator::getWareTarget() const {
-  return &(this->ware_target);
+  return this->ware_target;
 }

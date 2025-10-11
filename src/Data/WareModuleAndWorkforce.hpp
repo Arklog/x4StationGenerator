@@ -17,7 +17,8 @@ struct TmpModulePtrCompare {
 
 typedef std::unordered_map<t_ware_group_id, const WareGroup *>
     t_ware_groups_container;
-typedef std::unordered_map<t_ware_id, const Ware *> t_ware_container;
+typedef std::unordered_map<t_ware_id, const Ware *, std::hash<std::string>>
+    t_ware_container;
 typedef std::unordered_map<t_module_id, const Module *> t_modules_container;
 typedef std::set<const Module *, TmpModulePtrCompare> t_module_list;
 typedef std::unordered_map<t_ware_id, t_modules_container>
@@ -94,7 +95,7 @@ getProductionMethodFromName(const std::string &name);
  * @param name
  * @return The module id, raise std::out_of_range exception if no match
  */
-const t_module_id& getModuleIdFromName(const std::string& name);
+const t_module_id &getModuleIdFromName(const std::string &name);
 
 /**
  * Get the amount of ware consumed to employ an amount of a given race workforce

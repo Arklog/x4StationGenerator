@@ -18,6 +18,7 @@ struct WareTarget {
   t_ware_id ware_id;
   t_module_id source_module;
   long int prodution;
+  bool is_secondary;
 };
 
 struct ModuleTarget {
