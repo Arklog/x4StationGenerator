@@ -4,17 +4,18 @@
 
 #ifndef WARE_H
 #define WARE_H
+#include <Data/ID.h>
 #include <optional>
 #include <string>
 
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
 
-typedef std::string t_ware_id;
+// typedef std::string t_ware_id;
 typedef std::string t_ware_group_id;
 typedef std::string t_module_id;
 typedef std::string t_production_method_id;
-using t_ware_quantity = std::unordered_map<t_ware_id, unsigned int>;
+using t_ware_quantity = std::unordered_map<t_ware_id, unsigned int, std::hash<std::string> >;
 
 struct Price {
     unsigned int min;
@@ -47,6 +48,7 @@ struct ModuleProduction {
     long int amount;
 
     bool operator==(const t_production_method_id &production_method_id) const;
+
     double getWorkforceFactor() const;
 };
 
@@ -91,7 +93,7 @@ void from_json(const nlohmann::json &j, Price &price);
 
 void from_json(const nlohmann::json &j, WareGroup &ware_group);
 
-void from_json(const nlohmann::json&, ProductionEffect &production_effect);
+void from_json(const nlohmann::json &, ProductionEffect &production_effect);
 
 void from_json(const nlohmann::json &j, WareAmount &ware_amount);
 
@@ -101,4 +103,4 @@ void from_json(const nlohmann::json &j, Ware &ware);
 
 void from_json(const nlohmann::json &j, Module &m);
 
-#endif //WARE_H
+#endif // WARE_H

@@ -33,7 +33,6 @@ void Loader::_loadModules() {
             auto j = nlohmann::json::parse(file);
             this->_modules_json.push_back(j.get<Module>());
             file.close();
-
         } catch (const std::exception &e) {
             spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
         }
@@ -51,7 +50,7 @@ void Loader::_loadWorkforce() {
             throw std::runtime_error("Failed to read file " + workforce_path.toStdString());
 
         auto j = nlohmann::json::parse(file);
-        this->_workforce = j.get<std::map<std::string, std::vector<std::pair<t_ware_id, double>>>>();
+        this->_workforce = j.get<std::map<std::string, std::vector<std::pair<t_ware_id, double> > > >();
         file.close();
 
         spdlog::debug("found {} workforce", this->_workforce.size());

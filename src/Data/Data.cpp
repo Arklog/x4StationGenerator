@@ -82,7 +82,7 @@ void from_json(const nlohmann::json &j, WareGroup &ware_group) {
     try {
         spdlog::debug("parsing ware group from json");
 
-        ware_group.id = j["id"].get<t_ware_id>();
+        ware_group.id = j["id"].get<t_ware_group_id>();
         ware_group.name = j["name"].get<std::string>();
         ware_group.tier = j.contains("tier") ? j["tier"].get<unsigned int>() : 0;
 
@@ -199,9 +199,13 @@ void from_json(const nlohmann::json &j, Module &m) {
                                   : std::optional<std::string>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         spdlog::debug("parsed module build_cost");
-        m.workforce_capacity = j.contains("workforce_capacity") ? j["workforce_capacity"].get<unsigned int>() : std::optional<unsigned int>{};
+        m.workforce_capacity = j.contains("workforce_capacity")
+                                   ? j["workforce_capacity"].get<unsigned int>()
+                                   : std::optional<unsigned int>{};
         spdlog::debug("parsed module workforce_capacity");
-        m.workforce_max = j.contains("workforce_max") ? j["workforce_max"].get<unsigned int>() : std::optional<unsigned int>{};
+        m.workforce_max = j.contains("workforce_max")
+                              ? j["workforce_max"].get<unsigned int>()
+                              : std::optional<unsigned int>{};
         m.race = j.contains("race") ? j["race"].get<std::string>() : std::optional<std::string>{};
         spdlog::debug("parsed module race");
 
