@@ -49,7 +49,7 @@ public:
     ID &operator=(ID &&other) noexcept = default;
 
     operator IDType() const { return id_; }
-    operator const IDType() const { return id_; }
+    // operator const IDType() const { return id_; }
     // operator IDType &() { return id_; }
     operator const IDType &() const { return id_; }
 
