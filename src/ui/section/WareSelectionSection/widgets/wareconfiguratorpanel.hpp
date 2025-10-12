@@ -46,7 +46,6 @@ private:
     Ui::WareConfiguratorPanel *ui;
     std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> > ware_configurators;
     WareTargetContainer ware_target_container;
-    t_target_list ware_targets;
     const Settings &settings_;
 };
 

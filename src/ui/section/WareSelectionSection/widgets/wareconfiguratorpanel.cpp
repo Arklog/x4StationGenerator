@@ -19,8 +19,7 @@
 WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
                                              QWidget *parent)
     : QGroupBox(parent), ui(new Ui::WareConfiguratorPanel),
-      ware_configurators{}, ware_target_container{}, ware_targets{},
-      settings_(settings) {
+      ware_configurators{}, ware_target_container{}, settings_(settings) {
     ui->setupUi(this);
     // QGroupBox::setFrameShape(QFrame::StyledPanel);
     this->setWindowTitle({"Configuration"});
@@ -53,7 +52,6 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
 
     // Store the configurator and add it to the layout
     this->ware_configurators[ware_id] = ware_configurator;
-    this->ware_targets.push_back(ware_configurator->getWareTarget());
     this->layout()->addWidget(ware_configurator);
 
     connect(
@@ -66,14 +64,6 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
 
             auto widget = this->ware_configurators[wid];
 
-            this->ware_configurators.erase(wid);
-            for (auto iter = this->ware_targets.begin();
-                 iter != this->ware_targets.end(); ++iter) {
-                if (*iter == widget->getWareTarget()) {
-                    this->ware_targets.erase(iter);
-                    break;
-                }
-            }
             this->layout()->removeWidget(widget);
             this->ware_target_container.unsetPrimaryTarget(wid);
             delete widget;
@@ -91,15 +81,22 @@ void WareConfiguratorPanel::productionTargetUpdate() {
     const auto &current_production = test.getCurrentProduction();
 
     // Delete all secondary targets here
+    std::vector<t_ware_id> to_remove{};
     for (const auto &[ware_id, widget]: this->ware_configurators) {
         if (!widget->getWareTarget()->is_secondary)
             continue;
 
         this->layout()->removeWidget(widget);
         delete widget;
+
+        to_remove.push_back(ware_id);
     }
 
-    // Read secondary targets
+    for (const auto &ware_id: to_remove) {
+        this->ware_configurators.erase(ware_id);
+    }
+
+    // Add secondary targets
     for (const auto &ware_target: current_production.getSecondaryTargets()) {
         this->addWare(ware_target->ware_id, true, ware_target->prodution);
     }
