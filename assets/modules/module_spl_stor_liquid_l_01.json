@@ -1,0 +1,1 @@
+{"id":"module_spl_stor_liquid_l_01","name":"Split L Liquid Storage","macro":"storage_spl_l_liquid_01_macro","type":"storage","price":{"min":734191,"max":993317,"avg":863754},"production":[{"time":683,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":135},{"ware":"energycells","amount":270},{"ware":"hullparts","amount":494}],"effects":[]}]}

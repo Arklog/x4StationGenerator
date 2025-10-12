@@ -1,0 +1,1 @@
+{"id":"module_spl_conn_base_01","name":"Split Base Connection Structure 01","macro":"struct_spl_base_01_macro","type":"connection","price":{"min":92363,"max":124961,"avg":108662},"production":[{"time":59,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":14},{"ware":"energycells","amount":27},{"ware":"hullparts","amount":50}],"effects":[]}]}

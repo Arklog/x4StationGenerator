@@ -1,0 +1,1 @@
+{"id":"module_spl_stor_solid_s_01","name":"Split S Solid Storage","macro":"storage_spl_s_solid_01_macro","type":"storage","price":{"min":331199,"max":448093,"avg":389646},"production":[{"time":307,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":61},{"ware":"energycells","amount":121},{"ware":"hullparts","amount":222}],"effects":[]}]}

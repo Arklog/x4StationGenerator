@@ -1,0 +1,1 @@
+{"id":"module_pir_stor_condensate_s_01","name":"Condensate Containment Facility","macro":"storage_pir_s_condensate_01_macro","price":{"min":454298,"max":679896,"avg":567097},"production":[{"time":327,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":92},{"ware":"energycells","amount":84},{"ware":"hullparts","amount":379}],"effects":[]}]}

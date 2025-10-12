@@ -1,0 +1,1 @@
+{"id":"module_pir_stor_condensate_l_01","name":"Protectyon Shield Generator","macro":"storage_pir_l_condensate_01_macro","price":{"min":1433988,"max":2146384,"avg":1790186},"production":[{"time":1033,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":291},{"ware":"energycells","amount":265},{"ware":"hullparts","amount":1198}],"effects":[]}]}
