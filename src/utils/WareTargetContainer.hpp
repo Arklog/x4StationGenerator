@@ -89,6 +89,8 @@ public:
      */
     [[nodiscard]] WareTarget *getTarget(const t_ware_id &ware_id) const;
 
+    [[nodiscard]] const std::vector<WareTarget> &getTargets() const;
+
     [[nodiscard]] const std::vector<WareTarget *> &getPrimaryTargets() const;
 
     [[nodiscard]] const std::vector<WareTarget *> &getSecondaryTargets() const;

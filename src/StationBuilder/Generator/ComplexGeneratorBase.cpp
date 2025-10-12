@@ -150,6 +150,13 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
 ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings,
                                            WareTargetContainer &targets)
     : targets_(targets), current_production_{}, settings_(settings) {
+    // Copy all targets production methods
+    for (const auto &target: targets.getTargets()) {
+        auto current_target = current_production_.getTarget(target.ware_id);
+        current_target->source_module = target.source_module;
+    }
+
+    // Set primary targets
     auto primary_targets = targets_.getPrimaryTargets();
     for (const auto &target: primary_targets) {
         current_production_.setPrimaryTarget(target->ware_id);

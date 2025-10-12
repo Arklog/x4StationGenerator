@@ -128,6 +128,10 @@ WareTarget *WareTargetContainer::getTarget(const t_ware_id &ware_id) const {
     return const_cast<WareTarget *>(&*iter);
 }
 
+const std::vector<WareTarget> &WareTargetContainer::getTargets() const {
+    return this->ware_targets;
+}
+
 const std::vector<WareTarget *> WareTargetContainer::getPrimaryAndSecondaryTargets() const {
     ware_targets_container_t all_targets{};
     all_targets.reserve(ware_targets_primary.size() + ware_targets_secondary.size());

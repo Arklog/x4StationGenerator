@@ -87,16 +87,16 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
 void WareConfiguratorPanel::productionTargetUpdate() {
     ComplexGeneratorBase test(settings_, this->ware_target_container);
     auto build_result = test.build();
-    //TODO: add all new secondary targets here
 
     const auto &current_production = test.getCurrentProduction();
 
     // Delete all secondary targets here
     for (const auto &[ware_id, widget]: this->ware_configurators) {
-        if (!current_production.isPrimaryTarget(ware_id)) {
-            this->layout()->removeWidget(widget);
-            delete widget;
-        }
+        if (!widget->getWareTarget()->is_secondary)
+            continue;
+
+        this->layout()->removeWidget(widget);
+        delete widget;
     }
 
     // Read secondary targets
