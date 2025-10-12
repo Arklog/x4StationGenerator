@@ -123,6 +123,10 @@ WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
 void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
                                                     long int value,
                                                     long int cycle_time) {
+    if (!isWareProduced(ware_id)) {
+        spdlog::info("ware {} is not produced, skipping", ware_id.raw());
+        return;
+    }
     spdlog::debug("update current production {}", ware_id.raw());
 
     auto is_produced = this->current_production_.isPrimaryTarget(ware_id) || this->current_production_.
@@ -165,4 +169,8 @@ t_x4_complex ComplexGeneratorBase::build() {
 
     spdlog::info("finished complex generation");
     return result;
+}
+
+const ComplexGeneratorBase::t_target_container &ComplexGeneratorBase::getCurrentProduction() const {
+    return current_production_;
 }

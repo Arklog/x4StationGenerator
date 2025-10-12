@@ -14,6 +14,7 @@
 
 #include "StationBuilder/Generator/ComplexGeneratorBase.hpp"
 #include "spdlog/spdlog.h"
+#include "spdlog/fmt/bundled/chrono.h"
 
 WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
                                              QWidget *parent)
@@ -31,16 +32,24 @@ WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
 
-void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
+void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsigned amount) {
     if (this->ware_target_container.isPrimaryTarget(ware_id)) {
         spdlog::info("{} is already a primary target, skipping", ware_id.raw());
         return;
     }
 
     // Create a new ware configurator
-    this->ware_target_container.setPrimaryTarget(ware_id);
-    auto ware_target = this->ware_target_container.getPrimaryTarget(ware_id);
-    auto ware_configurator = new WareConfigurator(ware_target, this);
+    WareConfigurator *ware_configurator = nullptr;
+    if (!is_secondary) {
+        this->ware_target_container.setPrimaryTarget(ware_id);
+        auto ware_target = this->ware_target_container.getPrimaryTarget(ware_id);
+        ware_configurator = new WareConfigurator(ware_target, this);
+    } else {
+        this->ware_target_container.setSecondaryTarget(ware_id);
+        auto ware_target = this->ware_target_container.getSecondaryTarget(ware_id);
+        ware_target->prodution = amount;
+        ware_configurator = new WareConfigurator(ware_target, this);
+    }
 
     // Store the configurator and add it to the layout
     this->ware_configurators[ware_id] = ware_configurator;
@@ -66,8 +75,10 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
                 }
             }
             this->layout()->removeWidget(widget);
-
+            this->ware_target_container.unsetPrimaryTarget(wid);
             delete widget;
+
+            this->productionTargetUpdate();
         });
     connect(ware_configurator, &WareConfigurator::shouldUpdate, this,
             &WareConfiguratorPanel::productionTargetUpdate);
@@ -76,5 +87,22 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id) {
 void WareConfiguratorPanel::productionTargetUpdate() {
     ComplexGeneratorBase test(settings_, this->ware_target_container);
     auto build_result = test.build();
+    //TODO: add all new secondary targets here
+
+    const auto &current_production = test.getCurrentProduction();
+
+    // Delete all secondary targets here
+    for (const auto &[ware_id, widget]: this->ware_configurators) {
+        if (!current_production.isPrimaryTarget(ware_id)) {
+            this->layout()->removeWidget(widget);
+            delete widget;
+        }
+    }
+
+    // Read secondary targets
+    for (const auto &ware_target: current_production.getSecondaryTargets()) {
+        this->addWare(ware_target->ware_id, true, ware_target->prodution);
+    }
+
     emit shouldUpdate(build_result);
 }

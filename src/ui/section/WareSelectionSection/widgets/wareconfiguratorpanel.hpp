@@ -35,7 +35,7 @@ public:
     ~WareConfiguratorPanel() override;
 
 public slots:
-    void addWare(t_ware_id ware_id);
+    void addWare(t_ware_id ware_id, bool is_secondary = false, unsigned amount = 0);
 
     void productionTargetUpdate();
 

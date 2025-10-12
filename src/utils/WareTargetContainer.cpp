@@ -62,6 +62,8 @@ void WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
     if (ware_iter == ware_targets.end())
         throw std::logic_error("Ware not found in ware targets");
 
+    ware_iter->is_secondary = false;
+    ware_iter->prodution = 0;
     ware_targets_primary.push_back(&*ware_iter);
 }
 
@@ -72,6 +74,7 @@ void WareTargetContainer::unsetPrimaryTarget(const t_ware_id &ware_id) {
         throw std::out_of_range("Ware is not a primary target");
 
     (*iter)->prodution = 0;
+    (*iter)->is_secondary = false;
     ware_targets_primary.erase(iter);
 }
 
@@ -89,8 +92,10 @@ void WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
         return;
     }
 
-    ware_targets_secondary.push_back(
-        const_cast<WareTarget *>(getTarget(ware_id)));
+    auto ware_target = const_cast<WareTarget *>(getTarget(ware_id));
+    ware_target->is_secondary = true;
+    ware_target->prodution = 0;
+    ware_targets_secondary.push_back(ware_target);
 }
 
 WareTarget *

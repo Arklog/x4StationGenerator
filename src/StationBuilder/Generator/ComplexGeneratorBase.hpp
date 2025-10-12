@@ -79,6 +79,8 @@ public:
     virtual ~ComplexGeneratorBase() = default;
 
     t_x4_complex build();
+
+    const t_target_container &getCurrentProduction() const;
 };
 
 #endif // COMPLEXGENERATOR_HPP

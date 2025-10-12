@@ -32,9 +32,9 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
         ui->production_method_combo_box->addItem(text);
     }
 
-    this->ware_target->prodution = ui->target_input->value();
-    this->ware_target->source_module = getModuleIdFromName(
-        ui->production_method_combo_box->currentText().toStdString());
+    // this->ware_target->prodution = ui->target_input->value();
+    // this->ware_target->source_module = getModuleIdFromName(
+    // ui->production_method_combo_box->currentText().toStdString());
 
     // Is triggered when the ware amount required is changed
     auto trigger_update_target = [this](int value) -> void {
@@ -72,7 +72,9 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
     this->setPalette(palete);
 
     ui->target_input->setReadOnly(true);
+    ui->target_input->setDisabled(true);
     ui->remove_button->setDisabled(true);
+    ui->target_input->setValue(ware_target->prodution);
 }
 
 WareConfigurator::~WareConfigurator() { delete ui; }

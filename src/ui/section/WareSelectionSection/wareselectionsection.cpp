@@ -23,7 +23,7 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
     auto ware_configurator_panel = new WareConfiguratorPanel(settings, this);
 
     auto const &modules = getModules();
-    for (auto const &[module_id, module] : modules) {
+    for (auto const &[module_id, module]: modules) {
         if (module->type == ModuleType::habitat)
             ui->habitat_input->addItem(QString::fromStdString(module->name));
     }
@@ -33,7 +33,9 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
     ui->main_layout->addWidget(ware_selector, 0, 0);
     ui->main_layout->addWidget(ware_configurator_panel, 0, 1);
 
-    connect(ware_selector, &WaresSelector::wareSelected, ware_configurator_panel, &WareConfiguratorPanel::addWare);
+    connect(ware_selector, &WaresSelector::wareSelected, [this, ware_configurator_panel](t_ware_id ware_id) {
+        ware_configurator_panel->addWare(ware_id, false, 0);
+    });
     connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this](t_x4_complex complex) {
         this->complex_ = std::move(complex);
         emit complexUpdated();
@@ -47,7 +49,7 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
         const auto &modules = getModules();
         auto name = text.toStdString();
 
-        for (auto const &[module_id, module] : modules) {
+        for (auto const &[module_id, module]: modules) {
             if (module->name != name)
                 continue;
             this->settings_.workforce_module = module_id;
