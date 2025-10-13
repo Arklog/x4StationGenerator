@@ -12,23 +12,31 @@
 #include "Data/Data.hpp"
 
 #include "StationBuilder/defines.hpp"
+#include "utils/WareTargetContainer.hpp"
+
 #include <QGroupBox>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class WareConfiguratorPanel; }
+
+namespace Ui {
+    class WareConfiguratorPanel;
+}
+
 QT_END_NAMESPACE
 
 class WareConfigurator;
 
 class WareConfiguratorPanel : public QGroupBox {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-    WareConfiguratorPanel(const Settings& settings, QWidget *parent = nullptr);
+    WareConfiguratorPanel(const Settings &settings, QWidget *parent = nullptr);
+
     ~WareConfiguratorPanel() override;
 
 public slots:
-    void addWare(t_ware_id ware_id);
+    void addWare(t_ware_id ware_id, bool is_secondary = false, unsigned amount = 0);
+
     void productionTargetUpdate();
 
 signals:
@@ -36,10 +44,9 @@ signals:
 
 private:
     Ui::WareConfiguratorPanel *ui;
-    std::unordered_map<t_ware_id, WareConfigurator *> ware_configurators;
-    t_target_list ware_targets;
+    std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> > ware_configurators;
+    WareTargetContainer ware_target_container;
     const Settings &settings_;
 };
 
-
-#endif //WARECONFIGURATORPANEL_HPP
+#endif // WARECONFIGURATORPANEL_HPP

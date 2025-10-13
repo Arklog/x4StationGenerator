@@ -10,56 +10,57 @@
 
 #include "spdlog/spdlog.h"
 
-bool ModuleProduction::operator==(
-    const t_production_method_id &production_method_id) const {
-  return this->method == production_method_id;
+bool ModuleProduction::operator==(const t_production_method_id &production_method_id) const {
+    return this->method == production_method_id;
 }
 
 double ModuleProduction::getWorkforceFactor() const {
-  for (auto i : effects) {
-    if (i.type != "work")
-      continue;
-    return i.product + 1;
-  }
-  return 1;
+    for (auto i: effects) {
+        if (i.type != "work")
+            continue;
+        return i.product + 1;
+    }
+    return 1;
 }
 
 bool Ware::operator==(const t_ware_id &ware_id) const {
-  return this->id == ware_id;
+    return this->id == ware_id;
 }
 
-const Ware &Module::getWare() const { return this->production[0]; }
+const Ware &Module::getWare() const {
+    return this->production[0];
+}
 
 bool Module::operator==(const t_module_id &module_id) const {
-  return this->id == module_id;
+    return this->id == module_id;
 }
 
 const ModuleProduction &Module::getProduction() const {
-  if (!this->production_method.has_value()) {
-    spdlog::error("{} no production method found", this->id);
-    throw std::runtime_error("Production method not found");
-  }
+    if (!this->production_method.has_value()) {
+        spdlog::error("{} no production method found", this->id);
+        throw std::runtime_error("Production method not found");
+    }
 
-  const auto &production_method = this->production_method;
-  const auto &ware = this->production[0].production;
+    const auto &production_method = this->production_method;
+    const auto &ware = this->production[0].production;
 
-  const auto iter = std::find(ware.cbegin(), ware.cend(), production_method);
-  if (iter == ware.cend()) {
-    spdlog::error("{} no production method found", this->id);
-    throw std::runtime_error("Production method not found");
-  }
+    const auto iter = std::find(ware.cbegin(), ware.cend(), production_method);
+    if (iter == ware.cend()) {
+        spdlog::error("{} no production method found", this->id);
+        throw std::runtime_error("Production method not found");
+    }
 
-  return *iter;
+    return *iter;
 }
 
 t_ware_quantity Module::getBuildCost() const {
-  t_ware_quantity w_quantity{};
+    t_ware_quantity w_quantity{};
 
-  for (const auto &[ware_id, ware_amount] : this->build_cost.wares) {
-    w_quantity[ware_id] += ware_amount;
-  }
+    for (const auto &[ware_id, ware_amount]: this->build_cost.wares) {
+        w_quantity[ware_id] += ware_amount;
+    }
 
-  return w_quantity;
+    return w_quantity;
 }
 
 void from_json(const nlohmann::json &j, Price &price) {
@@ -74,14 +75,14 @@ void from_json(const nlohmann::json &j, Price &price) {
 }
 
 void from_json(const nlohmann::json &j, WareGroup &ware_group) {
-  try {
-    ware_group.id = j["id"].get<t_ware_id>();
-    ware_group.name = j["name"].get<std::string>();
-    ware_group.tier = j.contains("tier") ? j["tier"].get<unsigned int>() : 0;
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse ware group id: {}", e.what());
-    throw;
-  }
+    try {
+        ware_group.id = j["id"].get<t_ware_group_id>();
+        ware_group.name = j["name"].get<std::string>();
+        ware_group.tier = j.contains("tier") ? j["tier"].get<unsigned int>() : 0;
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse ware group id: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, ProductionEffect &production_effect) {
@@ -134,7 +135,7 @@ void from_json(const nlohmann::json &j, Ware &ware) {
                           ? j["production"].get<std::vector<ModuleProduction>>()
                           : std::vector<ModuleProduction>();
 
-    spdlog::debug("ware {} parsed", ware.id);
+    spdlog::debug("ware {} parsed", ware.id.raw());
   } catch (std::exception &e) {
     spdlog::error("Failed to parse ware production from json: {}", e.what());
     throw;

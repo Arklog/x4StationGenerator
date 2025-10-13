@@ -12,33 +12,50 @@
 
 #include "StationBuilder/defines.hpp"
 
-
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
-    class WareConfigurator;
+class WareConfigurator;
 }
 
 QT_END_NAMESPACE
 
 class WareConfigurator : public QFrame {
-    Q_OBJECT
+  Q_OBJECT
 
 public:
-    explicit WareConfigurator(const t_ware_id& ware_id, QWidget *parent = nullptr);
+  /**
+   * Ctor
+   * @param ware_id The ware to configure
+   * @param parent The parent widget
+   * @param is_secondary Is this a secondary ware (byproduct of the main
+   * production)
+   */
+  explicit WareConfigurator(WareTarget *ware_target, QWidget *parent = nullptr);
 
-    ~WareConfigurator() override;
+  ~WareConfigurator() override;
 
-    const WareTarget* getWareTarget() const;
+  /**
+   * Get the current ware target configuration
+   * @return The ware target
+   */
+  const WareTarget *getWareTarget() const;
 
 signals:
-    void shouldRemove(t_ware_id ware_id);
-    void shouldUpdate();
+  /**
+   * Signal emitted when the user wants to remove this ware from the list
+   * @param ware_id
+   */
+  void shouldRemove(t_ware_id ware_id);
+
+  /**
+   * Signal emitted when the user changes the target or the source module
+   */
+  void shouldUpdate();
 
 private:
-    Ui::WareConfigurator *ui;
-    WareTarget ware_target;
+  Ui::WareConfigurator *ui;
+  WareTarget *ware_target;
 };
 
-
-#endif //WARECONFIGURATOR_HPP
+#endif // WARECONFIGURATOR_HPP
