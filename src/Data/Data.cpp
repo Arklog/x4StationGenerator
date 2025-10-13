@@ -37,17 +37,23 @@ bool Module::operator==(const t_module_id &module_id) const {
 
 const ModuleProduction &Module::getProduction() const {
     if (!this->production_method.has_value()) {
-        spdlog::error("{} no production method found", this->id);
+        spdlog::error("[ModuleProduction]: {} no production method found", this->id);
         throw std::runtime_error("Production method not found");
     }
 
     const auto &production_method = this->production_method;
     const auto &ware = this->production[0].production;
 
-    const auto iter = std::find(ware.cbegin(), ware.cend(), production_method);
+    auto iter = std::find(ware.cbegin(), ware.cend(), production_method);
+    if (iter != ware.cend()) {
+        spdlog::error("[ModuleProduction]: {} no production method found, using default", this->id);
+        return *iter;
+    }
+
+    iter = std::find(ware.cbegin(), ware.cend(), "default");
     if (iter == ware.cend()) {
-        spdlog::error("{} no production method found", this->id);
-        throw std::runtime_error("Production method not found");
+        spdlog::error("[ModuleProduction]: {} no default production method found", this->id);
+        throw std::out_of_range("No default production method found");
     }
 
     return *iter;
@@ -64,14 +70,14 @@ t_ware_quantity Module::getBuildCost() const {
 }
 
 void from_json(const nlohmann::json &j, Price &price) {
-  try {
-    price.min = j["min"].get<unsigned int>();
-    price.max = j["max"].get<unsigned int>();
-    price.avg = j["avg"].get<unsigned int>();
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse price from json: {}", e.what());
-    throw;
-  }
+    try {
+        price.min = j["min"].get<unsigned int>();
+        price.max = j["max"].get<unsigned int>();
+        price.avg = j["avg"].get<unsigned int>();
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse price from json: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, WareGroup &ware_group) {
@@ -86,92 +92,94 @@ void from_json(const nlohmann::json &j, WareGroup &ware_group) {
 }
 
 void from_json(const nlohmann::json &j, ProductionEffect &production_effect) {
-  try {
-    production_effect.type = j["type"].get<std::string>();
-    production_effect.product = j["product"].get<double>();
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse production effect type: {}", e.what());
-    throw;
-  }
+    try {
+        production_effect.type = j["type"].get<std::string>();
+        production_effect.product = j["product"].get<double>();
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse production effect type: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, WareAmount &ware_amount) {
-  try {
-    ware_amount.id = j["ware"].get<t_ware_id>();
-    ware_amount.amount = j["amount"].get<unsigned int>();
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse ware amount from json: {}", e.what());
-    throw;
-  }
+    try {
+        ware_amount.id = j["ware"].get<t_ware_id>();
+        ware_amount.amount = j["amount"].get<unsigned int>();
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse ware amount from json: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, ModuleProduction &m) {
-  try {
-    m.name = j["name"].get<std::string>();
-    m.method = j["method"].get<std::string>();
-    m.time = j["time"].get<unsigned int>();
-    m.amount = j["amount"].get<unsigned int>();
-    m.wares = j["wares"].get<std::vector<WareAmount>>();
-    m.effects = j["effects"];
+    try {
+        m.name = j["name"].get<std::string>();
+        m.method = j["method"].get<std::string>();
+        m.time = j["time"].get<unsigned int>();
+        m.amount = j["amount"].get<unsigned int>();
+        m.wares = j["wares"].get<std::vector<WareAmount> >();
+        m.effects = j["effects"];
 
-    spdlog::debug("module production {} parsed", m.name);
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse module production from json: {}", e.what());
-    throw;
-  }
+        spdlog::debug("module production {} parsed", m.name);
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse module production from json: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, Ware &ware) {
-  try {
-    ware.id = j["id"].get<t_ware_id>();
-    ware.name = j["name"].get<std::string>();
-    // ware.description = j["description"].get<std::string>();
-    // spdlog::debug("parsed ware production description from json");
-    ware.volume = j["volume"].get<unsigned int>();
-    ware.transport = j["transport"].get<std::string>();
-    ware.price = j["price"].get<Price>();
-    ware.group = j["group"].get<WareGroup>();
-    ware.production = j.contains("production")
-                          ? j["production"].get<std::vector<ModuleProduction>>()
-                          : std::vector<ModuleProduction>();
+    try {
+        ware.id = j["id"].get<t_ware_id>();
+        ware.name = j["name"].get<std::string>();
+        // ware.description = j["description"].get<std::string>();
+        // spdlog::debug("parsed ware production description from json");
+        ware.volume = j["volume"].get<unsigned int>();
+        ware.transport = j["transport"].get<std::string>();
+        ware.price = j["price"].get<Price>();
+        ware.group = j["group"].get<WareGroup>();
+        ware.production = j.contains("production")
+                              ? j["production"].get<std::vector<ModuleProduction> >()
+                              : std::vector<ModuleProduction>();
 
-    spdlog::debug("ware {} parsed", ware.id.raw());
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse ware production from json: {}", e.what());
-    throw;
-  }
+        spdlog::debug("ware {} parsed", ware.id.raw());
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse ware production from json: {}", e.what());
+        throw;
+    }
 }
 
 void from_json(const nlohmann::json &j, Module &m) {
-  try {
-    m.id = j["id"].get<t_module_id>();
-    m.name = j["name"].get<std::string>();
-    m.price = j["price"].get<Price>();
-    m.macro = j["macro"].get<std::string>();
-    m.production = j.contains("product")
-                       ? j.at("product").get<std::vector<Ware>>()
-                       : std::vector<Ware>{};
-    m.type = j.contains("type") ? j["type"].get<std::string>()
-                                : std::optional<std::string>{};
-    m.production_method = j.contains("production_method")
-                              ? j["production_method"].get<std::string>()
-                              : std::optional<std::string>{};
-    m.build_cost = j["production"].get<std::vector<ModuleProduction>>()[0];
-    m.workforce_capacity = j.contains("workforce_capacity")
-                               ? j["workforce_capacity"].get<unsigned int>()
-                               : std::optional<unsigned int>{};
-    m.workforce_max = j.contains("workforce_max")
-                          ? j["workforce_max"].get<unsigned int>()
-                          : std::optional<unsigned int>{};
-    m.race = j.contains("race") ? j["race"].get<std::string>()
-                                : std::optional<std::string>{};
+    try {
+        m.id = j["id"].get<t_module_id>();
+        m.name = j["name"].get<std::string>();
+        m.price = j["price"].get<Price>();
+        m.macro = j["macro"].get<std::string>();
+        m.production = j.contains("product")
+                           ? j.at("product").get<std::vector<Ware> >()
+                           : std::vector<Ware>{};
+        m.type = j.contains("type")
+                     ? j["type"].get<std::string>()
+                     : std::optional<std::string>{};
+        m.production_method = j.contains("production_method")
+                                  ? j["production_method"].get<std::string>()
+                                  : std::optional<std::string>{};
+        m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
+        m.workforce_capacity = j.contains("workforce_capacity")
+                                   ? j["workforce_capacity"].get<unsigned int>()
+                                   : std::optional<unsigned int>{};
+        m.workforce_max = j.contains("workforce_max")
+                              ? j["workforce_max"].get<unsigned int>()
+                              : std::optional<unsigned int>{};
+        m.race = j.contains("race")
+                     ? j["race"].get<std::string>()
+                     : std::optional<std::string>{};
 
-    if (m.production.size() > 1)
-      throw std::runtime_error("No more than 1 ware produced");
+        if (m.production.size() > 1)
+            throw std::runtime_error("No more than 1 ware produced");
 
-    spdlog::debug("module {} parsed", m.id);
-  } catch (std::exception &e) {
-    spdlog::error("Failed to parse module from json: {}", e.what());
-    throw;
-  }
+        spdlog::debug("module {} parsed", m.id);
+    } catch (std::exception &e) {
+        spdlog::error("Failed to parse module from json: {}", e.what());
+        throw;
+    }
 }
