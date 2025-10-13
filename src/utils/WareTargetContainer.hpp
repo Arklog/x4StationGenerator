@@ -6,6 +6,10 @@
 #define X4STATIONGENERATOR_WARETARGETCONTAINER_H
 #include "StationBuilder/defines.hpp"
 
+/**
+ * Container for ware targets, allows to manage primary and secondary targets
+ * and ensure that a ware is not both a primary and secondary target
+ */
 class WareTargetContainer {
 private:
     using ware_targets_main_container_t = std::vector<WareTarget>;
