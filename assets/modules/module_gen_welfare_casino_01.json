@@ -1,0 +1,1 @@
+{"id":"module_gen_welfare_casino_01","name":"Casino","macro":"welfare_gen_casino_01_macro","price":{"min":3311343,"max":4480052,"avg":3895697},"production":[{"time":1155,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":594},{"ware":"energycells","amount":541},{"ware":"hullparts","amount":2445}],"effects":[]}]}

@@ -5,14 +5,28 @@ include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 23)
 
+#################################################################################
+# External Libraries
+#################################################################################
+
+include(FetchContent)
 
 FetchContent_Declare(
-        json
+        spdlog
+        GIT_REPOSITORY https://github.com/gabime/spdlog
+        GIT_TAG v1.15.3
+)
+
+FetchContent_Declare(
+        argparse
+        GIT_REPOSITORY https://github.com/p-ranav/argparse
+        GIT_TAG v3.2
+)
+
+FetchContent_Declare(
+        nlohmann_json
         GIT_REPOSITORY https://github.com/nlohmann/json
         GIT_TAG v3.12.0
-)
-FetchContent_MakeAvailable(
-        json
 )
 
 FetchContent_Declare(
@@ -20,16 +34,25 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/gabime/spdlog
         GIT_TAG v1.15.3
 )
+
 FetchContent_MakeAvailable(
         spdlog
+        argparse
+        nlohmann_json
 )
+
+#################################################################################
+# Qt6
+#################################################################################
 
 if (WIN32)
     set(CMAKE_CXX_COMPILER_LAUNCHER sccache)
 else ()
-    find_program(CCACHE ccache)
-
-    if ("${CCACHE_BIN}" STREQUAL "CCACHE-NOTFOUND")
+    find_program(CCACHE_PROGRAM ccache)
+    if (CCACHE_PROGRAM STREQUAL "CCACHE_PROGRAM-NOTFOUND")
+        message(WARNING "ccache not found!")
+    else ()
+        message(STATUS "ccache found: ${CCACHE_PROGRAM}")
         set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
         set(CMAKE_C_COMPILER_LAUNCHER ccache)
     endif ()
@@ -46,12 +69,18 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-find_package(Qt6 COMPONENTS
+find_package(
+        Qt6 COMPONENTS
         Core
         Gui
         Widgets
         Charts
-        REQUIRED)
+        REQUIRED
+)
+
+#################################################################################
+# Application
+#################################################################################
 
 add_executable(x4StationGenerator
         main.cpp

@@ -1,0 +1,1 @@
+{"id":"module_spl_def_claim_01","name":"Split Administrative Centre","macro":"defence_spl_claim_01_macro","type":"claim","price":{"min":750516,"max":1015404,"avg":882960},"production":[{"time":541,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":138},{"ware":"energycells","amount":276},{"ware":"hullparts","amount":505}],"effects":[]}]}

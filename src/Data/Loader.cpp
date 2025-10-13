@@ -33,6 +33,7 @@ void Loader::_loadModules() {
             auto j = nlohmann::json::parse(file);
             this->_modules_json.push_back(j.get<Module>());
             file.close();
+
         } catch (const std::exception &e) {
             spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
         }
@@ -55,7 +56,7 @@ void Loader::_loadWorkforce() {
 
         spdlog::debug("found {} workforce", this->_workforce.size());
     } catch (const std::exception &e) {
-        spdlog::error("could not parse workforce");
+        spdlog::error("could not parse workforce: {}", e.what());
         throw;
     }
 }

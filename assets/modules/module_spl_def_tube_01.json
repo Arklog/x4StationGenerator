@@ -1,0 +1,1 @@
+{"id":"module_spl_def_tube_01","name":"Split Bridge Defence Platform","macro":"defence_spl_tube_01_macro","type":"defence","price":{"min":570940,"max":772448,"avg":671694},"production":[{"time":410,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":105},{"ware":"energycells","amount":210},{"ware":"hullparts","amount":384}],"effects":[]}]}

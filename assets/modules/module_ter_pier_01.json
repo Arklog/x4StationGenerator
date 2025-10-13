@@ -1,0 +1,1 @@
+{"id":"module_ter_pier_01","name":"Terran 3-Dock T Pier","macro":"pier_ter_harbor_01_macro","type":"pier","price":{"min":3159110,"max":4274089,"avg":3716600},"production":[{"time":750,"amount":1,"name":"Terran","method":"default","wares":[{"ware":"computronicsubstrate","amount":146},{"ware":"energycells","amount":1083},{"ware":"siliconcarbide","amount":301}],"effects":[]}]}

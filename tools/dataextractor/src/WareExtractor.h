@@ -1,0 +1,10 @@
+//
+// Created by pierre on 10/6/25.
+//
+
+#ifndef X4STATIONGENERATOR_WAREEXTRACTOR_H
+#define X4STATIONGENERATOR_WAREEXTRACTOR_H
+
+class WareExtractor {};
+
+#endif // X4STATIONGENERATOR_WAREEXTRACTOR_H

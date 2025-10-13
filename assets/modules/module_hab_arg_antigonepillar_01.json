@@ -1,0 +1,1 @@
+{"id":"module_hab_arg_antigonepillar_01","name":"Argon L Housing Spire","macro":"landmarks_arg_antigonepillar_01_macro","price":{"min":16691091,"max":22582065,"avg":19636578},"production":[{"time":530,"amount":1,"name":"Universal","method":"default","wares":[{"ware":"claytronics","amount":117},{"ware":"energycells","amount":6627},{"ware":"hullparts","amount":888}],"effects":[]}]}

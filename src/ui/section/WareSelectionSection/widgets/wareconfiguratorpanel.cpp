@@ -32,9 +32,22 @@ WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
 
 void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsigned amount) {
+    spdlog::debug("[WareConfiguratorPanel] adding ware {} as {} target with amount {}",
+                  ware_id.raw(), is_secondary ? "secondary" : "primary", amount);
+
+    // Skip adding secondary target if already primary
     if (this->ware_target_container.isPrimaryTarget(ware_id)) {
         spdlog::info("{} is already a primary target, skipping", ware_id.raw());
         return;
+    }
+
+    // If already secondary, remove secondary widget and replace by primary
+    if (this->ware_target_container.isSecondaryTarget(ware_id) && !is_secondary) {
+        spdlog::info("[WareConfiguratorPanel] {} is already a secondary target, upgrading to primary",
+                     ware_id.raw());
+        auto widget = this->ware_configurators[ware_id];
+        this->layout()->removeWidget(widget);
+        delete widget;
     }
 
     // Create a new ware configurator
@@ -56,22 +69,28 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
 
     connect(
         ware_configurator, &WareConfigurator::shouldRemove,
-        [this](t_ware_id wid) -> void {
-            if (!this->ware_target_container.isPrimaryTarget(wid)) {
-                spdlog::error("Ware {} is not a primary target, cannot remove", wid.raw());
+        [this](t_ware_id ware_id) -> void {
+            if (!this->ware_target_container.isPrimaryTarget(ware_id)) {
+                spdlog::error("Ware {} is not a primary target, cannot remove", ware_id.raw());
                 throw std::logic_error("Ware is not a primary target, cannot remove");
             }
 
-            auto widget = this->ware_configurators[wid];
+            auto widget = this->ware_configurators[ware_id];
 
             this->layout()->removeWidget(widget);
-            this->ware_target_container.unsetPrimaryTarget(wid);
+            this->ware_target_container.unsetPrimaryTarget(ware_id);
+            this->ware_configurators.erase(ware_id);
             delete widget;
 
             this->productionTargetUpdate();
         });
     connect(ware_configurator, &WareConfigurator::shouldUpdate, this,
             &WareConfiguratorPanel::productionTargetUpdate);
+
+    // Cleanup ui
+    if (!is_secondary) {
+        this->productionTargetUpdate();
+    }
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {

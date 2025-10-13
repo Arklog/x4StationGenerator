@@ -1,11 +1,13 @@
 import os
 from typing import List
 
-from data_types import ProductionDict, ModuleList
-from macros.production import (
+from loguru import logger
+
+from models.macros.production import (
     ProductionMacroMacrosXmlModel,
     ProductionMacroMacroXmlModel,
 )
+from utils.data_types import ProductionDict, ModuleList
 
 PRODUCTION_ROOT = "assets/structures/production/macros"
 production_map: ProductionDict = {}
@@ -21,7 +23,7 @@ def load_productions(root: str, habitats_map: ProductionDict = production_map) -
     """
     lookup_folder = os.path.join(root, PRODUCTION_ROOT)
 
-    print("Loading production macros")
+    logger.info("loading production macros")
 
     if not os.path.exists(lookup_folder):
         raise FileNotFoundError(
@@ -30,7 +32,7 @@ def load_productions(root: str, habitats_map: ProductionDict = production_map) -
 
     for filename in os.listdir(lookup_folder):
         filename = os.path.join(lookup_folder, filename)
-        print(filename)
+        logger.info(f"parsing production macro file: {filename}")
 
         if not os.path.isfile(filename):
             raise FileNotFoundError(f"Not a file: {filename}")
@@ -52,7 +54,7 @@ def load_productions(root: str, habitats_map: ProductionDict = production_map) -
 
 
 def set_production(
-    modules: ModuleList, production_map: ProductionDict = production_map
+        modules: ModuleList, production_map: ProductionDict = production_map
 ) -> None:
     """
     Set habitats in the modules based on the habitats map.
