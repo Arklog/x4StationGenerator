@@ -12,9 +12,6 @@
 #include "nlohmann/json_fwd.hpp"
 
 // typedef std::string t_ware_id;
-typedef std::string t_ware_group_id;
-typedef std::string t_module_id;
-typedef std::string t_production_method_id;
 using t_ware_quantity = std::unordered_map<t_ware_id, unsigned int, std::hash<std::string> >;
 
 struct Price {
@@ -48,6 +45,7 @@ struct ModuleProduction {
     long int amount;
 
     bool operator==(const t_production_method_id &production_method_id) const;
+  bool operator==(const std::string &name) const;
 
     double getWorkforceFactor() const;
 };
@@ -71,7 +69,7 @@ struct Module {
     std::string name;
     std::string macro;
     std::optional<std::string> type;
-    std::optional<std::string> production_method;
+    std::optional<t_production_method_id> production_method;
 
     Price price;
     std::vector<Ware> production;

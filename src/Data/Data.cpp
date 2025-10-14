@@ -13,6 +13,11 @@
 bool ModuleProduction::operator==(const t_production_method_id &production_method_id) const {
     return this->method == production_method_id;
 }
+bool
+ModuleProduction::operator== (const std::string &name) const
+{
+  return this->method.raw () == name;
+}
 
 double ModuleProduction::getWorkforceFactor() const {
     for (auto i: effects) {
@@ -114,7 +119,7 @@ void from_json(const nlohmann::json &j, WareAmount &ware_amount) {
 void from_json(const nlohmann::json &j, ModuleProduction &m) {
     try {
         m.name = j["name"].get<std::string>();
-        m.method = j["method"].get<std::string>();
+        m.method = j["method"].get<t_production_method_id>();
         m.time = j["time"].get<unsigned int>();
         m.amount = j["amount"].get<unsigned int>();
         m.wares = j["wares"].get<std::vector<WareAmount> >();
@@ -161,8 +166,8 @@ void from_json(const nlohmann::json &j, Module &m) {
                      ? j["type"].get<std::string>()
                      : std::optional<std::string>{};
         m.production_method = j.contains("production_method")
-                                  ? j["production_method"].get<std::string>()
-                                  : std::optional<std::string>{};
+                                  ? j["production_method"].get<t_production_method_id>()
+                                  : std::optional<t_production_method_id>{};
         m.build_cost = j["production"].get<std::vector<ModuleProduction> >()[0];
         m.workforce_capacity = j.contains("workforce_capacity")
                                    ? j["workforce_capacity"].get<unsigned int>()
