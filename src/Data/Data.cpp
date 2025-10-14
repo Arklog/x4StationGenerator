@@ -13,8 +13,8 @@
 bool ModuleProduction::operator==(const t_production_method_id &production_method_id) const {
     return this->method == production_method_id;
 }
-bool
-ModuleProduction::operator== (const std::string &name) const
+
+bool ModuleProduction::operator== (const std::string &name) const
 {
   return this->method.raw () == name;
 }
