@@ -15,48 +15,48 @@
 using t_ware_quantity = std::unordered_map<t_ware_id, unsigned int, std::hash<std::string> >;
 
 struct Price {
-    unsigned int min;
-    unsigned int avg;
-    unsigned int max;
+    unsigned int min; // minimum price
+    unsigned int avg; // average price
+    unsigned int max; // maximum price
 };
 
 struct WareGroup {
-    t_ware_group_id id;
-    std::string name;
-    unsigned int tier;
+    t_ware_group_id id;   // ware group id
+    std::string     name; // ware group name
+    unsigned int    tier; // ware group tier
 };
 
 struct WareAmount {
-    t_ware_id id;
-    long int amount;
+    t_ware_id id;     // ware id
+    long int  amount; // amount of ware
 };
 
 struct ProductionEffect {
-    std::string type;
-    double product;
+    std::string type;    // effect type (e.g., "workforce"...)
+    double      product; // effect value
 };
 
 struct ModuleProduction {
-    std::string name;
-    t_production_method_id method;
-    std::vector<WareAmount> wares;
-    std::vector<ProductionEffect> effects;
-    unsigned int time;
-    long int amount;
+    std::string                   name;    // production name
+    t_production_method_id        method;  // production method id
+    std::vector<WareAmount>       wares;   // wares produced/consumed
+    std::vector<ProductionEffect> effects; // production effects
+    unsigned int                  time;    // production time in seconds
+    long int                      amount;  // production amount
 
     bool operator==(const t_production_method_id &production_method_id) const;
-  bool operator==(const std::string &name) const;
+
+    bool operator==(const std::string &name) const;
 
     double getWorkforceFactor() const;
 };
 
 struct Ware {
-    t_ware_id id;
-    std::string name;
-    // std::string description;
-    std::string transport;
-    Price price;
-    WareGroup group;
+    t_ware_id                     id;
+    std::string                   name;
+    std::string                   transport;
+    Price                         price;
+    WareGroup                     group;
     std::vector<ModuleProduction> production;
 
     unsigned int volume;
@@ -65,18 +65,18 @@ struct Ware {
 };
 
 struct Module {
-    t_module_id id;
-    std::string name;
-    std::string macro;
-    std::optional<std::string> type;
+    t_module_id                           id;
+    std::string                           name;
+    std::string                           macro;
+    std::optional<std::string>            type;
     std::optional<t_production_method_id> production_method;
 
-    Price price;
-    std::vector<Ware> production;
-    ModuleProduction build_cost;
+    Price                       price;
+    std::vector<Ware>           production;
+    ModuleProduction            build_cost;
     std::optional<unsigned int> workforce_capacity;
     std::optional<unsigned int> workforce_max;
-    std::optional<std::string> race;
+    std::optional<std::string>  race;
 
     bool operator==(const t_module_id &module_id) const;
 

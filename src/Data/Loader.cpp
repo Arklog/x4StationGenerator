@@ -9,6 +9,7 @@
 #include <qdirlisting.h>
 #include <qstring.h>
 
+#include "Data.hpp"
 #include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
@@ -31,11 +32,12 @@ void Loader::_loadModules() {
 
 
             auto j = nlohmann::json::parse(file);
-            this->_modules_json.push_back(j.get<Module>());
+            // this->_modules_json.push_back(j.get<Module>());
+            Data::registerModule(j.get<Module>());
             file.close();
-
         } catch (const std::exception &e) {
             spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
+            throw;
         }
     }
 }

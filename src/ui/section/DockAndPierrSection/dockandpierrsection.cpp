@@ -13,9 +13,6 @@
 #include "../../widgets/moduleconfigurationpanel.hpp"
 #include "../../widgets/moduleselectionpanel.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
-
-
 DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(new Ui::DockAndPierrSection) {
     ui->setupUi(this);
 

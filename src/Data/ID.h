@@ -13,19 +13,19 @@
 
 #include "spdlog/spdlog.h"
 
-enum class E_IDCLASS
-{
-  IDCLASS_WARE,
-  IDCLASS_WARE_GROUP,
-  IDCLASS_PRODUCTION_METHOD,
-  IDCLASS_MODULE
+enum class E_IDCLASS {
+    IDCLASS_WARE,
+    IDCLASS_WARE_GROUP,
+    IDCLASS_PRODUCTION_METHOD,
+    IDCLASS_MODULE,
+    IDCLASS_RACE
 };
 
 template<E_IDCLASS IDCLASS, typename IDType = std::string>
 class ID {
 private:
-    static std::set<IDType> allowed_ids_;
-    IDType id_;
+    static std::set<IDType> allowed_ids_; // Set of registered IDs
+    IDType                  id_;          // The actual ID value
 
 public:
     ID() : id_() {
@@ -57,8 +57,6 @@ public:
     ID &operator=(ID &&other) noexcept = default;
 
     operator IDType() const { return id_; }
-    // operator const IDType() const { return id_; }
-    // operator IDType &() { return id_; }
     operator const IDType &() const { return id_; }
 
     bool operator==(ID const &other) const { return id_ == other.id_; }
@@ -80,7 +78,7 @@ std::set<IDType> ID<IDCLASS, IDType>::allowed_ids_{};
  * @param j
  * @param id_value
  */
-template <E_IDCLASS IDCLASS, typename IDType = std::string>
+template<E_IDCLASS IDCLASS, typename IDType = std::string>
 void from_json(const nlohmann::json &j, ID<IDCLASS, IDType> &id_value) {
     try {
         auto value = j.template get<IDType>();
@@ -91,35 +89,32 @@ void from_json(const nlohmann::json &j, ID<IDCLASS, IDType> &id_value) {
     }
 }
 
-typedef ID<E_IDCLASS::IDCLASS_WARE, std::string> t_ware_id;
-typedef ID<E_IDCLASS::IDCLASS_WARE_GROUP, std::string> t_ware_group_id;
+typedef ID<E_IDCLASS::IDCLASS_WARE, std::string>              t_ware_id;
+typedef ID<E_IDCLASS::IDCLASS_WARE_GROUP, std::string>        t_ware_group_id;
 typedef ID<E_IDCLASS::IDCLASS_PRODUCTION_METHOD, std::string> t_production_method_id;
-typedef ID<E_IDCLASS::IDCLASS_MODULE, std::string> t_module_id;
+typedef ID<E_IDCLASS::IDCLASS_MODULE, std::string>            t_module_id;
+typedef ID<E_IDCLASS::IDCLASS_RACE, std::string>              t_race_id;
 
+/**
+ * Hash function for ID
+ */
 namespace std {
-template <E_IDCLASS IDCLASS, typename IDType>
-struct hash<ID<IDCLASS, IDType>>
-{
-  size_t operator() (const ID<IDCLASS, IDType>& id) const
-  {
-    return hash<IDType>{}(id.raw());
-  }
-};
+    template<E_IDCLASS IDCLASS, typename IDType>
+    struct hash<ID<IDCLASS, IDType> > {
+        size_t operator()(const ID<IDCLASS, IDType> &id) const {
+            return hash<IDType>{}(id.raw());
+        }
+    };
 }
 
-// template<E_IDCLASS IDCLASS, typename IDType>
-// auto format_as(ID<IDCLASS, IDType> id)
-// {
-  // return IDType;
-// }
-
-template <E_IDCLASS IDCLASS, typename IDType>
-struct fmt::formatter<ID<IDCLASS, IDType>>: formatter<string_view>
-{
-  auto format(ID<IDCLASS, IDType> id, format_context &ctx) const -> format_context::iterator
-  {
-    return formatter<string_view>::format(id.raw(), ctx);
-  }
+/**
+ * Formatter for ID using fmt library
+ */
+template<E_IDCLASS IDCLASS, typename IDType>
+struct fmt::formatter<ID<IDCLASS, IDType> > : formatter<string_view> {
+    auto format(ID<IDCLASS, IDType> id, format_context &ctx) const -> format_context::iterator {
+        return formatter<string_view>::format(id.raw(), ctx);
+    }
 };
 
 #endif // X4STATIONGENERATOR_ID_H

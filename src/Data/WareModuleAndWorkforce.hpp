@@ -20,14 +20,14 @@ t_ware_groups_container;
 typedef std::unordered_map<t_ware_id, const Ware *, std::hash<std::string> >
 t_ware_container;
 typedef std::unordered_map<t_module_id, const Module *> t_modules_container;
-typedef std::set<const Module *, TmpModulePtrCompare> t_module_list;
+typedef std::set<const Module *, TmpModulePtrCompare>   t_module_list;
 typedef std::unordered_map<t_ware_id, t_modules_container, std::hash<std::string> >
 t_ware_to_modules_map;
 
 struct Workforce {
 };
 
-void buildDataFrom(const std::vector<Module> &modules);
+// void buildDataFrom(const std::vector<Module> &modules);
 
 void buildDataFrom(
     const std::map<std::string, std::vector<std::pair<t_ware_id, double> > >
@@ -38,7 +38,7 @@ void buildDataFrom(
  *
  * @return A map of module id to module pointer
  */
-const t_modules_container &getModules();
+// const t_modules_container &getModules();
 
 /**
  * Get all modules producing the ware identified by ware_id
@@ -46,7 +46,7 @@ const t_modules_container &getModules();
  * @param ware_id The id of the ware
  * @return A map of module id to module pointer
  */
-const t_modules_container &getModules(const t_ware_id &ware_id);
+// const t_modules_container &getModules(const t_ware_id &ware_id);
 
 /**
  * Get all wares
@@ -70,7 +70,7 @@ const t_ware_groups_container &getWareGroups();
  * @param production_method The id of the production method used by the module
  * @return
  */
-const Module *getModule(const t_ware_id &id,
+const Module *getModule(const t_ware_id &             id,
                         const t_production_method_id &production_method);
 
 /**
@@ -105,7 +105,7 @@ const t_module_id &getModuleIdFromName(const std::string &name);
  * @param workforce_amount  The amount of workforce
  * @return
  */
-std::vector<WareAmount> getWorkforceUsage(std::string race,
+std::vector<WareAmount> getWorkforceUsage(std::string  race,
                                           unsigned int workforce_amount);
 
 #endif // WARESANDMODULES_HPP

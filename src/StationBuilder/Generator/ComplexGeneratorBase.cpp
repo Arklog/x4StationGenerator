@@ -4,13 +4,12 @@
 
 #include "StationBuilder/Generator/ComplexGeneratorBase.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
-
+#include "Data/Data.hpp"
 #include "spdlog/spdlog.h"
 
 bool ComplexGeneratorBase::_done(const t_target_container &targets,
-                                 t_target_container &current_state,
-                                 t_x4_complex &modules) const {
+                                 t_target_container &      current_state,
+                                 t_x4_complex &            modules) const {
     // check all primary targets ok
     for (auto primary_target: targets.getPrimaryTargets()) {
         auto current_target =
@@ -24,7 +23,7 @@ bool ComplexGeneratorBase::_done(const t_target_container &targets,
     // check secondary targets ok
     for (auto secondary_target: current_state.getSecondaryTargets()) {
         if (secondary_target->prodution < 0 &&
-            isWareProduced(secondary_target->ware_id)) {
+            Data::isWareProduced(secondary_target->ware_id)) {
             return false;
         }
     }
@@ -33,13 +32,13 @@ bool ComplexGeneratorBase::_done(const t_target_container &targets,
 }
 
 void ComplexGeneratorBase::_step(const t_target_container &targets,
-                                 t_target_container &current_state,
-                                 t_x4_complex &modules) {
+                                 t_target_container &      current_state,
+                                 t_x4_complex &            modules) {
     spdlog::info("Step ComplexGeneratorBase");
-    const auto &wares = getWares();
-    const auto &ware = this->_nextTarget(targets, current_state, modules);
+    const auto &wares = Data::wares->ware_map;
+    const auto &ware  = this->_nextTarget(targets, current_state, modules);
 
-    const auto &module_to_add = getModules().at(ware->source_module);
+    const auto &module_to_add     = Data::modules->module_map.at(ware->source_module);
     const auto &module_production = module_to_add->getProduction();
 
     auto amount_produced = module_production.amount;
@@ -60,7 +59,7 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
     if (!settings_.workforce_enables)
         return;
 
-    auto habitat = getModules().at(settings_.workforce_module);
+    auto habitat     = Data::modules->module_map.at(settings_.workforce_module);
     auto consumption = getWorkforceUsage(habitat->race.value(),
                                          module_to_add->workforce_max.value());
     for (const auto &i: consumption) {
@@ -76,8 +75,8 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
 }
 
 WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
-                                              t_target_container &current_state,
-                                              t_x4_complex &modules) {
+                                              t_target_container &      current_state,
+                                              t_x4_complex &            modules) {
     spdlog::debug("determining next target");
     std::vector<t_ware_id> ids{};
 
@@ -86,11 +85,11 @@ WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
     for (const auto &ware: all_wares) {
         const auto &key = ware->ware_id;
 
-        if (!isWareProduced(key))
+        if (!Data::isWareProduced(key))
             continue;
 
         auto is_base_target = targets.isPrimaryTarget(key);
-        auto is_done = is_base_target
+        auto is_done        = is_base_target
                            ? targets.getPrimaryTarget(key)->prodution <= ware->prodution
                            : ware->prodution >= 0;
 
@@ -109,9 +108,9 @@ WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
                           if (a_neg || b_neg)
                               return a_ware->prodution < b_ware->prodution;
 
-                          const auto &wares = getWares();
-                          const auto a_ware_data = wares.at(a_ware->ware_id);
-                          const auto b_ware_data = wares.at(a_ware->ware_id);
+                          const auto &wares       = Data::wares->ware_map;
+                          const auto  a_ware_data = wares.at(a_ware->ware_id);
+                          const auto  b_ware_data = wares.at(a_ware->ware_id);
 
                           return a_ware_data->group.tier > b_ware_data->group.tier;
                       });
@@ -121,9 +120,9 @@ WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
 }
 
 void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
-                                                    long int value,
-                                                    long int cycle_time) {
-    if (!isWareProduced(ware_id)) {
+                                                    long int         value,
+                                                    long int         cycle_time) {
+    if (!Data::isWareProduced(ware_id)) {
         spdlog::info("ware {} is not produced, skipping", ware_id.raw());
         return;
     }
@@ -143,16 +142,16 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
 
     spdlog::debug("adding ware in list {}", ware_id.raw());
     this->current_production_.setSecondaryTarget(ware_id);
-    auto target = this->current_production_.getSecondaryTarget(ware_id);
+    auto target       = this->current_production_.getSecondaryTarget(ware_id);
     target->prodution = value;
 }
 
-ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings,
+ComplexGeneratorBase::ComplexGeneratorBase(const Settings &     settings,
                                            WareTargetContainer &targets)
     : targets_(targets), current_production_{}, settings_(settings) {
     // Copy all targets production methods
     for (const auto &target: targets.getTargets()) {
-        auto current_target = current_production_.getTarget(target.ware_id);
+        auto current_target           = current_production_.getTarget(target.ware_id);
         current_target->source_module = target.source_module;
     }
 
