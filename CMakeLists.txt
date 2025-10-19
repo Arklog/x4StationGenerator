@@ -125,6 +125,8 @@ add_executable(x4StationGenerator
         src/utils/WareTargetContainer.hpp
         src/Data/ID.cpp
         src/Data/ID.h
+        src/Data/Data.cpp
+        src/Data/Data.hpp
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
