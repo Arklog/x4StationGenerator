@@ -13,7 +13,15 @@
 
 #include "spdlog/spdlog.h"
 
-template<unsigned IDCLASS, typename IDType = std::string>
+enum class E_IDCLASS
+{
+  IDCLASS_WARE,
+  IDCLASS_WARE_GROUP,
+  IDCLASS_PRODUCTION_METHOD,
+  IDCLASS_MODULE
+};
+
+template<E_IDCLASS IDCLASS, typename IDType = std::string>
 class ID {
 private:
     static std::set<IDType> allowed_ids_;
@@ -61,12 +69,18 @@ public:
     bool operator>=(ID const &other) const { return id_ >= other.id_; }
 };
 
-template<unsigned IDCLASS, typename IDType>
+template<E_IDCLASS IDCLASS, typename IDType>
 std::set<IDType> ID<IDCLASS, IDType>::allowed_ids_{};
 
-typedef ID<0, std::string> t_ware_id;
-
-template<unsigned IDCLASS, typename IDType = std::string>
+/**
+ * Template function to extract ID from nlohmann json
+ *
+ * @tparam IDCLASS
+ * @tparam IDType
+ * @param j
+ * @param id_value
+ */
+template <E_IDCLASS IDCLASS, typename IDType = std::string>
 void from_json(const nlohmann::json &j, ID<IDCLASS, IDType> &id_value) {
     try {
         auto value = j.template get<IDType>();
@@ -76,5 +90,36 @@ void from_json(const nlohmann::json &j, ID<IDCLASS, IDType> &id_value) {
         spdlog::error(e.what());
     }
 }
+
+typedef ID<E_IDCLASS::IDCLASS_WARE, std::string> t_ware_id;
+typedef ID<E_IDCLASS::IDCLASS_WARE_GROUP, std::string> t_ware_group_id;
+typedef ID<E_IDCLASS::IDCLASS_PRODUCTION_METHOD, std::string> t_production_method_id;
+typedef ID<E_IDCLASS::IDCLASS_MODULE, std::string> t_module_id;
+
+namespace std {
+template <E_IDCLASS IDCLASS, typename IDType>
+struct hash<ID<IDCLASS, IDType>>
+{
+  size_t operator() (const ID<IDCLASS, IDType>& id) const
+  {
+    return hash<IDType>{}(id.raw());
+  }
+};
+}
+
+// template<E_IDCLASS IDCLASS, typename IDType>
+// auto format_as(ID<IDCLASS, IDType> id)
+// {
+  // return IDType;
+// }
+
+template <E_IDCLASS IDCLASS, typename IDType>
+struct fmt::formatter<ID<IDCLASS, IDType>>: formatter<string_view>
+{
+  auto format(ID<IDCLASS, IDType> id, format_context &ctx) const -> format_context::iterator
+  {
+    return formatter<string_view>::format(id.raw(), ctx);
+  }
+};
 
 #endif // X4STATIONGENERATOR_ID_H
