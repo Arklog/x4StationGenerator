@@ -5,7 +5,7 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-#include "Data.hpp"
+#include "RawData.hpp"
 #include "nlohmann/json.hpp"
 
 class Loader {

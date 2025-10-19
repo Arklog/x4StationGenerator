@@ -8,7 +8,7 @@
 #include "wareconfigurator.hpp"
 #include "ui_wareconfigurator.h"
 
-#include "Data/Data.hpp"
+#include "Data/RawData.hpp"
 
 #include "Data/WareModuleAndWorkforce.hpp"
 

@@ -7,8 +7,7 @@
 #include "moduleconfiguration.hpp"
 #include "ui_moduleconfiguration.h"
 
-#include "Data/Data.hpp"
-
+#include "Data/RawData.hpp"
 
 ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, ModuleTarget& target, QWidget *parent) :
     QWidget(parent), ui(new Ui::ModuleConfiguration), dock_or_pierr{dock_or_pierr}, module_target_(target) {

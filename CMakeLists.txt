@@ -98,7 +98,7 @@ add_executable(x4StationGenerator
         src/StationBuilder/Generator/ComplexGeneratorBase.cpp
         src/Data/WareModuleAndWorkforce.cpp
         src/Data/Loader.cpp
-        src/Data/Data.cpp
+        src/Data/RawData.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.hpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.ui

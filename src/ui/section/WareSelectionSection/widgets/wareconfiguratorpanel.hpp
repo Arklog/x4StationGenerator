@@ -9,7 +9,7 @@
 
 #include "ui_wareconfigurator.h"
 
-#include "Data/Data.hpp"
+#include "Data/RawData.hpp"
 
 #include "StationBuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"

@@ -5,7 +5,7 @@
 #ifndef DEFINES_HPP
 #define DEFINES_HPP
 
-#include "Data/Data.hpp"
+#include "Data/RawData.hpp"
 
 namespace ModuleType {
 extern const std::string pier;

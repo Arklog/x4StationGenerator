@@ -7,8 +7,7 @@
 
 #include <QWidget>
 
-#include "Data/Data.hpp"
-
+#include "Data/RawData.hpp"
 
 QT_BEGIN_NAMESPACE
 
