@@ -76,7 +76,7 @@ struct Module {
     ModuleProduction            build_cost;
     std::optional<unsigned int> workforce_capacity;
     std::optional<unsigned int> workforce_max;
-    std::optional<std::string>  race;
+    std::optional<t_race_id>    race;
 
     bool operator==(const t_module_id &module_id) const;
 

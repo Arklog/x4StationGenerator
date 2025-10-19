@@ -7,15 +7,16 @@
 #include <chrono>
 #include <QUuid>
 
+#include "Data/Data.hpp"
 #include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
 
 std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
     std::stringstream plan;
     StationSize station_size{.x_plus = 10, .x_minus = 10, .y_plus = 10, .y_minus = 10, .z_plus = 10, .z_minus = 10};
-    const auto &modules = getModules();
+    const auto &modules = Data::modules->module_map;
 
-    int xpos_pierr = 2500 - 1000 * station_size.x_minus;
-    int xpos_dock = 2700 - 1000 * station_size.x_minus;
+    int                             xpos_pierr = 2500 - 1000 * station_size.x_minus;
+    int                             xpos_dock  = 2700 - 1000 * station_size.x_minus;
     std::stack<std::array<int, 3> > positions_dock{};
     std::stack<std::array<int, 3> > positions_pier{};
 
@@ -38,8 +39,8 @@ std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
     // std::mt19937 eng{rd()};
     // UUIDv4::UUIDGenerator<std::mt19937_64> gen{};
     // auto uuid = gen.getUUID();
-    auto uuid = QUuid::createUuid().toString().toStdString();
-    auto now = std::chrono::system_clock::now();
+    auto uuid      = QUuid::createUuid().toString().toStdString();
+    auto now       = std::chrono::system_clock::now();
     auto timestamp = std::chrono::duration_cast<std::chrono::seconds>(now.time_since_epoch()).count();
 
     for (auto &c: uuid)

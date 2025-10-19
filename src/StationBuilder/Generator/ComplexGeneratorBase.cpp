@@ -60,13 +60,12 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
         return;
 
     auto habitat     = Data::modules->module_map.at(settings_.workforce_module);
-    auto consumption = getWorkforceUsage(habitat->race.value(),
-                                         module_to_add->workforce_max.value());
+    auto consumption = Data::getWorkforceUsage(habitat->race.value(),
+                                               module_to_add->workforce_max.value());
     for (const auto &i: consumption) {
         this->_updateCurrentProduction(i.id, -(i.amount), 3600);
     }
     workforce_ -= module_to_add->workforce_max.value();
-
 
     while (workforce_ < 0) {
         workforce_ += habitat->workforce_capacity.value();
@@ -140,7 +139,7 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
         return;
     }
 
-    spdlog::debug("adding ware in list {}", ware_id.raw());
+    spdlog::debug("adding ware in list {}", ware_id);
     this->current_production_.setSecondaryTarget(ware_id);
     auto target       = this->current_production_.getSecondaryTarget(ware_id);
     target->prodution = value;

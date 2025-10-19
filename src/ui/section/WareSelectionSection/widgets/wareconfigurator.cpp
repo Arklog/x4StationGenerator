@@ -7,6 +7,7 @@
 
 #include "wareconfigurator.hpp"
 #include "ui_wareconfigurator.h"
+#include "Data/Data.hpp"
 
 #include "Data/RawData.hpp"
 
@@ -19,10 +20,10 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
     ui->setupUi(this);
     QFrame::setFrameShape(QFrame::StyledPanel);
 
-    const auto &ware_id = this->ware_target->ware_id;
-    const auto &ware = getWares().at(ware_id);
-    const auto &ware_name = ware->name;
-    const auto &possible_source_modules = getModules(ware_id);
+    const auto &ware_id                 = this->ware_target->ware_id;
+    const auto &ware                    = getWares().at(ware_id);
+    const auto &ware_name               = ware->name;
+    const auto &possible_source_modules = Data::relationships->production_map.at(ware_id);
 
     ui->ware_label->setText(QString(ware_name.c_str()));
 

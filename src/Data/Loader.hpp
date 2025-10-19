@@ -29,11 +29,10 @@ public:
     void load();
 
 
-    std::vector<Ware> _wares_json;
-    std::map<std::string, std::vector<std::pair<t_ware_id, double>>> _workforce;
-    std::vector<Module> _modules_json;
+    std::vector<Ware>                                                     _wares_json;
+    std::unordered_map<t_race_id, std::unordered_map<t_ware_id, double> > _workforce;
+    std::vector<Module>                                                   _modules_json;
 };
-
 
 
 #endif //LOADER_H

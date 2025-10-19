@@ -18,6 +18,7 @@ struct ModuleData {
     t_module_map container_liquid_map;    // map of all liquid container modules by id
     t_module_map production_map;          // map of all production modules by id
     t_module_map processing_map;          // map of all processing modules by id
+    t_module_map dock_and_pierr_map;      // map of all dock and pierr modules by id
     t_module_map dock_map;                // map of all dock modules by id
     t_module_map pierr_map;               // map of all pierr modules by id
     t_module_map habitation_map;          // map of all habitation modules by id
@@ -28,7 +29,7 @@ struct ModuleData {
     t_module_map connection_map;          // map of all connection modules by id
     t_module_map venture_map;             // map of all venture modules by id
 
-    std::unordered_map<const Module *, std::string> module_name_map; // map of module pointer to name
+    std::unordered_map<std::string, const Module *> module_name_map; // map of module pointer to name
 };
 
 struct WareData {
@@ -44,7 +45,11 @@ struct WareGroupData {
 
 struct RelationshipData {
     // map of ware id to list of module ids producing it
-    std::unordered_map<t_ware_id, std::vector<t_module_id> > production_map;
+    std::unordered_map<t_ware_id, std::unordered_map<t_module_id, const Module *> > production_map;
+};
+
+struct WorkforceData {
+    std::map<t_race_id, std::map<t_ware_id, double> > consumption_map;
 };
 
 class Data {
@@ -62,6 +67,7 @@ public:
     static std::shared_ptr<WareData>         wares;
     static std::shared_ptr<WareGroupData>    ware_groups;
     static std::shared_ptr<RelationshipData> relationships;
+    static std::shared_ptr<WorkforceData>    workforce;
 
     /**
      * Register a module and build related data
@@ -70,11 +76,26 @@ public:
     static void registerModule(const Module &module);
 
     /**
+     * Register workforce consumption data
+     * @param workforce
+     */
+    static void registerWorkforce(
+        const std::map<t_race_id, std::map<t_ware_id, double> > &workforce);
+
+    /**
      * Check if the ware identified by ware is produced by any module
      * @param ware
      * @return
      */
     static bool isWareProduced(t_ware_id ware);
+
+    /**
+     * Get ressource consumption from workforce of a given race
+     * @param race the race of the workforce
+     * @param workforce_amount the amount of workforce
+     * @return a vector of ware amounts
+     */
+    static std::vector<WareAmount> getWorkforceUsage(t_race_id race, unsigned int workforce_amount);
 };
 
 #endif // X4STATIONGENERATOR_DATA_HPP

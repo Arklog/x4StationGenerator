@@ -8,6 +8,7 @@ std::shared_ptr<ModuleData>       Data::modules       = std::make_shared<ModuleD
 std::shared_ptr<WareData>         Data::wares         = std::make_shared<WareData>();
 std::shared_ptr<WareGroupData>    Data::ware_groups   = std::make_shared<WareGroupData>();
 std::shared_ptr<RelationshipData> Data::relationships = std::make_shared<RelationshipData>();
+std::shared_ptr<WorkforceData>    Data::workforce     = std::make_shared<WorkforceData>();
 
 void Data::registerWare(const Ware &ware) {
     auto &vector   = wares->wares;
@@ -47,9 +48,9 @@ void Data::registerRelationship(const Module &module, const Ware &ware) {
     auto &prod_map  = relationships->production_map;
 
     if (!prod_map.contains(ware_id)) {
-        prod_map.emplace(ware_id, std::vector<t_module_id>{module_id});
+        prod_map.emplace(ware_id, std::unordered_map<t_module_id, const Module *>{{module_id, &module}});
     } else {
-        prod_map.at(ware_id).emplace_back(module_id);
+        prod_map.at(ware_id).emplace(module_id, &module);
     }
 }
 
@@ -63,24 +64,23 @@ void Data::registerModule(const Module &module) {
         throw std::logic_error("module already registered: " + module.id.raw());
     }
 
-    auto &item      = vector.emplace_back(module);
-    map[item.id]    = &item;
-    name_map[&item] = item.name;
+    const auto &item    = vector.emplace_back(module);
+    map[item.id]        = &item;
+    name_map[item.name] = &item;
 
     if (!module.type.has_value())
         return;
 
     auto const &type  = module.type.value();
     auto const &macro = module.macro;
-
     // Assign module to specific maps based on its type and macro
     if (type == "storage") {
         modules->container_map[item.id] = &item;
-        if (macro.find("solid")) {
+        if (macro.contains("solid")) {
             modules->container_solid_map[item.id] = &item;
-        } else if (macro.find("liquid")) {
+        } else if (macro.contains("liquid")) {
             modules->container_liquid_map[item.id] = &item;
-        } else if (macro.find("container")) {
+        } else if (macro.contains("container")) {
             modules->container_container_map[item.id] = &item;
         } else {
             throw std::logic_error("unknown container type: " + macro);
@@ -118,6 +118,27 @@ void Data::registerModule(const Module &module) {
     }
 }
 
+void Data::registerWorkforce(const std::map<t_race_id, std::map<t_ware_id, double> > &workforce) {
+    Data::workforce->consumption_map = workforce;
+}
+
 bool Data::isWareProduced(t_ware_id ware) {
     return relationships->production_map.contains(ware);
+}
+
+std::vector<WareAmount> Data::getWorkforceUsage(t_race_id race, unsigned int workforce_amount) {
+    try {
+        std::vector<WareAmount> ware_amounts{};
+        auto                    pair_data = Data::workforce->consumption_map.at(race);
+
+        for (const auto &[ware, consumption]: pair_data) {
+            long int final_consumption = std::ceil(consumption * workforce_amount);
+            ware_amounts.emplace_back(ware, final_consumption);
+        }
+
+        return ware_amounts;
+    } catch (const std::out_of_range &e) {
+        spdlog::error("could not find production method {}", race);
+        throw;
+    }
 }

@@ -8,6 +8,7 @@
 #include <QFrame>
 #include <QWidget>
 
+#include "Data/Data.hpp"
 #include "Data/WareModuleAndWorkforce.hpp"
 
 #include "StationBuilder/defines.hpp"
@@ -26,7 +27,7 @@ class ModuleSelectionPanel : public QFrame {
     Q_OBJECT
 
 public:
-    explicit ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent = nullptr);
+    explicit ModuleSelectionPanel(const ModuleData::t_module_map &module_list, QWidget *parent = nullptr);
 
     ~ModuleSelectionPanel() override;
 

@@ -13,19 +13,12 @@
 
 #include <QScrollArea>
 
+#include "Data/Data.hpp"
+
 StorageSection::StorageSection(QWidget *parent) : QWidget(parent), ui(new Ui::StorageSection) {
     ui->setupUi(this);
 
-    const auto &  modules = getModules();
-    t_module_list storage_list{};
-
-    for (const auto &iter: modules) {
-        const auto &key    = iter.first;
-        const auto &module = iter.second;
-
-        if (module->type == ModuleType::storage)
-            storage_list.insert(module);
-    }
+    auto const &storage_list = Data::modules->connection_map;
 
     auto storage_selection_panel      = new ModuleSelectionPanel(storage_list, this);
     auto storage_configuration_panel  = new ModuleConfigurationPanel(this);

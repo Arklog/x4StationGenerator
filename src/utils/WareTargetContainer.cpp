@@ -4,6 +4,7 @@
 
 #include "WareTargetContainer.hpp"
 
+#include "Data/Data.hpp"
 #include "Data/WareModuleAndWorkforce.hpp"
 
 WareTargetContainer::WareTargetContainer()
@@ -12,14 +13,14 @@ WareTargetContainer::WareTargetContainer()
     ware_targets.reserve(wares.size());
 
     for (const auto &[ware_id, ware]: wares) {
-        const auto &modules = getModules(ware_id);
+        const auto &modules = Data::relationships->production_map.at(ware_id);
 
         ware_targets.emplace_back(ware_id, modules.begin()->second->id);
     }
 }
 
 bool WareTargetContainer::isPrimaryTarget(
-    const t_ware_id &ware_id,
+    const t_ware_id &                         ware_id,
     ware_targets_container_t::const_iterator *iter) const {
     const auto check = std::ranges::find_if(ware_targets_primary,
                                             [ware_id](const WareTarget *target) {
@@ -32,7 +33,7 @@ bool WareTargetContainer::isPrimaryTarget(
 }
 
 bool WareTargetContainer::isSecondaryTarget(
-    const t_ware_id &ware_id,
+    const t_ware_id &                         ware_id,
     ware_targets_container_t::const_iterator *iter) const {
     const auto check = std::ranges::find_if(ware_targets_secondary,
                                             [ware_id](const WareTarget *target) {
@@ -63,7 +64,7 @@ void WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
         throw std::logic_error("Ware not found in ware targets");
 
     ware_iter->is_secondary = false;
-    ware_iter->prodution = 0;
+    ware_iter->prodution    = 0;
     ware_targets_primary.push_back(&*ware_iter);
 }
 
@@ -73,13 +74,13 @@ void WareTargetContainer::unsetPrimaryTarget(const t_ware_id &ware_id) {
     if (!isPrimaryTarget(ware_id, &iter))
         throw std::out_of_range("Ware is not a primary target");
 
-    (*iter)->prodution = 0;
+    (*iter)->prodution    = 0;
     (*iter)->is_secondary = false;
     ware_targets_primary.erase(iter);
 }
 
 void WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
-                                             bool allow_primary_switch) {
+                                             bool            allow_primary_switch) {
     ware_targets_container_t::const_iterator iter;
     if (isSecondaryTarget(ware_id, &iter))
         return;
@@ -92,9 +93,9 @@ void WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
         return;
     }
 
-    auto ware_target = const_cast<WareTarget *>(getTarget(ware_id));
+    auto ware_target          = const_cast<WareTarget *>(getTarget(ware_id));
     ware_target->is_secondary = true;
-    ware_target->prodution = 0;
+    ware_target->prodution    = 0;
     ware_targets_secondary.push_back(ware_target);
 }
 

@@ -7,6 +7,7 @@
 #include "wareselectionsection.h"
 
 #include "ui_wareselectionsection.h"
+#include "Data/Data.hpp"
 
 #include"spdlog/spdlog.h"
 
@@ -19,13 +20,11 @@
 WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) : QWidget(parent),
     ui(new Ui::WareSelectionSection), settings_{settings} {
     ui->setupUi(this);
-    auto ware_selector = new WaresSelector(this);
+    auto ware_selector           = new WaresSelector(this);
     auto ware_configurator_panel = new WareConfiguratorPanel(settings, this);
 
-    auto const &modules = getModules();
-    for (auto const &[module_id, module]: modules) {
-        if (module->type == ModuleType::habitat)
-            ui->habitat_input->addItem(QString::fromStdString(module->name));
+    for (auto const &[module_id, module]: Data::modules->habitation_map) {
+        ui->habitat_input->addItem(QString::fromStdString(module->name));
     }
 
     ui->main_layout->setColumnStretch(0, 2);
@@ -46,15 +45,10 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
         ware_configurator_panel->productionTargetUpdate();
     });
     connect(ui->habitat_input, &QComboBox::currentTextChanged, [this, ware_configurator_panel](QString text) {
-        const auto &modules = getModules();
-        auto name = text.toStdString();
+        const auto &modules = Data::modules->module_name_map;
+        auto        name    = text.toStdString();
 
-        for (auto const &[module_id, module]: modules) {
-            if (module->name != name)
-                continue;
-            this->settings_.workforce_module = module_id;
-            break;
-        }
+        this->settings_.workforce_module = modules.at(name)->id;
         spdlog::debug("default habitat changed: {}", this->settings_.workforce_module);
         ware_configurator_panel->productionTargetUpdate();
     });

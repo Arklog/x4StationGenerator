@@ -16,18 +16,9 @@
 DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(new Ui::DockAndPierrSection) {
     ui->setupUi(this);
 
-    const auto& modules = getModules();
-    t_module_list dock_and_pierr_list{};
+    const auto &dock_and_pierr_list = Data::modules->dock_and_pierr_map;
 
-    for (const auto &iter : modules) {
-        const auto& key = iter.first;
-        const auto& module = iter.second;
-
-        if (module->type == ModuleType::pier || module->type == ModuleType::dock)
-            dock_and_pierr_list.insert(module);
-    }
-
-    auto dock_and_pierr_selection_panel = new ModuleSelectionPanel(dock_and_pierr_list, this);
+    auto dock_and_pierr_selection_panel     = new ModuleSelectionPanel(dock_and_pierr_list, this);
     auto dock_and_pierr_configuration_panel = new ModuleConfigurationPanel(this);
 
     ui->dock_and_pierr_selection_scroll_area->setWidget(dock_and_pierr_selection_panel);
@@ -39,8 +30,10 @@ DockAndPierrSection::DockAndPierrSection(QWidget *parent) : QWidget(parent), ui(
     ui->dock_and_pierr_configuration_scroll_area->setLayoutDirection(Qt::RightToLeft);
 
     this->dock_and_pierr_configuration_panel = dock_and_pierr_configuration_panel;
-    connect(dock_and_pierr_selection_panel, &ModuleSelectionPanel::moduleSelected, dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::addModule);
-    connect(dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::targetListUpdated, this, &DockAndPierrSection::dockAndPierrUpdated);
+    connect(dock_and_pierr_selection_panel, &ModuleSelectionPanel::moduleSelected, dock_and_pierr_configuration_panel,
+            &ModuleConfigurationPanel::addModule);
+    connect(dock_and_pierr_configuration_panel, &ModuleConfigurationPanel::targetListUpdated, this,
+            &DockAndPierrSection::dockAndPierrUpdated);
 }
 
 DockAndPierrSection::~DockAndPierrSection() {

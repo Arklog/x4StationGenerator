@@ -13,7 +13,7 @@
 #include "spdlog/spdlog.h"
 #include "nlohmann/json.hpp"
 
-static const auto module_path = QString("assets/modules");
+static const auto module_path    = QString("assets/modules");
 static const auto workforce_path = QString("assets/workforce.json");
 // static const auto module_path = QString("tools/regenerate_ware_and_modules/output/modules");
 
@@ -37,7 +37,7 @@ void Loader::_loadModules() {
             file.close();
         } catch (const std::exception &e) {
             spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
-            throw;
+            // throw;
         }
     }
 }
@@ -53,7 +53,7 @@ void Loader::_loadWorkforce() {
             throw std::runtime_error("Failed to read file " + workforce_path.toStdString());
 
         auto j = nlohmann::json::parse(file);
-        this->_workforce = j.get<std::map<std::string, std::vector<std::pair<t_ware_id, double> > > >();
+        Data::registerWorkforce(j.get<std::map<t_race_id, std::map<t_ware_id, double> > >());
         file.close();
 
         spdlog::debug("found {} workforce", this->_workforce.size());
