@@ -25,10 +25,10 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
         ui->habitat_input->addItem(QString::fromStdString(module->name));
     }
 
-    ui->main_layout->setColumnStretch(0, 2);
-    ui->main_layout->setColumnStretch(1, 1);
-    ui->main_layout->addWidget(ware_selector, 0, 0);
-    ui->main_layout->addWidget(ware_configurator_panel, 0, 1);
+    ui->selection_scroll_area->setWidget(ware_selector);
+    ui->selection_scroll_area->setWidgetResizable(true);
+    ui->configuration_scroll_area->setWidget(ware_configurator_panel);
+    ui->configuration_scroll_area->setWidgetResizable(true);
 
     // Action to add a ware to be configured
     connect(ware_selector, &WaresSelector::wareSelected, [this, ware_configurator_panel](t_ware_id ware_id) {

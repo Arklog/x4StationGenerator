@@ -56,7 +56,7 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
     modules.push_back(module_to_add->id);
 
     // deal with workforce
-    if (!settings_.workforce_enables)
+    if (!settings_.workforce_enables || !module_to_add->workforce_max.has_value())
         return;
 
     auto habitat     = Data::modules->module_map.at(settings_.workforce_module);
