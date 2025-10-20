@@ -58,7 +58,7 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
 
 void SummarySection::updateCostTab(const t_module_quantity &modules) {
     const auto &all_modules = Data::modules->module_map;
-    const auto &all_wares   = getWares();
+    const auto &all_wares   = Data::wares->ware_map;
     cost_view_->deleteLater();
     cost_view_ = new QChartView(this);
     ui->cost_tab_layout->addWidget(cost_view_, 0, 0);
@@ -84,7 +84,7 @@ void SummarySection::updateCostTab(const t_module_quantity &modules) {
     for (auto &[ware_id, bar_set]: bar_sets) {
         for (const auto &[module_id, module_amount]: modules) {
             auto module = Data::modules->module_map.at(module_id);
-            auto ware   = getWares().at(ware_id);
+            auto ware   = Data::wares->ware_map.at(ware_id);
 
             auto production = module->getBuildCost();
             auto cost       = production[ware_id] * module_amount * ware->price.avg;

@@ -9,7 +9,7 @@
 
 WareTargetContainer::WareTargetContainer()
     : ware_targets{}, ware_targets_primary{}, ware_targets_secondary{} {
-    auto wares = getWares();
+    auto wares = Data::wares->ware_map;
     ware_targets.reserve(wares.size());
 
     for (const auto &[ware_id, ware]: wares) {

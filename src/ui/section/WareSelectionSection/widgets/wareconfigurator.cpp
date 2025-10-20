@@ -21,7 +21,7 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
     QFrame::setFrameShape(QFrame::StyledPanel);
 
     const auto &ware_id                 = this->ware_target->ware_id;
-    const auto &ware                    = getWares().at(ware_id);
+    const auto &ware                    = Data::wares->ware_map.at(ware_id);
     const auto &ware_name               = ware->name;
     const auto &possible_source_modules = Data::relationships->production_map.at(ware_id);
 
@@ -47,10 +47,10 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
 
     // Is triggered when the source module is changed
     auto trigger_update_source_module = [this](const QString &new_id) -> void {
-        const auto &production_method = getModuleIdFromName(new_id.toStdString());
+        const auto &source_module = Data::modules->module_name_map.at(new_id.toStdString())->id;
         spdlog::info("{} production method changed {}", this->ware_target->ware_id.raw(),
-                     production_method);
-        this->ware_target->source_module = production_method;
+                     source_module);
+        this->ware_target->source_module = source_module;
         this->shouldUpdate();
     };
 

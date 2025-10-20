@@ -10,6 +10,7 @@
 #include <QPushButton>
 
 #include "ui_waresselector.h"
+#include "Data/Data.hpp"
 
 #include "Data/WareModuleAndWorkforce.hpp"
 
@@ -19,24 +20,23 @@
 WaresSelector::WaresSelector(QWidget *parent) : QWidget(parent), ui(new Ui::WaresSelector), category_tabs{} {
     ui->setupUi(this);
 
-    const auto &ware_groups = getWareGroups();
-    const auto &wares = getWares();
+    const auto &ware_groups = Data::ware_groups->ware_group_map;
+    const auto &wares       = Data::wares->ware_map;
 
     for (const auto &iter: ware_groups) {
-        const auto &group = iter.second;
-        auto widget = new QWidget(ui->categories);
+        const auto &group  = iter.second;
+        auto        widget = new QWidget(ui->categories);
         widget->setLayout(new QVBoxLayout(widget));
         widget->layout()->setAlignment(Qt::AlignTop);
 
         this->category_tabs[group->id] = widget;
         ui->categories->addTab(widget, QString(group->name.c_str()));
-
     }
 
     for (const auto &iter: wares) {
-        const auto &ware = iter.second;
-        const auto &group = ware->group;
-        const auto &tab = this->category_tabs[group.id];
+        const auto &ware   = iter.second;
+        const auto &group  = ware->group;
+        const auto &tab    = this->category_tabs[group.id];
         const auto &widget = new QPushButton(QString(ware->name.c_str()), tab);
 
         connect(widget, &QPushButton::clicked, [this, &ware] {

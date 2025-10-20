@@ -56,57 +56,58 @@ void Data::registerModule(const Module &module) {
     vector.emplace_back(module);
 }
 
-void Data::processModule(const Module &item) {
-    modules->module_map[item.id]        = &item;
-    modules->module_name_map[item.name] = &item;
+void Data::processModule(const Module &module) {
+    modules->module_map[module.id]        = &module;
+    modules->module_name_map[module.name] = &module;
 
-    if (!item.type.has_value())
+    if (!module.type.has_value())
         return;
 
-    auto const &type  = item.type.value();
-    auto const &macro = item.macro;
+    auto const &type  = module.type.value();
+    auto const &macro = module.macro;
     // Assign module to specific maps based on its type and macro
     if (type == "storage") {
-        modules->container_map[item.id] = &item;
+        modules->container_map[module.id] = &module;
         if (macro.contains("solid")) {
-            modules->container_solid_map[item.id] = &item;
+            modules->container_solid_map[module.id] = &module;
         } else if (macro.contains("liquid")) {
-            modules->container_liquid_map[item.id] = &item;
+            modules->container_liquid_map[module.id] = &module;
         } else if (macro.contains("container")) {
-            modules->container_container_map[item.id] = &item;
+            modules->container_container_map[module.id] = &module;
         } else {
             // throw std::logic_error("unknown container type: " + macro);
         }
     } else if (type == "production") {
-        modules->production_map[item.id] = &item;
+        modules->production_map[module.id] = &module;
     } else if (type == "processing") {
-        modules->processing_map[item.id] = &item;
+        modules->processing_map[module.id] = &module;
     } else if (type == "dockarea") {
-        modules->dock_map[item.id] = &item;
+        modules->dock_map[module.id] = &module;
     } else if (type == "pier") {
-        modules->pierr_map[item.id] = &item;
+        modules->pierr_map[module.id] = &module;
     } else if (type == "habitation") {
-        modules->habitation_map[item.id] = &item;
+        modules->habitation_map[module.id] = &module;
     } else if (type == "claim") {
-        modules->claim_map[item.id] = &item;
+        modules->claim_map[module.id] = &module;
     } else if (type == "defence") {
-        modules->defence_map[item.id] = &item;
+        modules->defence_map[module.id] = &module;
     } else if (type == "build") {
-        modules->build_map[item.id] = &item;
+        modules->build_map[module.id] = &module;
     } else if (type == "connection") {
-        modules->connection_map[item.id] = &item;
+        modules->connection_map[module.id] = &module;
     } else if (type == "equip") {
-        modules->equip_map[item.id] = &item;
+        modules->equip_map[module.id] = &module;
     } else if (type == "venturer") {
-        modules->venture_map[item.id] = &item;
+        modules->venture_map[module.id] = &module;
     } else {
         spdlog::error("unknown type: {}", type);
         throw std::logic_error("unknown module type: " + type);
     }
 
     // Register all wares produced by this module
-    for (auto &ware: item.production) {
-        Data::registerWare(ware);
+    for (auto &ware: module.production) {
+        registerWare(ware);
+        registerRelationship(module, ware);
     }
 }
 
