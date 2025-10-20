@@ -11,25 +11,33 @@
 
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class WareSelectionSection; }
+
+namespace Ui {
+    class WareSelectionSection;
+}
+
 QT_END_NAMESPACE
 
 class WareSelectionSection : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 
 public:
     explicit WareSelectionSection(Settings &settings, QWidget *parent = nullptr);
+
     ~WareSelectionSection() override;
 
-    const t_x4_complex& getComplex();
+    const t_x4_complex &getComplex();
 
 signals:
+    /**
+     * This signal is triggered when the generated complex have been updated in order to update each section accordingly
+     */
     void complexUpdated();
 
 private:
     Ui::WareSelectionSection *ui;
-    t_x4_complex complex_;
-    Settings &settings_;
+    t_x4_complex              complex_;
+    Settings &                settings_;
 };
 
 

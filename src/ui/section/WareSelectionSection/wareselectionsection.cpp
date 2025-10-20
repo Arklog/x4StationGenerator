@@ -30,18 +30,25 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
     ui->main_layout->addWidget(ware_selector, 0, 0);
     ui->main_layout->addWidget(ware_configurator_panel, 0, 1);
 
+    // Action to add a ware to be configured
     connect(ware_selector, &WaresSelector::wareSelected, [this, ware_configurator_panel](t_ware_id ware_id) {
         ware_configurator_panel->addWare(ware_id, false, 0);
     });
+
+    // Action to update when a ware have been changed
     connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate, [this](t_x4_complex complex) {
         this->complex_ = std::move(complex);
         emit complexUpdated();
     });
+
+    // Action to toggle workforce
     connect(ui->workforce_input, &QCheckBox::toggled, [this, ware_configurator_panel](bool checked) {
         this->settings_.workforce_enables = checked;
         spdlog::debug("workforce enabled: {}", this->settings_.workforce_enables);
         ware_configurator_panel->productionTargetUpdate();
     });
+
+    // Action to change current habitat
     connect(ui->habitat_input, &QComboBox::currentTextChanged, [this, ware_configurator_panel](QString text) {
         const auto &modules = Data::modules->module_name_map;
         auto        name    = text.toStdString();
@@ -50,6 +57,7 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
         spdlog::debug("default habitat changed: {}", this->settings_.workforce_module);
         ware_configurator_panel->productionTargetUpdate();
     });
+
     ui->habitat_input->currentTextChanged(ui->habitat_input->currentText());
 }
 
