@@ -37,7 +37,7 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
 
     // Is triggered when the ware amount required is changed
     auto trigger_update_target = [this](int value) -> void {
-        spdlog::info("{} target value changed {}",
+        spdlog::info("[{}]: {} target value changed {}", __PRETTY_FUNCTION__,
                      this->ware_target->ware_id.raw(), value);
         this->ware_target->prodution = value;
         this->shouldUpdate();
@@ -46,15 +46,16 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
     // Is triggered when the source module is changed
     auto trigger_update_source_module = [this](const QString &new_id) -> void {
         const auto &source_module = Data::modules->module_name_map.at(new_id.toStdString())->id;
-        spdlog::info("{} production method changed {}", this->ware_target->ware_id.raw(),
-                     source_module);
+        spdlog::debug("[{}]: {} production method changed {}", __PRETTY_FUNCTION__, this->ware_target->ware_id.raw(),
+                      source_module);
         this->ware_target->source_module = source_module;
         this->shouldUpdate();
     };
 
+    // Connect remove button
     connect(ui->remove_button, &QPushButton::clicked,
             [this, ware_id](bool clicked) {
-                spdlog::info("Removing ware {}", ware_id.raw());
+                spdlog::debug("[{}]: removing ware {}", __PRETTY_FUNCTION__, ware_id.raw());
                 this->shouldRemove(this->ware_target->ware_id);
             });
     connect(ui->production_method_combo_box, &QComboBox::currentTextChanged,

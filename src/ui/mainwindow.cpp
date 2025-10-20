@@ -22,9 +22,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     auto ware_selection_section = new WareSelectionSection(settings_, this);
     auto dock_and_pierr_section = new DockAndPierrSection(this);
-    auto storage_section = new StorageSection(this);
-    auto settings_section = new SettingsSection(settings_, this);
-    auto summary_section = new SummarySection(this);
+    auto storage_section        = new StorageSection(this);
+    auto settings_section       = new SettingsSection(settings_, this);
+    auto summary_section        = new SummarySection(this);
 
     ui->ware_selection_tab_layout->addWidget(ware_selection_section);
     ui->dock_and_pierr_tab_layout->addWidget(dock_and_pierr_section);
@@ -34,9 +34,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->ware_selection_section_ = ware_selection_section;
     this->dock_and_pierr_section_ = dock_and_pierr_section;
-    this->storage_section_ = storage_section;
-    this->summary_section_ = summary_section;
-    this->settings_section_ = settings_section;
+    this->storage_section_        = storage_section;
+    this->summary_section_        = summary_section;
+    this->settings_section_       = settings_section;
 
     connect(ware_selection_section_, &WareSelectionSection::complexUpdated, this, &MainWindow::complexUpdated);
     connect(storage_section_, &StorageSection::storageUpdated, this, &MainWindow::complexUpdated);
@@ -78,7 +78,7 @@ void MainWindow::exportPlan() {
 
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
-            auto data = genModulePlan(
+            auto        data = genModulePlan(
                 complex_,
                 settings_
             );
@@ -89,24 +89,28 @@ void MainWindow::exportPlan() {
 }
 
 void MainWindow::complexUpdated() {
-    spdlog::debug("complex update triggered");
+    spdlog::debug("[{}]: complex update triggered", __PRETTY_FUNCTION__);
 
     complex_.clear();
-    const auto &base_complex = this->ware_selection_section_->getComplex();
-    const auto &storages = this->storage_section_->getModuleTargetList();
+    const auto &base_complex   = this->ware_selection_section_->getComplex();
+    const auto &storages       = this->storage_section_->getModuleTargetList();
     const auto &dock_and_pierr = this->dock_and_pierr_section_->getModuleTargetList();
 
+    spdlog::debug("[{}]: adding dock and pierr modules", __PRETTY_FUNCTION__);
     for (const auto &[module_id,amount]: dock_and_pierr) {
         for (size_t i = 0; i < amount; ++i)
             complex_.push_back(module_id);
     }
 
+    spdlog::debug("[{}]: adding storage modules", __PRETTY_FUNCTION__);
     for (const auto &[module_id, amount]: storages) {
         for (size_t i = 0; i < amount; ++i)
             complex_.push_back(module_id);
     }
 
+    spdlog::debug("[{}]: adding production modules", __PRETTY_FUNCTION__);
     complex_.insert(complex_.end(), base_complex.begin(), base_complex.end());
 
     summary_section_->updateTargetList(complex_);
+    spdlog::debug("[{}]: complex update completed", __PRETTY_FUNCTION__);
 }

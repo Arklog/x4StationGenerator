@@ -17,7 +17,7 @@
 #include "spdlog/fmt/bundled/chrono.h"
 
 WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
-                                             QWidget *parent)
+                                             QWidget *       parent)
     : QGroupBox(parent), ui(new Ui::WareConfiguratorPanel),
       ware_configurators{}, ware_target_container{}, settings_(settings) {
     ui->setupUi(this);
@@ -54,13 +54,13 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
     WareConfigurator *ware_configurator = nullptr;
     if (!is_secondary) {
         this->ware_target_container.setPrimaryTarget(ware_id);
-        auto ware_target = this->ware_target_container.getPrimaryTarget(ware_id);
+        auto ware_target  = this->ware_target_container.getPrimaryTarget(ware_id);
         ware_configurator = new WareConfigurator(ware_target, this);
     } else {
         this->ware_target_container.setSecondaryTarget(ware_id);
-        auto ware_target = this->ware_target_container.getSecondaryTarget(ware_id);
+        auto ware_target       = this->ware_target_container.getSecondaryTarget(ware_id);
         ware_target->prodution = amount;
-        ware_configurator = new WareConfigurator(ware_target, this);
+        ware_configurator      = new WareConfigurator(ware_target, this);
     }
 
     // Store the configurator and add it to the layout
@@ -94,27 +94,37 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {
+    spdlog::debug("[{}]: updating production targets", __PRETTY_FUNCTION__);
+
     ComplexGeneratorBase test(settings_, this->ware_target_container);
-    auto build_result = test.build();
+    auto                 build_result = test.build();
 
     const auto &current_production = test.getCurrentProduction();
 
+    spdlog::debug("[{}]: removing all secondary targets", __PRETTY_FUNCTION__);
     // Delete all secondary targets here
     std::vector<t_ware_id> to_remove{};
     for (const auto &[ware_id, widget]: this->ware_configurators) {
-        if (!widget->getWareTarget()->is_secondary)
-            continue;
+        spdlog::debug("[{}]: checking ware {} for removal", __PRETTY_FUNCTION__, ware_id);
 
+        if (!widget->getWareTarget()->is_secondary) {
+            spdlog::debug("[{}]: ware {} is primary, skipping", __PRETTY_FUNCTION__, ware_id);
+            continue;
+        }
+
+        spdlog::debug("[{}]: removing ware {} from ui", __PRETTY_FUNCTION__, ware_id);
         this->layout()->removeWidget(widget);
-        delete widget;
+        // delete widget;
 
         to_remove.push_back(ware_id);
     }
 
+    spdlog::debug("[{}]: cleaning up secondary targets from container", __PRETTY_FUNCTION__);
     for (const auto &ware_id: to_remove) {
         this->ware_configurators.erase(ware_id);
     }
 
+    spdlog::debug("[{}]: adding secondary targets to ui", __PRETTY_FUNCTION__);
     // Add secondary targets
     for (const auto &ware_target: current_production.getSecondaryTargets()) {
         this->addWare(ware_target->ware_id, true, ware_target->prodution);

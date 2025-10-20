@@ -46,6 +46,8 @@ SummarySection::~SummarySection() {
 }
 
 void SummarySection::updateTargetList(const t_x4_complex &targets) {
+    spdlog::debug("[{}]: updating targets", __PRETTY_FUNCTION__);
+
     auto              modules = Data::modules->module_map;
     t_module_quantity modules_recap{};
 
@@ -53,9 +55,12 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
         modules_recap[target] += 1;
 
     updateCostTab(modules_recap);
+    spdlog::debug("[{}]: targets updated", __PRETTY_FUNCTION__);
 }
 
 void SummarySection::updateCostTab(const t_module_quantity &modules) {
+    spdlog::debug("[{}]: updating cost tab", __PRETTY_FUNCTION__);
+
     const auto &all_modules = Data::modules->module_map;
     const auto &all_wares   = Data::wares->ware_map;
     cost_view_->deleteLater();
@@ -137,4 +142,6 @@ void SummarySection::updateCostTab(const t_module_quantity &modules) {
     auto value_string = QString::fromStdString(ss.str());
     auto value_label  = new QLabel(value_string);
     ui->module_group_layout->addRow(label, value_label);
+
+    spdlog::debug("[{}]: cost tab updated", __PRETTY_FUNCTION__);
 }

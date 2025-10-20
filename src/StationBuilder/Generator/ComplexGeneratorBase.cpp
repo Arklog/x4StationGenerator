@@ -135,14 +135,15 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
     // If ware is not in the list of produced ware
     // Happens if required to produce another ware
     if (is_produced) {
+        spdlog::debug("[{}]: updating existing production target {}", __PRETTY_FUNCTION__, ware_id);
         this->current_production_.getTarget(ware_id)->prodution += value;
-        return;
-    }
+    } else {
+        spdlog::debug("[{}]: adding new secondary production target {}", __PRETTY_FUNCTION__, ware_id);
 
-    spdlog::debug("adding ware in list {}", ware_id);
-    this->current_production_.setSecondaryTarget(ware_id);
-    auto target       = this->current_production_.getSecondaryTarget(ware_id);
-    target->prodution = value;
+        this->current_production_.setSecondaryTarget(ware_id);
+        auto target       = this->current_production_.getSecondaryTarget(ware_id);
+        target->prodution = value;
+    }
 }
 
 ComplexGeneratorBase::ComplexGeneratorBase(const Settings &     settings,

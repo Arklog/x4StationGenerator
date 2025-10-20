@@ -140,4 +140,5 @@ target_link_libraries(x4StationGenerator PRIVATE
         nlohmann_json::nlohmann_json
         spdlog::spdlog
 )
-
+#target_compile_options(x4StationGenerator PRIVATE -fsanitize=address -fno-omit-frame-pointer -O1)
+#target_link_options(x4StationGenerator PRIVATE -fsanitize=address)
