@@ -8,7 +8,6 @@
 
 #include "ui_summarysection.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
 #include <QLabel>
 #include <QStackedBarSeries>
 #include <QBarCategoryAxis>

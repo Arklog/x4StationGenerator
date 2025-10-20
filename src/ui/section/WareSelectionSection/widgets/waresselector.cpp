@@ -12,8 +12,6 @@
 #include "ui_waresselector.h"
 #include "Data/Data.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
-
 #include "spdlog/spdlog.h"
 
 

@@ -92,7 +92,7 @@ public:
      * @param ware
      * @return
      */
-    static bool isWareProduced(t_ware_id ware);
+    static bool isWareProduced(const t_ware_id &ware);
 
     /**
      * Get ressource consumption from workforce of a given race

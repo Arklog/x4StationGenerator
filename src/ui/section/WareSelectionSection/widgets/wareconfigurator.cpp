@@ -11,8 +11,6 @@
 
 #include "Data/RawData.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
-
 #include "spdlog/spdlog.h"
 
 WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)

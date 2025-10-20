@@ -10,8 +10,6 @@
 #include "moduleselectionpanel.hpp"
 #include "ui_moduleselectionpanel.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
-
 
 ModuleSelectionPanel::ModuleSelectionPanel(const ModuleData::t_module_map &module_list,
                                            QWidget *parent) : QFrame(parent), ui(new Ui::ModuleSelectionPanel) {

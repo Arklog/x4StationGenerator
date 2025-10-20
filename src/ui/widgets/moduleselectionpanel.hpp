@@ -9,7 +9,6 @@
 #include <QWidget>
 
 #include "Data/Data.hpp"
-#include "Data/WareModuleAndWorkforce.hpp"
 
 #include "StationBuilder/defines.hpp"
 

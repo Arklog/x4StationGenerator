@@ -5,7 +5,6 @@
 #include "WareTargetContainer.hpp"
 
 #include "Data/Data.hpp"
-#include "Data/WareModuleAndWorkforce.hpp"
 
 WareTargetContainer::WareTargetContainer()
     : ware_targets{}, ware_targets_primary{}, ware_targets_secondary{} {

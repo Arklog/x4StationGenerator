@@ -120,7 +120,7 @@ void Data::processData() {
         processModule(module);
 }
 
-bool Data::isWareProduced(t_ware_id ware) {
+bool Data::isWareProduced(const t_ware_id &ware) {
     return relationships->production_map.contains(ware);
 }
 
