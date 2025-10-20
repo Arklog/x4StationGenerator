@@ -33,13 +33,11 @@ struct ModuleData {
 };
 
 struct WareData {
-    std::vector<Ware>                             wares;
     std::unordered_map<t_ware_id, const Ware *>   ware_map;      // map of all wares by id
-    std::unordered_map<const Ware *, std::string> ware_name_map; // map of ware pointer to name
+    std::unordered_map<std::string, const Ware *> ware_name_map; // map of ware name to ware pointer
 };
 
 struct WareGroupData {
-    std::vector<WareGroup>                                 ware_groups;
     std::unordered_map<t_ware_group_id, const WareGroup *> ware_group_map; // map of all ware groups by id
 };
 
@@ -59,6 +57,8 @@ private:
     static void registerWareGroup(const WareGroup &ware_group);
 
     static void registerRelationship(const Module &module, const Ware &ware);
+
+    static void processModule(const Module &module);
 
 public:
     Data() = default;
@@ -81,6 +81,11 @@ public:
      */
     static void registerWorkforce(
         const std::map<t_race_id, std::map<t_ware_id, double> > &workforce);
+
+    /**
+     * Build data
+     */
+    static void processData();
 
     /**
      * Check if the ware identified by ware is produced by any module

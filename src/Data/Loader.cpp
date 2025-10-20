@@ -40,6 +40,8 @@ void Loader::_loadModules() {
             // throw;
         }
     }
+
+    Data::processData();
 }
 
 void Loader::_loadWorkforce() {

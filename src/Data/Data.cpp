@@ -11,7 +11,6 @@ std::shared_ptr<RelationshipData> Data::relationships = std::make_shared<Relatio
 std::shared_ptr<WorkforceData>    Data::workforce     = std::make_shared<WorkforceData>();
 
 void Data::registerWare(const Ware &ware) {
-    auto &vector   = wares->wares;
     auto &map      = wares->ware_map;
     auto &name_map = wares->ware_name_map;
 
@@ -21,16 +20,14 @@ void Data::registerWare(const Ware &ware) {
         return;
     }
 
-    auto &item      = vector.emplace_back(ware);
-    map[item.id]    = &item;
-    name_map[&item] = item.name;
+    map[ware.id]        = &ware;
+    name_map[ware.name] = &ware;
 
-    Data::registerWareGroup(item.group);
+    Data::registerWareGroup(ware.group);
 }
 
 void Data::registerWareGroup(const WareGroup &ware_group) {
-    auto &vector = ware_groups->ware_groups;
-    auto &map    = ware_groups->ware_group_map;
+    auto &map = ware_groups->ware_group_map;
 
     // A ware group should not be registered twice
     if (map.contains(ware_group.id)) {
@@ -38,8 +35,7 @@ void Data::registerWareGroup(const WareGroup &ware_group) {
         return;
     }
 
-    auto &item   = vector.emplace_back(ware_group);
-    map[item.id] = &item;
+    map[ware_group.id] = &ware_group;
 }
 
 void Data::registerRelationship(const Module &module, const Ware &ware) {
@@ -55,24 +51,20 @@ void Data::registerRelationship(const Module &module, const Ware &ware) {
 }
 
 void Data::registerModule(const Module &module) {
-    auto &vector   = modules->modules;
-    auto &map      = modules->module_map;
-    auto &name_map = modules->module_name_map;
+    auto &vector = modules->modules;
 
-    // A module should not be registered twice
-    if (map.contains(module.id)) {
-        throw std::logic_error("module already registered: " + module.id.raw());
-    }
+    vector.emplace_back(module);
+}
 
-    const auto &item    = vector.emplace_back(module);
-    map[item.id]        = &item;
-    name_map[item.name] = &item;
+void Data::processModule(const Module &item) {
+    modules->module_map[item.id]        = &item;
+    modules->module_name_map[item.name] = &item;
 
-    if (!module.type.has_value())
+    if (!item.type.has_value())
         return;
 
-    auto const &type  = module.type.value();
-    auto const &macro = module.macro;
+    auto const &type  = item.type.value();
+    auto const &macro = item.macro;
     // Assign module to specific maps based on its type and macro
     if (type == "storage") {
         modules->container_map[item.id] = &item;
@@ -83,7 +75,7 @@ void Data::registerModule(const Module &module) {
         } else if (macro.contains("container")) {
             modules->container_container_map[item.id] = &item;
         } else {
-            throw std::logic_error("unknown container type: " + macro);
+            // throw std::logic_error("unknown container type: " + macro);
         }
     } else if (type == "production") {
         modules->production_map[item.id] = &item;
@@ -120,6 +112,11 @@ void Data::registerModule(const Module &module) {
 
 void Data::registerWorkforce(const std::map<t_race_id, std::map<t_ware_id, double> > &workforce) {
     Data::workforce->consumption_map = workforce;
+}
+
+void Data::processData() {
+    for (const auto &module: modules->modules)
+        processModule(module);
 }
 
 bool Data::isWareProduced(t_ware_id ware) {
