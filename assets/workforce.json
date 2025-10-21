@@ -1,41 +1,5 @@
-[
-  [
-    "argon",
-    [
-      [
-        "foodrations",
-        2.25
-      ],
-      [
-        "medicalsupplies",
-        1.35
-      ]
-    ]
-  ],
-  [
-    "teladi",
-    [
-      [
-        "nostropoil",
-        1.14
-      ],
-      [
-        "medicalsupplies",
-        1.35
-      ]
-    ]
-  ],
-  [
-    "paranid",
-    [
-      [
-        "sojahusk",
-        1.44
-      ],
-      [
-        "medicalsupplies",
-        1.35
-      ]
-    ]
-  ]
-]
+{
+  "argon": {"foodrations": 2.25, "medicalsupplies": 1.35},
+  "teladi": {"nostropoil": 1.14, "medicalsupplies": 1.35},
+  "paranid": {"sojahusk": 1.44, "medicalsupplies": 1.35}
+}
