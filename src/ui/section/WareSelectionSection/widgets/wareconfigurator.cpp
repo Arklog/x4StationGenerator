@@ -31,9 +31,19 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
         ui->production_method_combo_box->addItem(text);
     }
 
-    // this->ware_target->prodution = ui->target_input->value();
-    // this->ware_target->source_module = getModuleIdFromName(
-    // ui->production_method_combo_box->currentText().toStdString());
+    // Set module of ware target as current
+    auto const &module = Data::modules->module_map.at(ware_target->source_module);
+    auto const &text   = QString::fromStdString(module->name);
+    auto module_idx = ui->production_method_combo_box->findText(text);
+
+    if (module_idx < 0)
+    {
+        spdlog::error("[{}]: invalid index {}", __PRETTY_FUNCTION__, module_idx);
+        throw std::logic_error("invalid index");
+    }
+
+    ui->production_method_combo_box->setCurrentIndex(module_idx);
+
 
     // Is triggered when the ware amount required is changed
     auto trigger_update_target = [this](int value) -> void {
