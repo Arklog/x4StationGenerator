@@ -1,5 +1,8 @@
 {
   "argon": [["foodrations", 2.25], ["medicalsupplies", 1.35]],
+  "boron": [["bofu", 0.45], ["water", 0.81], ["medicalsupplies", 0.99]],
+  "split": [["cheltmeat", 0.5], ["scruffinfruits", 0.7], ["medicalsupplies", 1.35]],
   "teladi": [["nostropoil", 1.14], ["medicalsupplies", 1.35]],
-  "paranid": [["sojahusk", 1.44], ["medicalsupplies", 1.35]]
+  "paranid": [["sojahusk", 1.44], ["medicalsupplies", 1.35]],
+  "terran": [["terranmre", 1.276], ["medicalsupplies", 1.35]]
 }
