@@ -8,8 +8,6 @@
 #include <QUuid>
 #include "Data/WareModuleAndWorkforce.hpp"
 
-#include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
-
 std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
     std::stringstream plan;
     StationSize station_size{.x_plus = 10, .x_minus = 10, .y_plus = 10, .y_minus = 10, .z_plus = 10, .z_minus = 10};

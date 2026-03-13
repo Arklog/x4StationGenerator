@@ -4,8 +4,6 @@
 
 #include "WareModuleAndWorkforce.hpp"
 
-#include <qguiapplication_platform.h>
-
 #include "spdlog/spdlog.h"
 
 static t_modules_container _g_modules{};
