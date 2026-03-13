@@ -1,8 +1,5 @@
-add_executable(x4StationGenerator_tests
-        smoke.cpp
-)
-target_link_libraries(x4StationGenerator_tests PRIVATE
-        Catch2::Catch2WithMain
-)
+add_library(test_utils SHARED test_utils.cpp)
+target_include_directories(test_utils PUBLIC ${CMAKE_SOURCE_DIR}/src .)
+target_link_libraries(test_utils PUBLIC x4StationGeneratorLib)
 
-add_test(NAME x4StationGenerator_tests COMMAND x4StationGenerator_tests)
+add_subdirectory(StationBuilder)
