@@ -89,9 +89,22 @@ find_package(
 # Application
 #################################################################################
 
+add_library(x4StationGeneratorLib STATIC
+        src/Data/WareModuleAndWorkforce.cpp
+        src/Data/Loader.cpp
+        src/Data/Data.cpp
+        src/StationBuilder/Generator/ComplexGeneratorBase.cpp
+        src/utils/WareTargetContainer.cpp
+        src/utils/WareTargetContainer.hpp
+        src/Data/ID.cpp
+        src/Data/ID.h
+        src/modules.cpp
+)
+target_include_directories(x4StationGeneratorLib PUBLIC src)
+target_link_libraries(x4StationGeneratorLib PUBLIC nlohmann_json::nlohmann_json spdlog::spdlog Qt6::Core)
+
 add_executable(x4StationGenerator
         main.cpp
-        src/modules.cpp
         src/ui/mainwindow.cpp
         src/ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.ui
         src/ui/section/WareSelectionSection/widgets/waresselector.ui
@@ -102,10 +115,6 @@ add_executable(x4StationGenerator
         src/ui/section/WareSelectionSection/wareselectionsection.cpp
         src/ui/section/WareSelectionSection/wareselectionsection.ui
         src/ui/mainwindow.ui
-        src/StationBuilder/Generator/ComplexGeneratorBase.cpp
-        src/Data/WareModuleAndWorkforce.cpp
-        src/Data/Loader.cpp
-        src/Data/Data.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.hpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.ui
@@ -128,24 +137,20 @@ add_executable(x4StationGenerator
         src/ui/section/SettingsSection/settingssection.cpp
         src/ui/section/SettingsSection/settingssection.hpp
         src/ui/section/SettingsSection/settingssection.ui
-        src/utils/WareTargetContainer.cpp
-        src/utils/WareTargetContainer.hpp
-        src/Data/ID.cpp
-        src/Data/ID.h
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
 )
 target_include_directories(x4StationGenerator PRIVATE src)
-
 target_link_libraries(x4StationGenerator PRIVATE
+        x4StationGeneratorLib
+        spdlog::spdlog
         Qt6::Core
         Qt6::Gui
         Qt6::Widgets
         Qt6::Charts
-        nlohmann_json::nlohmann_json
-        spdlog::spdlog
 )
+add_dependencies(x4StationGenerator x4StationGeneratorLib)
 
 enable_testing()
 add_subdirectory(tests)
