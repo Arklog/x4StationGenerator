@@ -21,7 +21,7 @@ void Loader::_loadModules() {
 
     for (const auto &file_iterator: QDirListing(module_path, QDirListing::IteratorFlag::FilesOnly)) {
         try {
-            spdlog::info("loading: {}", file_iterator.fileName().toStdString());
+            spdlog::info("Loading: {}", file_iterator.fileName().toStdString());
             std::fstream file(file_iterator.absoluteFilePath().toStdString(), std::fstream::in);
             if (!file.is_open())
                 throw std::runtime_error("Failed to open file " + file_iterator.fileName().toStdString());
@@ -33,11 +33,12 @@ void Loader::_loadModules() {
             auto j = nlohmann::json::parse(file);
             this->_modules_json.push_back(j.get<Module>());
             file.close();
-
         } catch (const std::exception &e) {
             spdlog::error("could not parse {} : {}", file_iterator.absoluteFilePath().toStdString(), e.what());
         }
     }
+
+  spdlog::info("Loaded {} modules", this->_modules_json.size());
 }
 
 void Loader::_loadWorkforce() {
@@ -65,6 +66,8 @@ void Loader::_parse_wares() {
 }
 
 void Loader::load() {
+  this->_modules_json.clear();
+  this->_workforce.clear();
     this->_loadModules();
     this->_loadWorkforce();
 }

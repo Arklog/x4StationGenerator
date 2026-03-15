@@ -78,6 +78,8 @@ struct Module {
     std::optional<unsigned int> workforce_max;
     std::optional<std::string> race;
 
+    ~Module();
+
     bool operator==(const t_module_id &module_id) const;
 
     const Ware &getWare() const;

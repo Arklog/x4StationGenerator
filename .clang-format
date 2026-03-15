@@ -22,8 +22,8 @@ BreakBeforeBinaryOperators: All
 BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: true
 ColumnLimit: 80
-ConstructorInitializerIndentWidth: 2
-ContinuationIndentWidth: 2
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
 ForEachMacros: [
   'FOR_ALL_BB_FN',
   'FOR_ALL_EH_REGION',

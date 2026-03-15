@@ -1,4 +1,4 @@
 add_executable(ComplexGeneratorBase ComplexGeneratorBase.cpp)
 target_link_libraries(ComplexGeneratorBase PRIVATE test_utils Catch2::Catch2WithMain)
 
-add_test(NAME ComplexGeneratorBase COMMAND ComplexGeneratorBase)
+add_test(NAME ComplexGeneratorBase COMMAND ComplexGeneratorBase WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
