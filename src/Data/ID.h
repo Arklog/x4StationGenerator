@@ -42,6 +42,11 @@ public:
     ID(ID &&other) noexcept : id_(std::move(other.id_)) {
     }
 
+    ID(IDType &&other): id_(std::move(other)) {
+      if (!allowed_ids_.contains (this->id_))
+	throw std::logic_error("ID not registered " + other);
+    }
+
     static void registerId(const IDType &new_id) {
         if (allowed_ids_.contains(new_id))
             return;

@@ -74,6 +74,8 @@ t_ware_quantity Module::getBuildCost() const {
     return w_quantity;
 }
 
+Module::~Module () {}
+
 void from_json(const nlohmann::json &j, Price &price) {
     try {
         price.min = j["min"].get<unsigned int>();
