@@ -3,6 +3,7 @@
 #include <catch2/catch_all.hpp>
 #include "test_utils.hpp"
 #include "Data/WareModuleAndWorkforce.hpp"
+#include "ComplexInfoView.hpp"
 
 SCENARIO ("User want to generate a complex")
 {
@@ -29,11 +30,18 @@ SCENARIO ("User want to generate a complex")
 
       auto wareTarget = targetContainer.getTarget(ware);
       wareTarget->prodution = 1000;
+      wareTarget->source_module = "module_gen_prod_energycells_01";
 
       THEN("")
       {
 	ComplexGeneratorBase generator{settings, targetContainer};
 	auto complex = generator.build();
+	ComplexInfoView complexData{complex};
+
+	const auto &summary = complexData.module_summary;
+
+	REQUIRE(summary.size() == 1);
+	REQUIRE(summary.at(t_module_id {"module_gen_prod_energycells_01"}) == 1);
       }
     }
   }

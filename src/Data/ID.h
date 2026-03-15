@@ -31,7 +31,7 @@ public:
     ID() : id_() {
     }
 
-    explicit ID(IDType const &i) : id_(i) {
+    ID(IDType const &i) : id_(i) {
         if (!allowed_ids_.contains(i))
             throw std::logic_error("ID not registered: " + i);
     }
@@ -60,6 +60,13 @@ public:
     ID &operator=(const ID &other) = default;
 
     ID &operator=(ID &&other) noexcept = default;
+
+    ID &operator=(const IDType& rawid) {
+      if (!allowed_ids_.contains (rawid))
+	throw std::logic_error("ID not registered: " + rawid);
+      this->id_ = rawid;
+      return *this;
+    }
 
     operator IDType() const { return id_; }
     // operator const IDType() const { return id_; }

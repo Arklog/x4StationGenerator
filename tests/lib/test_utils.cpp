@@ -9,7 +9,7 @@ Loader LOADER = {};
 
 void loadData ()
 {
-  spdlog::set_level (spdlog::level::debug);
+  spdlog::set_level (spdlog::level::warn);
   LOADER.load();
   buildDataFrom (LOADER._modules_json);
   buildDataFrom (LOADER._workforce);
