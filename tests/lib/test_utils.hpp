@@ -9,6 +9,7 @@
 #include "Data/Loader.hpp"
 
 const auto ARGON_L_HABITAT = std::string{"module_arg_hab_l_01"};
+
 extern Loader LOADER;
 
 void loadData();
