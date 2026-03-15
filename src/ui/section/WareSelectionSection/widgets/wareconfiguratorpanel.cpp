@@ -47,7 +47,7 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
                      ware_id.raw());
         auto widget = this->ware_configurators[ware_id];
         this->layout()->removeWidget(widget);
-        delete widget;
+        widget->deleteLater();
     }
 
     // Create a new ware configurator
@@ -80,12 +80,13 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsign
             this->layout()->removeWidget(widget);
             this->ware_target_container.unsetPrimaryTarget(ware_id);
             this->ware_configurators.erase(ware_id);
-            delete widget;
+            widget->deleteLater();
 
             this->productionTargetUpdate();
         });
     connect(ware_configurator, &WareConfigurator::shouldUpdate, this,
-            &WareConfiguratorPanel::productionTargetUpdate);
+            &WareConfiguratorPanel::productionTargetUpdate,
+            Qt::QueuedConnection);
 
     // Cleanup ui
     if (!is_secondary) {
@@ -106,7 +107,7 @@ void WareConfiguratorPanel::productionTargetUpdate() {
             continue;
 
         this->layout()->removeWidget(widget);
-        delete widget;
+        widget->deleteLater();
 
         to_remove.push_back(ware_id);
     }
