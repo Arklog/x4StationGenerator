@@ -89,23 +89,27 @@ void MainWindow::exportPlan() {
 }
 
 void MainWindow::complexUpdated() {
-    spdlog::debug("complex update triggered");
+    spdlog::debug("Complex update triggered");
+    this->update();
 
     complex_.clear();
     const auto &base_complex = this->ware_selection_section_->getComplex();
     const auto &storages = this->storage_section_->getModuleTargetList();
     const auto &dock_and_pierr = this->dock_and_pierr_section_->getModuleTargetList();
 
+    spdlog::debug("Inserting {} dock and pierr modules", dock_and_pierr.size());
     for (const auto &[module_id,amount]: dock_and_pierr) {
         for (size_t i = 0; i < amount; ++i)
             complex_.push_back(module_id);
     }
 
+    spdlog::debug("Inserting {} storage modules", storages.size());
     for (const auto &[module_id, amount]: storages) {
         for (size_t i = 0; i < amount; ++i)
             complex_.push_back(module_id);
     }
 
+    spdlog::debug("Inserting {} modules", base_complex.size());
     complex_.insert(complex_.end(), base_complex.begin(), base_complex.end());
 
     summary_section_->updateTargetList(complex_);

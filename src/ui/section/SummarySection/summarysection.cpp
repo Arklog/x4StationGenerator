@@ -47,6 +47,8 @@ SummarySection::~SummarySection() {
 }
 
 void SummarySection::updateTargetList(const t_x4_complex &targets) {
+    spdlog::debug("Updating summary section");
+
     auto modules = getModules();
     t_module_quantity modules_recap{};
 
@@ -57,6 +59,8 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
 }
 
 void SummarySection::updateCostTab(const t_module_quantity &modules) {
+    spdlog::debug("Updating cost tab");
+
     const auto& all_modules = getModules();
     const auto& all_wares = getWares();
     cost_view_->deleteLater();

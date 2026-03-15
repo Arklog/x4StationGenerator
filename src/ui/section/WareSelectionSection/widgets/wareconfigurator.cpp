@@ -27,10 +27,18 @@ WareConfigurator::WareConfigurator(WareTarget *ware_target, QWidget *parent)
     ui->ware_label->setText(QString(ware_name.c_str()));
 
     // Create combobox of possible modules
+    size_t i = 0;
     for (const auto &[module_id, module]: possible_source_modules) {
         auto text = QString::fromStdString(module->name);
         ui->production_method_combo_box->addItem(text);
+
+        if (module_id == ware_target->source_module)
+          ui->production_method_combo_box->setCurrentIndex (i);
+        ++i;
     }
+
+    if (possible_source_modules.size() == 1)
+      ui->production_method_combo_box->setDisabled (true);
 
     // this->ware_target->prodution = ui->target_input->value();
     // this->ware_target->source_module = getModuleIdFromName(

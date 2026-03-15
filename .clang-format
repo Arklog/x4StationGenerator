@@ -180,6 +180,7 @@ ForEachMacros: [
   'EXECUTE_IF_SET_IN_SPARSESET'
 ]
 IndentCaseLabels: false
+IndentWidth: 2
 NamespaceIndentation: None
 PenaltyBreakBeforeFirstCallParameter: 100
 PointerAlignment: Right
