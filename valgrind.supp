@@ -1,0 +1,21 @@
+{
+   nvidia-leak
+   Memcheck:Leak
+   match-leak-kinds:all
+   obj:*nvidia*
+}
+{
+   nvidia-bad-size
+   Memcheck:BadSize
+   obj:*nvidia*
+}
+{
+   nvidia-realloc-zero
+   Memcheck:ReallocZero
+   obj:*nvidia*
+}
+{
+   nvidia-addr-16
+   Memcheck:Addr16
+   obj:*nvidia*
+}
