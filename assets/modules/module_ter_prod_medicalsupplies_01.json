@@ -1,9 +1,7 @@
 {
   "id": "module_ter_prod_medicalsupplies_01",
-  "name": "Terran Medical Supply Production",
   "macro": "prod_ter_medicalsupplies_macro",
-  "type": "production",
-  "production_method": "default",
+  "name": "Terran Medical Supply Production",
   "price": {
     "min": 301266,
     "max": 407596,
@@ -30,7 +28,7 @@
           "time": 300,
           "amount": 208,
           "name": "Argon",
-          "method": "default",
+          "method": "argon",
           "wares": [
             {
               "ware": "energycells",
@@ -115,6 +113,88 @@
               "product": 0.28
             }
           ]
+        },
+        {
+          "time": 300,
+          "amount": 208,
+          "name": "Boron",
+          "method": "boron",
+          "wares": [
+            {
+              "ware": "energycells",
+              "amount": 100
+            },
+            {
+              "ware": "plankton",
+              "amount": 95
+            },
+            {
+              "ware": "water",
+              "amount": 60
+            }
+          ],
+          "effects": [
+            {
+              "type": "work",
+              "product": 0.28
+            }
+          ]
+        },
+        {
+          "time": 300,
+          "amount": 208,
+          "name": "Split",
+          "method": "split",
+          "wares": [
+            {
+              "ware": "energycells",
+              "amount": 100
+            },
+            {
+              "ware": "scruffinfruits",
+              "amount": 30
+            },
+            {
+              "ware": "spices",
+              "amount": 60
+            },
+            {
+              "ware": "water",
+              "amount": 60
+            }
+          ],
+          "effects": [
+            {
+              "type": "work",
+              "product": 0.28
+            }
+          ]
+        },
+        {
+          "time": 300,
+          "amount": 140,
+          "name": "Terran",
+          "method": "default",
+          "wares": [
+            {
+              "ware": "energycells",
+              "amount": 100
+            },
+            {
+              "ware": "ice",
+              "amount": 50
+            },
+            {
+              "ware": "proteinpaste",
+              "amount": 24
+            }
+          ],
+          "effects": [
+            {
+              "type": "work",
+              "product": 0.59
+            }
+          ]
         }
       ]
     }
@@ -124,7 +204,7 @@
       "time": 336,
       "amount": 1,
       "name": "Terran",
-      "method": "default",
+      "method": "terran",
       "wares": [
         {
           "ware": "computronicsubstrate",
@@ -141,5 +221,7 @@
       ],
       "effects": []
     }
-  ]
+  ],
+  "production_method": "default",
+  "type": "production"
 }
