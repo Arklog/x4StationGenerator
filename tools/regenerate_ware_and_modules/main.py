@@ -27,7 +27,7 @@ if not args.x4_root.endswith("/"):
     args.x4_root = args.x4_root + "/"
 
 outdir = "output"
-modules_outdir = f"{outdir}/modules"
+modules_outdir = f"{args.output}/modules"
 
 if os.path.exists(outdir):
     shutil.rmtree(outdir)
@@ -101,6 +101,9 @@ for ware_item in wares:
     if not ware_item.is_module():
         logger.warning(f"not a module: {ware_item.id}")
         continue
+    if not ware_item.macro:
+        logger.warning(f"no macro: {ware_item.id}")
+        continue
     if "xenon" in ware_item.macro.lower():
         logger.warning(f"xenon module: {ware_item.id}")
         continue
@@ -123,8 +126,12 @@ for i in modules:
 set_habitats(output_modules)
 set_production(output_modules)
 
+if len(output_modules) == 0:
+    logger.warning(f"no modules")
+
 for item in output_modules:
     outfilename = f"{modules_outdir}/{item.id}.json"
+    logger.info(f"output to {outfilename}")
     with open(outfilename, "w", encoding="utf-8") as f:
         f.write(item.model_dump_json(exclude_none=True))
 

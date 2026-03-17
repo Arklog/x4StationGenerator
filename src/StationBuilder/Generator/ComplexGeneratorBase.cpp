@@ -3,8 +3,8 @@
 //
 
 #include "StationBuilder/Generator/ComplexGeneratorBase.hpp"
-
 #include "Data/WareModuleAndWorkforce.hpp"
+#include "utils/FmtVectorFormatter.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -35,7 +35,7 @@ bool ComplexGeneratorBase::_done(const t_target_container &targets,
 void ComplexGeneratorBase::_step(const t_target_container &targets,
                                  t_target_container &current_state,
                                  t_x4_complex &modules) {
-    spdlog::info("Step ComplexGeneratorBase");
+    spdlog::info("Step: {}", current_step_);
     const auto &wares = getWares();
     const auto &ware = this->_nextTarget(targets, current_state, modules);
 
@@ -49,6 +49,7 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
     }
 
     // Update production value of all ware produced and consumed by module_to_add
+    spdlog::info("Module production: {}", module_production.wares);
     this->_updateCurrentProduction(ware->ware_id, amount_produced,
                                    module_production.time);
     for (const auto &i: module_production.wares) {
@@ -60,9 +61,15 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
     if (!settings_.workforce_enables)
         return;
 
+    if (!module_to_add->workforce_max)
+    {
+        return;
+    }
+
     auto habitat = getModules().at(settings_.workforce_module);
     auto consumption = getWorkforceUsage(habitat->race.value(),
                                          module_to_add->workforce_max.value());
+    spdlog::info("Workforce consumption: {}", consumption);
     for (const auto &i: consumption) {
         this->_updateCurrentProduction(i.id, -(i.amount), 3600);
     }
@@ -167,14 +174,15 @@ ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings,
 t_x4_complex ComplexGeneratorBase::build() {
     t_x4_complex result{};
     workforce_ = 0;
-    spdlog::info("staring complex generation");
+    spdlog::info("Starting complex generation");
 
+    current_step_ = 0;
     while (!_done(this->targets_, this->current_production_, result)) {
-        spdlog::info("entering new step in complex generation");
         _step(this->targets_, this->current_production_, result);
+	++current_step_;
     }
 
-    spdlog::info("finished complex generation");
+    spdlog::info("Complex generated");
     return result;
 }
 

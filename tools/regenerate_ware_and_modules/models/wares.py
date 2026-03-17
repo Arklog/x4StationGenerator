@@ -88,13 +88,13 @@ class ResearchXmlModel(BaseXmlModel, tag="research"):
 
 class RestrictionXmlModel(BaseXmlModel):
     model_config = ConfigDict(extra="ignore")
-    licence: str = attr()
+    # licence: Optional[any] = attr()
 
 class WareOwnerXmlModel(BaseXmlModel, tag="owner"):
     model_config = ConfigDict(extra="ignore")
     faction: str = attr()
 
-class WareXmlModel(BaseXmlModel, tag="ware"):
+class WareXmlModel(BaseXmlModel, tag="ware", search_mode="ordered"):
     model_config = ConfigDict(extra="ignore")
 
     id: str = attr("id")
