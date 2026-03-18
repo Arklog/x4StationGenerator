@@ -47,6 +47,9 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
         amount_produced = static_cast<long>(static_cast<double>(amount_produced) *
                                             module_production.getWorkforceFactor());
     }
+    if (ware->ware_id == t_ware_id{"energycells"}) {
+    	amount_produced = static_cast<long>(static_cast<double>(amount_produced) * settings_.sunlight);
+    }
 
     // Update production value of all ware produced and consumed by module_to_add
     spdlog::info("Module production: {}", module_production.wares);
@@ -177,6 +180,7 @@ t_x4_complex ComplexGeneratorBase::build() {
     spdlog::info("Starting complex generation");
 
     current_step_ = 0;
+    sunlight_ = this->settings_.sunlight;
     while (!_done(this->targets_, this->current_production_, result)) {
         _step(this->targets_, this->current_production_, result);
 	++current_step_;

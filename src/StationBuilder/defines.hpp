@@ -31,11 +31,10 @@ struct ModuleTarget {
 
 struct Settings {
   std::string name;
-  bool workforce_enables;
+  double sunlight;
   t_module_id workforce_module;
+  bool workforce_enables;
 };
-
-extern const Settings default_settings;
 
 typedef std::vector<const WareTarget *> t_target_list;
 typedef std::vector<t_module_id> t_x4_complex;
