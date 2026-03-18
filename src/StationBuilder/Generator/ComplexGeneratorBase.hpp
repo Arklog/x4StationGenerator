@@ -71,6 +71,7 @@ protected:
     const Settings &settings_;
     long int workforce_;
     size_t current_step_;
+    double sunlight_;
 
 public:
     ComplexGeneratorBase(const Settings &settings, WareTargetContainer &targets);

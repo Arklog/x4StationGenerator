@@ -59,6 +59,14 @@ WareSelectionSection::WareSelectionSection(Settings &settings, QWidget *parent) 
         ware_configurator_panel->productionTargetUpdate();
     });
     ui->habitat_input->currentTextChanged(ui->habitat_input->currentText());
+    connect(ui->sunlight_value, &QSpinBox::valueChanged, [this, ware_configurator_panel](int value) {
+      double new_value = static_cast<double>(value) / 100.0;
+      new_value = new_value <= 0 ? 1.0f : new_value;
+      this->settings_.sunlight = new_value;
+
+      ware_configurator_panel->productionTargetUpdate();
+    });
+    this->settings_.sunlight = static_cast<double>(ui->sunlight_value->value()) / 100;
 }
 
 WareSelectionSection::~WareSelectionSection() {
