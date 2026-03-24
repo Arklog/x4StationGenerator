@@ -69,5 +69,6 @@ def set_production(
         if not production:
             continue
 
-        module.workforce_max = production.properties.workforce.max
+        if production.properties.workforce is not None:
+            module.workforce_max = production.properties.workforce.max
         # module.race = production.properties.identification.makerrace
