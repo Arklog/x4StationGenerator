@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from pydantic_xml import BaseXmlModel, attr, element
 
 
@@ -38,28 +38,34 @@ class ProductionMacroSecrecyXmlModel(BaseXmlModel, tag="secrecy"):
     level: int = attr()
 
 
-class ProductionMacroQueueXmlModel(BaseXmlModel, tag="queue"):
+class ProductionMacroQueueItemXmlModel(BaseXmlModel, tag="item"):
     ware: str = attr()
+    method: Optional[str] = attr(default=None)
+
+
+class ProductionMacroQueueXmlModel(BaseXmlModel, tag="queue"):
+    ware: Optional[str] = attr(default=None)
+    item: List[ProductionMacroQueueItemXmlModel] = element(default_factory=list)
     # method: str = attr()
 
 
 class ProductionMacroProductionXmlModel(BaseXmlModel, tag="production"):
-    wares: str = attr()
-    queue: ProductionMacroQueueXmlModel = element(default=ProductionMacroQueueXmlModel(ware="null"))
+    wares: Optional[str] = attr(default=None)
+    queue: Optional[ProductionMacroQueueXmlModel] = element(default=None)
 
 
 class ProductionMacroWorkforceXmlModel(BaseXmlModel, tag="workforce"):
     max: int = attr()
 
 
-class ProductionMacroPropertiesXmlModel(BaseXmlModel, tag="properties"):
+class ProductionMacroPropertiesXmlModel(BaseXmlModel, tag="properties", search_mode="unordered"):
     identification: ProductionMacroIdentificationXmlModel = element()
     build: ProductionMacroBuildXmlModel = element()
     explosiondamage: ProductionMacroExplosionDamageXmlModel = element()
     hull: ProductionMacroHullXmlModel = element()
-    secrecy: ProductionMacroSecrecyXmlModel = element()
-    production: ProductionMacroProductionXmlModel = element()
-    workforce: ProductionMacroWorkforceXmlModel = element()
+    secrecy: Optional[ProductionMacroSecrecyXmlModel] = element(default=None)
+    production: Optional[ProductionMacroProductionXmlModel] = element(default=None)
+    workforce: Optional[ProductionMacroWorkforceXmlModel] = element(default=None)
 
 
 class ProductionMacroMacroXmlModel(BaseXmlModel, tag="macro"):

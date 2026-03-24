@@ -204,7 +204,7 @@
       "time": 336,
       "amount": 1,
       "name": "Terran",
-      "method": "terran",
+      "method": "default",
       "wares": [
         {
           "ware": "computronicsubstrate",
@@ -223,5 +223,6 @@
     }
   ],
   "production_method": "default",
-  "type": "production"
+  "type": "production",
+  "workforce_max": 90
 }
