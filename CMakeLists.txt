@@ -126,6 +126,8 @@ add_executable(x4StationGenerator
         src/Data/ID.cpp
         src/Data/ID.h
         src/utils/FmtVectorFormatter.hpp
+        src/Data/Store.cpp
+        src/Data/Store.hpp
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

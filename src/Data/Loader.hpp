@@ -6,6 +6,7 @@
 #define LOADER_H
 
 #include "Data.hpp"
+#include "Store.hpp"
 #include "nlohmann/json.hpp"
 
 class Loader {
@@ -24,7 +25,7 @@ private:
     void _parse_wares();
 
 public:
-    Loader() = default;
+    Loader(Store &store);
 
     void load();
 
@@ -32,6 +33,7 @@ public:
     std::vector<Ware> _wares_json;
     std::map<std::string, std::vector<std::pair<t_ware_id, double>>> _workforce;
     std::vector<Module> _modules_json;
+    Store &_store;
 };
 
 

@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
 # else
     spdlog::set_level(spdlog::level::debug);
 # endif
-
-    Loader loader{};
+    Store store;
+    Loader loader{store};
     loader.load();
     buildDataFrom(loader._modules_json);
     buildDataFrom(loader._workforce);

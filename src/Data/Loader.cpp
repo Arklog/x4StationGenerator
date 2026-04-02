@@ -31,7 +31,10 @@ void Loader::_loadModules() {
 
 
             auto j = nlohmann::json::parse(file);
-            this->_modules_json.push_back(j.get<Module>());
+            auto module = j.get<Module>();
+
+            this->_modules_json.push_back(module);
+            _store.registerModule (std::move (module));
             file.close();
 
         } catch (const std::exception &e) {
@@ -63,6 +66,7 @@ void Loader::_loadWorkforce() {
 
 void Loader::_parse_wares() {
 }
+Loader::Loader (Store &store): _store(store) {}
 
 void Loader::load() {
     this->_loadModules();
