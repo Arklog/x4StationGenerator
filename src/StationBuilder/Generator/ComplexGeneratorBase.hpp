@@ -5,6 +5,7 @@
 #ifndef COMPLEXGENERATOR_HPP
 #define COMPLEXGENERATOR_HPP
 #include "../defines.hpp"
+#include "Data/Store.hpp"
 #include "utils/WareTargetContainer.hpp"
 
 /**
@@ -69,12 +70,13 @@ protected:
     WareTargetContainer &targets_;
     WareTargetContainer current_production_;
     const Settings &settings_;
+    const Store& store_;
     long int workforce_;
     size_t current_step_;
     double sunlight_;
 
 public:
-    ComplexGeneratorBase(const Settings &settings, WareTargetContainer &targets);
+    ComplexGeneratorBase(const Settings &settings, const Store& store, WareTargetContainer &targets);
 
     ComplexGeneratorBase(const ComplexGeneratorBase &complex_generator) = delete;
 

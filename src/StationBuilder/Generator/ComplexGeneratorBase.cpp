@@ -8,9 +8,11 @@
 
 #include "spdlog/spdlog.h"
 
-bool ComplexGeneratorBase::_done(const t_target_container &targets,
-                                 t_target_container &current_state,
-                                 t_x4_complex &modules) const {
+bool ComplexGeneratorBase::_done(
+    const t_target_container &targets,
+    t_target_container &current_state,
+    t_x4_complex &modules) const
+{
     // check all primary targets ok
     for (auto primary_target: targets.getPrimaryTargets()) {
         auto current_target =
@@ -36,10 +38,10 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
                                  t_target_container &current_state,
                                  t_x4_complex &modules) {
     spdlog::info("Step: {}", current_step_);
-    const auto &wares = getWares();
+    const auto &wares = store_.wares.all;
     const auto &ware = this->_nextTarget(targets, current_state, modules);
 
-    const auto &module_to_add = getModules().at(ware->source_module);
+    const auto &module_to_add = store_.modules.by_id.at(ware->source_module);
     const auto &module_production = module_to_add->getProduction();
 
     auto amount_produced = module_production.amount;
@@ -65,11 +67,9 @@ void ComplexGeneratorBase::_step(const t_target_container &targets,
         return;
 
     if (!module_to_add->workforce_max)
-    {
         return;
-    }
 
-    auto habitat = getModules().at(settings_.workforce_module);
+    auto habitat = store_.modules.by_id.at(settings_.workforce_module);
     auto consumption = getWorkforceUsage(habitat->race.value(),
                                          module_to_add->workforce_max.value());
     spdlog::info("Workforce consumption: {}", consumption);
@@ -157,9 +157,12 @@ void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
     target->prodution = value;
 }
 
-ComplexGeneratorBase::ComplexGeneratorBase(const Settings &settings,
-                                           WareTargetContainer &targets)
-    : targets_(targets), current_production_{}, settings_(settings) {
+ComplexGeneratorBase::ComplexGeneratorBase(
+    const Settings &settings,
+    const Store& store,
+    WareTargetContainer &targets
+    ) : targets_(targets), current_production_{}, settings_(settings), store_ (store)
+{
     // Copy all targets production methods
     for (const auto &target: targets.getTargets()) {
         auto current_target = current_production_.getTarget(target.ware_id);

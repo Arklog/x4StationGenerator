@@ -5,6 +5,8 @@
 #ifndef DOCKANDPIERRSECTION_HPP
 #define DOCKANDPIERRSECTION_HPP
 
+#include "Data/Store.hpp"
+
 #include <QWidget>
 
 #include "StationBuilder/defines.hpp"
@@ -19,7 +21,7 @@ class DockAndPierrSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit DockAndPierrSection(QWidget *parent = nullptr);
+    explicit DockAndPierrSection(const Store& store, QWidget *parent = nullptr);
     ~DockAndPierrSection() override;
 
     t_module_target_list getModuleTargetList() const;
@@ -30,6 +32,7 @@ signals:
 private:
     Ui::DockAndPierrSection *ui;
     ModuleConfigurationPanel *dock_and_pierr_configuration_panel;
+    const Store& store_;
 };
 
 

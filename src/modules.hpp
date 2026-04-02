@@ -5,6 +5,8 @@
 #ifndef X4STATIONGENERATOR_MODULES_HPP
 #define X4STATIONGENERATOR_MODULES_HPP
 
+#include "Data/Store.hpp"
+
 #include <string>
 
 #include "StationBuilder/defines.hpp"
@@ -18,6 +20,6 @@ struct StationSize {
     int z_minus;
 };
 
-std::string genModulePlan(const t_x4_complex &complex, Settings &settings);
+std::string genModulePlan(const t_x4_complex &complex, const Store& store, Settings &settings);
 
 #endif //X4STATIONGENERATOR_MODULES_HPP
