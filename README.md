@@ -10,8 +10,5 @@ Currently this tool allow for automatic station completion for self sustaining c
 
 <h2>Not implemented</h2>
 <ul>
-  <li>Terran, coming soon</li>
-  <li>Workforce</li>
-  <li>Sun Setting</li>
   <li>Create connection between modules (currently production modules are stacked at 0,0,0)</li>
 </ul>
