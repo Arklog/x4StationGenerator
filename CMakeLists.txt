@@ -35,7 +35,14 @@ FetchContent_Declare(
         GIT_TAG v1.15.3
 )
 
+FetchContent_Declare(
+        xsd
+        GIT_REPOSITORY https://github.com/codesynthesis-com/xsd
+        GIT_TAG v4.2.0
+)
+
 FetchContent_MakeAvailable(
+        xsd
         spdlog
         argparse
         nlohmann_json
@@ -81,6 +88,8 @@ find_package(
 #################################################################################
 # Application
 #################################################################################
+
+add_subdirectory(src/extractor)
 
 add_executable(x4StationGenerator
         main.cpp
