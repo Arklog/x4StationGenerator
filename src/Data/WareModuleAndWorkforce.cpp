@@ -82,46 +82,6 @@ void buildDataFrom(
     _g_workforce = workforce;
 }
 
-const t_modules_container &getModules() { return _g_modules; }
-
-const t_modules_container &getModules(const t_ware_id &ware_id) {
-    return _g_ware_to_modules_map.at(ware_id);
-}
-
-const t_ware_container &getWares() { return _g_ware; }
-
-const t_ware_groups_container &getWareGroups() { return _g_groups; }
-
-const Module *getModule(const t_ware_id &id,
-                        const t_production_method_id &production_method) {
-    try {
-        return getModules().at(_g_ware_to_modules[{id, production_method}]);
-    } catch (const std::out_of_range &e) {
-        spdlog::error(
-            "could not find module producing {} with production method {}", id.raw(),
-            production_method);
-        return nullptr;
-    }
-}
-
-bool isWareProduced(const t_ware_id &id) { return getWares().contains(id); }
-
-const t_production_method_id &
-getProductionMethodFromName(const std::string &name) {
-    return _g_production_methods[name];
-}
-
-const t_module_id &getModuleIdFromName(const std::string &name) {
-    auto &modules = getModules();
-
-    for (const auto &[module_id, module]: modules) {
-        if (module->name == name)
-            return module_id;
-    }
-
-    throw std::out_of_range("could not find module with name " + name);
-}
-
 std::vector<WareAmount> getWorkforceUsage(std::string race,
                                           unsigned int workforce_amount) {
     try {

@@ -28,7 +28,8 @@ bool ComplexGeneratorBase::_done (const t_target_container &targets,
     for (auto secondary_target : current_state.getSecondaryTargets ())
     {
 	if (secondary_target->prodution < 0
-	    && isWareProduced (secondary_target->ware_id))
+	    && store_.modules.all_producing.contains (
+		secondary_target->ware_id))
 	{
 	    return false;
 	}
@@ -112,7 +113,7 @@ ComplexGeneratorBase::_nextTarget (const t_target_container &targets,
     {
 	const auto &key = ware->ware_id;
 
-	if (!isWareProduced (key))
+	if (!store_.modules.all_producing.contains (key))
 	    continue;
 
 	auto is_base_target = targets.isPrimaryTarget (key);
@@ -151,7 +152,7 @@ void ComplexGeneratorBase::_updateCurrentProduction (const t_ware_id &ware_id,
 						     long int value,
 						     long int cycle_time)
 {
-    if (!isWareProduced (ware_id))
+    if (!store_.modules.all_producing.contains (ware_id))
     {
 	spdlog::info ("ware {} is not produced, skipping", ware_id.raw ());
 	return;

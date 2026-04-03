@@ -27,43 +27,9 @@ typedef std::unordered_map<t_ware_id, t_modules_container,
 			   std::hash<std::string> >
     t_ware_to_modules_map;
 
-void buildDataFrom (const std::vector<Module> &modules);
-
 void buildDataFrom (
     const std::map<std::string, std::vector<std::pair<t_ware_id, double> > >
 	&workforce);
-
-/**
- * Get all ware groups
- *
- * @return A map of ware group id to ware group pointer
- */
-const t_ware_groups_container &getWareGroups ();
-
-/**
- * Check if a ware identified by id is produced by a module
- *
- * @param id The ware id to check
- * @return true if the ware identified by id is produced by a module, false else
- */
-bool isWareProduced (const t_ware_id &id);
-
-/**
- * Get the production method id from its name
- *
- * @param name The name of the production method
- * @return The id of the production method
- */
-const t_production_method_id &
-getProductionMethodFromName (const std::string &name);
-
-/**
- * Return the module id from its name
- *
- * @param name
- * @return The module id, raise std::out_of_range exception if no match
- */
-const t_module_id &getModuleIdFromName (const std::string &name);
 
 /**
  * Get the amount of ware consumed to employ an amount of a given race workforce
