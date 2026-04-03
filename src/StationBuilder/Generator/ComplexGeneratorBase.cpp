@@ -84,7 +84,7 @@ void ComplexGeneratorBase::_step (const t_target_container &targets,
     auto habitat = store_.modules.by_id.at (settings_.workforce_module);
     auto consumption
 	= getWorkforceUsage (habitat->race.value (),
-			     module_to_add->workforce_max.value ());
+			     module_to_add->workforce_max.value (), store_);
     spdlog::info ("Workforce consumption: {}", consumption);
     for (const auto &i : consumption)
     {

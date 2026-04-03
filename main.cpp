@@ -17,8 +17,6 @@ int main (int argc, char *argv[])
     Store store;
     Loader loader{store};
     loader.load ();
-    // buildDataFrom (loader._modules_json);
-    buildDataFrom (loader._workforce);
 
     MainWindow w{store, nullptr};
     w.show ();

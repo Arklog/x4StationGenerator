@@ -45,6 +45,8 @@ struct Store
 	std::unordered_map<std::string, WareGroup *> by_name;
     } ware_groups;
 
+    std::map<std::string, std::vector<std::pair<t_ware_id, double>>> workforce;
+
     /**
      * Register a new module.
      *

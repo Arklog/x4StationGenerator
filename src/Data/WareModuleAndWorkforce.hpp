@@ -5,6 +5,8 @@
 #ifndef WARESANDMODULES_HPP
 #define WARESANDMODULES_HPP
 
+#include "Store.hpp"
+
 #include <set>
 
 #include "Data/Data.hpp"
@@ -27,10 +29,6 @@ typedef std::unordered_map<t_ware_id, t_modules_container,
 			   std::hash<std::string> >
     t_ware_to_modules_map;
 
-void buildDataFrom (
-    const std::map<std::string, std::vector<std::pair<t_ware_id, double> > >
-	&workforce);
-
 /**
  * Get the amount of ware consumed to employ an amount of a given race workforce
  *
@@ -39,6 +37,7 @@ void buildDataFrom (
  * @return
  */
 std::vector<WareAmount> getWorkforceUsage (std::string race,
-					   unsigned int workforce_amount);
+					   unsigned int workforce_amount,
+					   const Store &store);
 
 #endif // WARESANDMODULES_HPP
