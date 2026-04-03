@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified">
+    <xs:complexType name="modulesType">
+        <xs:sequence>
+            <xs:element name="module" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="category">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="extension" minOccurs="0" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:attribute name="faction" type="xs:string" use="required"/>
+                                            <xs:attribute name="race" type="xs:string" use="optional"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                                <xs:attribute name="comment" type="xs:string" use="optional"/>
+                                <xs:attribute name="faction" type="xs:string" use="optional"/>
+                                <xs:attribute name="race" type="xs:string" use="optional"/>
+                                <xs:attribute name="tags" type="xs:string" use="required"/>
+                                <xs:attribute name="ware" type="xs:string" use="optional"/>
+                            </xs:complexType>
+                        </xs:element>
+                        <xs:element name="compatibilities" minOccurs="0">
+                            <xs:complexType>
+                                <xs:sequence>
+                                    <xs:element name="limits" minOccurs="0">
+                                        <xs:complexType>
+                                            <xs:attribute name="production" type="xs:integer" use="required"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="maxlimits" minOccurs="0">
+                                        <xs:complexType>
+                                            <xs:attribute name="production" type="xs:integer" use="required"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                    <xs:element name="production" maxOccurs="unbounded">
+                                        <xs:complexType>
+                                            <xs:attribute name="chance" type="xs:integer" use="required"/>
+                                            <xs:attribute name="ref" type="xs:string" use="optional"/>
+                                            <xs:attribute name="ware" type="xs:string" use="optional"/>
+                                        </xs:complexType>
+                                    </xs:element>
+                                </xs:sequence>
+                            </xs:complexType>
+                        </xs:element>
+                    </xs:sequence>
+                    <xs:attribute name="base" type="xs:string" use="optional"/>
+                    <xs:attribute name="group" type="xs:string" use="required"/>
+                    <xs:attribute name="id" type="xs:string" use="required"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:sequence>
+        <xs:attribute name="noNamespaceSchemaLocation" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <xs:element name="modules" type="modulesType"/>
+</xs:schema>
