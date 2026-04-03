@@ -5,6 +5,8 @@
 #ifndef STORAGESELECTIONSECTION_HPP
 #define STORAGESELECTIONSECTION_HPP
 
+#include "Data/Store.hpp"
+
 #include <QWidget>
 
 #include "StationBuilder/defines.hpp"
@@ -21,7 +23,7 @@ class StorageSection : public QWidget {
 Q_OBJECT
 
 public:
-    explicit StorageSection(QWidget *parent = nullptr);
+    explicit StorageSection(const Store& store, QWidget *parent = nullptr);
     ~StorageSection() override;
 
     t_module_target_list getModuleTargetList() const;

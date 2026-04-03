@@ -5,32 +5,37 @@
 #ifndef WARESELECTIONSECTION_H
 #define WARESELECTIONSECTION_H
 
+#include "Data/Store.hpp"
+
 #include <QWidget>
 
 #include "StationBuilder/defines.hpp"
 
-
 QT_BEGIN_NAMESPACE
-namespace Ui { class WareSelectionSection; }
+namespace Ui {
+    class WareSelectionSection;
+}
 QT_END_NAMESPACE
 
-class WareSelectionSection : public QWidget {
-Q_OBJECT
+class WareSelectionSection : public QWidget
+{
+    Q_OBJECT
 
-public:
-    explicit WareSelectionSection(Settings &settings, QWidget *parent = nullptr);
-    ~WareSelectionSection() override;
+  public:
+    explicit WareSelectionSection (Settings &settings, const Store &store,
+				   QWidget *parent = nullptr);
+    ~WareSelectionSection () override;
 
-    const t_x4_complex& getComplex();
+    const t_x4_complex &getComplex ();
 
-signals:
-    void complexUpdated();
+  signals:
+    void complexUpdated ();
 
-private:
+  private:
     Ui::WareSelectionSection *ui;
     t_x4_complex complex_;
     Settings &settings_;
+    Store store_;
 };
 
-
-#endif //WareSelectionSection_H
+#endif // WareSelectionSection_H

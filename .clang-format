@@ -2,7 +2,6 @@
 BasedOnStyle: LLVM
 
 AccessModifierOffset: -2
-AlwaysBreakAfterReturnType: TopLevel
 BinPackArguments: true
 BinPackParameters: true
 BraceWrapping:
@@ -16,14 +15,14 @@ BraceWrapping:
   AfterUnion: true
   BeforeCatch: true
   BeforeElse: true
-  IndentBraces: true
+  IndentBraces: false
   SplitEmptyFunction: false
 BreakBeforeBinaryOperators: All
 BreakBeforeBraces: Custom
 BreakBeforeTernaryOperators: true
 ColumnLimit: 80
-ConstructorInitializerIndentWidth: 2
-ContinuationIndentWidth: 2
+ConstructorInitializerIndentWidth: 4
+ContinuationIndentWidth: 4
 ForEachMacros: [
   'FOR_ALL_BB_FN',
   'FOR_ALL_EH_REGION',
@@ -180,11 +179,11 @@ ForEachMacros: [
   'EXECUTE_IF_SET_IN_SPARSESET'
 ]
 IndentCaseLabels: false
-IndentWidth: 2
-NamespaceIndentation: None
+IndentWidth: 4
+NamespaceIndentation: All
 PenaltyBreakBeforeFirstCallParameter: 100
 PointerAlignment: Right
-SortIncludes: false
+SortIncludes: true
 SpaceAfterCStyleCast: true
 SpaceBeforeParens: Always
 SpacesBeforeTrailingComments: 1

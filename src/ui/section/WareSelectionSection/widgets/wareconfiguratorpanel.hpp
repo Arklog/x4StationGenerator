@@ -10,6 +10,7 @@
 #include "ui_wareconfigurator.h"
 
 #include "Data/Data.hpp"
+#include "Data/Store.hpp"
 
 #include "StationBuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"
@@ -26,27 +27,32 @@ QT_END_NAMESPACE
 
 class WareConfigurator;
 
-class WareConfiguratorPanel : public QGroupBox {
+class WareConfiguratorPanel : public QGroupBox
+{
     Q_OBJECT
 
-public:
-    WareConfiguratorPanel(const Settings &settings, QWidget *parent = nullptr);
+  public:
+    WareConfiguratorPanel (const Settings &settings, const Store &store,
+			   QWidget *parent = nullptr);
 
-    ~WareConfiguratorPanel() override;
+    ~WareConfiguratorPanel () override;
 
-public slots:
-    void addWare(t_ware_id ware_id, bool is_secondary = false, unsigned amount = 0);
+  public slots:
+    void addWare (t_ware_id ware_id, bool is_secondary = false,
+		  unsigned amount = 0);
 
-    void productionTargetUpdate();
+    void productionTargetUpdate ();
 
-signals:
-    void shouldUpdate(t_x4_complex complex);
+  signals:
+    void shouldUpdate (t_x4_complex complex);
 
-private:
+  private:
     Ui::WareConfiguratorPanel *ui;
-    std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> > ware_configurators;
+    std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> >
+	ware_configurators;
     WareTargetContainer ware_target_container;
     const Settings &settings_;
+    const Store &store_;
 };
 
 #endif // WARECONFIGURATORPANEL_HPP

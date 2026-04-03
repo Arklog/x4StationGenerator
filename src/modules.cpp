@@ -10,10 +10,9 @@
 
 #include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
 
-std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
+std::string genModulePlan(const t_x4_complex &complex, const Store& store, Settings &settings) {
     std::stringstream plan;
     StationSize station_size{.x_plus = 10, .x_minus = 10, .y_plus = 10, .y_minus = 10, .z_plus = 10, .z_minus = 10};
-    const auto &modules = getModules();
 
     int xpos_pierr = 2500 - 1000 * station_size.x_minus;
     int xpos_dock = 2700 - 1000 * station_size.x_minus;
@@ -55,7 +54,7 @@ std::string genModulePlan(const t_x4_complex &complex, Settings &settings) {
 
     unsigned int i = 1;
     for (auto const &module_id: complex) {
-        auto const &module = modules.at(module_id);
+        auto const &module = store.modules.by_id.at(module_id);
 
         std::array<int, 3> pos{0, 0, 0};
         if (module->type == ModuleType::pier) {

@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "Data/Store.hpp"
+
 #include <QMainWindow>
 
 #include "StationBuilder/defines.hpp"
@@ -15,20 +17,21 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow {
+class MainWindow : public QMainWindow
+{
     Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = nullptr);
+  public:
+    explicit MainWindow (const Store &store, QWidget *parent = nullptr);
 
-    ~MainWindow();
+    ~MainWindow ();
 
-public slots:
-    void exportPlan();
+  public slots:
+    void exportPlan ();
 
-    void complexUpdated();
+    void complexUpdated ();
 
-private:
+  private:
     Ui::MainWindow *ui;
 
     WareSelectionSection *ware_selection_section_;
@@ -38,6 +41,7 @@ private:
     SettingsSection *settings_section_;
 
     Settings settings_;
+    const Store &store_;
     t_x4_complex complex_;
 };
 
