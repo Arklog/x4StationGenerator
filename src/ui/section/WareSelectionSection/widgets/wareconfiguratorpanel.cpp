@@ -20,7 +20,7 @@ WareConfiguratorPanel::WareConfiguratorPanel (const Settings &settings,
 					      const Store &store,
 					      QWidget *parent)
     : QGroupBox (parent), ui (new Ui::WareConfiguratorPanel),
-      ware_configurators{}, ware_target_container{}, settings_ (settings),
+      ware_configurators{}, ware_target_container{store}, settings_ (settings),
       store_ (store)
 {
     ui->setupUi (this);

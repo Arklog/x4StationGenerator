@@ -22,7 +22,7 @@ WareSelectionSection::WareSelectionSection (Settings &settings,
       store_ (store)
 {
     ui->setupUi (this);
-    auto ware_selector = new WaresSelector (this);
+    auto ware_selector = new WaresSelector (store, this);
     auto ware_configurator_panel
 	= new WareConfiguratorPanel (settings, store, this);
 
@@ -56,16 +56,10 @@ WareSelectionSection::WareSelectionSection (Settings &settings,
 	     });
     connect (ui->habitat_input, &QComboBox::currentTextChanged,
 	     [this, ware_configurator_panel] (QString text) {
-		 const auto &modules = getModules ();
-		 auto name = text.toStdString ();
+		 auto module
+		     = this->store_.modules.by_name.at (text.toStdString ());
 
-		 for (auto const &[module_id, module] : modules)
-		 {
-		     if (module->name != name)
-			 continue;
-		     this->settings_.workforce_module = module_id;
-		     break;
-		 }
+		 this->settings_.workforce_module = module->id;
 		 spdlog::debug ("default habitat changed: {}",
 				this->settings_.workforce_module);
 		 ware_configurator_panel->productionTargetUpdate ();

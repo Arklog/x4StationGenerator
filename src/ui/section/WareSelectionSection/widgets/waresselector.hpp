@@ -8,7 +8,7 @@
 #include <QWidget>
 
 #include "Data/Data.hpp"
-
+#include "Data/Store.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -18,21 +18,21 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-class WaresSelector : public QWidget {
+class WaresSelector : public QWidget
+{
     Q_OBJECT
 
-public:
-    explicit WaresSelector(QWidget *parent = nullptr);
+  public:
+    explicit WaresSelector (const Store &store, QWidget *parent = nullptr);
 
-    ~WaresSelector() override;
+    ~WaresSelector () override;
 
-signals:
-    void wareSelected(t_ware_id);
+  signals:
+    void wareSelected (t_ware_id);
 
-private:
+  private:
     Ui::WaresSelector *ui;
     std::unordered_map<t_ware_group_id, QWidget *> category_tabs;
 };
 
-
-#endif //WARESSELECTOR_HPP
+#endif // WARESSELECTOR_HPP

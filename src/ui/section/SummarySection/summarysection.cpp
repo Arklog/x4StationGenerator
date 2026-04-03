@@ -53,7 +53,6 @@ void SummarySection::updateTargetList (const t_x4_complex &targets)
 {
     spdlog::debug ("Updating summary section");
 
-    auto modules = getModules ();
     t_module_quantity modules_recap{};
 
     for (const auto &target : targets)

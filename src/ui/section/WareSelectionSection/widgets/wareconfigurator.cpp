@@ -25,7 +25,8 @@ WareConfigurator::WareConfigurator (WareTarget *ware_target, const Store &store,
     const auto &ware_id = this->ware_target->ware_id;
     const auto &ware = store_.wares.by_id.at (ware_id);
     const auto &ware_name = ware->name;
-    const auto &possible_source_modules = store_.modules.producing.at (ware_id);
+    const auto &possible_source_modules
+	= store_.modules.all_producing.at (ware_id);
 
     ui->ware_label->setText (QString (ware_name.c_str ()));
 
