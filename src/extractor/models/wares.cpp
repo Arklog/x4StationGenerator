@@ -881,7 +881,7 @@ xsdcpp::AttributeInfo _wareType_Attributes[] = {
     {"illegal", 2048ULL, (xsdcpp::get_field_t)&_get_wareType_illegal, (xsdcpp::set_value_t)&xsdcpp::set_string, false, nullptr},
     {nullptr}
 };
-void* _get_methodType_default(wares::methodType* parent) {return (parent->default.emplace_back(), &parent->default.back());}
+void* _get_methodType_default(wares::methodType* parent) {return (parent->default_.emplace_back(), &parent->default_.back());}
 xsdcpp::ChildElementInfo _methodType_Children[] = {
     {"default", 0, (xsdcpp::get_field_t)&_get_methodType_default, &wares::_methodDefaultType_Info, 0, 0},
     {nullptr}
