@@ -7,6 +7,7 @@
 #include "Extractor.hpp"
 
 #include "CacheFile.hpp"
+#include "LangFile.hpp"
 #include "spdlog/spdlog.h"
 #include "utils.hpp"
 
@@ -29,6 +30,8 @@ namespace extractor {
 	    this->extract_main ();
 	    this->extract_extension ();
 	    this->patch_extension ();
+
+	    LangFile test (_settings.OutputDirPath / "t/0001-l044.xml");
 	}
 	catch (const std::exception &e)
 	{
