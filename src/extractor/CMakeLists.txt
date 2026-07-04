@@ -17,9 +17,11 @@ add_library(x4StationGeneratorExtractor STATIC
         ExtractorSettings.cpp
         utils.cpp
         utils.hpp
+        CacheFile.cpp
+        CacheFile.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PRIVATE .)
-target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog)
+target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json)
 
 add_executable(x4StationGeneratorExtractorBin main.cpp)
 target_link_libraries(x4StationGeneratorExtractorBin PRIVATE x4StationGeneratorExtractor)
