@@ -1,7 +1,7 @@
 //
 // Created by pierre on 6/25/26.
 //
-#include "ExtractorSettings.hpp"
+#include "extractor/ExtractorSettings.hpp"
 
 bool extractor::ExtractorSettings::validate () const
 {

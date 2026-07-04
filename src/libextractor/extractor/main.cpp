@@ -1,5 +1,5 @@
-#include "Extractor.hpp"
-#include "ExtractorSettings.hpp"
+#include "extractor/Extractor.hpp"
+#include "extractor/ExtractorSettings.hpp"
 //
 // Created by pierre on 6/25/26.
 //

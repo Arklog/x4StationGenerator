@@ -89,7 +89,8 @@ find_package(
 # Application
 #################################################################################
 
-add_subdirectory(src/extractor)
+add_subdirectory(src/libcommon)
+add_subdirectory(src/libextractor)
 
 add_executable(x4StationGenerator
         main.cpp
