@@ -11,6 +11,7 @@
 #include "utils.hpp"
 
 #include <fstream>
+#include <queue>
 
 namespace extractor {
     Extractor::Extractor (const ExtractorSettings &settings)
@@ -27,6 +28,7 @@ namespace extractor {
 
 	    this->extract_main ();
 	    this->extract_extension ();
+	    this->patch_extension ();
 	}
 	catch (const std::exception &e)
 	{
@@ -141,7 +143,8 @@ namespace extractor {
 
 	auto fn = [get_archive, this, &cache_file] (const param &path) {
 	    auto archive = get_archive (path);
-	    auto output = this->_settings.OutputDirPath / path.filename ();
+	    auto output = this->_settings.OutputDirPath / "extensions"
+			  / path.filename ();
 	    if (!archive)
 		return;
 
@@ -180,6 +183,95 @@ namespace extractor {
 	};
 
 	ThreadPool<5, param, decltype (fn)> pool (fn, std::move (extensions));
+	pool.start ();
+    }
+
+    void Extractor::patch_extension () const
+    {
+	using namespace std::filesystem;
+	struct path_info
+	{
+	    path diff_file;
+	    path source_file;
+	};
+	using arg_type = std::vector<path_info>;
+	using queue_type = std::unordered_map<path, arg_type>;
+
+	auto extension_folder = _settings.OutputDirPath / "extensions";
+	queue_type queue{};
+	CacheFile<std::string, bool> cache_file (_settings.OutputDirPath
+						 / "cache.json");
+
+	auto iter = recursive_directory_iterator (extension_folder);
+	for (auto &item : iter)
+	{
+	    if (!item.is_regular_file () || item.path ().extension () != ".xml")
+		continue;
+
+	    auto file_without_root
+		= item.path ().lexically_relative (extension_folder);
+	    auto tmp = file_without_root.string ();
+	    tmp.erase (0, tmp.find ('/'));
+	    file_without_root = tmp;
+
+	    auto diff_file = iter->path ();
+	    auto file_to_patch = path{_settings.OutputDirPath.string ()
+				      + file_without_root.string ()};
+
+	    if (!exists (file_to_patch))
+	    {
+		spdlog::info ("[Extractor]: {} not found, skipping",
+			      file_to_patch.string ());
+		continue;
+	    }
+
+	    queue[file_without_root].emplace_back (diff_file, file_to_patch);
+	}
+
+	auto fn = [this, &cache_file] (const arg_type &queue) {
+	    for (const auto &[diff_file, file_to_patch] : queue)
+	    {
+		if (cache_file.contains (file_to_patch.string ())
+		    && cache_file.get (file_to_patch.string ()))
+		{
+		    spdlog::info ("[Extractor]: {} already patched",
+				  file_to_patch.string ());
+		    continue;
+		}
+
+		cache_file.register_entry (file_to_patch.string (), false);
+		spdlog::info ("[Extractor]: Patching {}",
+			      file_to_patch.string ());
+
+#ifdef WIN32
+		auto command
+		    = fmt::format ("'{}' -o '{}' -d '{}' -u '{}'",
+				   _settings.XMLPatchPath.string (),
+				   file_to_patch.string (), diff_file.string (),
+				   file_to_patch.string ());
+#else
+		auto command
+		    = fmt::format ("wine '{}' -o '{}' -d '{}' -u '{}'",
+				   to_winepath (_settings.XMLPatchPath),
+				   to_winepath (file_to_patch),
+				   to_winepath (diff_file),
+				   to_winepath (file_to_patch));
+#endif
+
+		system (command.c_str ());
+		cache_file.register_entry (file_to_patch.string (), true);
+		cache_file.save ();
+		spdlog::info ("[Extractor]: {} patched",
+			      file_to_patch.string ());
+	    }
+	};
+
+	std::vector<arg_type> args;
+	for (auto &[_, item] : queue)
+	{
+	    args.push_back (item);
+	}
+	ThreadPool<5, arg_type, decltype (fn)> pool (fn, std::move (args));
 	pool.start ();
     }
 } // namespace extractor
