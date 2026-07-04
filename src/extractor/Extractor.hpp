@@ -37,6 +37,11 @@ namespace extractor {
 	 * Extract mods and extension
 	 */
 	void extract_extension () const;
+
+	/**
+	 * Patch main x4 files with extension ones
+	 */
+	void patch_extension () const;
     };
 
 } // namespace extractor
