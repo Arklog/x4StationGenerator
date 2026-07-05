@@ -5,89 +5,44 @@
 #ifndef X4STATIONGENERATOR__UTILS_HPP
 #define X4STATIONGENERATOR__UTILS_HPP
 #include <filesystem>
-#include <functional>
 #include <mutex>
-#include <thread>
+#include <spdlog/fmt/bundled/format.h>
 
-std::string to_winepath (const std::filesystem::path &path);
+std::string to_winepath(const std::filesystem::path &path);
 
-template <typename T, typename Ret, typename... Args>
-concept is_executable = requires (T t) {
-    { t (std::declval<Args> ()...) } -> std::convertible_to<Ret>;
+template<>
+struct fmt::formatter<std::filesystem::path> {
+    constexpr auto parse(format_parse_context &ctx) -> format_parse_context::iterator {
+        return ctx.begin();
+    }
+
+    format_context::iterator format(const std::filesystem::path &path, fmt::format_context &ctx) const {
+#ifdef WIN32
+        auto const value = path.string();
+#else
+        auto const value = to_winepath(path);
+#endif
+
+        return fmt::format_to(ctx.out(), "{}", value);
+    }
 };
 
-template <size_t NThreads, typename T, is_executable<void, T> FN>
-class ThreadPool
+
+template<typename... Args>
+std::string generate_command(Args... args) {
+    std::string command{(... + fmt::format("'{}' ", args))};
+
+#ifdef WIN32
+    return command;
+#else
+    return fmt::format("wine {}", command);
+#endif
+}
+
+template<typename T, typename Ret, typename... Args>
+concept is_executable = requires(T t)
 {
-    class ArgReserve
-    {
-      public:
-	ArgReserve (std::vector<T> &&reserve) : _reserve (std::move (reserve))
-	{}
-
-	std::optional<T> get ()
-	{
-	    std::lock_guard lock (_mutex);
-
-	    if (_reserve.empty ())
-		return std::nullopt;
-
-	    auto item = _reserve.back ();
-	    _reserve.pop_back ();
-
-	    return item;
-	}
-
-      private:
-	std::vector<T> _reserve;
-	std::mutex _mutex;
-    };
-
-  public:
-    ThreadPool (FN fn, std::vector<T> &&args)
-	: _args (std::move (args)), _fn{fn}, _running (false)
-    {}
-
-    ~ThreadPool ()
-    {
-	if (_running)
-	    join ();
-    }
-
-    void start ()
-    {
-	if (_running)
-	    throw std::runtime_error ("already running");
-
-	_running = true;
-	for (size_t i = 0; i < NThreads; ++i)
-	{
-	    _threads[i] = std::thread ([this] () {
-		auto t = _args.get ();
-
-		while (t.has_value ())
-		{
-		    _fn (t.value ());
-		    t = _args.get ();
-		}
-	    });
-	}
-    }
-
-    void join ()
-    {
-	if (!_running)
-	    throw std::runtime_error ("not running");
-
-	_running = false;
-	for (size_t i = 0; i < NThreads; ++i)
-	    _threads[i].join ();
-    }
-
-  private:
-    ArgReserve _args;
-    std::thread _threads[NThreads];
-    FN _fn;
-    bool _running;
+    { t(std::declval<Args>()...) } -> std::convertible_to<Ret>;
 };
+
 #endif // X4STATIONGENERATOR__UTILS_HPP

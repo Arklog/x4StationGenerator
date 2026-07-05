@@ -5,10 +5,10 @@
 #ifndef X4STATIONGENERATOR__EXTRACTOR_HPP
 #define X4STATIONGENERATOR__EXTRACTOR_HPP
 
+#include "CacheFile.hpp"
 #include "ExtractorSettings.hpp"
 
 namespace extractor {
-
     /**
      * @class Extractor
      * @brief Provides functionality to extract resources using the
@@ -18,32 +18,30 @@ namespace extractor {
      * uses the settings specified in an instance of ExtractorSettings to
      * configure paths and other necessary parameters.
      */
-    class Extractor
-    {
-      public:
-	Extractor (const ExtractorSettings &settings);
+    class Extractor {
+    public:
+        Extractor(const ExtractorSettings &settings);
 
-	void extract () const;
+        void extract() const;
 
-      private:
-	ExtractorSettings _settings;
+    private:
+        ExtractorSettings _settings;
 
-	/**
-	 * Extract main x4 files
-	 */
-	void extract_main () const;
+        /**
+         * Extract main x4 files
+         */
+        void extract_main() const;
 
-	/**
-	 * Extract mods and extension
-	 */
-	void extract_extension () const;
+        /**
+         * Extract mods and extension
+         */
+        void extract_extension() const;
 
-	/**
-	 * Patch main x4 files with extension ones
-	 */
-	void patch_extension () const;
+        /**
+         * Patch main x4 files with extension ones
+         */
+        void patch_extension() const;
     };
-
 } // namespace extractor
 
 #endif // X4STATIONGENERATOR__EXTRACTOR_HPP
