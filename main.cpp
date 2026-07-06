@@ -1,5 +1,5 @@
-#include "Data/Loader.hpp"
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "src/libcommon/data/Loader.hpp"
+#include "src/libcommon/data/WareModuleAndWorkforce.hpp"
 #include "ui/mainwindow.h"
 #include <QApplication>
 

@@ -11,7 +11,7 @@
 
 #include "spdlog/spdlog.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
 #include "ui/section/WareSelectionSection/widgets/waresselector.hpp"

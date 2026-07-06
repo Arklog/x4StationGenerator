@@ -6,7 +6,7 @@
 #include <stack>
 #include <chrono>
 #include <QUuid>
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
 

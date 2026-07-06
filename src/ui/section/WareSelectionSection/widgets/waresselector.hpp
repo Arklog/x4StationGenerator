@@ -7,8 +7,8 @@
 
 #include <QWidget>
 
-#include "Data/Data.hpp"
-#include "Data/Store.hpp"
+#include "../../../../libcommon/data/Data.hpp"
+#include "../../../../libcommon/data/Store.hpp"
 
 QT_BEGIN_NAMESPACE
 

@@ -105,10 +105,6 @@ add_executable(x4StationGenerator
         src/ui/section/WareSelectionSection/wareselectionsection.cpp
         src/ui/section/WareSelectionSection/wareselectionsection.ui
         src/ui/mainwindow.ui
-        src/StationBuilder/Generator/ComplexGeneratorBase.cpp
-        src/Data/WareModuleAndWorkforce.cpp
-        src/Data/Loader.cpp
-        src/Data/Data.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.cpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.hpp
         src/ui/section/DockAndPierrSection/dockandpierrsection.ui
@@ -127,17 +123,9 @@ add_executable(x4StationGenerator
         src/ui/section/SummarySection/summarysection.cpp
         src/ui/section/SummarySection/summarysection.hpp
         src/ui/section/SummarySection/summarysection.ui
-        src/StationBuilder/defines.cpp
         src/ui/section/SettingsSection/settingssection.cpp
         src/ui/section/SettingsSection/settingssection.hpp
         src/ui/section/SettingsSection/settingssection.ui
-        src/utils/WareTargetContainer.cpp
-        src/utils/WareTargetContainer.hpp
-        src/Data/ID.cpp
-        src/Data/ID.h
-        src/utils/FmtVectorFormatter.hpp
-        src/Data/Store.cpp
-        src/Data/Store.hpp
 )
 target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

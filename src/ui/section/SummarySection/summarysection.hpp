@@ -5,7 +5,7 @@
 #ifndef SUMMARYSECTION_HPP
 #define SUMMARYSECTION_HPP
 
-#include "Data/Store.hpp"
+#include "../../../libcommon/data/Store.hpp"
 
 #include <QWidget>
 

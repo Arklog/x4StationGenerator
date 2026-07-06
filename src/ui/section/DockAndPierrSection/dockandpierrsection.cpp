@@ -14,7 +14,7 @@
 #include "../../widgets/moduleconfigurationpanel.hpp"
 #include "../../widgets/moduleselectionpanel.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 DockAndPierrSection::DockAndPierrSection (const Store &store, QWidget *parent)
     : QWidget (parent), ui (new Ui::DockAndPierrSection), store_ (store)

@@ -12,7 +12,7 @@
 
 #include "ui_waresselector.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "spdlog/spdlog.h"
 

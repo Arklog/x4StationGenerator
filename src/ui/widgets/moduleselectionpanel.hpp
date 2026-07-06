@@ -8,7 +8,7 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "StationBuilder/defines.hpp"
 

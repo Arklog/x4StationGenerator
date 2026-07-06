@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "Data/Store.hpp"
+#include "../libcommon/data/Store.hpp"
 
 #include <QMainWindow>
 

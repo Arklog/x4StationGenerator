@@ -9,7 +9,7 @@
 
 #include "ui_summarysection.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QChartView>

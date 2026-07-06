@@ -5,7 +5,7 @@
 #ifndef STORAGESELECTIONSECTION_HPP
 #define STORAGESELECTIONSECTION_HPP
 
-#include "Data/Store.hpp"
+#include "../../../libcommon/data/Store.hpp"
 
 #include <QWidget>
 
