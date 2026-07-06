@@ -1,0 +1,59 @@
+//
+// Created by pierre on 7/5/26.
+//
+
+#include "X4Patchable.hpp"
+
+#include <spdlog/spdlog.h>
+
+#include "extractor/utils.hpp"
+#include "extractor/extraction_logic/Extension.hpp"
+
+extractor::X4Patchable::X4Patchable(const std::filesystem::path &in,
+                                    const std::filesystem::path &out) : in{in}, out{out} {
+    output_exists = std::filesystem::exists(out);
+}
+
+void extractor::X4Patchable::patch(const std::filesystem::path &xml_diff_exec, CacheFile<std::string, bool> &cache) {
+    if (cache.contains(in.string()) && cache.get(in.string())) {
+        spdlog::info("File {} already patched", in.string());
+        return;
+    }
+
+    spdlog::info("Patching file {}", in.string());
+    cache.register_entry(in.string(), false);
+
+    if (output_exists)
+        patch_diff(xml_diff_exec);
+    else
+        patch_move();
+
+    cache.register_entry(in.string(), true);
+    cache.save();
+    spdlog::info("File {} patched", in.string());
+}
+
+void extractor::X4Patchable::insert_patchable(const Extension *extension, std::vector<X4Patchable *> &patchables) {
+    std::filesystem::recursive_directory_iterator it(extension->output_tmp);
+
+    for (auto &item: it) {
+        const auto &path = item.path();
+        if (!std::filesystem::is_regular_file(path) || path.extension() != ".xml")
+            continue;
+
+        auto relative_path = std::filesystem::relative(path, extension->output_tmp);
+        auto output_path   = extension->output / relative_path;
+        patchables.push_back(new X4Patchable(path, output_path));
+    }
+}
+
+void extractor::X4Patchable::patch_move() {
+    std::filesystem::create_directories(out.parent_path());
+    std::filesystem::rename(in, out);
+}
+
+void extractor::X4Patchable::patch_diff(const std::filesystem::path &xml_diff_exec) {
+    auto command = generate_command(xml_diff_exec, "-o", out, "-d", in, "-u", out);
+
+    system(command.c_str());
+}

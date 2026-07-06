@@ -30,6 +30,8 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/extraction_logic/X4Extractable.cpp
         extractor/extraction_logic/FileDetector.cpp
         extractor/extraction_logic/FileDetector.hpp
+        extractor/patching_logic/X4Patchable.cpp
+        extractor/patching_logic/X4Patchable.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json x4StationGeneratorCommon)
