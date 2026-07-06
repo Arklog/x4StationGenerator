@@ -11,18 +11,15 @@
 #include <unordered_map>
 
 namespace extractor {
-    class LangFile
-    {
-      public:
-	LangFile (const std::filesystem::path &path);
+    class LangFile {
+    public:
+        LangFile(const std::filesystem::path &path);
 
-	void translate (std::string &value);
+        void translate(std::string &value) const;
 
-      private:
-	t::languageType _language;
-	std::unordered_map<std::string, std::string> _translations;
+    private:
+        std::unordered_map<std::string, std::string> _translations;
     };
-
 } // namespace extractor
 
 #endif // X4STATIONGENERATOR__LANGFILE_HPP
