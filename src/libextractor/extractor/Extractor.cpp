@@ -14,6 +14,7 @@
 #include "extraction_logic/Extension.hpp"
 
 #include "extraction_logic/FileDetector.hpp"
+#include "patching_logic/X4Patchable.hpp"
 
 namespace extractor {
     Extractor::Extractor(const ExtractorSettings &settings)
@@ -46,6 +47,20 @@ namespace extractor {
             }
 
             pool.wait();
+
+            std::vector<X4Patchable *> patchables;
+            for (auto extension: detector.extensions) {
+                X4Patchable::insert_patchable(extension, patchables);
+
+                for (auto patchable: patchables) {
+                    auto task = new common::Task([this, patchable, &cache]() {
+                        patchable->patch(_settings.XMLPatchPath, cache);
+                    });
+                    pool.enqueue(task);
+                }
+                pool.wait();
+            }
+
             LangFile test(_settings.OutputDirPath / "t/0001-l044.xml");
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
