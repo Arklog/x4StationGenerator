@@ -4,27 +4,26 @@
 
 #ifndef X4STATIONGENERATOR_WARETARGETCONTAINER_H
 #define X4STATIONGENERATOR_WARETARGETCONTAINER_H
-#include "Data/Store.hpp"
-#include "StationBuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 
 /**
  * Container for ware targets, allows to manage primary and secondary targets
  * and ensure that a ware is not both a primary and secondary target
  */
-class WareTargetContainer
-{
-  private:
+class WareTargetContainer {
+private:
     using ware_targets_main_container_t = std::vector<WareTarget>;
-    using ware_targets_container_t = std::vector<WareTarget *>;
+    using ware_targets_container_t      = std::vector<WareTarget *>;
     // using ware_targets_container_iter_t =
     // std::ranges::borrowed_iterator_t<ware_targets_container_t>;
 
     ware_targets_main_container_t ware_targets;
-    ware_targets_container_t ware_targets_primary;
-    ware_targets_container_t ware_targets_secondary;
+    ware_targets_container_t      ware_targets_primary;
+    ware_targets_container_t      ware_targets_secondary;
 
-  public:
-    WareTargetContainer (const Store &store);
+public:
+    WareTargetContainer(const Store &store);
 
     /**
      * Check if a ware is a primary target
@@ -33,9 +32,9 @@ class WareTargetContainer
      * @return
      */
     [[nodiscard]] bool
-    isPrimaryTarget (const t_ware_id &ware_id,
-		     ware_targets_container_t::const_iterator *iter
-		     = nullptr) const;
+    isPrimaryTarget(const t_ware_id &                         ware_id,
+                    ware_targets_container_t::const_iterator *iter
+                            = nullptr) const;
 
     /**
      * Check if a ware is a secondary target
@@ -43,15 +42,15 @@ class WareTargetContainer
      * @param iter
      * @return
      */
-    bool isSecondaryTarget (const t_ware_id &ware_id,
-			    ware_targets_container_t::const_iterator *iter
-			    = nullptr) const;
+    bool isSecondaryTarget(const t_ware_id &                         ware_id,
+                           ware_targets_container_t::const_iterator *iter
+                                   = nullptr) const;
 
     /**
      * Set a ware as primary target
      * @return
      */
-    void setPrimaryTarget (const t_ware_id &ware_id);
+    void setPrimaryTarget(const t_ware_id &ware_id);
 
     /**
      * Unset a ware as primary target, if the ware is not a primary target throw
@@ -59,7 +58,7 @@ class WareTargetContainer
      *
      * @param ware_id
      */
-    void unsetPrimaryTarget (const t_ware_id &ware_id);
+    void unsetPrimaryTarget(const t_ware_id &ware_id);
 
     /**
      * Set ware as secondary target, if the ware is already a primary target and
@@ -68,8 +67,8 @@ class WareTargetContainer
      * @param ware_id
      * @param allow_primary_switch
      */
-    void setSecondaryTarget (t_ware_id ware_id,
-			     bool allow_primary_switch = false);
+    void setSecondaryTarget(t_ware_id ware_id,
+                            bool      allow_primary_switch = false);
 
     /**
      * Get a primary target by ware id, if the ware is not a primary target
@@ -78,7 +77,7 @@ class WareTargetContainer
      * @param ware_id
      * @return
      */
-    [[nodiscard]] WareTarget *getPrimaryTarget (const t_ware_id &ware_id) const;
+    [[nodiscard]] WareTarget *getPrimaryTarget(const t_ware_id &ware_id) const;
 
     /**
      * Get a secondary target by ware id, if the ware is not a secondary target
@@ -88,7 +87,7 @@ class WareTargetContainer
      * @return
      */
     [[nodiscard]] WareTarget *
-    getSecondaryTarget (const t_ware_id &ware_id) const;
+    getSecondaryTarget(const t_ware_id &ware_id) const;
 
     /**
      * Get a target by ware id, if the ware is not a target throw
@@ -96,16 +95,16 @@ class WareTargetContainer
      *   * @param ware_id
      * @return
      */
-    [[nodiscard]] WareTarget *getTarget (const t_ware_id &ware_id) const;
+    [[nodiscard]] WareTarget *getTarget(const t_ware_id &ware_id) const;
 
-    [[nodiscard]] const std::vector<WareTarget> &getTargets () const;
+    [[nodiscard]] const std::vector<WareTarget> &getTargets() const;
 
-    [[nodiscard]] const std::vector<WareTarget *> &getPrimaryTargets () const;
+    [[nodiscard]] const std::vector<WareTarget *> &getPrimaryTargets() const;
 
-    [[nodiscard]] const std::vector<WareTarget *> &getSecondaryTargets () const;
+    [[nodiscard]] const std::vector<WareTarget *> &getSecondaryTargets() const;
 
     [[nodiscard]] const std::vector<WareTarget *>
-    getPrimaryAndSecondaryTargets () const;
+    getPrimaryAndSecondaryTargets() const;
 };
 
 #endif // X4STATIONGENERATOR_WARETARGETCONTAINER_H

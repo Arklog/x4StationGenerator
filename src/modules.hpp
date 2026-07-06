@@ -5,7 +5,7 @@
 #ifndef X4STATIONGENERATOR_MODULES_HPP
 #define X4STATIONGENERATOR_MODULES_HPP
 
-#include "Data/Store.hpp"
+#include "libcommon/data/Store.hpp"
 
 #include <string>
 

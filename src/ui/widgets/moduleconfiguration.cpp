@@ -7,7 +7,7 @@
 #include "moduleconfiguration.hpp"
 #include "ui_moduleconfiguration.h"
 
-#include "Data/Data.hpp"
+#include "../../libcommon/data/Data.hpp"
 
 
 ModuleConfiguration::ModuleConfiguration(const Module *dock_or_pierr, ModuleTarget& target, QWidget *parent) :

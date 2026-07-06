@@ -8,9 +8,9 @@
 #include "wareconfigurator.hpp"
 #include "ui_wareconfigurator.h"
 
-#include "Data/Data.hpp"
+#include "../../../../libcommon/data/Data.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "spdlog/spdlog.h"
 

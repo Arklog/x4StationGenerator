@@ -4,8 +4,8 @@
 
 #ifndef COMPLEXGENERATOR_HPP
 #define COMPLEXGENERATOR_HPP
-#include "../defines.hpp"
-#include "Data/Store.hpp"
+#include "stationbuilder/defines.hpp"
+#include "data/Store.hpp"
 #include "utils/WareTargetContainer.hpp"
 
 /**
@@ -30,8 +30,8 @@ protected:
      * @return True if the generation is done, else false
      */
     virtual bool _done(const t_target_container &targets,
-                       t_target_container &current_state,
-                       t_x4_complex &modules) const;
+                       t_target_container &      current_state,
+                       t_x4_complex &            modules) const;
 
     /**
      * Next step in the generation
@@ -41,7 +41,7 @@ protected:
      * @param modules The current list of modules to be built
      */
     virtual void _step(const t_target_container &targets,
-                       t_target_container &current_state, t_x4_complex &modules);
+                       t_target_container &      current_state, t_x4_complex &modules);
 
     /**
      * Choose the next target to build
@@ -52,8 +52,8 @@ protected:
      * @return
      */
     virtual WareTarget *_nextTarget(const t_target_container &targets,
-                                    t_target_container &current_state,
-                                    t_x4_complex &modules);
+                                    t_target_container &      current_state,
+                                    t_x4_complex &            modules);
 
     /**
      * Update the production value of the ware identified by ware_id by values.
@@ -65,18 +65,18 @@ protected:
      * the ware is consumed.
      */
     void _updateCurrentProduction(const t_ware_id &ware_id, long int value,
-                                  long int cycle_time);
+                                  long int         cycle_time);
 
     WareTargetContainer &targets_;
-    WareTargetContainer current_production_;
-    const Settings &settings_;
-    const Store& store_;
-    long int workforce_;
-    size_t current_step_;
-    double sunlight_;
+    WareTargetContainer  current_production_;
+    const Settings &     settings_;
+    const Store &        store_;
+    long int             workforce_;
+    size_t               current_step_;
+    double               sunlight_;
 
 public:
-    ComplexGeneratorBase(const Settings &settings, const Store& store, WareTargetContainer &targets);
+    ComplexGeneratorBase(const Settings &settings, const Store &store, WareTargetContainer &targets);
 
     ComplexGeneratorBase(const ComplexGeneratorBase &complex_generator) = delete;
 

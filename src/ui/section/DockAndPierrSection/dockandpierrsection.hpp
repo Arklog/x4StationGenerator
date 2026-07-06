@@ -5,7 +5,7 @@
 #ifndef DOCKANDPIERRSECTION_HPP
 #define DOCKANDPIERRSECTION_HPP
 
-#include "Data/Store.hpp"
+#include "../../../libcommon/data/Store.hpp"
 
 #include <QWidget>
 

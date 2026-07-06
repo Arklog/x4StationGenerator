@@ -9,8 +9,8 @@
 
 #include "ui_wareconfigurator.h"
 
-#include "Data/Data.hpp"
-#include "Data/Store.hpp"
+#include "../../../../libcommon/data/Data.hpp"
+#include "../../../../libcommon/data/Store.hpp"
 
 #include "StationBuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"

@@ -4,7 +4,7 @@
 
 #include "WareTargetContainer.hpp"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../libcommon/data/WareModuleAndWorkforce.hpp"
 
 WareTargetContainer::WareTargetContainer (const Store &store)
     : ware_targets{}, ware_targets_primary{}, ware_targets_secondary{}

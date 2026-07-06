@@ -4,9 +4,10 @@
 
 #ifndef WARE_H
 #define WARE_H
-#include <Data/ID.h>
 #include <optional>
 #include <string>
+
+#include "ID.h"
 
 #include "nlohmann/json.hpp"
 #include "nlohmann/json_fwd.hpp"
@@ -22,41 +23,42 @@ struct Price {
 
 struct WareGroup {
     t_ware_group_id id;
-    std::string name;
-    unsigned int tier;
+    std::string     name;
+    unsigned int    tier;
 };
 
 struct WareAmount {
     t_ware_id id;
-    long int amount;
+    long int  amount;
 };
 
 struct ProductionEffect {
     std::string type;
-    double product;
+    double      product;
 };
 
 struct ModuleProduction {
-    std::string name;
-    t_production_method_id method;
-    std::vector<WareAmount> wares;
+    std::string                   name;
+    t_production_method_id        method;
+    std::vector<WareAmount>       wares;
     std::vector<ProductionEffect> effects;
-    unsigned int time;
-    long int amount;
+    unsigned int                  time;
+    long int                      amount;
 
     bool operator==(const t_production_method_id &production_method_id) const;
-  bool operator==(const std::string &name) const;
+
+    bool operator==(const std::string &name) const;
 
     double getWorkforceFactor() const;
 };
 
 struct Ware {
-    t_ware_id id;
+    t_ware_id   id;
     std::string name;
     // std::string description;
-    std::string transport;
-    Price price;
-    WareGroup group;
+    std::string                   transport;
+    Price                         price;
+    WareGroup                     group;
     std::vector<ModuleProduction> production;
 
     unsigned int volume;
@@ -65,18 +67,18 @@ struct Ware {
 };
 
 struct Module {
-    t_module_id id;
-    std::string name;
-    std::string macro;
-    std::optional<std::string> type;
+    t_module_id                           id;
+    std::string                           name;
+    std::string                           macro;
+    std::optional<std::string>            type;
     std::optional<t_production_method_id> production_method;
 
-    Price price;
-    std::vector<Ware> production;
-    ModuleProduction build_cost;
+    Price                       price;
+    std::vector<Ware>           production;
+    ModuleProduction            build_cost;
     std::optional<unsigned int> workforce_capacity;
     std::optional<unsigned int> workforce_max;
-    std::optional<std::string> race;
+    std::optional<std::string>  race;
 
     bool operator==(const t_module_id &module_id) const;
 

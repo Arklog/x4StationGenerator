@@ -10,7 +10,7 @@
 #include "moduleselectionpanel.hpp"
 #include "ui_moduleselectionpanel.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 
 ModuleSelectionPanel::ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent) :

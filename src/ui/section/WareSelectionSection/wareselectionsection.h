@@ -5,7 +5,7 @@
 #ifndef WARESELECTIONSECTION_H
 #define WARESELECTIONSECTION_H
 
-#include "Data/Store.hpp"
+#include "../../../libcommon/data/Store.hpp"
 
 #include <QWidget>
 

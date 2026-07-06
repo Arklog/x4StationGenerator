@@ -9,7 +9,7 @@
 
 #include "ui_storagesection.h"
 
-#include "Data/WareModuleAndWorkforce.hpp"
+#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "ui/widgets/moduleconfigurationpanel.hpp"
 #include "ui/widgets/moduleselectionpanel.hpp"

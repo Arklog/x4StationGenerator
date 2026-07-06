@@ -8,7 +8,7 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "Data/Data.hpp"
+#include "../../libcommon/data/Data.hpp"
 
 #include "StationBuilder/defines.hpp"
 
