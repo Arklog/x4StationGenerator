@@ -52,14 +52,18 @@ namespace common {
 
         bool empty();
 
+        bool running();
+
     private:
         size_t                   _nthreads;
         std::vector<std::thread> _threads;
+        std::vector<bool>        _threads_running;
         std::queue<TaskBase *>   _tasks;
         std::mutex               _tasks_mutex;
+        std::mutex               _threads_running_mutex;
         bool                     _should_stop;
 
-        void _thread_loop();
+        void _thread_loop(size_t id);
     };
 } // common
 

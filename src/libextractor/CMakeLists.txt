@@ -32,6 +32,23 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/extraction_logic/FileDetector.hpp
         extractor/patching_logic/X4Patchable.cpp
         extractor/patching_logic/X4Patchable.hpp
+        extractor/models/model_store.cpp
+        extractor/models/model_store.hpp
+        extractor/models/wares.hpp
+        extractor/models/wares.cpp
+        extractor/models/wares_xsd.hpp
+        extractor/models/modulegroups.hpp
+        extractor/models/modulegroups.cpp
+        extractor/models/modulegroups_xsd.hpp
+        extractor/models/modules.hpp
+        extractor/models/modules.cpp
+        extractor/models/modules_xsd.hpp
+        extractor/models/t.hpp
+        extractor/models/t.cpp
+        extractor/models/t_xsd.hpp
+        extractor/models/waregroups.hpp
+        extractor/models/waregroups.cpp
+        extractor/models/waregroups_xsd.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json x4StationGeneratorCommon)

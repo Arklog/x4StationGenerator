@@ -22,7 +22,15 @@ namespace extractor {
     public:
         Extractor(const ExtractorSettings &settings);
 
+        /**
+         * Extract all x4 files and patch them
+         */
         void extract() const;
+
+        /**
+         * Read extracted files to build usable data models
+         */
+        void parse() const;
 
     private:
         ExtractorSettings _settings;

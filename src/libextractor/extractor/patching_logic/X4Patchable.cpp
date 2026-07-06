@@ -22,6 +22,7 @@ void extractor::X4Patchable::patch(const std::filesystem::path &xml_diff_exec, C
 
     spdlog::info("Patching file {}", in.string());
     cache.register_entry(in.string(), false);
+    cache.save();
 
     if (output_exists)
         patch_diff(xml_diff_exec);
