@@ -16,7 +16,10 @@ namespace extractor::models {
             };
 
             rfl::Attribute<std::string> id;
+            std::vector<T>              t;
         };
+
+        std::vector<Page> page;
     };
 } // extractor
 
