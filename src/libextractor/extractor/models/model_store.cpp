@@ -42,12 +42,19 @@ extractor::ModelStore::ModelStore(const path &path) {
     if (!std::filesystem::exists(t_path))
         throw std::runtime_error(fmt::format("Translation file {} does not exist", t_path.string()));
 
-    auto wares = rfl::xml::load<models::Wares>(wares_path);
-    if (!wares.has_value()) {
-        spdlog::error("Failed to load wares: {}", wares.error().what());
+    auto wares_ = rfl::xml::load<models::Wares>(wares_path);
+    if (!wares_.has_value()) {
+        spdlog::error("Failed to load wares: {}", wares_.error().what());
         throw std::runtime_error("Failed to load wares");
     }
-    this->wares = std::move(wares.value());
+    this->wares = std::move(wares_.value());
+
+    auto t_ = rfl::xml::load<models::T>(t_path);
+    if (!t_.has_value()) {
+        spdlog::error("Failed to load translation: {}", t_.error().what());
+        throw std::runtime_error("Failed to load translation");
+    }
+    this->t = std::move(t_.value());
 
     _load_production_modules(path);
 }

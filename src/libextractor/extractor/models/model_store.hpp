@@ -9,6 +9,7 @@
 
 #include "Wares.hpp"
 #include "Structure.hpp"
+#include "T.hpp"
 
 namespace extractor {
     struct ModelStore {
@@ -17,6 +18,7 @@ namespace extractor {
         ModelStore(const path &path);
 
         models::Wares                     wares;
+        models::T                         t;
         std::vector<structure::Structure> production_modules;
         std::vector<structure::Structure> habitats;
         std::vector<structure::Structure> dock_and_pierr;

@@ -28,6 +28,8 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/databuilder/DataBuilder.hpp
         extractor/models/Wares.cpp
         extractor/models/Wares.hpp
+        extractor/models/T.cpp
+        extractor/models/T.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json reflectcpp x4StationGeneratorCommon)
