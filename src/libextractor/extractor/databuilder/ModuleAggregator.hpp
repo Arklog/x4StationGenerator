@@ -11,6 +11,7 @@
 #include <spdlog/spdlog.h>
 
 #include "extractor/models/Structure.hpp"
+#include "extractor/models/Wares.hpp"
 
 namespace extractor::databuilder {
     struct ModuleBase {
@@ -46,6 +47,15 @@ namespace extractor::databuilder {
 
         size_t                storage_max;
         std::set<std::string> storage_type;
+    };
+
+    struct Ware {
+        using ware_id = std::string;
+
+        Ware(models::Wares &&wares);
+
+        ware_id     id;
+        std::string name;
     };
 
     template<std::derived_from<ModuleBase> T>

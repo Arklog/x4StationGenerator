@@ -10,7 +10,6 @@
 #include <regex>
 #include <spdlog/spdlog.h>
 #include <rfl/xml.hpp>
-#include <rfl/json.hpp>
 
 static std::string read_file(const std::filesystem::path &path) {
     auto file = std::ifstream(path);
@@ -43,16 +42,12 @@ extractor::ModelStore::ModelStore(const path &path) {
     if (!std::filesystem::exists(t_path))
         throw std::runtime_error(fmt::format("Translation file {} does not exist", t_path.string()));
 
-    // auto file = std::ifstream(wares_path);
-    wares::load_data(read_file(wares_path), wares);
-    spdlog::info("Loaded {} wares", wares.ware.size());
-    waregroups::load_data(read_file(waregroups_path), waregroups);
-    spdlog::info("Loaded {} waregroups", waregroups.group.size());
-    modules::load_data(read_file(modules_path), modules);
-    spdlog::info("Loaded {} modules", modules.module.size());
-    modulegroups::load_data(read_file(modulegroups_path), modulegroups);
-    spdlog::info("Loaded {} modulegroups", modulegroups.group.size());
-    t::load_data(read_file(t_path), t);
+    auto wares = rfl::xml::load<models::Wares>(wares_path);
+    if (!wares.has_value()) {
+        spdlog::error("Failed to load wares: {}", wares.error().what());
+        throw std::runtime_error("Failed to load wares");
+    }
+    this->wares = std::move(wares.value());
 
     _load_production_modules(path);
 }
