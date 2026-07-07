@@ -24,13 +24,20 @@ namespace structure {
     };
 
     struct StructureIdentification {
-        rfl::Attribute<std::string> name;
-        rfl::Attribute<std::string> makerrace;
+        rfl::Attribute<std::string>                 name;
+        rfl::Attribute<std::optional<std::string> > makerrace;
+    };
+
+    struct StructureCargo {
+        rfl::Attribute<size_t>      max;
+        rfl::Attribute<std::string> tags;
     };
 
     struct StructureProperties {
+        StructureIdentification            identification;
         std::optional<StructureProduction> production;
         std::optional<StructureWorkforce>  workforce;
+        std::optional<StructureCargo>      cargo;
     };
 
     struct StructureMacro {

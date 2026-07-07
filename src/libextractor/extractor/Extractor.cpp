@@ -10,6 +10,7 @@
 #include "ThreadPool.hpp"
 #include "spdlog/spdlog.h"
 #include "utils.hpp"
+#include "databuilder/ModuleAggregator.hpp"
 #include "extraction_logic/Archive.hpp"
 #include "extraction_logic/Extension.hpp"
 
@@ -18,8 +19,8 @@
 #include "patching_logic/X4Patchable.hpp"
 
 namespace extractor {
-    Extractor::Extractor(const ExtractorSettings &settings)
-        : _settings(settings) {
+    Extractor::Extractor(const ExtractorSettings &settings) :
+    _settings(settings) {
     }
 
     void Extractor::extract() const {
@@ -69,6 +70,11 @@ namespace extractor {
     void Extractor::parse() const {
         try {
             ModelStore store(_settings.OutputDirPath);
+            auto       modules  = databuilder::ModuleAggregator{store.production_modules};
+            auto       habitats = databuilder::HabitatAggregator{store.habitats};
+            auto       docks    = databuilder::DockAggregator{store.dock_and_pierr};
+            auto       storages = databuilder::StorageAggregator{store.storage};
+            spdlog::info("Parsing done");
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
         }

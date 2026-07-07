@@ -28,6 +28,7 @@ namespace extractor {
         std::vector<structure::Structure> production_modules;
         std::vector<structure::Structure> habitats;
         std::vector<structure::Structure> dock_and_pierr;
+        std::vector<structure::Structure> storage;
 
     private:
         void _load_production_modules(const path &path);

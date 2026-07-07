@@ -6,8 +6,11 @@
 
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <regex>
 #include <spdlog/spdlog.h>
 #include <rfl/xml.hpp>
+#include <rfl/json.hpp>
 
 static std::string read_file(const std::filesystem::path &path) {
     auto file = std::ifstream(path);
@@ -18,7 +21,8 @@ static std::string read_file(const std::filesystem::path &path) {
     auto str = ss.str();
     if (str.size() >= 3 && str.substr(0, 3) == "\xef\xbb\xbf")
         str.erase(0, 3);
-    return str;
+    auto res = std::regex_replace(str, std::regex("\r"), "");
+    return res;
 }
 
 extractor::ModelStore::ModelStore(const path &path) {
@@ -64,6 +68,7 @@ void extractor::ModelStore::_load_production_modules(const path &path) {
         {"production", struct_path / "production/macros", &ModelStore::production_modules},
         {"habitat", struct_path / "habitat/macros", &ModelStore::habitats},
         {"dock", struct_path / "dock/macros", &ModelStore::dock_and_pierr},
+        {"storage", struct_path / "storage/macros", &ModelStore::storage},
     };
 
     for (auto const &struct_target: structures) {
@@ -77,9 +82,11 @@ void extractor::ModelStore::_load_production_modules(const path &path) {
                 continue;
 
             auto prod_module = rfl::xml::load<structure::Structure>(item.path());
-            if (!prod_module)
-                throw std::runtime_error(fmt::format("Failed to load structure file {}: {}", item.path().string(),
-                                                     prod_module.error().what()));
+            if (!prod_module) {
+                std::string fcontent = read_file(item.path());
+                spdlog::error("Failed to load {}: {}\n{}", item.path().string(), prod_module.error().what(), fcontent);
+                continue;
+            }
             (this->*struct_target.vec).push_back(std::move(prod_module.value()));
         }
 
