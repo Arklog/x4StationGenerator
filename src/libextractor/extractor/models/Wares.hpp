@@ -7,6 +7,10 @@
 #include <string>
 #include <rfl/cli.hpp>
 
+namespace extractor {
+    class LangFile;
+}
+
 namespace extractor::models {
     struct Wares {
         struct Production {
@@ -74,6 +78,8 @@ namespace extractor::models {
         // std::vector<Production::ProductionMethod> production;
         std::vector<Ware> ware;
     };
+
+    void translate(const extractor::LangFile &lang_file, Wares &wares);
 } // extractor
 
 #endif //X4STATIONGENERATOR__WARES_HPP
