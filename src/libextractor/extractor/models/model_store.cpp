@@ -56,6 +56,13 @@ extractor::ModelStore::ModelStore(const path &path) {
     }
     this->t = std::move(t_.value());
 
+    auto waregroups_ = rfl::xml::load<models::Waregroups>(waregroups_path);
+    if (!waregroups_.has_value()) {
+        spdlog::error("Failed to load waregroups: {}", waregroups_.error().what());
+        throw std::runtime_error("Failed to load waregroups");
+    }
+    this->waregroups = std::move(waregroups_.value());
+
     _load_production_modules(path);
 }
 

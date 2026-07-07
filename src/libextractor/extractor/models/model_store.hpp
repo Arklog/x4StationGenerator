@@ -10,6 +10,7 @@
 #include "Wares.hpp"
 #include "Structure.hpp"
 #include "T.hpp"
+#include "Waregroups.hpp"
 
 namespace extractor {
     struct ModelStore {
@@ -19,6 +20,7 @@ namespace extractor {
 
         models::Wares                     wares;
         models::T                         t;
+        models::Waregroups                waregroups;
         std::vector<structure::Structure> production_modules;
         std::vector<structure::Structure> habitats;
         std::vector<structure::Structure> dock_and_pierr;
