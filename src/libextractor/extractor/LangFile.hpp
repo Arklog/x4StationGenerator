@@ -5,8 +5,6 @@
 #ifndef X4STATIONGENERATOR__LANGFILE_HPP
 #define X4STATIONGENERATOR__LANGFILE_HPP
 
-#include "models/t.hpp"
-
 #include <filesystem>
 #include <unordered_map>
 

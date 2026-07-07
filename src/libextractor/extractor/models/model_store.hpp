@@ -7,12 +7,8 @@
 
 #include <filesystem>
 
-#include "wares.hpp"
-#include "waregroups.hpp"
-#include "modules.hpp"
-#include "modulegroups.hpp"
+#include "Wares.hpp"
 #include "Structure.hpp"
-#include "t.hpp"
 
 namespace extractor {
     struct ModelStore {
@@ -20,11 +16,7 @@ namespace extractor {
 
         ModelStore(const path &path);
 
-        wares::waresType                  wares;
-        waregroups::groupsType            waregroups;
-        modules::modulesType              modules;
-        modulegroups::groupsType          modulegroups;
-        t::languageType                   t;
+        models::Wares                     wares;
         std::vector<structure::Structure> production_modules;
         std::vector<structure::Structure> habitats;
         std::vector<structure::Structure> dock_and_pierr;
