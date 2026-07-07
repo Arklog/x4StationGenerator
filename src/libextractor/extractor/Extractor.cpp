@@ -61,8 +61,6 @@ namespace extractor {
                 }
                 pool.wait();
             }
-
-            LangFile test(_settings.OutputDirPath / "t/0001-l044.xml");
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
         }
@@ -70,14 +68,7 @@ namespace extractor {
 
     void Extractor::parse() const {
         try {
-            auto       wares_path        = _settings.OutputDirPath / "libraries/wares.xml";
-            auto       waregroups_path   = _settings.OutputDirPath / "libraries/waregroups.xml";
-            auto       modules_path      = _settings.OutputDirPath / "libraries/modules.xml";
-            auto       modulegroups_path = _settings.OutputDirPath / "libraries/modulegroups.xml";
-            auto       t_path            = _settings.OutputDirPath / "t/0001-l044.xml";
-            ModelStore store(wares_path, waregroups_path, modules_path, modulegroups_path, t_path);
-
-            LangFile lang(t_path);
+            ModelStore store(_settings.OutputDirPath);
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
         }

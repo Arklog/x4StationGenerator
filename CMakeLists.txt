@@ -5,6 +5,8 @@ include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 23)
 
+set(REFLECTCPP_XML ON)
+
 #################################################################################
 # External Libraries
 #################################################################################
@@ -41,11 +43,18 @@ FetchContent_Declare(
         GIT_TAG v4.2.0
 )
 
+FetchContent_Declare(
+        reflect_cpp
+        GIT_REPOSITORY https://github.com/getml/reflect-cpp.git
+        GIT_TAG v0.25.0
+)
+
 FetchContent_MakeAvailable(
         xsd
         spdlog
         argparse
         nlohmann_json
+        reflect_cpp
 )
 
 #################################################################################
