@@ -6,6 +6,7 @@ include(FetchContent)
 set(CMAKE_CXX_STANDARD 23)
 
 set(REFLECTCPP_XML ON)
+set(REFLECTCPP_JSON ON)
 
 #################################################################################
 # External Libraries
