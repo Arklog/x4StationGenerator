@@ -49,9 +49,11 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/models/waregroups.hpp
         extractor/models/waregroups.cpp
         extractor/models/waregroups_xsd.hpp
+        extractor/models/Structure.cpp
+        extractor/models/Structure.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json x4StationGeneratorCommon)
+target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json reflectcpp x4StationGeneratorCommon)
 
 add_executable(x4StationGeneratorExtractorBin extractor/main.cpp)
 target_link_libraries(x4StationGeneratorExtractorBin PRIVATE x4StationGeneratorExtractor)
