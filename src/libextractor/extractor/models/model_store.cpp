@@ -11,6 +11,8 @@
 #include <spdlog/spdlog.h>
 #include <rfl/xml.hpp>
 
+#include "LangFile.hpp"
+
 static std::string read_file(const std::filesystem::path &path) {
     auto file = std::ifstream(path);
     auto data = file.rdbuf();
@@ -24,7 +26,7 @@ static std::string read_file(const std::filesystem::path &path) {
     return res;
 }
 
-extractor::ModelStore::ModelStore(const path &path) {
+extractor::models::ModelStore::ModelStore(const path &path) {
     auto wares_path        = path / "libraries/wares.xml";
     auto waregroups_path   = path / "libraries/waregroups.xml";
     auto modules_path      = path / "libraries/modules.xml";
@@ -64,14 +66,15 @@ extractor::ModelStore::ModelStore(const path &path) {
     this->waregroups = std::move(waregroups_.value());
 
     _load_production_modules(path);
+    _translate_t();
 }
 
-void extractor::ModelStore::_load_production_modules(const path &path) {
+void extractor::models::ModelStore::_load_production_modules(const path &path) {
     auto const struct_path = path / "assets/structures";
     struct structure_target {
-        std::string                                    name;
-        const std::filesystem::path                    dir;
-        std::vector<structure::Structure> ModelStore::*vec;
+        std::string                                 name;
+        const std::filesystem::path                 dir;
+        std::vector<models::Structure> ModelStore::*vec;
     };
     static std::vector<structure_target> structures{
         {"production", struct_path / "production/macros", &ModelStore::production_modules},
@@ -90,7 +93,7 @@ void extractor::ModelStore::_load_production_modules(const path &path) {
             if (!item.is_regular_file() || item.path().extension() != ".xml")
                 continue;
 
-            auto prod_module = rfl::xml::load<structure::Structure>(item.path());
+            auto prod_module = rfl::xml::load<models::Structure>(item.path());
             if (!prod_module) {
                 std::string fcontent = read_file(item.path());
                 spdlog::error("Failed to load {}: {}\n{}", item.path().string(), prod_module.error().what(), fcontent);
@@ -101,4 +104,19 @@ void extractor::ModelStore::_load_production_modules(const path &path) {
 
         spdlog::info("Loaded {} {} modules", (this->*struct_target.vec).size(), struct_target.name);
     }
+}
+
+void extractor::models::ModelStore::_translate_t() {
+    LangFile lang(std::move(this->t));
+    auto     translate_structures = [&lang](std::vector<models::Structure> &structures) {
+        for (auto &structure: structures) {
+            models::translate(lang, structure);
+        }
+    };
+
+    models::translate(lang, this->wares);
+    translate_structures(this->production_modules);
+    translate_structures(this->habitats);
+    translate_structures(this->dock_and_pierr);
+    translate_structures(this->storage);
 }

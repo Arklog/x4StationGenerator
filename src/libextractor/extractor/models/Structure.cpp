@@ -4,5 +4,9 @@
 
 #include "Structure.hpp"
 
-namespace structure {
-} // structure
+namespace extractor::models {
+    void translate(const extractor::LangFile &lang_file, Structure &structure) {
+        lang_file.translate(structure.macro.name.value());
+        lang_file.translate(structure.macro.properties.identification.name.value());
+    }
+} // models

@@ -12,22 +12,24 @@
 #include "T.hpp"
 #include "Waregroups.hpp"
 
-namespace extractor {
+namespace extractor::models {
     struct ModelStore {
         using path = std::filesystem::path;
 
         ModelStore(const path &path);
 
-        models::Wares                     wares;
-        models::T                         t;
-        models::Waregroups                waregroups;
-        std::vector<structure::Structure> production_modules;
-        std::vector<structure::Structure> habitats;
-        std::vector<structure::Structure> dock_and_pierr;
-        std::vector<structure::Structure> storage;
+        models::Wares                  wares;
+        models::T                      t;
+        models::Waregroups             waregroups;
+        std::vector<models::Structure> production_modules;
+        std::vector<models::Structure> habitats;
+        std::vector<models::Structure> dock_and_pierr;
+        std::vector<models::Structure> storage;
 
     private:
         void _load_production_modules(const path &path);
+
+        void _translate_t();
     };
 }
 

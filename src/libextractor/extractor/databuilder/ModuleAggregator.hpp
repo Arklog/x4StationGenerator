@@ -9,9 +9,9 @@
 #include <unordered_map>
 #include <vector>
 #include <spdlog/spdlog.h>
-
 #include "extractor/models/Structure.hpp"
 #include "extractor/models/Wares.hpp"
+
 
 namespace extractor::databuilder {
     struct ModuleBase {
@@ -19,7 +19,7 @@ namespace extractor::databuilder {
         using race_id    = std::string;
         using class_type = std::string;
 
-        ModuleBase(structure::Structure &&structure);
+        ModuleBase(models::Structure &&structure);
 
         macro_id               macro;
         std::string            name;
@@ -28,22 +28,22 @@ namespace extractor::databuilder {
     };
 
     struct Module : ModuleBase {
-        Module(structure::Structure &&structure);
+        Module(models::Structure &&structure);
     };
 
     struct Habitat : ModuleBase {
-        Habitat(structure::Structure &&structure);
+        Habitat(models::Structure &&structure);
 
         size_t  capacity;
         race_id workforce_race;
     };
 
     struct Dock : ModuleBase {
-        Dock(structure::Structure &&structure);
+        Dock(models::Structure &&structure);
     };
 
     struct Storage : ModuleBase {
-        Storage(structure::Structure &&structure);
+        Storage(models::Structure &&structure);
 
         size_t                storage_max;
         std::set<std::string> storage_type;
@@ -52,7 +52,7 @@ namespace extractor::databuilder {
     struct Ware {
         using ware_id = std::string;
 
-        Ware(models::Wares &&wares);
+        Ware(models::Wares::Ware &&ware);
 
         ware_id     id;
         std::string name;
@@ -60,7 +60,7 @@ namespace extractor::databuilder {
 
     template<std::derived_from<ModuleBase> T>
     struct Aggregator {
-        Aggregator(std::vector<structure::Structure> &structures) {
+        Aggregator(std::vector<models::Structure> &structures) {
             modules.reserve(structures.size());
 
             for (auto &item: structures) {
@@ -80,6 +80,12 @@ namespace extractor::databuilder {
     using HabitatAggregator = Aggregator<Habitat>;
     using DockAggregator    = Aggregator<Dock>;
     using StorageAggregator = Aggregator<Storage>;
+
+    struct WareAggregator {
+        WareAggregator(models::Wares &wares);
+
+        std::unordered_map<Ware::ware_id, Ware> wares;
+    };
 }
 
 #endif //X4STATIONGENERATOR__MODULEBUILDER_HPP
