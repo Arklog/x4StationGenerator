@@ -74,8 +74,7 @@ namespace extractor::models {
             std::optional<Component>                      component;
         };
 
-        Production production;
-        // std::vector<Production::ProductionMethod> production;
+        Production        production;
         std::vector<Ware> ware;
     };
 

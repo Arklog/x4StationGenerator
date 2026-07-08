@@ -9,7 +9,7 @@
 #include "extractor/models/Structure.hpp"
 
 namespace extractor::databuilder {
-    ModuleBase::ModuleBase(structure::Structure &&structure) :
+    ModuleBase::ModuleBase(models::Structure &&structure) :
     macro(std::move(structure.macro.name.value())),
     name(std::move(structure.macro.properties.identification.name.value())),
     module_class(std::move(structure.macro.class_.value().value())),
@@ -17,17 +17,17 @@ namespace extractor::databuilder {
     }
 
 
-    Habitat::Habitat(structure::Structure &&structure) :
+    Habitat::Habitat(models::Structure &&structure) :
     ModuleBase(std::move(structure)),
     capacity(std::move(structure.macro.properties.workforce.value().capacity.value().value())),
     workforce_race(std::move(structure.macro.properties.workforce.value().race.value().value())) {
     }
 
-    Dock::Dock(structure::Structure &&structure) :
+    Dock::Dock(models::Structure &&structure) :
     ModuleBase(std::move(structure)) {
     }
 
-    Storage::Storage(structure::Structure &&structure) :
+    Storage::Storage(models::Structure &&structure) :
     ModuleBase(std::move(structure)),
     storage_max{std::move(structure.macro.properties.cargo.value().max.value())} {
         const auto &type = structure.macro.properties.cargo.value().tags.value();
@@ -39,7 +39,19 @@ namespace extractor::databuilder {
         }
     }
 
-    Module::Module(structure::Structure &&structure) :
+    Ware::Ware(models::Wares::Ware &&ware) :
+    id{std::move(ware.id.value())},
+    name{std::move(ware.name.value())} {
+    }
+
+    WareAggregator::WareAggregator(models::Wares &wares) {
+        for (auto &ware_: wares.ware) {
+            Ware ware{std::move(ware_)};
+            this->wares.emplace(ware.id, std::move(ware));
+        }
+    }
+
+    Module::Module(models::Structure &&structure) :
     ModuleBase(std::move(structure)) {
     }
 }

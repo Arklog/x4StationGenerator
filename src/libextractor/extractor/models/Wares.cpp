@@ -4,10 +4,7 @@
 
 #include "Wares.hpp"
 
-#include "extractor/LangFile.hpp"
-
-namespace extractor::models::wares {
-} // extractor
+#include "LangFile.hpp"
 
 void extractor::models::translate(const extractor::LangFile &lang_file, Wares &wares) {
     for (auto &production_method: wares.production.method) {
