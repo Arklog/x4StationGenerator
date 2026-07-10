@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "extractor/databuilder/AggregateStore.hpp"
-#include "common/types/Module.hpp"
+#include "../../../libcommon/common/types/module/Module.hpp"
 
 namespace extractor::databuilder {
     struct Databuilder {
