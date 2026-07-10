@@ -2,8 +2,8 @@
 // Created by pierre on 7/7/26.
 //
 
-#ifndef X4STATIONGENERATOR__DATABUILDER_HPP
-#define X4STATIONGENERATOR__DATABUILDER_HPP
+#ifndef X4STATIONGENERATOR__AGGREGATESTORE_HPP
+#define X4STATIONGENERATOR__AGGREGATESTORE_HPP
 #include "ModuleAggregator.hpp"
 #include "extractor/models/model_store.hpp"
 
@@ -20,4 +20,4 @@ namespace extractor::databuilder {
     };
 } // extractor
 
-#endif //X4STATIONGENERATOR__DATABUILDER_HPP
+#endif //X4STATIONGENERATOR__AGGREGATESTORE_HPP
