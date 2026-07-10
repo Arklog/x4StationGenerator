@@ -29,7 +29,7 @@ namespace extractor::databuilder {
 
     Storage::Storage(models::Structure &&structure) :
     ModuleBase(std::move(structure)),
-    storage_max{std::move(structure.macro.properties.cargo.value().max.value())} {
+    storage_max{structure.macro.properties.cargo.value().max.value()} {
         const auto &type = structure.macro.properties.cargo.value().tags.value();
 
         std::smatch results;
@@ -39,15 +39,38 @@ namespace extractor::databuilder {
         }
     }
 
+    Ware::Production::Production(models::Wares::Ware::Production &&production) :
+    method(std::move(production.method.value())),
+    time(production.time.value()),
+    amount{production.amount.value()} {
+        if (!production.primary.has_value())
+            return;
+        for (auto ware: production.primary.value().ware) {
+            wares_required.emplace_back(std::move(ware.ware.value()), ware.amount.value());
+        }
+    }
+
     Ware::Ware(models::Wares::Ware &&ware) :
     id{std::move(ware.id.value())},
     name{std::move(ware.name.value())} {
+        for (auto &prod: ware.production) {
+            auto key  = prod.method.value();
+            auto item = Production{std::move(prod)};
+            production.emplace(std::move(key), std::move(prod));
+        }
     }
 
     WareAggregator::WareAggregator(models::Wares &wares) {
         for (auto &ware_: wares.ware) {
             Ware ware{std::move(ware_)};
             this->wares.emplace(ware.id, std::move(ware));
+        }
+    }
+
+    WaregroupsAggregator::WaregroupsAggregator(models::Waregroups &waregroups) {
+        for (auto &group: waregroups.group) {
+            auto key = group.id.value();
+            this->waregroups.emplace(key, std::move(group));
         }
     }
 

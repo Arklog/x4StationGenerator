@@ -7,8 +7,8 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/CacheFile.hpp
         extractor/utils.cpp
         extractor/utils.hpp
-        extractor/databuilder/DataBuilder.cpp
-        extractor/databuilder/DataBuilder.hpp
+        extractor/databuilder/AggregateStore.cpp
+        extractor/databuilder/AggregateStore.hpp
         extractor/databuilder/ModuleAggregator.cpp
         extractor/databuilder/ModuleAggregator.hpp
         extractor/extraction_logic/Extension.cpp
@@ -33,9 +33,13 @@ add_library(x4StationGeneratorExtractor STATIC
         extractor/models/Waregroups.hpp
         extractor/patching_logic/X4Patchable.cpp
         extractor/patching_logic/X4Patchable.hpp
+        extractor/databuilder/Databuilder.cpp
+        extractor/databuilder/Databuilder.hpp
 )
 target_include_directories(x4StationGeneratorExtractor PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(x4StationGeneratorExtractor PUBLIC spdlog::spdlog nlohmann_json reflectcpp x4StationGeneratorCommon)
+target_compile_options(x4StationGeneratorExtractor PUBLIC ${DEBUG_COMPILE_FLAGS})
 
 add_executable(x4StationGeneratorExtractorBin extractor/main.cpp)
 target_link_libraries(x4StationGeneratorExtractorBin PRIVATE x4StationGeneratorExtractor)
+target_compile_options(x4StationGeneratorExtractorBin PRIVATE ${DEBUG_COMPILE_FLAGS})

@@ -82,6 +82,11 @@ else ()
     set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
 endif ()
 
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+    set(DEBUG_COMPILE_FLAGS -O0 -fno-dce -fno-dse -fno-tree-dce -fno-tree-dse -fno-inline)
+    message(STATUS "DEBUG_COMPILE_FLAGS: ${DEBUG_COMPILE_FLAGS}")
+endif ()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
@@ -141,6 +146,7 @@ target_include_directories(x4StationGenerator
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
 )
 target_include_directories(x4StationGenerator PRIVATE src)
+target_compile_options(x4StationGenerator PRIVATE ${DEBUG_COMPILE_FLAGS})
 
 target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Core
