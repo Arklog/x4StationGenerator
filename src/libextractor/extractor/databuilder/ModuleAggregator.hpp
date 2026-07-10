@@ -10,6 +10,7 @@
 #include <vector>
 #include <spdlog/spdlog.h>
 #include "extractor/models/Structure.hpp"
+#include "extractor/models/Waregroups.hpp"
 #include "extractor/models/Wares.hpp"
 
 
@@ -52,11 +53,25 @@ namespace extractor::databuilder {
     struct Ware {
         using ware_id = std::string;
 
+        struct Production {
+            using method_id = std::string;
+
+            Production(models::Wares::Ware::Production &&production);
+
+            method_id                                method;
+            double                                   time;
+            size_t                                   amount;
+            std::vector<std::pair<ware_id, size_t> > wares_required;
+        };
+
         Ware(models::Wares::Ware &&ware);
 
-        ware_id     id;
-        std::string name;
+        ware_id                                     id;
+        std::string                                 name;
+        std::unordered_map<std::string, Production> production;
     };
+
+    using Waregroup = models::Waregroups::Group;
 
     template<std::derived_from<ModuleBase> T>
     struct Aggregator {
@@ -85,6 +100,12 @@ namespace extractor::databuilder {
         WareAggregator(models::Wares &wares);
 
         std::unordered_map<Ware::ware_id, Ware> wares;
+    };
+
+    struct WaregroupsAggregator {
+        WaregroupsAggregator(models::Waregroups &waregroups);
+
+        std::unordered_map<std::string, Waregroup> waregroups;
     };
 }
 

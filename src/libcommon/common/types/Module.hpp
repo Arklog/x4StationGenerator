@@ -7,28 +7,25 @@
 #include <string>
 
 namespace common {
-    struct Module
-    {
-	typedef enum
-	{
-	    NONE = 0,
-	    CONNECTION,
-	    PRODUCTION,
-	    HABITAT,
-	    DOCK,
-	    PIERR
-	} module_type;
+    struct Module {
+        typedef enum {
+            NONE = 0,
+            CONNECTION,
+            PRODUCTION,
+            HABITAT,
+            DOCK,
+            PIERR
+        } module_type;
 
-	static module_type to_module_type (const std::string &type);
+        static module_type to_module_type(const std::string &type);
 
-	typedef enum
-	{
-	} module_production;
+        typedef enum {
+        } module_production;
 
-	using module_id = std::string;
+        using module_id = std::string;
 
-	std::string name;
-	module_id id;
+        std::string name;
+        module_id   id;
     };
 } // namespace common
 
