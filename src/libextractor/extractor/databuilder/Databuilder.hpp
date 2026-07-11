@@ -35,6 +35,7 @@ namespace extractor::databuilder {
                 try {
                     auto &module_ware = store.wares.by_ref.at(module_aggregate.macro);
                     module.id         = module_aggregate.macro;
+                    module.name       = module_aggregate.name;
                     module.price      = common::types::Price{
                         .max = module_ware.price.max, .min = module_ware.price.min, .avg = module_ware.price.avg
                     };
@@ -52,6 +53,8 @@ namespace extractor::databuilder {
             void build_production_module(ProductionModule &module, AggregateStore &store, ware_whitelist &used_wares);
 
             void build_habitat_module(Habitat &habitat, AggregateStore &store, ware_whitelist &used_wares);
+
+            void build_storage_module(Storage &storage, AggregateStore &store, ware_whitelist &used_wares);
 
             void build_docks(Dock &dock, AggregateStore &store, ware_whitelist &used_wares);
 

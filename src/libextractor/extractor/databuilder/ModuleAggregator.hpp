@@ -50,8 +50,8 @@ namespace extractor::databuilder {
     struct Storage : ModuleBase {
         Storage(models::Structure &&structure);
 
-        size_t                storage_max;
-        std::set<std::string> storage_type;
+        size_t      storage_max;
+        std::string storage_type;
     };
 
     struct Ware {

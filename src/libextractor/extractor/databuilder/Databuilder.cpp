@@ -14,6 +14,10 @@ namespace extractor::databuilder {
             build_habitat_module(value, store, used_wares);
         }
 
+        for (auto &[_, value]: store.storages.modules) {
+            build_storage_module(value, store, used_wares);
+        }
+
         for (auto &[_, value]: store.docks.modules) {
             if (value.module_class == "pier")
                 build_pier(value, store, used_wares);
@@ -64,6 +68,19 @@ namespace extractor::databuilder {
             this->habitats.push_back(std::move(tmp));
         } catch (const std::out_of_range &e) {
             spdlog::error("No match for habitat {}", habitat.macro);
+        }
+    }
+
+    void Databuilder::Modules::
+    build_storage_module(Storage &storage, AggregateStore &store, ware_whitelist &used_wares) {
+        try {
+            common::types::module::Storage tmp{};
+            build_module(tmp, storage, store, used_wares);
+            tmp.type     = std::move(storage.storage_type);
+            tmp.capacity = storage.storage_max;
+            this->storage.push_back(std::move(tmp));
+        } catch (const std::out_of_range &e) {
+            spdlog::error("No match for storage {}", storage.macro);
         }
     }
 

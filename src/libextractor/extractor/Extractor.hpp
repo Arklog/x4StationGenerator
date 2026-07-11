@@ -60,8 +60,10 @@ namespace extractor {
         void save_datas(const std::string &subfolder, std::vector<T> &datas, common::ThreadPool &pool) const {
             for (auto &i: datas) {
                 auto fn = [this, subfolder, i]() {
-                    auto path = _settings.ExtractionDirPath / fmt::format("{}/{}.json", subfolder, i.module.value().id);
-                    save_as_json(path, i);
+                    auto path = _settings.OutputDirPath / subfolder;
+                    std::filesystem::create_directories(path);
+                    path /= fmt::format("{}.json", i.module.value().id);
+                    rfl::json::save(path, i);
                 };
                 pool.enqueue(new common::Task(fn));
             }

@@ -16,6 +16,7 @@ namespace common::types::module {
         using module_cost = std::unordered_map<Ware::ware_id, unsigned int>;
 
         module_id   id;
+        std::string name;
         Price       price;
         module_cost cost;
     };

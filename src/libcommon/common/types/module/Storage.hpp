@@ -9,7 +9,11 @@
 
 namespace common::types::module {
     struct Storage {
+        using storage_type = std::string;
         rfl::Flatten<Module> module;
+
+        storage_type type;
+        size_t       capacity;
     };
 }
 

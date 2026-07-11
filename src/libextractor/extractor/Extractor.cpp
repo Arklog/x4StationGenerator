@@ -77,8 +77,10 @@ namespace extractor {
 
             for (auto &i: builder.wares) {
                 auto fn = [this, i]() {
-                    auto path = _settings.ExtractionDirPath / fmt::format("wares/{}.json", i.id);
-                    save_as_json(path, i);
+                    auto path = _settings.OutputDirPath / "wares";
+                    std::filesystem::create_directories(path);
+                    path /= fmt::format("{}.json", i.id);
+                    rfl::json::save(path, i);
                 };
                 pool.enqueue(new common::Task(fn));
             }

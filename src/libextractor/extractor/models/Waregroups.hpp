@@ -7,6 +7,8 @@
 
 #include <rfl/cli.hpp>
 
+#include "LangFile.hpp"
+
 namespace extractor::models {
     struct Waregroups {
         struct Group {
@@ -17,6 +19,10 @@ namespace extractor::models {
 
         std::vector<Group> group;
     };
+
+    void translate(const extractor::LangFile &lang_file, Waregroups &waregroups);
+
+    void translate(const extractor::LangFile &lang_file, Waregroups::Group &waregroup);
 } // extractor
 
 #endif //X4STATIONGENERATOR__WAREGROUPS_HPP
