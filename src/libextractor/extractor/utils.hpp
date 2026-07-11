@@ -7,6 +7,8 @@
 #include <filesystem>
 #include <mutex>
 #include <spdlog/fmt/bundled/format.h>
+#include <rfl/json.hpp>
+#include <spdlog/spdlog.h>
 
 std::string to_winepath(const std::filesystem::path &path);
 
@@ -44,5 +46,11 @@ concept is_executable = requires(T t)
 {
     { t(std::declval<Args>()...) } -> std::convertible_to<Ret>;
 };
+
+template<typename T>
+void save_as_json(const std::filesystem::path &path, const T &value) {
+    auto str = rfl::json::write<T>(value);
+    spdlog::info("Saving {} to {}", str, path);
+}
 
 #endif // X4STATIONGENERATOR__UTILS_HPP

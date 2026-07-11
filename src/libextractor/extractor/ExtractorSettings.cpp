@@ -13,7 +13,7 @@ bool extractor::ExtractorSettings::validate () const
 	return false;
     if (!exists (this->X4RootDirPath))
 	return false;
-    if (!exists (this->OutputDirPath))
+    if (!exists (this->ExtractionDirPath))
 	return false;
 
     return true;
