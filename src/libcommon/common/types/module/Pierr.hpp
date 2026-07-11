@@ -5,9 +5,11 @@
 #ifndef X4STATIONGENERATOR__PIERR_HPP
 #define X4STATIONGENERATOR__PIERR_HPP
 #include "Module.hpp"
+#include <rfl/Flatten.hpp>
 
 namespace common::types::module {
-    struct Pierr : Module {
+    struct Pierr {
+        rfl::Flatten<Module> module;
     };
 }
 

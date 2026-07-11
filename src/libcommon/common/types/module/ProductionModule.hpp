@@ -7,14 +7,16 @@
 #include <unordered_map>
 #include <vector>
 
+#include <rfl/cli.hpp>
 #include "Module.hpp"
 
 namespace common::types::module {
-    struct ProductionModule : Module {
+    struct ProductionModule {
         using module_production      = std::unordered_map<Ware::ware_id, unsigned int>;
         using module_usage           = std::unordered_map<Ware::ware_id, signed int>;
         using module_ware_derivative = std::unordered_map<Ware::ware_id, long long>;
 
+        rfl::Flatten<Module>   module;
         double                 time;               // time required to produce the ware in seconds
         size_t                 required_workforce; // required module workforce for full efficiency
         module_production      wares_produced;     // list of the ware produced by the module per cycle

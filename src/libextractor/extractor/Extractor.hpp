@@ -12,6 +12,8 @@
 
 #include <spdlog/spdlog.h>
 
+#include "common/types/Workforce.hpp"
+
 namespace extractor {
     /**
      * @class Extractor
@@ -58,7 +60,7 @@ namespace extractor {
         void save_datas(const std::string &subfolder, std::vector<T> &datas, common::ThreadPool &pool) const {
             for (auto &i: datas) {
                 auto fn = [this, subfolder, i]() {
-                    auto path = _settings.ExtractionDirPath / fmt::format("{}/{}.json", subfolder, i.id);
+                    auto path = _settings.ExtractionDirPath / fmt::format("{}/{}.json", subfolder, i.module.value().id);
                     save_as_json(path, i);
                 };
                 pool.enqueue(new common::Task(fn));

@@ -47,7 +47,7 @@ namespace extractor::databuilder {
                 }
             } catch (const std::out_of_range &e) {
                 spdlog::error("No match for ware {} with production method {}: \nError originating from module {}",
-                              ware_id, tmp.production_method, tmp.id);
+                              ware_id, tmp.production_method, tmp.module.value().id);
             }
         }
         if (!tmp.wares_produced.empty())

@@ -5,9 +5,11 @@
 #ifndef X4STATIONGENERATOR__STORAGE_HPP
 #define X4STATIONGENERATOR__STORAGE_HPP
 #include "Module.hpp"
+#include <rfl/Flatten.hpp>
 
 namespace common::types::module {
-    struct Storage : Module {
+    struct Storage {
+        rfl::Flatten<Module> module;
     };
 }
 
