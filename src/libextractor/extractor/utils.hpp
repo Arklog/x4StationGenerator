@@ -8,7 +8,7 @@
 #include <mutex>
 #include <spdlog/fmt/bundled/format.h>
 #include <rfl/json.hpp>
-#include <spdlog/spdlog.h>
+#include <rfl/cli.hpp>
 
 std::string to_winepath(const std::filesystem::path &path);
 
@@ -49,8 +49,7 @@ concept is_executable = requires(T t)
 
 template<typename T>
 void save_as_json(const std::filesystem::path &path, const T &value) {
-    auto str = rfl::json::write<T>(value);
-    spdlog::info("Saving {} to {}", str, path);
+    rfl::json::save<T>(path, value);
 }
 
 #endif // X4STATIONGENERATOR__UTILS_HPP

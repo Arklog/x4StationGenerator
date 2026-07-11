@@ -29,8 +29,9 @@ namespace extractor::databuilder {
             std::vector<common::types::module::Pierr>            piers;
 
         private:
-            template<std::derived_from<common::types::module::Module> T, std::derived_from<databuilder::ModuleBase> J>
-            void build_module(T &module, J &module_aggregate, AggregateStore &store, ware_whitelist &used_wares) {
+            template<typename T, std::derived_from<databuilder::ModuleBase> J>
+            void build_module(T &m, J &module_aggregate, AggregateStore &store, ware_whitelist &used_wares) {
+                auto &module = m.module.value();
                 try {
                     auto &module_ware = store.wares.by_ref.at(module_aggregate.macro);
                     module.id         = module_aggregate.macro;

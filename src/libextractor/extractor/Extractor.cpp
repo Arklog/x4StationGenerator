@@ -75,7 +75,13 @@ namespace extractor {
 
             pool.start();
 
-            save_datas("wares", builder.wares, pool);
+            for (auto &i: builder.wares) {
+                auto fn = [this, i]() {
+                    auto path = _settings.ExtractionDirPath / fmt::format("wares/{}.json", i.id);
+                    save_as_json(path, i);
+                };
+                pool.enqueue(new common::Task(fn));
+            }
             save_datas("productions", builder.modules.productions, pool);
             save_datas("habitats", builder.modules.habitats, pool);
             save_datas("storage", builder.modules.storage, pool);
