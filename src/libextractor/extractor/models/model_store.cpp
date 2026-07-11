@@ -115,6 +115,7 @@ void extractor::models::ModelStore::_translate_t() {
     };
 
     models::translate(lang, this->wares);
+    models::translate(lang, this->waregroups);
     translate_structures(this->production_modules);
     translate_structures(this->habitats);
     translate_structures(this->dock_and_pierr);

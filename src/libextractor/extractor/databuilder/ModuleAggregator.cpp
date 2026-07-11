@@ -32,11 +32,12 @@ namespace extractor::databuilder {
     storage_max{structure.macro.properties.cargo.value().max.value()} {
         const auto &type = structure.macro.properties.cargo.value().tags.value();
 
-        std::smatch results;
-        std::regex_search(type, results, std::regex("([a-z]+)"));
-        for (auto &match: results) {
-            storage_type.emplace(match.str());
-        }
+        // std::smatch results;
+        // std::regex_search(type, results, std::regex("([a-z]+)"));
+        // for (auto &match: results) {
+        // storage_type.emplace(match.str());
+        // }
+        storage_type = std::move(type);
     }
 
     Ware::Production::Production(models::Wares::Ware::Production &&production) :
