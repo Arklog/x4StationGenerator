@@ -50,20 +50,35 @@ namespace extractor::databuilder {
         }
     }
 
+    Ware::Price::Price(models::Wares::Ware::WarePrice &&price) :
+    min{price.min.value()},
+    max{price.max.value()},
+    avg{price.average.value()} {
+    }
+
     Ware::Ware(models::Wares::Ware &&ware) :
     id{std::move(ware.id.value())},
-    name{std::move(ware.name.value())} {
+    name{std::move(ware.name.value())},
+    price(std::move(ware.price)),
+    group(std::move(ware.group.value().value())),
+    tier{0} {
         for (auto &prod: ware.production) {
             auto key  = prod.method.value();
             auto item = Production{std::move(prod)};
             production.emplace(std::move(key), std::move(prod));
         }
+        auto &component_ = ware.component;
+        if (component.has_value())
+            component = std::move(component_.value().ref.value());
     }
 
     WareAggregator::WareAggregator(models::Wares &wares) {
         for (auto &ware_: wares.ware) {
             Ware ware{std::move(ware_)};
-            this->wares.emplace(ware.id, std::move(ware));
+            if (ware_.component.has_value())
+                this->by_ref.emplace(ware_.component.value().ref.value(), std::move(ware));
+            else
+                this->by_id.emplace(ware.id, std::move(ware));
         }
     }
 
@@ -74,7 +89,17 @@ namespace extractor::databuilder {
         }
     }
 
-    Module::Module(models::Structure &&structure) :
+    ProductionModule::ProductionModule(models::Structure &&structure) :
     ModuleBase(std::move(structure)) {
+        auto &queue = structure.macro.properties.production.value().queue[0];
+        if (queue.item.has_value()) {
+            auto &items = queue.item.value();
+
+            for (auto &item: items) {
+                this->wares_produced.push_back(std::move(item.ware.value()));
+                this->production_method = std::move(item.method.value());
+            }
+        }
+        workforce_max = structure.macro.properties.workforce.value().max.value().value();
     }
 }

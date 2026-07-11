@@ -11,12 +11,12 @@ namespace extractor::databuilder {
     struct AggregateStore {
         AggregateStore(models::ModelStore &&model_store);
 
-        ModuleAggregator     modules;
-        HabitatAggregator    habitats;
-        DockAggregator       docks;
-        StorageAggregator    storages;
-        WareAggregator       wares;
-        WaregroupsAggregator waregroups;
+        ProductionModuleAggregator modules;
+        HabitatAggregator          habitats;
+        DockAggregator             docks;
+        StorageAggregator          storages;
+        WareAggregator             wares;
+        WaregroupsAggregator       waregroups;
     };
 } // extractor
 

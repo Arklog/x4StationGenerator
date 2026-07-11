@@ -6,12 +6,11 @@
 
 #include "Extractor.hpp"
 
-#include "models/LangFile.hpp"
 #include "ThreadPool.hpp"
 #include "spdlog/spdlog.h"
 #include "utils.hpp"
 #include "databuilder/AggregateStore.hpp"
-#include "databuilder/ModuleAggregator.hpp"
+#include "databuilder/Databuilder.hpp"
 #include "extraction_logic/Archive.hpp"
 #include "extraction_logic/Extension.hpp"
 
@@ -71,6 +70,7 @@ namespace extractor {
     void Extractor::parse() const {
         try {
             databuilder::AggregateStore datas(models::ModelStore(_settings.OutputDirPath));
+            databuilder::Databuilder    builder(std::move(datas));
             spdlog::info("Parsing done");
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());

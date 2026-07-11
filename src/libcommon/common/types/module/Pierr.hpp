@@ -7,7 +7,7 @@
 #include "Module.hpp"
 
 namespace common::types::module {
-    class Pierr : Module {
+    struct Pierr : Module {
     };
 }
 
