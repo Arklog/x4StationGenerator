@@ -9,11 +9,12 @@
 
 namespace extractor {
     struct ExtractorSettings {
-        std::filesystem::path XRCatToolPath; // Path to XRCatTool executable
-        std::filesystem::path XMLPatchPath;  // Path to XMLPatch path
-        std::filesystem::path X4RootDirPath; // Path to X4 game directory
-        std::filesystem::path OutputDirPath; // Path to output dir
-        std::size_t           nthreads;      // number of thread to use
+        std::filesystem::path XRCatToolPath;     // Path to XRCatTool executable
+        std::filesystem::path XMLPatchPath;      // Path to XMLPatch path
+        std::filesystem::path X4RootDirPath;     // Path to X4 game directory
+        std::filesystem::path ExtractionDirPath; // Path to extraction dir
+        std::filesystem::path OutputDirPath;     // Path to output dir
+        std::size_t           nthreads;          // How many thread to use
 
         bool validate() const;
     };

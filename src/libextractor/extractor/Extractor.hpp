@@ -7,6 +7,10 @@
 
 #include "CacheFile.hpp"
 #include "ExtractorSettings.hpp"
+#include "ThreadPool.hpp"
+#include "utils.hpp"
+
+#include <spdlog/spdlog.h>
 
 namespace extractor {
     /**
@@ -49,6 +53,17 @@ namespace extractor {
          * Patch main x4 files with extension ones
          */
         void patch_extension() const;
+
+        template<typename T>
+        void save_datas(const std::string &subfolder, std::vector<T> &datas, common::ThreadPool &pool) const {
+            for (auto &i: datas) {
+                auto fn = [this, subfolder, i]() {
+                    auto path = _settings.ExtractionDirPath / fmt::format("{}/{}.json", subfolder, i.id);
+                    save_as_json(path, i);
+                };
+                pool.enqueue(new common::Task(fn));
+            }
+        }
     };
 } // namespace extractor
 

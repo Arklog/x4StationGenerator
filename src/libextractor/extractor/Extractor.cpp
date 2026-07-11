@@ -25,13 +25,13 @@ namespace extractor {
 
     void Extractor::extract() const {
         try {
-            if (!std::filesystem::exists(this->_settings.OutputDirPath))
+            if (!std::filesystem::exists(this->_settings.ExtractionDirPath))
                 std::filesystem::create_directories(
-                    this->_settings.OutputDirPath);
+                    this->_settings.ExtractionDirPath);
 
-            CacheFile<std::string, bool> cache(_settings.OutputDirPath / "cache.json");
+            CacheFile<std::string, bool> cache(_settings.ExtractionDirPath / "cache.json");
             common::ThreadPool pool(_settings.nthreads);
-            FileDetector detector(_settings.X4RootDirPath, _settings.OutputDirPath, _settings.XRCatToolPath);
+            FileDetector detector(_settings.X4RootDirPath, _settings.ExtractionDirPath, _settings.XRCatToolPath);
 
             pool.start();
             for (auto &archive: detector.archives) {
@@ -69,8 +69,20 @@ namespace extractor {
 
     void Extractor::parse() const {
         try {
-            databuilder::AggregateStore datas(models::ModelStore(_settings.OutputDirPath));
+            databuilder::AggregateStore datas(models::ModelStore(_settings.ExtractionDirPath));
             databuilder::Databuilder    builder(std::move(datas));
+            common::ThreadPool          pool(_settings.nthreads);
+
+            pool.start();
+
+            save_datas("wares", builder.wares, pool);
+            save_datas("productions", builder.modules.productions, pool);
+            save_datas("habitats", builder.modules.habitats, pool);
+            save_datas("storage", builder.modules.storage, pool);
+            save_datas("docks", builder.modules.docks, pool);
+            save_datas("piers", builder.modules.piers, pool);
+
+            pool.wait();
             spdlog::info("Parsing done");
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());

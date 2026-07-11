@@ -11,6 +11,7 @@
 #include "common/types/module/Pierr.hpp"
 #include "extractor/databuilder/AggregateStore.hpp"
 #include "common/types/module/ProductionModule.hpp"
+#include "common/types/module/Storage.hpp"
 
 namespace extractor::databuilder {
     using ware_whitelist = std::set<common::types::Ware::ware_id>;
@@ -23,6 +24,7 @@ namespace extractor::databuilder {
 
             std::vector<common::types::module::ProductionModule> productions;
             std::vector<common::types::module::Habitat>          habitats;
+            std::vector<common::types::module::Storage>          storage;
             std::vector<common::types::module::Dock>             docks;
             std::vector<common::types::module::Pierr>            piers;
 
