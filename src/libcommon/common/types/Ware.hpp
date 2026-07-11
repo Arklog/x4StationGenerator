@@ -14,6 +14,7 @@ namespace common::types {
         using ware_group_id = std::string;
 
         ware_id       id;
+        std::string   name;
         ware_group_id group;
         size_t        tier;
         Price         price;

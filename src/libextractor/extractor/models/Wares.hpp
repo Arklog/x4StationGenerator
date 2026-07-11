@@ -70,6 +70,7 @@ namespace extractor::models {
             rfl::DefaultVal<rfl::Attribute<std::string> > group;
             rfl::Attribute<std::string>                   transport;
             rfl::Attribute<size_t>                        volume;
+            WarePrice                                     price;
             std::vector<Production>                       production;
             std::optional<Component>                      component;
         };

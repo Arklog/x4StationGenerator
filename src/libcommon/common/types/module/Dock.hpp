@@ -7,7 +7,7 @@
 #include "Module.hpp"
 
 namespace common::types::module {
-    class Dock : Module {
+    struct Dock : Module {
     };
 }
 

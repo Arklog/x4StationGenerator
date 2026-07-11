@@ -28,8 +28,12 @@ namespace extractor::databuilder {
         std::optional<race_id> makerrace;
     };
 
-    struct Module : ModuleBase {
-        Module(models::Structure &&structure);
+    struct ProductionModule : ModuleBase {
+        ProductionModule(models::Structure &&structure);
+
+        std::vector<std::string> wares_produced;
+        std::string              production_method;
+        size_t                   workforce_max;;
     };
 
     struct Habitat : ModuleBase {
@@ -64,11 +68,23 @@ namespace extractor::databuilder {
             std::vector<std::pair<ware_id, size_t> > wares_required;
         };
 
+        struct Price {
+            Price(models::Wares::Ware::WarePrice &&price);
+
+            size_t max;
+            size_t min;
+            size_t avg;
+        };
+
         Ware(models::Wares::Ware &&ware);
 
         ware_id                                     id;
+        std::string                                 group;
+        size_t                                      tier;
         std::string                                 name;
+        Price                                       price;
         std::unordered_map<std::string, Production> production;
+        std::optional<std::string>                  component;
     };
 
     using Waregroup = models::Waregroups::Group;
@@ -88,18 +104,19 @@ namespace extractor::databuilder {
             }
         }
 
-        std::unordered_map<Module::macro_id, T> modules;
+        std::unordered_map<ProductionModule::macro_id, T> modules;
     };
 
-    using ModuleAggregator  = Aggregator<Module>;
-    using HabitatAggregator = Aggregator<Habitat>;
-    using DockAggregator    = Aggregator<Dock>;
-    using StorageAggregator = Aggregator<Storage>;
+    using ProductionModuleAggregator = Aggregator<ProductionModule>;
+    using HabitatAggregator          = Aggregator<Habitat>;
+    using DockAggregator             = Aggregator<Dock>;
+    using StorageAggregator          = Aggregator<Storage>;
 
     struct WareAggregator {
         WareAggregator(models::Wares &wares);
 
-        std::unordered_map<Ware::ware_id, Ware> wares;
+        std::unordered_map<Ware::ware_id, Ware> by_id;
+        std::unordered_map<Ware::ware_id, Ware> by_ref;
     };
 
     struct WaregroupsAggregator {
