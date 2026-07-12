@@ -58,7 +58,7 @@ namespace extractor::models {
                 rfl::Attribute<std::string>                   method;
                 rfl::DefaultVal<rfl::Attribute<std::string> > name;
                 std::optional<Primary>                        primary;
-                std::optional<Effects>                        effects;
+                rfl::DefaultVal<Effects>                      effects;
             };
 
             struct Component {

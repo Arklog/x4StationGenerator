@@ -66,6 +66,7 @@ namespace extractor::databuilder {
             double                                   time;
             size_t                                   amount;
             std::vector<std::pair<ware_id, size_t> > wares_required;
+            std::unordered_map<std::string, double>  effects;
         };
 
         struct Price {

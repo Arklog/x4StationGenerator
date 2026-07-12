@@ -20,11 +20,11 @@ namespace common::data {
 
     void Loader::load() {
         load_datas_from(_store.workforce.workforces, "workforce");
-        load_datas_from(_store.wares, "wares");
+        load_datas_from(_store.wares.datas, "wares");
         load_datas_from(_store.docks, "docks");
         load_datas_from(_store.piers, "piers");
         load_datas_from(_store.habitats, "habitats");
         load_datas_from(_store.storages, "storage");
-        load_datas_from(_store.productions, "productions");
+        load_datas_from(_store.production.datas, "productions");
     }
 }

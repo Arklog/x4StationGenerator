@@ -49,6 +49,11 @@ namespace extractor::databuilder {
         for (auto ware: production.primary.value().ware) {
             wares_required.emplace_back(std::move(ware.ware.value()), ware.amount.value());
         }
+
+        auto &effects = production.effects.value().effects;
+        for (auto &[effect, value]: effects) {
+            this->effects.emplace(std::move(effect.value()), std::move(value.value()));
+        }
     }
 
     Ware::Price::Price(models::Wares::Ware::WarePrice &&price) :
