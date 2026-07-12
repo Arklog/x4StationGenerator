@@ -50,7 +50,7 @@ namespace extractor::models {
                         rfl::Attribute<double>      product;
                     };
 
-                    std::vector<Effect> effects;
+                    std::optional<std::vector<Effect> > effect;
                 };
 
                 rfl::Attribute<double>                        time;
@@ -58,7 +58,7 @@ namespace extractor::models {
                 rfl::Attribute<std::string>                   method;
                 rfl::DefaultVal<rfl::Attribute<std::string> > name;
                 std::optional<Primary>                        primary;
-                rfl::DefaultVal<Effects>                      effects;
+                std::optional<Effects>                        effects;
             };
 
             struct Component {

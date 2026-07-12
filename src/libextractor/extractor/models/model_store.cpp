@@ -46,6 +46,7 @@ extractor::models::ModelStore::ModelStore(const path &path) {
 
     auto wares_ = rfl::xml::load<models::Wares>(wares_path);
     if (!wares_.has_value()) {
+        auto &err = wares_.error();
         spdlog::error("Failed to load wares: {}", wares_.error().what());
         throw std::runtime_error("Failed to load wares");
     }

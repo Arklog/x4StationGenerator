@@ -14,13 +14,13 @@
 #include "common/types/module/Storage.hpp"
 
 namespace extractor::databuilder {
-    using ware_whitelist = std::set<common::types::Ware::ware_id>;
+    using t_ware_whitelist = std::set<common::types::Ware::ware_id>;
 
     struct Databuilder {
         struct Modules {
             Modules() = default;
 
-            Modules(AggregateStore &&store, ware_whitelist &used_wares);
+            Modules(AggregateStore &&store, t_ware_whitelist &used_wares);
 
             std::vector<common::types::module::ProductionModule> productions;
             std::vector<common::types::module::Habitat>          habitats;
@@ -30,7 +30,7 @@ namespace extractor::databuilder {
 
         private:
             template<typename T, std::derived_from<databuilder::ModuleBase> J>
-            void build_module(T &m, J &module_aggregate, AggregateStore &store, ware_whitelist &used_wares) {
+            void build_module(T &m, J &module_aggregate, AggregateStore &store, t_ware_whitelist &used_wares) {
                 auto &module = m.module.value();
                 try {
                     auto &module_ware = store.wares.by_ref.at(module_aggregate.macro);
@@ -50,15 +50,16 @@ namespace extractor::databuilder {
                 }
             }
 
-            void build_production_module(ProductionModule &module, AggregateStore &store, ware_whitelist &used_wares);
+            void build_production_module(ProductionModule &module, AggregateStore &store,
+                                         t_ware_whitelist &ware_whitelist);
 
-            void build_habitat_module(Habitat &habitat, AggregateStore &store, ware_whitelist &used_wares);
+            void build_habitat_module(Habitat &habitat, AggregateStore &store, t_ware_whitelist &used_wares);
 
-            void build_storage_module(Storage &storage, AggregateStore &store, ware_whitelist &used_wares);
+            void build_storage_module(Storage &storage, AggregateStore &store, t_ware_whitelist &used_wares);
 
-            void build_docks(Dock &dock, AggregateStore &store, ware_whitelist &used_wares);
+            void build_docks(Dock &dock, AggregateStore &store, t_ware_whitelist &used_wares);
 
-            void build_pier(Dock &dock, AggregateStore &store, ware_whitelist &used_wares);
+            void build_pier(Dock &dock, AggregateStore &store, t_ware_whitelist &used_wares);
         };
 
         Databuilder(AggregateStore &&store);

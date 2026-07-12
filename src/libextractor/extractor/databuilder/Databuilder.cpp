@@ -27,39 +27,47 @@ namespace extractor::databuilder {
     }
 
     void Databuilder::Modules::build_production_module(ProductionModule &module, AggregateStore &store,
-                                                       ware_whitelist &  used_wares) {
-        common::types::module::ProductionModule tmp{};
-        build_module(tmp, module, store, used_wares);
-        tmp.required_workforce = module.workforce_max;
-        tmp.production_method  = std::move(module.production_method);
+                                                       t_ware_whitelist &ware_whitelist) {
+        common::types::module::ProductionModule finished_module{};
+        build_module(finished_module, module, store, ware_whitelist);
+        finished_module.required_workforce = module.workforce_max;
+        finished_module.production_method  = std::move(module.production_method);
 
         for (auto &ware_id: module.wares_produced) {
             try {
-                auto &ware            = store.wares.by_id.at(ware_id);
-                auto &ware_production = ware.production.at(tmp.production_method);
+                auto & ware            = store.wares.by_id.at(ware_id);
+                auto & ware_production = ware.production.at(finished_module.production_method);
+                double time_factor     = 3600.0f / (ware_production.time * module.wares_produced.size());
 
                 if (ware_production.amount == 0)
                     continue;
-                used_wares.insert(ware_id);
+                ware_whitelist.insert(ware_id);
 
-                tmp.wares_produced.emplace(ware_id, ware_production.amount);
+                common::types::module::ProductionModule::ProducedWare ware_production_data{
+                    .amount = static_cast<size_t>(std::floor(ware_production.amount * time_factor)),
+                    .work   = ware_production.effects["work"],
+                    .sun    = ware_production.effects["sun"]
+                };
+                finished_module.wares_produced.emplace(ware_id, std::move(ware_production_data));
+
                 for (auto &[required_id, required_amount]: ware_production.wares_required) {
                     if (required_amount == 0)
                         continue;
-                    used_wares.insert(required_id);
-                    tmp.wares_required.emplace(required_id, required_amount);
+                    ware_whitelist.insert(required_id);
+                    auto &required_amount_total = finished_module.wares_required[required_id];
+                    required_amount_total       -= static_cast<long long>(std::ceil(required_amount * time_factor));
                 }
             } catch (const std::out_of_range &e) {
                 spdlog::error("No match for ware {} with production method {}: \nError originating from module {}",
-                              ware_id, tmp.production_method, tmp.module.value().id);
+                              ware_id, finished_module.production_method, finished_module.module.value().id);
             }
         }
-        if (!tmp.wares_produced.empty())
-            this->productions.push_back(std::move(tmp));
+        if (!finished_module.wares_produced.empty())
+            this->productions.push_back(std::move(finished_module));
     }
 
     void Databuilder::Modules::
-    build_habitat_module(Habitat &habitat, AggregateStore &store, ware_whitelist &used_wares) {
+    build_habitat_module(Habitat &habitat, AggregateStore &store, t_ware_whitelist &used_wares) {
         try {
             common::types::module::Habitat tmp{};
             tmp.capacity = habitat.capacity;
@@ -72,7 +80,7 @@ namespace extractor::databuilder {
     }
 
     void Databuilder::Modules::
-    build_storage_module(Storage &storage, AggregateStore &store, ware_whitelist &used_wares) {
+    build_storage_module(Storage &storage, AggregateStore &store, t_ware_whitelist &used_wares) {
         try {
             common::types::module::Storage tmp{};
             build_module(tmp, storage, store, used_wares);
@@ -84,7 +92,7 @@ namespace extractor::databuilder {
         }
     }
 
-    void Databuilder::Modules::build_docks(Dock &dock, AggregateStore &store, ware_whitelist &used_wares) {
+    void Databuilder::Modules::build_docks(Dock &dock, AggregateStore &store, t_ware_whitelist &used_wares) {
         try {
             common::types::module::Dock tmp{};
             build_module(tmp, dock, store, used_wares);
@@ -94,7 +102,7 @@ namespace extractor::databuilder {
         }
     }
 
-    void Databuilder::Modules::build_pier(Dock &dock, AggregateStore &store, ware_whitelist &used_wares) {
+    void Databuilder::Modules::build_pier(Dock &dock, AggregateStore &store, t_ware_whitelist &used_wares) {
         try {
             common::types::module::Pierr tmp{};
             build_module(tmp, dock, store, used_wares);
@@ -107,7 +115,7 @@ namespace extractor::databuilder {
     Databuilder::Databuilder(AggregateStore &&store) :
     modules{},
     wares{} {
-        ware_whitelist whitelist;
+        t_ware_whitelist whitelist;
         this->modules = Modules{std::move(store), whitelist};
         for (auto &wareid: whitelist) {
             try {

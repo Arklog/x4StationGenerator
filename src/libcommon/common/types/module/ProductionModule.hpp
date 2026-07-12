@@ -12,23 +12,27 @@
 
 namespace common::types::module {
     struct ProductionModule {
-        using module_production      = std::unordered_map<Ware::ware_id, unsigned int>;
-        using module_usage           = std::unordered_map<Ware::ware_id, signed int>;
-        using module_ware_derivative = std::unordered_map<Ware::ware_id, long long>;
+        struct ProducedWare {
+            size_t amount;
+            double work;
+            double sun;
+        };
+
+        using module_production = std::unordered_map<Ware::ware_id, ProducedWare>;
+        using module_usage      = std::unordered_map<Ware::ware_id, long long>;
 
         struct Effects {
             double workforce;
             double sun;
         };
 
-        rfl::Flatten<Module>   module;
-        double                 time;               // time required to produce the ware in seconds
-        size_t                 required_workforce; // required module workforce for full efficiency
-        module_production      wares_produced;     // list of the ware produced by the module per cycle
-        module_usage           wares_required;     // list of the ware used by the module per cycle
-        module_ware_derivative wares_derivative;   // list of ware produced and used by the module per cycle
-        std::string            production_method;  // module production method id
-        Effects                effects;
+        rfl::Flatten<Module> module;
+        double               time;               // time required to produce the ware in seconds
+        size_t               required_workforce; // required module workforce for full efficiency
+        module_production    wares_produced;     // list of the ware produced by the module per cycle
+        module_usage         wares_required;     // list of the ware used by the module per cycle
+        std::string          production_method;  // module production method id
+        Effects              effects;
     };
 }
 
