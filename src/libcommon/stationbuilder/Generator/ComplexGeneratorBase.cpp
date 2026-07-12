@@ -38,55 +38,55 @@ namespace common::stationbuilder::generator {
                                      t_target_container &      current_state,
                                      t_x4_complex &            modules) {
         spdlog::info("Step: {}", current_step_);
-        const auto &wares = store_.wares.datas;
-        const auto &ware  = this->_nextTarget(targets, current_state, modules);
-
-        const auto &module_to_add     = store_.production.by_id.at(ware->source_module);
-        const auto &module_production = module_to_add->wares_derivative;
-
-        auto amount_produced = module_production.amount;
-        if (settings_.workforce_enables) {
-            amount_produced
-                    = static_cast<long>(static_cast<double>(amount_produced)
-                                        * module_production.getWorkforceFactor());
-        }
-        if (ware->ware_id == t_ware_id{"energycells"}) {
-            amount_produced = static_cast<long>(
-                static_cast<double>(amount_produced) * settings_.sunlight);
-        }
-
-        // Update production value of all ware produced and consumed by
-        // module_to_add
-        spdlog::info("Module production: {}", module_production.wares);
-        this->_updateCurrentProduction(ware->ware_id, amount_produced,
-                                       module_production.time);
-        for (const auto &i: module_production.wares) {
-            this->_updateCurrentProduction(i.id, -(i.amount),
-                                           module_production.time);
-        }
-        modules.push_back(module_to_add->id);
-
-        // deal with workforce
-        if (!settings_.workforce_enables)
-            return;
-
-        if (!module_to_add->workforce_max)
-            return;
-
-        auto habitat = store_.modules.by_id.at(settings_.workforce_module);
-        auto consumption
-                = getWorkforceUsage(habitat->race.value(),
-                                    module_to_add->workforce_max.value(), store_);
-        spdlog::info("Workforce consumption: {}", consumption);
-        for (const auto &i: consumption) {
-            this->_updateCurrentProduction(i.id, -(i.amount), 3600);
-        }
-        workforce_ -= module_to_add->workforce_max.value();
-
-        while (workforce_ < 0) {
-            workforce_ += habitat->workforce_capacity.value();
-            modules.push_back(habitat->id);
-        }
+        // const auto &wares = store_.wares.datas;
+        // const auto &ware  = this->_nextTarget(targets, current_state, modules);
+        //
+        // const auto &module_to_add     = store_.production.by_id.at(ware->source_module);
+        // const auto &module_production = module_to_add->wares_derivative;
+        //
+        // auto amount_produced = module_production.amount;
+        // if (settings_.workforce_enables) {
+        //     amount_produced
+        //             = static_cast<long>(static_cast<double>(amount_produced)
+        //                                 * module_production.getWorkforceFactor());
+        // }
+        // if (ware->ware_id == t_ware_id{"energycells"}) {
+        //     amount_produced = static_cast<long>(
+        //         static_cast<double>(amount_produced) * settings_.sunlight);
+        // }
+        //
+        // // Update production value of all ware produced and consumed by
+        // // module_to_add
+        // spdlog::info("Module production: {}", module_production.wares);
+        // this->_updateCurrentProduction(ware->ware_id, amount_produced,
+        //                                module_production.time);
+        // for (const auto &i: module_production.wares) {
+        //     this->_updateCurrentProduction(i.id, -(i.amount),
+        //                                    module_production.time);
+        // }
+        // modules.push_back(module_to_add->id);
+        //
+        // // deal with workforce
+        // if (!settings_.workforce_enables)
+        //     return;
+        //
+        // if (!module_to_add->workforce_max)
+        //     return;
+        //
+        // auto habitat = store_.modules.by_id.at(settings_.workforce_module);
+        // auto consumption
+        //         = getWorkforceUsage(habitat->race.value(),
+        //                             module_to_add->workforce_max.value(), store_);
+        // spdlog::info("Workforce consumption: {}", consumption);
+        // for (const auto &i: consumption) {
+        //     this->_updateCurrentProduction(i.id, -(i.amount), 3600);
+        // }
+        // workforce_ -= module_to_add->workforce_max.value();
+        //
+        // while (workforce_ < 0) {
+        //     workforce_ += habitat->workforce_capacity.value();
+        //     modules.push_back(habitat->id);
+        // }
     }
 
     WareTarget *
@@ -101,7 +101,7 @@ namespace common::stationbuilder::generator {
         for (const auto &ware: all_wares) {
             const auto &key = ware->ware_id;
 
-            if (!store_.modules.all_producing.contains(key))
+            if (!store_.production.producing.contains(key))
                 continue;
 
             auto is_base_target = targets.isPrimaryTarget(key);
@@ -129,21 +129,21 @@ namespace common::stationbuilder::generator {
             const auto  a_ware_data = wares.at(a_ware->ware_id);
             const auto  b_ware_data = wares.at(a_ware->ware_id);
 
-            return a_ware_data->group.tier > b_ware_data->group.tier;
+            return a_ware_data->tier > b_ware_data->tier;
         });
 
-        spdlog::debug("next target {}", ids.at(0).raw());
+        spdlog::debug("next target {}", ids.at(0));
         return current_state.getTarget(ids[0]);
     }
 
     void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
                                                         long int         value,
                                                         long int         cycle_time) {
-        if (!store_.modules.all_producing.contains(ware_id)) {
-            spdlog::info("ware {} is not produced, skipping", ware_id.raw());
+        if (!store_.production.producing.contains(ware_id)) {
+            spdlog::info("ware {} is not produced, skipping", ware_id);
             return;
         }
-        spdlog::debug("update current production {}", ware_id.raw());
+        spdlog::debug("update current production {}", ware_id);
 
         auto is_produced = this->current_production_.isPrimaryTarget(ware_id)
                            || this->current_production_.isSecondaryTarget(ware_id);
@@ -157,15 +157,15 @@ namespace common::stationbuilder::generator {
             return;
         }
 
-        spdlog::debug("adding ware in list {}", ware_id.raw());
+        spdlog::debug("adding ware in list {}", ware_id);
         this->current_production_.setSecondaryTarget(ware_id);
         auto target       = this->current_production_.getSecondaryTarget(ware_id);
         target->prodution = value;
     }
 
-    ComplexGeneratorBase::ComplexGeneratorBase(const Settings &     settings,
-                                               const Store &        store,
-                                               WareTargetContainer &targets) :
+    ComplexGeneratorBase::ComplexGeneratorBase(const Settings &            settings,
+                                               const data::Store &         store,
+                                               utils::WareTargetContainer &targets) :
     targets_(targets),
     current_production_{store},
     settings_(settings),
