@@ -50,8 +50,8 @@ namespace extractor::databuilder {
             wares_required.emplace_back(std::move(ware.ware.value()), ware.amount.value());
         }
 
-        auto &effects = production.effects.value().effects;
-        for (auto &[effect, value]: effects) {
+        auto &effects_ = production.effects.value().effect;
+        for (auto &[effect, value]: effects_.value()) {
             this->effects.emplace(std::move(effect.value()), std::move(value.value()));
         }
     }
