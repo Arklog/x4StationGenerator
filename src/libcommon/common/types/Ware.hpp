@@ -19,6 +19,11 @@ namespace common::types {
         size_t        tier;
         Price         price;
     };
+
+    struct WareAmount {
+        Ware::ware_id id;
+        long int      amount;
+    };
 } // common
 
 #endif //X4STATIONGENERATOR__WARE_HPP

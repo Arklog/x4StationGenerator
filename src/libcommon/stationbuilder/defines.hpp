@@ -5,40 +5,47 @@
 #ifndef DEFINES_HPP
 #define DEFINES_HPP
 
-#include "data/Data.hpp"
+#include <string>
+#include <vector>
 
-namespace ModuleType {
-    extern const std::string pier;
-    extern const std::string dock;
-    extern const std::string storage;
-    extern const std::string habitat;
-} // namespace ModuleType
+#include "common/types/Ware.hpp"
+#include "common/types/module/Module.hpp"
 
-struct WareTarget {
-    t_ware_id   ware_id;
-    t_module_id source_module;
-    long int    prodution;
-    bool        is_secondary;
-};
+namespace common::stationbuilder {
+    using t_module_id = types::module::Module::module_id;
 
-struct ModuleTarget {
-    t_module_id module_id;
-    size_t      amount;
+    namespace ModuleType {
+        extern const std::string pier;
+        extern const std::string dock;
+        extern const std::string storage;
+        extern const std::string habitat;
+    } // namespace ModuleType
 
-    bool operator==(const ModuleTarget &other) const;
+    struct WareTarget {
+        types::Ware::ware_id             ware_id;
+        types::module::Module::module_id source_module;
+        long int                         prodution;
+        bool                             is_secondary;
+    };
 
-    bool operator==(const t_module_id &module_id) const;
-};
+    struct ModuleTarget {
+        t_module_id module_id;
+        size_t      amount;
 
-struct Settings {
-    std::string name;
-    double      sunlight;
-    t_module_id workforce_module;
-    bool        workforce_enables;
-};
+        bool operator==(const ModuleTarget &other) const;
 
-typedef std::vector<const WareTarget *> t_target_list;
-typedef std::vector<t_module_id>        t_x4_complex;
-typedef std::vector<ModuleTarget>       t_module_target_list;
+        bool operator==(const t_module_id &module_id) const;
+    };
 
+    struct Settings {
+        std::string name;
+        double      sunlight;
+        t_module_id workforce_module;
+        bool        workforce_enables;
+    };
+
+    typedef std::vector<const WareTarget *> t_target_list;
+    typedef std::vector<t_module_id>        t_x4_complex;
+    typedef std::vector<ModuleTarget>       t_module_target_list;
+}
 #endif // DEFINES_HPP
