@@ -5,31 +5,39 @@
 #ifndef LOADER_H
 #define LOADER_H
 
-#include "Data.hpp"
 #include "Store.hpp"
 #include "nlohmann/json.hpp"
+#include <fmt/format.h>
+#include <rfl/json.hpp>
 
-class Loader
-{
-  private:
-    /**
-     * Load module files
-     */
-    void _loadModules ();
+namespace common::data {
+    class Loader {
+    public:
+        Loader(Store &store, std::filesystem::path path);
 
-    void _loadWorkforce ();
+        void load();
 
-    /**
-     * Parse raw json ware
-     */
-    void _parse_wares ();
+        Store &_store;
 
-  public:
-    Loader (Store &store);
+    private:
+        std::filesystem::path _path;
 
-    void load ();
+        template<typename T>
+        void load_datas_from(std::vector<T> &data_store, const std::string &path) {
+            auto const datapath = _path / path;
+            if (!std::filesystem::exists(datapath) || !std::filesystem::is_directory(datapath))
+                throw std::runtime_error(fmt::format("Directory {} does not exist", datapath.string()));
 
-    Store &_store;
-};
+            auto it = std::filesystem::directory_iterator(datapath);
+            for (const auto &item: it) {
+                if (!item.is_regular_file() || item.path().extension() != ".json")
+                    continue;
 
+                auto data = rfl::json::load<T>(item.path());
+                if (data.has_value())
+                    data_store.push_back(std::move(data.value()));
+            }
+        }
+    };
+}
 #endif // LOADER_H

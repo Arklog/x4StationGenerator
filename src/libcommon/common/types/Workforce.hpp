@@ -10,9 +10,9 @@
 #include "Ware.hpp"
 
 namespace common::types {
-    class Workforce {
+    struct Workforce {
         using race_id               = std::string;
-        using workforce_consumption = std::unordered_map<Ware::ware_id, long long>;
+        using workforce_consumption = std::unordered_map<Ware::ware_id, double>;
 
         race_id               race;
         workforce_consumption consumption;

@@ -4,55 +4,55 @@
 
 #ifndef X4STATIONGENERATOR__STORE_HPP
 #define X4STATIONGENERATOR__STORE_HPP
-#include "Data.hpp"
 
-#include <list>
+#include "common/types/Workforce.hpp"
+#include "common/types/module/Dock.hpp"
+#include "common/types/module/Habitat.hpp"
+#include "common/types/module/Pierr.hpp"
+#include "common/types/module/ProductionModule.hpp"
+#include "common/types/module/Storage.hpp"
 
-struct Store
-{
-    using module_container_type = std::list<Module>;
-    using ware_container_type = std::list<Ware>;
-    using ware_group_container_type = std::list<WareGroup>;
+namespace common::data {
+    struct Store {
+        std::vector<common::types::module::Dock>    docks;
+        std::vector<common::types::module::Pierr>   piers;
+        std::vector<common::types::module::Habitat> habitats;
+        std::vector<common::types::module::Storage> storages;
 
-    struct
-    {
-	module_container_type all;	       // Contain all modules
-	std::vector<Module *> production;      // All production modules
-	std::vector<Module *> habitats;	       // All habitats modules
-	std::vector<Module *> docks_and_piers; // All dock or pier modules
-	std::vector<Module *> storages;	       // All storage modules
-	std::unordered_map<t_module_id, Module *>
-	    by_id; // Reference modules by id
-	std::unordered_map<std::string, Module *>
-	    by_name; // Reference modules by module name
-	std::map<std::pair<t_ware_id, t_production_method_id>,
-		 Module *>
-	    producing; // Reference module by produced ware
-	std::unordered_map<t_ware_id, std::vector<Module *>> all_producing;
-    } modules;
+        template<typename T>
+        struct Aggregate {
+            using data_type = T;
+            std::vector<T>                       datas;
+            std::unordered_map<std::string, T *> by_id;
+            std::unordered_map<std::string, T *> by_name;
 
-    struct
-    {
-	ware_container_type all;
-	std::unordered_map<t_ware_id, Ware *> by_id;
-	std::unordered_map<std::string, Ware *> by_name;
-    } wares;
+            virtual void add(T &&data) {
+                datas.emplace_back(std::move(data));
+                by_id[data.module.value().id]     = &datas.back();
+                by_name[data.module.value().name] = &datas.back();
+            }
+        };
 
-    struct
-    {
-	ware_group_container_type all;
-	std::unordered_map<t_ware_group_id, WareGroup *> by_id;
-	std::unordered_map<std::string, WareGroup *> by_name;
-    } ware_groups;
+        struct {
+            std::vector<common::types::Workforce>                             workforces;
+            std::unordered_map<types::Workforce::race_id, types::Workforce *> by_race;
+        } workforce;
 
-    std::map<std::string, std::vector<std::pair<t_ware_id, double>>> workforce;
+        struct : Aggregate<types::module::ProductionModule> {
+            std::unordered_map<types::Ware::ware_id, std::vector<types::module::ProductionModule *> > producing;
 
-    /**
-     * Register a new module.
-     *
-     * @param module
-     */
-    void registerModule (Module &&module);
-};
+            void add(data_type &&value) override {
+                Aggregate::add(std::move(value));
+                auto &module = datas.back();
+
+                for (auto &[wareid, amount]: module.wares_produced) {
+                    producing[wareid].emplace_back(&module);
+                }
+            }
+        } production;
+
+        Aggregate<types::Ware> wares;
+    };
+}
 
 #endif // X4STATIONGENERATOR__STORE_HPP

@@ -8,83 +8,85 @@
 #include "data/Store.hpp"
 #include "utils/WareTargetContainer.hpp"
 
-/**
- * A complex generator generate a new complex based on a provided list of
- * ressources
- */
-class ComplexGeneratorBase {
-public:
-    typedef std::unordered_map<t_ware_id, WareTarget, std::hash<std::string> >
-    t_target_map;
-
-    using t_target_container = WareTargetContainer;
-
-protected:
+namespace common::stationbuilder::generator {
     /**
-     * Check if we are done generating the complex.
-     *
-     * @param targets The ware target list
-     * @param current_state The current ware produced
-     * @param modules The current list of modules to be build
-     *
-     * @return True if the generation is done, else false
+     * A complex generator generate a new complex based on a provided list of
+     * ressources
      */
-    virtual bool _done(const t_target_container &targets,
-                       t_target_container &      current_state,
-                       t_x4_complex &            modules) const;
+    class ComplexGeneratorBase {
+    public:
+        using t_ware_id = types::Ware::ware_id;
+        typedef std::unordered_map<t_ware_id, WareTarget, std::hash<std::string> >
+        t_target_map;
 
-    /**
-     * Next step in the generation
-     *
-     * @param targets The ware targets list
-     * @param current_state The current wares produced
-     * @param modules The current list of modules to be built
-     */
-    virtual void _step(const t_target_container &targets,
-                       t_target_container &      current_state, t_x4_complex &modules);
+        using t_target_container = utils::WareTargetContainer;
 
-    /**
-     * Choose the next target to build
-     *
-     * @param targets The list of end targets
-     * @param current_state The list of currently produced wares
-     * @param modules The end list of modules to be built
-     * @return
-     */
-    virtual WareTarget *_nextTarget(const t_target_container &targets,
-                                    t_target_container &      current_state,
-                                    t_x4_complex &            modules);
+    protected:
+        /**
+         * Check if we are done generating the complex.
+         *
+         * @param targets The ware target list
+         * @param current_state The current ware produced
+         * @param modules The current list of modules to be build
+         *
+         * @return True if the generation is done, else false
+         */
+        virtual bool _done(const t_target_container &targets,
+                           t_target_container &      current_state,
+                           t_x4_complex &            modules) const;
 
-    /**
-     * Update the production value of the ware identified by ware_id by values.
-     * If ware_id does not identify a ware in the production chain, it will be
-     * added.
-     *
-     * @param ware_id The identifier of the ware to update
-     * @param value The value by which to update the ware, must be negative when
-     * the ware is consumed.
-     */
-    void _updateCurrentProduction(const t_ware_id &ware_id, long int value,
-                                  long int         cycle_time);
+        /**
+         * Next step in the generation
+         *
+         * @param targets The ware targets list
+         * @param current_state The current wares produced
+         * @param modules The current list of modules to be built
+         */
+        virtual void _step(const t_target_container &targets,
+                           t_target_container &      current_state, t_x4_complex &modules);
 
-    WareTargetContainer &targets_;
-    WareTargetContainer  current_production_;
-    const Settings &     settings_;
-    const Store &        store_;
-    long int             workforce_;
-    size_t               current_step_;
-    double               sunlight_;
+        /**
+         * Choose the next target to build
+         *
+         * @param targets The list of end targets
+         * @param current_state The list of currently produced wares
+         * @param modules The end list of modules to be built
+         * @return
+         */
+        virtual WareTarget *_nextTarget(const t_target_container &targets,
+                                        t_target_container &      current_state,
+                                        t_x4_complex &            modules);
 
-public:
-    ComplexGeneratorBase(const Settings &settings, const Store &store, WareTargetContainer &targets);
+        /**
+         * Update the production value of the ware identified by ware_id by values.
+         * If ware_id does not identify a ware in the production chain, it will be
+         * added.
+         *
+         * @param ware_id The identifier of the ware to update
+         * @param value The value by which to update the ware, must be negative when
+         * the ware is consumed.
+         */
+        void _updateCurrentProduction(const t_ware_id &ware_id, long int value,
+                                      long int         cycle_time);
 
-    ComplexGeneratorBase(const ComplexGeneratorBase &complex_generator) = delete;
+        utils::WareTargetContainer &targets_;
+        utils::WareTargetContainer  current_production_;
+        const Settings &            settings_;
+        const data::Store &         store_;
+        long int                    workforce_;
+        size_t                      current_step_;
+        double                      sunlight_;
 
-    virtual ~ComplexGeneratorBase() = default;
+    public:
+        ComplexGeneratorBase(const Settings &settings, const data::Store &store, utils::WareTargetContainer &targets);
 
-    t_x4_complex build();
+        ComplexGeneratorBase(const ComplexGeneratorBase &complex_generator) = delete;
 
-    const t_target_container &getCurrentProduction() const;
-};
+        virtual ~ComplexGeneratorBase() = default;
 
+        t_x4_complex build();
+
+        const t_target_container &getCurrentProduction() const;
+    };
+}
 #endif // COMPLEXGENERATOR_HPP
