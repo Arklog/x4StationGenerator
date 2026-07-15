@@ -2,8 +2,8 @@
 // Created by pierre on 6/25/26.
 //
 
-#ifndef X4STATIONGENERATOR__UTILS_HPP
-#define X4STATIONGENERATOR__UTILS_HPP
+#ifndef X4STATIONGENERATOR__EXTRACTOR_UTILS_HPP
+#define X4STATIONGENERATOR__EXTRACTOR_UTILS_HPP
 #include <filesystem>
 #include <mutex>
 #include <spdlog/fmt/bundled/format.h>
@@ -54,4 +54,4 @@ void save_as_json(const std::filesystem::path &path, const T &value) {
 
 std::string str(char *);
 
-#endif // X4STATIONGENERATOR__UTILS_HPP
+#endif // X4STATIONGENERATOR__EXTRACTOR_UTILS_HPP
