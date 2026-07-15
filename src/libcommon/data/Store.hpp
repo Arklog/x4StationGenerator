@@ -5,53 +5,50 @@
 #ifndef X4STATIONGENERATOR__STORE_HPP
 #define X4STATIONGENERATOR__STORE_HPP
 
+#include "Aggregate.hpp"
 #include "common/types/Workforce.hpp"
 #include "common/types/module/Dock.hpp"
 #include "common/types/module/Habitat.hpp"
+#include "common/types/module/ModuleWrapper.hpp"
 #include "common/types/module/Pierr.hpp"
 #include "common/types/module/ProductionModule.hpp"
 #include "common/types/module/Storage.hpp"
 
 namespace common::data {
     struct Store {
-        std::vector<common::types::module::Dock>    docks;
-        std::vector<common::types::module::Pierr>   piers;
-        std::vector<common::types::module::Habitat> habitats;
-        std::vector<common::types::module::Storage> storages;
+        using DockAggregate       = Aggregate<types::module::Dock>;
+        using PierAggregate       = Aggregate<types::module::Pierr>;
+        using HabitatAggregate    = Aggregate<types::module::Habitat>;
+        using StorageAggregate    = Aggregate<types::module::Storage>;
+        using ProductionAggregate = Aggregate<types::module::ProductionModule>;
+        using AllModulesAggregate = Aggregate<types::module::ModuleWrapper>;
+        using WareAggregate       = Aggregate<types::Ware>;
+        using WorkforceAggregate  = Aggregate<types::Workforce>;
 
-        template<typename T>
-        struct Aggregate {
-            using data_type = T;
-            std::vector<T>                       datas;
-            std::unordered_map<std::string, T *> by_id;
-            std::unordered_map<std::string, T *> by_name;
+        DockAggregate       docks;
+        PierAggregate       piers;
+        HabitatAggregate    habitats;
+        StorageAggregate    storages;
+        ProductionAggregate production;
+        AllModulesAggregate modules;
+        WareAggregate       wares;
+        WorkforceAggregate  workforce;
 
-            virtual void add(T &&data) {
-                datas.emplace_back(std::move(data));
-                by_id[data.module.value().id]     = &datas.back();
-                by_name[data.module.value().name] = &datas.back();
-            }
-        };
+        void add(types::module::Dock &&m);
 
-        struct {
-            std::vector<common::types::Workforce>                             workforces;
-            std::unordered_map<types::Workforce::race_id, types::Workforce *> by_race;
-        } workforce;
+        void add(types::module::Pierr &&m);
 
-        struct : Aggregate<types::module::ProductionModule> {
-            std::unordered_map<types::Ware::ware_id, std::vector<types::module::ProductionModule *> > producing;
+        void add(types::module::Habitat &&m);
 
-            void add(data_type &&value) override {
-                Aggregate::add(std::move(value));
-                auto &module = datas.back();
+        void add(types::module::Storage &&m);
 
-                for (auto &[wareid, amount]: module.wares_produced) {
-                    producing[wareid].emplace_back(&module);
-                }
-            }
-        } production;
+        void add(types::module::ProductionModule &&m);
 
-        Aggregate<types::Ware> wares;
+        void add(types::module::ModuleWrapper &&m);
+
+        void add(types::Ware &&m);
+
+        void add(types::Workforce &&m);
     };
 }
 

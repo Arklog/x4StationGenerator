@@ -31,6 +31,10 @@ add_library(x4StationGeneratorCommon STATIC
         common/types/Ware.cpp
         common/types/Ware.hpp
         common/types/Workforce.cpp
-        common/types/Workforce.hpp)
+        common/types/Workforce.hpp
+        common/types/module/ModuleWrapper.cpp
+        common/types/module/ModuleWrapper.hpp
+        data/Aggregate.cpp
+        data/Aggregate.hpp)
 target_link_libraries(x4StationGeneratorCommon PRIVATE nlohmann_json spdlog::spdlog reflectcpp)
 target_include_directories(x4StationGeneratorCommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

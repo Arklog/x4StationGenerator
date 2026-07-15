@@ -11,7 +11,7 @@ namespace common::data {
                                                      const Store &store) {
         try {
             std::vector<types::WareAmount> ware_amounts;
-            auto                           pair_data = store.workforce.by_race.at(race)->consumption;
+            auto                           pair_data = store.workforce.by_id.at(race)->consumption;
 
             for (const auto &item: pair_data) {
                 const auto &ware        = item.first;

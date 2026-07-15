@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "StationBuilder/defines.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 struct StationSize {
     int x_plus;
@@ -20,6 +20,7 @@ struct StationSize {
     int z_minus;
 };
 
-std::string genModulePlan(const t_x4_complex &complex, const Store& store, Settings &settings);
+std::string genModulePlan(const common::stationbuilder::t_x4_complex &complex, const common::data::Store &store,
+                          common::stationbuilder::Settings &          settings);
 
 #endif //X4STATIONGENERATOR_MODULES_HPP
