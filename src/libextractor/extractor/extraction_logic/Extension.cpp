@@ -23,28 +23,35 @@ namespace extractor {
     }
 
     void Extension::extract(CacheFile<std::string, bool> &cache) {
-        std::filesystem::create_directories(output);
-
-        for (auto &archive: archives)
-            archive.extract(cache);
-        if (!archives.empty())
-            return;
-
         if (cache.contains(path.string()) && cache.get(path.string())) {
             spdlog::info("Extension {} already extracted", path.string());
             return;
         }
 
+        std::filesystem::create_directories(output);
+
         cache.register_entry(path.string(), false);
         cache.save();
         spdlog::info("Extracting extension {}", path.string());
 
-        std::filesystem::copy(path, output_tmp,
-                              std::filesystem::copy_options::overwrite_existing |
-                              std::filesystem::copy_options::recursive);
+        if (archives.empty())
+            extract_copy(cache);
+        else
+            extract_archives(cache);
 
         cache.register_entry(path.string(), true);
         cache.save();
         spdlog::info("Extension {} extracted", path.string());
+    }
+
+    void Extension::extract_archives(CacheFile<std::string, bool> &cache) {
+        for (auto &archive: archives)
+            archive.extract(cache);
+    }
+
+    void Extension::extract_copy(CacheFile<std::string, bool> &cache) {
+        std::filesystem::copy(path, output_tmp,
+                              std::filesystem::copy_options::overwrite_existing |
+                              std::filesystem::copy_options::recursive);
     }
 } // extractor

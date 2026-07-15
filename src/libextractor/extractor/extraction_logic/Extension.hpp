@@ -15,6 +15,11 @@ namespace extractor {
 
         std::filesystem::path output_tmp;
         std::vector<Archive>  archives;
+
+    private:
+        void extract_archives(CacheFile<std::string, bool> &cache);
+
+        void extract_copy(CacheFile<std::string, bool> &cache);
     };
 } // namespace extractor
 

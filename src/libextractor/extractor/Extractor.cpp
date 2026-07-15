@@ -50,18 +50,18 @@ namespace extractor {
 
             pool.wait();
 
-            // std::vector<X4Patchable *> patchables;
-            // for (auto extension: detector.extensions) {
-            //     X4Patchable::insert_patchable(extension, patchables);
-            //
-            //     for (auto patchable: patchables) {
-            //         auto task = new common::Task([this, patchable, &cache]() {
-            //             patchable->patch(_settings.XMLPatchPath, cache);
-            //         });
-            //         pool.enqueue(task);
-            //     }
-            //     pool.wait();
-            // }
+            std::vector<X4Patchable *> patchables;
+            for (auto extension: detector.extensions) {
+                X4Patchable::insert_patchable(extension, patchables);
+
+                for (auto patchable: patchables) {
+                    auto task = new common::Task([this, patchable, &cache]() {
+                        patchable->patch(_settings.XMLPatchPath, cache);
+                    });
+                    pool.enqueue(task);
+                }
+                pool.wait();
+            }
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
         }
