@@ -10,8 +10,8 @@
 
 namespace extractor::databuilder {
     ModuleBase::ModuleBase(models::Structure &&structure) :
-    macro(structure.macro.name.value()),
-    name(structure.macro.properties.identification.name.value()),
+    macro(std::move(structure.macro.name.value())),
+    name(std::move(structure.macro.properties.identification.name.value())),
     module_class(std::move(structure.macro.class_.value().value())),
     makerrace(std::move(structure.macro.properties.identification.makerrace.value())) {
     }
@@ -102,9 +102,11 @@ namespace extractor::databuilder {
             auto &items = queue.item.value();
 
             for (auto &item: items) {
-                this->wares_produced.push_back(std::move(item.ware.value()));
-                this->production_method = std::move(item.method.value());
+                this->wares_produced.emplace_back(std::move(item.ware.value()), std::move(item.method.value().value()));
             }
+        } else {
+            this->wares_produced.emplace_back(std::move(queue.ware.value().value()),
+                                              std::move(queue.method.value().value()));
         }
         workforce_max = structure.macro.properties.workforce.value().max.value().value();
     }

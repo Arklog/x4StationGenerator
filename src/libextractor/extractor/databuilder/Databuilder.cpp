@@ -3,6 +3,7 @@
 //
 
 #include "Databuilder.hpp"
+#include "extractor/utils.hpp"
 
 namespace extractor::databuilder {
     Databuilder::Modules::Modules(AggregateStore &&store, std::set<common::types::Ware::ware_id> &used_wares) {
@@ -31,13 +32,13 @@ namespace extractor::databuilder {
         common::types::module::ProductionModule finished_module{};
         build_module(finished_module, module, store, ware_whitelist);
         finished_module.required_workforce = module.workforce_max;
-        finished_module.production_method  = std::move(module.production_method);
 
-        for (auto &ware_id: module.wares_produced) {
+        for (auto &[ware_id, method]: module.wares_produced) {
             try {
-                auto & ware            = store.wares.by_id.at(ware_id);
-                auto & ware_production = ware.production.at(finished_module.production_method);
-                double time_factor     = 3600.0f / (ware_production.time * module.wares_produced.size());
+                auto &ware            = store.wares.by_id.at(ware_id);
+                auto &ware_production = ware.production.at(method);
+                // todo: production method should be per ware and not per module
+                double time_factor = 3600.0f / (ware_production.time * module.wares_produced.size());
 
                 if (ware_production.amount == 0)
                     continue;

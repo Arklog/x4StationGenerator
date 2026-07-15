@@ -21,13 +21,13 @@ namespace extractor::models {
                 struct StructureProduction {
                     struct StructureWareQueue {
                         struct Item {
-                            rfl::Attribute<std::string> ware;
-                            rfl::Attribute<std::string> method;
+                            rfl::Attribute<std::string>                   ware;
+                            rfl::DefaultVal<rfl::Attribute<std::string> > method = "default";
                         };
 
-                        std::optional<rfl::Attribute<std::string> > ware;
-                        std::optional<rfl::Attribute<std::string> > method;
-                        std::optional<std::vector<Item> >           item;
+                        std::optional<rfl::Attribute<std::string> >   ware;
+                        rfl::DefaultVal<rfl::Attribute<std::string> > method = "default";
+                        std::optional<std::vector<Item> >             item;
                     };
 
                     rfl::Attribute<std::string>     wares;

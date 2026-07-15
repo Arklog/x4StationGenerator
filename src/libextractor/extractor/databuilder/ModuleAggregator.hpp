@@ -31,9 +31,13 @@ namespace extractor::databuilder {
     struct ProductionModule : ModuleBase {
         ProductionModule(models::Structure &&structure);
 
-        std::vector<std::string> wares_produced;
-        std::string              production_method;
-        size_t                   workforce_max;;
+        struct ProducedWare {
+            std::string ware;
+            std::string method;
+        };
+
+        std::vector<ProducedWare> wares_produced;
+        size_t                    workforce_max;;
     };
 
     struct Habitat : ModuleBase {
