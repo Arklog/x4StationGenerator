@@ -46,11 +46,11 @@ namespace extractor::models {
 
                 struct Effects {
                     struct Effect {
-                        rfl::Attribute<std::string> effect;
+                        rfl::Attribute<std::string> type;
                         rfl::Attribute<double>      product;
                     };
 
-                    std::optional<std::vector<Effect> > effect;
+                    std::vector<Effect> effect;
                 };
 
                 rfl::Attribute<double>                        time;
@@ -58,7 +58,7 @@ namespace extractor::models {
                 rfl::Attribute<std::string>                   method;
                 rfl::DefaultVal<rfl::Attribute<std::string> > name;
                 std::optional<Primary>                        primary;
-                std::optional<Effects>                        effects;
+                rfl::DefaultVal<Effects>                      effects;
             };
 
             struct Component {

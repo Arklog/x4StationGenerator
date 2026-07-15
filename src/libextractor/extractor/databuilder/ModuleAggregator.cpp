@@ -10,8 +10,8 @@
 
 namespace extractor::databuilder {
     ModuleBase::ModuleBase(models::Structure &&structure) :
-    macro(std::move(structure.macro.name.value())),
-    name(std::move(structure.macro.properties.identification.name.value())),
+    macro(structure.macro.name.value()),
+    name(structure.macro.properties.identification.name.value()),
     module_class(std::move(structure.macro.class_.value().value())),
     makerrace(std::move(structure.macro.properties.identification.makerrace.value())) {
     }
@@ -51,8 +51,8 @@ namespace extractor::databuilder {
         }
 
         auto &effects_ = production.effects.value().effect;
-        for (auto &[effect, value]: effects_.value()) {
-            this->effects.emplace(std::move(effect.value()), std::move(value.value()));
+        for (auto &[type, value]: effects_) {
+            this->effects.emplace(std::move(type.value()), std::move(value.value()));
         }
     }
 
@@ -71,7 +71,7 @@ namespace extractor::databuilder {
         for (auto &prod: ware.production) {
             auto key  = prod.method.value();
             auto item = Production{std::move(prod)};
-            production.emplace(std::move(key), std::move(prod));
+            production.emplace(std::move(key), std::move(item));
         }
         auto &component_ = ware.component;
         if (component.has_value())

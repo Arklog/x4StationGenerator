@@ -8,7 +8,8 @@
 
 namespace extractor {
     Extension::Extension(const std::filesystem::path &path, const std::filesystem::path &output,
-                         const std::filesystem::path &xrcattool) : X4Extractable(path, output, xrcattool) {
+                         const std::filesystem::path &xrcattool) :
+    X4Extractable(path, output, xrcattool) {
         output_tmp = output / "extensions" / path.filename();
 
         std::filesystem::directory_iterator it(path);
@@ -17,17 +18,17 @@ namespace extractor {
 
             if (is_regular_file(item_path) && item_path.extension() == ".cat" && !item_path.filename().string().
                 contains("sig"))
-                archive = Archive{item_path, output_tmp, xrcattool};
+                archives.emplace_back(Archive{item_path, output_tmp, xrcattool});
         }
     }
 
     void Extension::extract(CacheFile<std::string, bool> &cache) {
         std::filesystem::create_directories(output);
 
-        if (archive.has_value()) {
-            archive->extract(cache);
+        for (auto &archive: archives)
+            archive.extract(cache);
+        if (!archives.empty())
             return;
-        }
 
         if (cache.contains(path.string()) && cache.get(path.string())) {
             spdlog::info("Extension {} already extracted", path.string());

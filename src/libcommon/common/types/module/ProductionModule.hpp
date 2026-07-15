@@ -13,18 +13,13 @@
 namespace common::types::module {
     struct ProductionModule {
         struct ProducedWare {
-            size_t amount;
-            double work;
-            double sun;
+            size_t amount; // amount of ware produced per hours
+            double work;   // work factor (1.0f means none)
+            double sun;    // sun factor (0.0f means none)
         };
 
         using module_production = std::unordered_map<Ware::ware_id, ProducedWare>;
         using module_usage      = std::unordered_map<Ware::ware_id, long long>;
-
-        struct Effects {
-            double workforce;
-            double sun;
-        };
 
         rfl::Flatten<Module> module;
         double               time;               // time required to produce the ware in seconds
@@ -32,7 +27,6 @@ namespace common::types::module {
         module_production    wares_produced;     // list of the ware produced by the module per cycle
         module_usage         wares_required;     // list of the ware used by the module per cycle
         std::string          production_method;  // module production method id
-        Effects              effects;
     };
 }
 
