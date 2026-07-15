@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "../libcommon/data/Store.hpp"
+#include "libcommon/data/Store.hpp"
 
 #include <QMainWindow>
 
-#include "StationBuilder/defines.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 class SummarySection;
 class DockAndPierrSection;
@@ -17,30 +17,33 @@ namespace Ui {
     class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
-  public:
-    explicit MainWindow (const Store &store, QWidget *parent = nullptr);
+public:
+    using Store        = common::data::Store;
+    using t_x4_complex = common::stationbuilder::t_x4_complex;
+    using Settings     = common::stationbuilder::Settings;
 
-    ~MainWindow ();
+    explicit MainWindow(const Store &store, QWidget *parent = nullptr);
 
-  public slots:
-    void exportPlan ();
+    ~MainWindow();
 
-    void complexUpdated ();
+public slots:
+    void exportPlan();
 
-  private:
+    void complexUpdated();
+
+private:
     Ui::MainWindow *ui;
 
     WareSelectionSection *ware_selection_section_;
-    DockAndPierrSection *dock_and_pierr_section_;
-    StorageSection *storage_section_;
-    SummarySection *summary_section_;
-    SettingsSection *settings_section_;
+    DockAndPierrSection * dock_and_pierr_section_;
+    StorageSection *      storage_section_;
+    SummarySection *      summary_section_;
+    SettingsSection *     settings_section_;
 
-    Settings settings_;
+    Settings     settings_;
     const Store &store_;
     t_x4_complex complex_;
 };

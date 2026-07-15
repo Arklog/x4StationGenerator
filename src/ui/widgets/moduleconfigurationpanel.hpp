@@ -8,9 +8,7 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "../../libcommon/data/Data.hpp"
-
-#include "StationBuilder/defines.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 
 QT_BEGIN_NAMESPACE
@@ -29,7 +27,7 @@ public:
 
     ~ModuleConfigurationPanel() override;
 
-    t_module_target_list getModuleTargets() const;
+    common::stationbuilder::t_module_target_list getModuleTargets() const;
 
 public slots:
     void addModule(const Module *dock_or_pierr);
@@ -38,8 +36,8 @@ signals:
     void targetListUpdated();
 
 private:
-    Ui::ModuleConfigurationPanel *ui;
-    std::vector<ModuleTarget> module_targets_{};
+    Ui::ModuleConfigurationPanel *                    ui;
+    std::vector<common::stationbuilder::ModuleTarget> module_targets_{};
 };
 
 
