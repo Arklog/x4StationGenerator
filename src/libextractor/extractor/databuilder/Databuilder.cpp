@@ -35,10 +35,9 @@ namespace extractor::databuilder {
 
         for (auto &[ware_id, method]: module.wares_produced) {
             try {
-                auto &ware            = store.wares.by_id.at(ware_id);
-                auto &ware_production = ware.production.at(method);
-                // todo: production method should be per ware and not per module
-                double time_factor = 3600.0f / (ware_production.time * module.wares_produced.size());
+                auto & ware            = store.wares.by_id.at(ware_id);
+                auto & ware_production = ware.production.at(method);
+                double time_factor     = 3600.0f / (ware_production.time * module.wares_produced.size());
 
                 if (ware_production.amount == 0)
                     continue;
