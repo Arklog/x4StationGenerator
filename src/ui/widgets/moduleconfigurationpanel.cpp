@@ -9,8 +9,9 @@
 #include "ui_moduleconfigurationpanel.h"
 
 
-ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) : QFrame(parent),
-                                                                      ui(new Ui::ModuleConfigurationPanel) {
+ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) :
+QFrame(parent),
+ui(new Ui::ModuleConfigurationPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
@@ -20,11 +21,11 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
-    t_module_target_list docks_and_pierr_list{};
+common::stationbuilder::t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
+    common::stationbuilder::t_module_target_list docks_and_pierr_list{};
 
     for (auto i = 0; i < ui->layout->count(); ++i) {
-        auto item = ui->layout->itemAt(i);
+        auto item   = ui->layout->itemAt(i);
         auto widget = item->widget();
 
         if (!widget)
@@ -47,7 +48,7 @@ void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
         return;
 
     auto &module_target = this->module_targets_.emplace_back(dock_or_pierr->id, 1);
-    auto widget = new ModuleConfiguration(dock_or_pierr, module_target, this);
+    auto  widget        = new ModuleConfiguration(dock_or_pierr, module_target, this);
 
     ui->layout->addWidget(widget);
 
@@ -59,7 +60,7 @@ void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
         delete widget;
     });
 
-    connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this] (const ModuleTarget& target) {
+    connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this](const ModuleTarget &target) {
         emit this->targetListUpdated();
     });
 

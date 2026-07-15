@@ -8,10 +8,8 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "../../../../libcommon/data/Data.hpp"
-#include "../../../../libcommon/data/Store.hpp"
-
-#include "StationBuilder/defines.hpp"
+#include "libcommon/data/Store.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -21,11 +19,14 @@ namespace Ui {
 
 QT_END_NAMESPACE
 
-class WareConfigurator : public QFrame
-{
+class WareConfigurator : public QFrame {
     Q_OBJECT
 
-  public:
+public:
+    using WareTarget = common::stationbuilder::WareTarget;
+    using Store      = common::data::Store;
+    using t_ware_id  = common::types::Ware::ware_id;
+
     /**
      * Ctor
      * @param ware_id The ware to configure
@@ -33,33 +34,33 @@ class WareConfigurator : public QFrame
      * @param is_secondary Is this a secondary ware (byproduct of the main
      * production)
      */
-    explicit WareConfigurator (WareTarget *ware_target, const Store &store,
-			       QWidget *parent = nullptr);
+    explicit WareConfigurator(WareTarget *ware_target, const Store &store,
+                              QWidget *   parent = nullptr);
 
-    ~WareConfigurator () override;
+    ~WareConfigurator() override;
 
     /**
      * Get the current ware target configuration
      * @return The ware target
      */
-    const WareTarget *getWareTarget () const;
+    const WareTarget *getWareTarget() const;
 
-  signals:
+signals:
     /**
      * Signal emitted when the user wants to remove this ware from the list
      * @param ware_id
      */
-    void shouldRemove (t_ware_id ware_id);
+    void shouldRemove(t_ware_id ware_id);
 
     /**
      * Signal emitted when the user changes the target or the source module
      */
-    void shouldUpdate ();
+    void shouldUpdate();
 
-  private:
+private:
     Ui::WareConfigurator *ui;
-    WareTarget *ware_target;
-    Store store_;
+    WareTarget *          ware_target;
+    Store                 store_;
 };
 
 #endif // WARECONFIGURATOR_HPP
