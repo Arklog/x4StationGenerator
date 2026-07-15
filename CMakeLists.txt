@@ -155,5 +155,7 @@ target_link_libraries(x4StationGenerator PRIVATE
         Qt6::Charts
         nlohmann_json::nlohmann_json
         spdlog::spdlog
+        x4StationGeneratorCommon
+        x4StationGeneratorExtractor
 )
 

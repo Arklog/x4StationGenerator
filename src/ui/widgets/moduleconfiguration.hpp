@@ -7,7 +7,7 @@
 
 #include <QWidget>
 
-#include "StationBuilder/defines.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 
 struct Module;
@@ -24,20 +24,22 @@ class ModuleConfiguration : public QWidget {
     Q_OBJECT
 
 public:
-    explicit ModuleConfiguration(const Module *module, ModuleTarget &target, QWidget *parent = nullptr);
+    explicit ModuleConfiguration(const Module *module, common::stationbuilder::ModuleTarget &target,
+                                 QWidget *     parent = nullptr);
 
     ~ModuleConfiguration() override;
 
-    ModuleTarget getModuleTarget() const;
+    common::stationbuilder::ModuleTarget getModuleTarget() const;
 
 signals:
-    void shouldRemove(const ModuleTarget &target);
-    void moduleTargetUpdated(const ModuleTarget &target);
+    void shouldRemove(const common::stationbuilder::ModuleTarget &target);
+
+    void moduleTargetUpdated(const common::stationbuilder::ModuleTarget &target);
 
 private:
-    Ui::ModuleConfiguration *ui;
-    const Module *dock_or_pierr;
-    ModuleTarget &module_target_;
+    Ui::ModuleConfiguration *             ui;
+    const Module *                        dock_or_pierr;
+    common::stationbuilder::ModuleTarget &module_target_;
 };
 
 

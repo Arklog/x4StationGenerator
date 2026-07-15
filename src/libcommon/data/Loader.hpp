@@ -23,7 +23,7 @@ namespace common::data {
         std::filesystem::path _path;
 
         template<typename T>
-        void load_datas_from(std::vector<T> &data_store, const std::string &path) {
+        void load_datas_from(const std::string &path) {
             auto const datapath = _path / path;
             if (!std::filesystem::exists(datapath) || !std::filesystem::is_directory(datapath))
                 throw std::runtime_error(fmt::format("Directory {} does not exist", datapath.string()));
@@ -35,7 +35,7 @@ namespace common::data {
 
                 auto data = rfl::json::load<T>(item.path());
                 if (data.has_value())
-                    data_store.push_back(std::move(data.value()));
+                    _store.add(std::move(data.value()));
             }
         }
     };

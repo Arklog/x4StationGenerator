@@ -19,12 +19,12 @@ namespace common::data {
     }
 
     void Loader::load() {
-        load_datas_from(_store.workforce.workforces, "workforce");
-        load_datas_from(_store.wares.datas, "wares");
-        load_datas_from(_store.docks, "docks");
-        load_datas_from(_store.piers, "piers");
-        load_datas_from(_store.habitats, "habitats");
-        load_datas_from(_store.storages, "storage");
-        load_datas_from(_store.production.datas, "productions");
+        load_datas_from<types::Workforce>("workforce");
+        load_datas_from<types::Ware>("wares");
+        load_datas_from<types::module::Dock>("docks");
+        load_datas_from<types::module::Pierr>("piers");
+        load_datas_from<types::module::Habitat>("habitats");
+        load_datas_from<types::module::Storage>("storage");
+        load_datas_from<types::module::ProductionModule>("productions");
     }
 }
