@@ -17,5 +17,5 @@ int main(int argc, char **argv) {
     settings.OutputDirPath = "/home/pierre/Documents/x4StationGenerator/assets";
     extractor::Extractor extractor{settings};
     extractor.extract();
-    // extractor.parse();
+    extractor.parse();
 }

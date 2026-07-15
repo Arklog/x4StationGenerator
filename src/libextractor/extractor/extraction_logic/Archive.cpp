@@ -18,10 +18,13 @@ namespace extractor {
     Archive::Archive(const Archive &o) = default;
 
     void Archive::extract(CacheFile<std::string, bool> &cache) {
-        if (!validate())
-            return;
         if (cache.contains(path.string()) && cache.get(path.string())) {
             spdlog::info("Archive {} already extracted", path.string());
+            return;
+        }
+        if (!validate()) {
+            cache.register_entry(path.string(), true);
+            cache.save();
             return;
         }
 
