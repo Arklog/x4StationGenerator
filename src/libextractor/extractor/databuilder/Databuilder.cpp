@@ -45,7 +45,7 @@ namespace extractor::databuilder {
 
                 common::types::module::ProductionModule::ProducedWare ware_production_data{
                     .amount = static_cast<size_t>(std::floor(ware_production.amount * time_factor)),
-                    .work   = ware_production.effects["work"],
+                    .work   = ware_production.effects["work"] + 1.0f,
                     .sun    = ware_production.effects["sun"]
                 };
                 finished_module.wares_produced.emplace(ware_id, std::move(ware_production_data));
@@ -62,7 +62,9 @@ namespace extractor::databuilder {
                               ware_id, finished_module.production_method, finished_module.module.value().id);
             }
         }
-        if (!finished_module.wares_produced.empty())
+        if (finished_module.wares_produced.empty())
+            spdlog::warn("Module {} has no wares produced", finished_module.module.value().id);
+        else
             this->productions.push_back(std::move(finished_module));
     }
 

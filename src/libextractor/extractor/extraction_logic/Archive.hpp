@@ -18,7 +18,17 @@ namespace extractor {
 
         Archive(const Archive &);
 
+        /**
+         * Extract the archive
+         * @param cache
+         */
         void extract(CacheFile<std::string, bool> &cache) override;
+
+        /**
+         * Check if the archive contains files that we should extract
+         * @return
+         */
+        bool validate();
     };
 } // namespace extractor
 

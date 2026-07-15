@@ -67,6 +67,7 @@ namespace extractor {
                 };
                 pool.enqueue(new common::Task(fn));
             }
+            spdlog::info("Saved {} {}", datas.size(), subfolder);
         }
     };
 } // namespace extractor

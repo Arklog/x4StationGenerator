@@ -52,4 +52,6 @@ void save_as_json(const std::filesystem::path &path, const T &value) {
     rfl::json::save(path, value);
 }
 
+std::string str(char *);
+
 #endif // X4STATIONGENERATOR__UTILS_HPP

@@ -13,8 +13,8 @@ namespace extractor {
 
         void extract(CacheFile<std::string, bool> &cache);
 
-        std::filesystem::path  output_tmp;
-        std::optional<Archive> archive;
+        std::filesystem::path output_tmp;
+        std::vector<Archive>  archives;
     };
 } // namespace extractor
 
