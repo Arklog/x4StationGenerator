@@ -60,12 +60,12 @@ namespace common::data {
         std::unordered_map<types::Ware::ware_group_id, std::vector<types::Ware *> > by_waregroup;
 
         types::Ware &add(types::Ware &&data) {
-            datas.emplace_back(std::move(data));
-            by_id[data.id]     = &datas.back();
-            by_name[data.name] = &datas.back();
-            by_tier[data.tier].emplace_back(&datas.back());
-            by_waregroup[data.group].emplace_back(&datas.back());
-            return datas.back();
+            auto &item         = datas.emplace_back(std::move(data));
+            by_id[data.id]     = &item;
+            by_name[data.name] = &item;
+            by_tier[data.tier].emplace_back(&item);
+            by_waregroup[data.group].emplace_back(&item);
+            return item;
         }
     };
 
