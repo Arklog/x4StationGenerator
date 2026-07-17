@@ -120,18 +120,9 @@ namespace extractor::databuilder {
         t_ware_whitelist whitelist;
         this->modules    = Modules{std::move(store), whitelist};
         auto is_produced = [this](const common::types::Ware::ware_id &id) -> bool {
-            for (const auto &module: this->modules.productions) {
-                using v_type = decltype(module.wares_produced)::value_type;
-                auto v       = std::find_if(module.wares_produced.begin(), module.wares_produced.end(),
-                                      [&id](const v_type &n) {
-                                          return id == n.first;
-                                      });
-                if (v != module.wares_produced.end()) {
-                    return true;
-                }
-            }
-
-            return false;
+            return std::ranges::find_if(this->modules.productions, [&id](const auto &module) -> bool {
+                return module.wares_produced.contains(id);
+            }) != this->modules.productions.end();
         };
 
         for (auto &wareid: whitelist) {
@@ -146,7 +137,7 @@ namespace extractor::databuilder {
                 tmp.group = waregroup.id.value();
                 tmp.group_name = waregroup.name.value();
                 tmp.tier = waregroup.tier.value().value();
-                tmp.produced = is_produced(ware.id);
+                tmp.produced = is_produced(tmp.id);
 
                 this->wares.push_back(std::move(tmp));
             } catch (const std::out_of_range &e) {
