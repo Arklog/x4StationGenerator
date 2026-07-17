@@ -7,6 +7,7 @@
 
 #include "Store.hpp"
 #include "nlohmann/json.hpp"
+#include <spdlog/spdlog.h>
 #include <spdlog/fmt/fmt.h>
 #include <rfl/json.hpp>
 
@@ -30,12 +31,16 @@ namespace common::data {
 
             auto it = std::filesystem::directory_iterator(datapath);
             for (const auto &item: it) {
-                if (!item.is_regular_file() || item.path().extension() != ".json")
-                    continue;
+                spdlog::info("Loading {}", item.path().string());
+                if (!item.is_regular_file() || item.path().extension() != ".json") {
+                    spdlog::warn("Not a valid file {}", item.path().string());
+                }
 
                 auto data = rfl::json::load<T>(item.path());
                 if (data.has_value())
                     _store.add(std::move(data.value()));
+                else
+                    spdlog::error("Failed to load data from {}", item.path().string());
             }
         }
     };
