@@ -4,6 +4,7 @@
 
 #ifndef X4STATIONGENERATOR_SRC_LIBCOMMON_DATA_AGGREGATE_HPP
 #define X4STATIONGENERATOR_SRC_LIBCOMMON_DATA_AGGREGATE_HPP
+#include <deque>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -21,10 +22,10 @@ namespace common::data {
         std::unordered_map<std::string, T *> by_name;
 
         T &add(T &&data) {
-            datas.emplace_back(std::move(data));
-            by_id[data.module.value().id]     = &datas.back();
-            by_name[data.module.value().name] = &datas.back();
-            return datas.back();
+            auto &item                       = datas.emplace_back(std::move(data));
+            by_id[item.module.value().id]     = &item;
+            by_name[item.module.value().name] = &item;
+            return item;
         }
     };
 
@@ -61,10 +62,10 @@ namespace common::data {
 
         types::Ware &add(types::Ware &&data) {
             auto &item         = datas.emplace_back(std::move(data));
-            by_id[data.id]     = &item;
-            by_name[data.name] = &item;
-            by_tier[data.tier].emplace_back(&item);
-            by_waregroup[data.group].emplace_back(&item);
+            by_id[item.id]     = &item;
+            by_name[item.name] = &item;
+            by_tier[item.tier].emplace_back(&item);
+            by_waregroup[item.group].emplace_back(&item);
             return item;
         }
     };
@@ -76,9 +77,9 @@ namespace common::data {
         std::unordered_map<std::string, types::Workforce *> by_id;
 
         types::Workforce &add(types::Workforce &&data) {
-            datas.emplace_back(std::move(data));
-            by_id[data.race] = &datas.back();
-            return datas.back();
+            auto &item       = datas.emplace_back(std::move(data));
+            by_id[item.race] = &item;
+            return item;
         }
     };
 
@@ -89,10 +90,10 @@ namespace common::data {
         std::unordered_map<std::string, types::module::ModuleWrapper *> by_name;
 
         types::module::ModuleWrapper &add(types::module::ModuleWrapper &&m) {
-            datas.emplace_back(std::move(m));
-            by_id[m.module.get().id]     = &datas.back();
-            by_name[m.module.get().name] = &datas.back();
-            return datas.back();
+            auto &item                       = datas.emplace_back(std::move(m));
+            by_id[item.module.get().id]     = &item;
+            by_name[item.module.get().name] = &item;
+            return item;
         }
     };
 }
