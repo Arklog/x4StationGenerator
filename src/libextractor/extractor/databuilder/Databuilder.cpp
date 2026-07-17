@@ -118,17 +118,35 @@ namespace extractor::databuilder {
     modules{},
     wares{} {
         t_ware_whitelist whitelist;
-        this->modules = Modules{std::move(store), whitelist};
+        this->modules    = Modules{std::move(store), whitelist};
+        auto is_produced = [this](const common::types::Ware::ware_id &id) -> bool {
+            for (const auto &module: this->modules.productions) {
+                using v_type = decltype(module.wares_produced)::value_type;
+                auto v       = std::find_if(module.wares_produced.begin(), module.wares_produced.end(),
+                                      [&id](const v_type &n) {
+                                          return id == n.first;
+                                      });
+                if (v != module.wares_produced.end()) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+
         for (auto &wareid: whitelist) {
             try {
-                auto &              ware      = store.wares.by_id.at(wareid);
-                auto &              waregroup = store.waregroups.waregroups.at(ware.group);
+                auto &ware      = store.wares.by_id.at(wareid);
+                auto &waregroup = store.waregroups.waregroups.at(ware.group);
+
                 common::types::Ware tmp{};
-                tmp.id    = std::move(ware.id);
-                tmp.name  = std::move(ware.name);
+                tmp.id = std::move(ware.id);
+                tmp.name = std::move(ware.name);
                 tmp.price = common::types::Price{.max = ware.price.max, .min = ware.price.min, .avg = ware.price.avg};
                 tmp.group = waregroup.name.value();
-                tmp.tier  = waregroup.tier.value().value();
+                tmp.tier = waregroup.tier.value().value();
+                tmp.produced = is_produced(ware.id);
+
                 this->wares.push_back(std::move(tmp));
             } catch (const std::out_of_range &e) {
                 spdlog::error("No match for ware {}", wareid);

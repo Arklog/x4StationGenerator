@@ -19,6 +19,7 @@ namespace common::types {
         std::string   group_name;
         size_t        tier;
         Price         price;
+        bool          produced;
     };
 
     struct WareAmount {

@@ -16,7 +16,7 @@ namespace common::data {
     template<typename T>
     struct Aggregate {
         using data_type = T;
-        std::vector<T>                       datas;
+        std::deque<T>                        datas;
         std::unordered_map<std::string, T *> by_id;
         std::unordered_map<std::string, T *> by_name;
 
@@ -31,7 +31,7 @@ namespace common::data {
     template<>
     struct Aggregate<types::module::ProductionModule> {
         using data_type = types::module::ProductionModule;
-        std::vector<types::module::ProductionModule>                                              datas;
+        std::deque<types::module::ProductionModule>                                               datas;
         std::unordered_map<std::string, types::module::ProductionModule *>                        by_id;
         std::unordered_map<std::string, types::module::ProductionModule *>                        by_name;
         std::unordered_map<types::Ware::ware_id, std::vector<types::module::ProductionModule *> > producing;
@@ -53,7 +53,7 @@ namespace common::data {
     template<>
     struct Aggregate<types::Ware> {
         using data_type = types::Ware;
-        std::vector<types::Ware>                                                    datas;
+        std::deque<types::Ware>                                                     datas;
         std::unordered_map<std::string, types::Ware *>                              by_id;
         std::unordered_map<std::string, types::Ware *>                              by_name;
         std::unordered_map<size_t, std::vector<types::Ware *> >                     by_tier;
@@ -72,7 +72,7 @@ namespace common::data {
     template<>
     struct Aggregate<types::Workforce> {
         using data_type = types::Workforce;
-        std::vector<types::Workforce>                       datas;
+        std::deque<types::Workforce>                        datas;
         std::unordered_map<std::string, types::Workforce *> by_id;
 
         types::Workforce &add(types::Workforce &&data) {
@@ -84,7 +84,7 @@ namespace common::data {
 
     template<>
     struct Aggregate<types::module::ModuleWrapper> {
-        std::vector<types::module::ModuleWrapper>                       datas;
+        std::deque<types::module::ModuleWrapper>                        datas;
         std::unordered_map<std::string, types::module::ModuleWrapper *> by_id;
         std::unordered_map<std::string, types::module::ModuleWrapper *> by_name;
 
