@@ -5,25 +5,31 @@
 #ifndef STORAGESELECTIONSECTION_HPP
 #define STORAGESELECTIONSECTION_HPP
 
-#include "../../../libcommon/data/Store.hpp"
+#include "libcommon/data/Store.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 
 #include <QWidget>
-
-#include "StationBuilder/defines.hpp"
 
 
 class ModuleSelectionPanel;
 class ModuleConfigurationPanel;
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class StorageSection; }
+namespace Ui {
+    class StorageSection;
+}
+
 QT_END_NAMESPACE
 
 class StorageSection : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 
 public:
-    explicit StorageSection(const Store& store, QWidget *parent = nullptr);
+    using Store                = common::data::Store;
+    using t_module_target_list = common::stationbuilder::t_module_target_list;
+    
+    explicit StorageSection(const Store &store, QWidget *parent = nullptr);
+
     ~StorageSection() override;
 
     t_module_target_list getModuleTargetList() const;
@@ -34,7 +40,7 @@ signals:
 private:
     Ui::StorageSection *ui;
 
-    ModuleSelectionPanel *storage_selection_panel;
+    ModuleSelectionPanel *    storage_selection_panel;
     ModuleConfigurationPanel *storage_configuration_panel;
 };
 

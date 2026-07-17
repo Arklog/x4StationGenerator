@@ -53,14 +53,18 @@ namespace common::data {
     template<>
     struct Aggregate<types::Ware> {
         using data_type = types::Ware;
-        std::vector<types::Ware>                       datas;
-        std::unordered_map<std::string, types::Ware *> by_id;
-        std::unordered_map<std::string, types::Ware *> by_name;
+        std::vector<types::Ware>                                                    datas;
+        std::unordered_map<std::string, types::Ware *>                              by_id;
+        std::unordered_map<std::string, types::Ware *>                              by_name;
+        std::unordered_map<size_t, std::vector<types::Ware *> >                     by_tier;
+        std::unordered_map<types::Ware::ware_group_id, std::vector<types::Ware *> > by_waregroup;
 
         types::Ware &add(types::Ware &&data) {
             datas.emplace_back(std::move(data));
             by_id[data.id]     = &datas.back();
             by_name[data.name] = &datas.back();
+            by_tier[data.tier].emplace_back(&datas.back());
+            by_waregroup[data.group].emplace_back(&datas.back());
             return datas.back();
         }
     };

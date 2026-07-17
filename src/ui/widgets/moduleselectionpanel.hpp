@@ -8,11 +8,9 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "../../libcommon/data/WareModuleAndWorkforce.hpp"
+#include "libcommon/data/WareModuleAndWorkforce.hpp"
 
-#include "StationBuilder/defines.hpp"
-
-struct Module;
+#include "libcommon/stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -26,12 +24,14 @@ class ModuleSelectionPanel : public QFrame {
     Q_OBJECT
 
 public:
-    explicit ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent = nullptr);
+    using t_module_list = common::data::t_module_list;
+
+    explicit ModuleSelectionPanel(const t_module_list &module_list, QWidget *parent = nullptr);
 
     ~ModuleSelectionPanel() override;
 
 signals:
-    void moduleSelected(const Module *module);
+    void moduleSelected(const common::types::module::Module *module);
 
 private:
     Ui::ModuleSelectionPanel *ui;

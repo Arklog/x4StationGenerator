@@ -7,14 +7,16 @@
 #include "settingssection.hpp"
 #include "ui_settingssection.h"
 
-#include "StationBuilder/defines.hpp"
+#include "libcommon/stationbuilder/defines.hpp"
 #include "spdlog/spdlog.h"
 
 #include <QLineEdit>
 
 
-SettingsSection::SettingsSection(Settings &settings, QWidget *parent) : QWidget(parent), ui(new Ui::SettingsSection),
-                                                                        settings_(settings) {
+SettingsSection::SettingsSection(Settings &settings, QWidget *parent) :
+QWidget(parent),
+ui(new Ui::SettingsSection),
+settings_(settings) {
     ui->setupUi(this);
 
     ui->station_name_input->setText(QString::fromStdString(settings.name));

@@ -22,27 +22,30 @@ ui(new Ui::WaresSelector),
 category_tabs{} {
     ui->setupUi(this);
 
-    for (const auto &group: store.ware_groups.all) {
+    for (const auto &[group_id, items]: store.wares.by_waregroup) {
+        if (items.empty())
+            continue;
+
         auto widget = new QWidget(ui->categories);
         widget->setLayout(new QVBoxLayout(widget));
         widget->layout()->setAlignment(Qt::AlignTop);
 
-        this->category_tabs[group.id] = widget;
-        ui->categories->addTab(widget, QString(group.name.c_str()));
-    }
-
-    for (const auto &ware: store.wares.datas) {
-        const auto &group = ware.group;
-        const auto &tab   = this->category_tabs[group];
-        const auto &widget
-                = new QPushButton(QString(ware.name.c_str()), tab);
-
-        connect(widget, &QPushButton::clicked, [this, &ware] {
-            spdlog::info("ware {} clicked", ware.name);
-            this->wareSelected(ware.id);
-        });
-        tab->layout()->addWidget(widget);
+        this->category_tabs[group_id] = widget;
+        ui->categories->addTab(widget, QString::fromStdString(items[0]->group_name));
+        populateGroup(widget, items);
     }
 }
 
 WaresSelector::~WaresSelector() { delete ui; }
+
+void WaresSelector::populateGroup(QWidget *group_widget, const std::vector<common::types::Ware *> &wares) {
+    for (const auto &ware: wares) {
+        const auto &widget = new QPushButton(QString::fromStdString(ware->name), group_widget);
+
+        connect(widget, &QPushButton::clicked, [this, &ware] {
+            spdlog::info("ware {} clicked", ware->name);
+            this->wareSelected(ware->id);
+        });
+        group_widget->layout()->addWidget(widget);
+    }
+}

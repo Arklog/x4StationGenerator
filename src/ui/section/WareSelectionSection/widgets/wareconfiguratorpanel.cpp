@@ -13,8 +13,7 @@
 #include "wareconfigurator.hpp"
 
 #include "stationbuilder/Generator/ComplexGeneratorBase.hpp"
-#include "spdlog/fmt/bundled/chrono.h"
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
 
 WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
                                              const Store &   store,
@@ -81,11 +80,8 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
     connect(ware_configurator, &WareConfigurator::shouldRemove,
             [this](t_ware_id ware_id) -> void {
                 if (!this->ware_target_container.isPrimaryTarget(ware_id)) {
-                    spdlog::error(
-                        "Ware {} is not a primary target, cannot remove",
-                        ware_id.raw());
-                    throw std::logic_error(
-                        "Ware is not a primary target, cannot remove");
+                    spdlog::error("Ware {} is not a primary target, cannot remove", ware_id);
+                    throw std::logic_error("Ware is not a primary target, cannot remove");
                 }
 
                 auto widget = this->ware_configurators[ware_id];
@@ -108,8 +104,8 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {
-    ComplexGeneratorBase test(settings_, store_, this->ware_target_container);
-    auto                 build_result = test.build();
+    common::stationbuilder::generator::ComplexGeneratorBase test(settings_, store_, this->ware_target_container);
+    auto                                                    build_result = test.build();
 
     const auto &current_production = test.getCurrentProduction();
 

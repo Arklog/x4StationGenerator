@@ -7,17 +7,24 @@
 
 #include <QWidget>
 
+#include "stationbuilder/defines.hpp"
 
-struct Settings;
+
 QT_BEGIN_NAMESPACE
-namespace Ui { class SettingsSection; }
+namespace Ui {
+    class SettingsSection;
+}
+
 QT_END_NAMESPACE
 
 class SettingsSection : public QWidget {
-Q_OBJECT
+    Q_OBJECT
 
 public:
+    using Settings = common::stationbuilder::Settings;
+
     explicit SettingsSection(Settings &settings, QWidget *parent = nullptr);
+
     ~SettingsSection() override;
 
 private:

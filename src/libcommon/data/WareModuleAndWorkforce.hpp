@@ -19,7 +19,7 @@ namespace common::data {
     // typedef std::unordered_map<t_ware_id, const Ware *, std::hash<std::string> >
     // t_ware_container;
     // typedef std::unordered_map<t_module_id, const Module *> t_modules_container;
-    // typedef std::set<const Module *, TmpModulePtrCompare>   t_module_list;
+    typedef std::set<const types::module::Module *, TmpModulePtrCompare> t_module_list;
     // typedef std::unordered_map<t_ware_id, t_modules_container,
     // std::hash<std::string> >
     // t_ware_to_modules_map;

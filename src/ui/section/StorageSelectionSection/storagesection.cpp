@@ -9,49 +9,46 @@
 
 #include "ui_storagesection.h"
 
-#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
+#include "libcommon/data/WareModuleAndWorkforce.hpp"
 
 #include "ui/widgets/moduleconfigurationpanel.hpp"
 #include "ui/widgets/moduleselectionpanel.hpp"
 
 #include <QScrollArea>
 
-StorageSection::StorageSection (const Store &store, QWidget *parent)
-    : QWidget (parent), ui (new Ui::StorageSection)
-{
-    ui->setupUi (this);
+StorageSection::StorageSection(const Store &store, QWidget *parent) :
+QWidget(parent),
+ui(new Ui::StorageSection) {
+    ui->setupUi(this);
 
-    const auto &modules = store.modules.all;
-    t_module_list storage_list{};
+    const auto &                modules = store.storages.datas;
+    common::data::t_module_list storage_list{};
 
-    for (const auto module : store.modules.storages)
-    {
-	storage_list.insert (module);
+    for (const auto &module: modules) {
+        storage_list.insert(&module.module.get());
     }
 
-    auto storage_selection_panel
-	= new ModuleSelectionPanel (storage_list, this);
-    auto storage_configuration_panel = new ModuleConfigurationPanel (this);
-    this->storage_selection_panel = storage_selection_panel;
+    auto storage_selection_panel      = new ModuleSelectionPanel(storage_list, this);
+    auto storage_configuration_panel  = new ModuleConfigurationPanel(this);
+    this->storage_selection_panel     = storage_selection_panel;
     this->storage_configuration_panel = storage_configuration_panel;
 
-    ui->selection_scroll_area->setWidget (storage_selection_panel);
-    ui->selection_scroll_area->setWidgetResizable (true);
-    ui->selection_scroll_area->setLayoutDirection (Qt::RightToLeft);
-    ui->configuration_scroll_area->setWidget (storage_configuration_panel);
-    ui->configuration_scroll_area->setWidgetResizable (true);
-    ui->configuration_scroll_area->setLayoutDirection (Qt::RightToLeft);
+    ui->selection_scroll_area->setWidget(storage_selection_panel);
+    ui->selection_scroll_area->setWidgetResizable(true);
+    ui->selection_scroll_area->setLayoutDirection(Qt::RightToLeft);
+    ui->configuration_scroll_area->setWidget(storage_configuration_panel);
+    ui->configuration_scroll_area->setWidgetResizable(true);
+    ui->configuration_scroll_area->setLayoutDirection(Qt::RightToLeft);
 
-    connect (storage_selection_panel, &ModuleSelectionPanel::moduleSelected,
-	     storage_configuration_panel, &ModuleConfigurationPanel::addModule);
-    connect (storage_configuration_panel,
-	     &ModuleConfigurationPanel::targetListUpdated, this,
-	     &StorageSection::storageUpdated);
+    connect(storage_selection_panel, &ModuleSelectionPanel::moduleSelected,
+            storage_configuration_panel, &ModuleConfigurationPanel::addModule);
+    connect(storage_configuration_panel,
+            &ModuleConfigurationPanel::targetListUpdated, this,
+            &StorageSection::storageUpdated);
 }
 
-StorageSection::~StorageSection () { delete ui; }
+StorageSection::~StorageSection() { delete ui; }
 
-t_module_target_list StorageSection::getModuleTargetList () const
-{
-    return this->storage_configuration_panel->getModuleTargets ();
+common::stationbuilder::t_module_target_list StorageSection::getModuleTargetList() const {
+    return this->storage_configuration_panel->getModuleTargets();
 }
