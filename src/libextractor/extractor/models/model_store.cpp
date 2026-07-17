@@ -26,7 +26,8 @@ static std::string read_file(const std::filesystem::path &path) {
     return res;
 }
 
-extractor::models::ModelStore::ModelStore(const path &path) {
+extractor::models::ModelStore::ModelStore(LangFile &&translations, const path &path) :
+translations(std::move(translations)) {
     auto wares_path        = path / "libraries/wares.xml";
     auto waregroups_path   = path / "libraries/waregroups.xml";
     auto modules_path      = path / "libraries/modules.xml";
@@ -41,8 +42,6 @@ extractor::models::ModelStore::ModelStore(const path &path) {
         throw std::runtime_error(fmt::format("Modules file {} does not exist", modules_path.string()));
     if (!std::filesystem::exists(modulegroups_path))
         throw std::runtime_error(fmt::format("Modulegroups file {} does not exist", modulegroups_path.string()));
-    if (!std::filesystem::exists(t_path))
-        throw std::runtime_error(fmt::format("Translation file {} does not exist", t_path.string()));
 
     auto wares_ = rfl::xml::load<models::Wares>(wares_path);
     if (!wares_.has_value()) {
@@ -51,13 +50,6 @@ extractor::models::ModelStore::ModelStore(const path &path) {
         throw std::runtime_error("Failed to load wares");
     }
     this->wares = std::move(wares_.value());
-
-    auto t_ = rfl::xml::load<models::T>(t_path);
-    if (!t_.has_value()) {
-        spdlog::error("Failed to load translation: {}", t_.error().what());
-        throw std::runtime_error("Failed to load translation");
-    }
-    this->t = std::move(t_.value());
 
     auto waregroups_ = rfl::xml::load<models::Waregroups>(waregroups_path);
     if (!waregroups_.has_value()) {
@@ -108,15 +100,14 @@ void extractor::models::ModelStore::_load_production_modules(const path &path) {
 }
 
 void extractor::models::ModelStore::_translate_t() {
-    LangFile lang(std::move(this->t));
-    auto     translate_structures = [&lang](std::vector<models::Structure> &structures) {
+    auto translate_structures = [this](std::vector<models::Structure> &structures) {
         for (auto &structure: structures) {
-            models::translate(lang, structure);
+            models::translate(this->translations, structure);
         }
     };
 
-    models::translate(lang, this->wares);
-    models::translate(lang, this->waregroups);
+    models::translate(this->translations, this->wares);
+    models::translate(this->translations, this->waregroups);
     translate_structures(this->production_modules);
     translate_structures(this->habitats);
     translate_structures(this->dock_and_pierr);

@@ -28,7 +28,20 @@ namespace extractor {
          * Check if the archive contains files that we should extract
          * @return
          */
-        bool validate();
+        virtual bool validate();
+
+        std::string cat_content;
+
+    private:
+        bool load_cat_content();
+    };
+
+    struct BaseGameArchive : public Archive {
+        BaseGameArchive(const std::filesystem::path &path,
+                        const std::filesystem::path &output,
+                        const std::filesystem::path &x4RTool);
+
+        bool validate() override;
     };
 } // namespace extractor
 

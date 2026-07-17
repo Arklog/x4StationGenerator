@@ -8,6 +8,7 @@
 #include <deque>
 
 #include "extractor/CacheFile.hpp"
+#include "extractor/models/LangFile.hpp"
 
 namespace extractor {
     struct Extension;
@@ -17,7 +18,8 @@ namespace extractor {
 
         virtual ~X4Patchable() = default;
 
-        void patch(const std::filesystem::path &xml_diff_exec, CacheFile<std::string, bool> &cache);
+        void patch(const std::filesystem::path & xml_diff_exec, LangFile &lang_file,
+                   CacheFile<std::string, bool> &cache);
 
         std::filesystem::path in;
         std::filesystem::path out;
@@ -29,6 +31,8 @@ namespace extractor {
         void patch_move();
 
         void patch_diff(const std::filesystem::path &xml_diff_exec);
+
+        void patch_lang(LangFile &lang_file);
     };
 }
 

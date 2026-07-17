@@ -7,7 +7,9 @@
 #include "Extension.hpp"
 
 extractor::FileDetector::FileDetector(const std::filesystem::path &x4_root, const std::filesystem::path &output_dir,
-                                      const std::filesystem::path &XRCatTool) : archives{}, extensions{} {
+                                      const std::filesystem::path &XRCatTool) :
+archives{},
+extensions{} {
     detect_main_archives(x4_root, output_dir, XRCatTool);
     detect_extensions(x4_root, output_dir, XRCatTool);
 }
@@ -20,7 +22,7 @@ void extractor::FileDetector::detect_main_archives(const std::filesystem::path &
     for (const auto &item: it) {
         if (item.is_regular_file() && item.path().extension() == ".cat" && !item.path().filename().string().
             contains("sig")) {
-            archives.push_back(new Archive(item.path(), output_dir, XRCatTool));
+            archives.push_back(new BaseGameArchive(item.path(), output_dir, XRCatTool));
         }
     }
 }
@@ -37,4 +39,3 @@ void extractor::FileDetector::detect_extensions(const std::filesystem::path &x4_
         extensions.push_back(new Extension(item.path(), output_dir, XRCatTool));
     }
 }
-
