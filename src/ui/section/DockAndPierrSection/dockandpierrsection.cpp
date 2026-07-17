@@ -22,10 +22,13 @@ ui(new Ui::DockAndPierrSection),
 store_(store) {
     ui->setupUi(this);
 
-    t_module_list dock_and_pierr_list{};
+    common::data::t_module_list dock_and_pierr_list{};
 
-    for (const auto &module: store.modules.docks_and_piers) {
-        dock_and_pierr_list.insert(module);
+    for (const auto &dock: store.docks.datas) {
+        dock_and_pierr_list.insert(&dock.module.get());
+    }
+    for (const auto &pier: store.piers.datas) {
+        dock_and_pierr_list.insert(&pier.module.get());
     }
 
     auto dock_and_pierr_selection_panel     = new ModuleSelectionPanel(dock_and_pierr_list, this);
@@ -52,6 +55,6 @@ store_(store) {
 
 DockAndPierrSection::~DockAndPierrSection() { delete ui; }
 
-t_module_target_list DockAndPierrSection::getModuleTargetList() const {
+common::stationbuilder::t_module_target_list DockAndPierrSection::getModuleTargetList() const {
     return dock_and_pierr_configuration_panel->getModuleTargets();
 }

@@ -8,9 +8,6 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "libcommon/stationbuilder/defines.hpp"
-
-
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -23,6 +20,8 @@ class ModuleConfigurationPanel : public QFrame {
     Q_OBJECT
 
 public:
+    using Module = common::types::module::Module;
+
     explicit ModuleConfigurationPanel(QWidget *parent = nullptr);
 
     ~ModuleConfigurationPanel() override;

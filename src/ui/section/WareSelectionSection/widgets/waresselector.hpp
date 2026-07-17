@@ -31,6 +31,8 @@ signals:
 private:
     Ui::WaresSelector *                                               ui;
     std::unordered_map<common::types::Ware::ware_group_id, QWidget *> category_tabs;
+
+    void populateGroup(QWidget *widget, const std::vector<common::types::Ware *> &wares);
 };
 
 #endif // WARESSELECTOR_HPP

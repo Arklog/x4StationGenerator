@@ -24,6 +24,8 @@ class ModuleConfiguration : public QWidget {
     Q_OBJECT
 
 public:
+    using Module = common::types::module::Module;
+
     explicit ModuleConfiguration(const Module *module, common::stationbuilder::ModuleTarget &target,
                                  QWidget *     parent = nullptr);
 

@@ -58,18 +58,18 @@ std::string genModulePlan(const t_x4_complex &complex, const Store &store, Setti
 
     unsigned int i = 1;
     for (auto const &module_id: complex) {
-        auto const &module = store.modules.by_id.at(module_id);
+        auto const &module = store.modules.by_id.at(module_id)->module.get();
 
         std::array<int, 3> pos{0, 0, 0};
-        if (module->type == ModuleType::pier) {
+        if (module.module_type == common::types::module::ModuleType::pier) {
             pos = positions_pier.top();
             positions_pier.pop();
-        } else if (module->type == ModuleType::dock) {
+        } else if (module.module_type == common::types::module::ModuleType::dock) {
             pos = positions_dock.top();
             positions_dock.pop();
         }
 
-        plan << "    <entry " << "index=\"" << i << "\" macro=\"" << module->macro << "\">" << std::endl;
+        plan << "    <entry " << "index=\"" << i << "\" macro=\"" << module.id << "\">" << std::endl;
         plan << "      <offset>" << std::endl;
         plan << R"(        <position x=")" << pos[0] << R"(" y=")" << pos[1] << R"(" z=")" << pos[2] << R"("/>)"
                 << std::endl;
