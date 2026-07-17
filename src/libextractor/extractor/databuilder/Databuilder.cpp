@@ -143,7 +143,8 @@ namespace extractor::databuilder {
                 tmp.id = std::move(ware.id);
                 tmp.name = std::move(ware.name);
                 tmp.price = common::types::Price{.max = ware.price.max, .min = ware.price.min, .avg = ware.price.avg};
-                tmp.group = waregroup.name.value();
+                tmp.group = waregroup.id.value();
+                tmp.group_name = waregroup.name.value();
                 tmp.tier = waregroup.tier.value().value();
                 tmp.produced = is_produced(ware.id);
 

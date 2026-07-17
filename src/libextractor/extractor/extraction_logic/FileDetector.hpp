@@ -16,8 +16,8 @@ namespace extractor {
         FileDetector(const std::filesystem::path &x4_root, const std::filesystem::path &output_dir,
                      const std::filesystem::path &XRCatTool);
 
-        std::vector<Archive *>   archives;
-        std::vector<Extension *> extensions;
+        std::vector<Archive *>   archives; // base games archives
+        std::vector<Extension *> extensions; // mods and dlc
 
     private:
         void detect_main_archives(const std::filesystem::path &x4_root, const std::filesystem::path &output_dir,

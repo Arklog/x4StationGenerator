@@ -22,7 +22,8 @@ namespace extractor {
             spdlog::info("Archive {} already extracted", path.string());
             return;
         }
-        if (!validate()) {
+
+        if (!load_cat_content() || !validate()) {
             cache.register_entry(path.string(), true);
             cache.save();
             return;
@@ -46,6 +47,15 @@ namespace extractor {
     }
 
     bool Archive::validate() {
+        for (auto &reg: extraction_targets) {
+            if (std::regex_search(cat_content, reg, std::regex_constants::match_any))
+                return true;
+        }
+
+        return false;
+    }
+
+    bool Archive::load_cat_content() {
         auto cat_file = path;
         cat_file.replace_extension(".cat");
 
@@ -57,13 +67,19 @@ namespace extractor {
         std::ifstream     cat_stream(cat_file);
         std::stringstream buffer;
         buffer << cat_stream.rdbuf();
-        std::string content = buffer.str();
+        cat_content = buffer.str();
 
-        for (auto &reg: extraction_targets) {
-            if (std::regex_search(content, reg, std::regex_constants::match_any))
-                return true;
-        }
+        return true;
+    }
 
-        return false;
+    BaseGameArchive::BaseGameArchive(const std::filesystem::path &path, const std::filesystem::path &output,
+                                     const std::filesystem::path &x4RTool) :
+    Archive(path, output, x4RTool) {
+    }
+
+    bool BaseGameArchive::validate() {
+        auto       res = Archive::validate();
+        std::regex reg{"t/0001-l044.xml"};
+        return std::regex_search(cat_content, reg) || res;
     }
 } // namespace extractor

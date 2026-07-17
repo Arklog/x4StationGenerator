@@ -13,6 +13,7 @@
 #include <spdlog/spdlog.h>
 
 #include "common/types/Workforce.hpp"
+#include "models/LangFile.hpp"
 
 namespace extractor {
     /**
@@ -31,12 +32,12 @@ namespace extractor {
         /**
          * Extract all x4 files and patch them
          */
-        void extract() const;
+        void extract();
 
         /**
          * Read extracted files to build usable data models
          */
-        void parse() const;
+        void parse();
 
     private:
         ExtractorSettings _settings;
@@ -69,6 +70,8 @@ namespace extractor {
             }
             spdlog::info("Saved {} {}", datas.size(), subfolder);
         }
+
+        LangFile lang_file;
     };
 } // namespace extractor
 

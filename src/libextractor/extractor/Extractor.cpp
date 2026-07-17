@@ -18,12 +18,14 @@
 #include "models/model_store.hpp"
 #include "patching_logic/X4Patchable.hpp"
 
+#include <rfl/xml.hpp>
+
 namespace extractor {
     Extractor::Extractor(const ExtractorSettings &settings) :
     _settings(settings) {
     }
 
-    void Extractor::extract() const {
+    void Extractor::extract() {
         try {
             if (!std::filesystem::exists(this->_settings.ExtractionDirPath))
                 std::filesystem::create_directories(
@@ -51,25 +53,30 @@ namespace extractor {
             pool.wait();
 
             std::vector<X4Patchable *> patchables;
+            LangFile lang;
+            auto base_t = rfl::xml::load<models::T>(_settings.ExtractionDirPath / "t/0001-l044.xml");
+            lang.add_t(std::move(base_t.value()));
             for (auto extension: detector.extensions) {
                 X4Patchable::insert_patchable(extension, patchables);
 
                 for (auto patchable: patchables) {
-                    auto task = new common::Task([this, patchable, &cache]() {
-                        patchable->patch(_settings.XMLPatchPath, cache);
+                    auto task = new common::Task([this, &lang, patchable, &cache]() {
+                        patchable->patch(_settings.XMLPatchPath, lang, cache);
                     });
                     pool.enqueue(task);
                 }
                 pool.wait();
             }
+            lang_file = std::move(lang);
         } catch (const std::exception &e) {
             spdlog::error("{}", e.what());
         }
     }
 
-    void Extractor::parse() const {
+    void Extractor::parse() {
         try {
-            databuilder::AggregateStore datas(models::ModelStore(_settings.ExtractionDirPath));
+            models::ModelStore          models(std::move(this->lang_file), _settings.ExtractionDirPath);
+            databuilder::AggregateStore datas(std::move(models));
             databuilder::Databuilder    builder(std::move(datas));
             common::ThreadPool          pool(_settings.nthreads);
 

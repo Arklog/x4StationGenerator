@@ -6,6 +6,7 @@
 
 #include <spdlog/spdlog.h>
 
+#include <rfl/xml.hpp>
 #include "extractor/utils.hpp"
 #include "extractor/extraction_logic/Extension.hpp"
 
@@ -16,9 +17,23 @@ out{out} {
     output_exists = std::filesystem::exists(out);
 }
 
-void extractor::X4Patchable::patch(const std::filesystem::path &xml_diff_exec, CacheFile<std::string, bool> &cache) {
+void extractor::X4Patchable::patch(const std::filesystem::path & xml_diff_exec, LangFile &lang_file,
+                                   CacheFile<std::string, bool> &cache) {
     if (cache.contains(in.string()) && cache.get(in.string())) {
         spdlog::info("File {} already patched", in.string());
+        return;
+    }
+
+    auto is_this_lang_file = [](const std::filesystem::path &path) -> bool {
+        std::vector<std::regex> lang_file_reg
+                {std::regex{"t/0001-[lL]044.xml"}, std::regex{"t/0001.xml"}};
+        return std::any_of(std::begin(lang_file_reg), std::end(lang_file_reg), [&path](const std::regex &reg) {
+            return std::regex_search(path.string(), reg);
+        });
+    };
+
+    if (is_this_lang_file(in)) {
+        patch_lang(lang_file);
         return;
     }
 
@@ -41,16 +56,15 @@ void extractor::X4Patchable::insert_patchable(const Extension *extension, std::v
         spdlog::warn("Extension {} have not been extracted", extension->output_tmp.string());
         return;
     }
-    
+
     std::filesystem::recursive_directory_iterator it(extension->output_tmp);
     auto do_we_want_to_patch_this = [](const std::filesystem::path &path) -> bool {
-        std::regex lang_file_reg{"t/0001-l044.xml"};
-        for (auto const &reg: X4Extractable::extraction_targets) {
-            if (std::regex_search(path.string(), reg))
-                return true;
-        }
+        std::vector<std::regex> lang_file_reg{std::regex{"t/0001-[Ll]044.xml"}, std::regex{"t/0001.xml"}};
+        lang_file_reg.insert_range(lang_file_reg.begin(), X4Extractable::extraction_targets);
 
-        return std::regex_search(path.string(), lang_file_reg);
+        return std::any_of(std::begin(lang_file_reg), std::end(lang_file_reg), [&path](const std::regex &reg) {
+            return std::regex_search(path.string(), reg);
+        });
     };
 
     for (auto &item: it) {
@@ -73,4 +87,15 @@ void extractor::X4Patchable::patch_diff(const std::filesystem::path &xml_diff_ex
     auto command = generate_command(xml_diff_exec, "-o", out, "-d", in, "-u", out);
 
     system(command.c_str());
+}
+
+void extractor::X4Patchable::patch_lang(LangFile &lang_file) {
+    auto t = rfl::xml::load<models::T>(in);
+    if (!t.has_value()) {
+        spdlog::warn("Could not parse file {}: {}", in.string(), t.error().what());
+        return;
+    }
+
+    lang_file.add_t(std::move(t.value()));
+    spdlog::info("Translation file {} patched", in.string());
 }
