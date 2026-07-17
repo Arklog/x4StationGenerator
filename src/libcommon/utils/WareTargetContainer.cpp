@@ -14,6 +14,9 @@ namespace common::utils {
         ware_targets.reserve(store.wares.datas.size());
 
         for (const auto &ware: store.wares.datas) {
+            if (!ware.produced)
+                continue;
+            
             const auto &modules = store.production.producing.at(ware.id);
             if (modules.empty())
                 throw std::logic_error(

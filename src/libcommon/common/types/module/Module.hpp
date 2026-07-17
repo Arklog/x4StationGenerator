@@ -18,6 +18,7 @@ namespace common::types::module {
         constexpr t_module_type dock       = "dock";
         constexpr t_module_type storage    = "storage";
         constexpr t_module_type production = "production";
+        constexpr t_module_type habitat    = "habitat";
     }
 
     struct Module {

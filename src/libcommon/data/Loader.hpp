@@ -7,7 +7,7 @@
 
 #include "Store.hpp"
 #include "nlohmann/json.hpp"
-#include <fmt/format.h>
+#include <spdlog/fmt/fmt.h>
 #include <rfl/json.hpp>
 
 namespace common::data {

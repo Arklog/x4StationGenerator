@@ -44,6 +44,18 @@ namespace extractor::databuilder {
                         used_wares.insert(ware_id);
                         module.cost.emplace(std::move(ware_id), amount);
                     }
+
+                    if constexpr (std::is_same_v<T, common::types::module::ProductionModule>) {
+                        module.module_type = common::types::module::ModuleType::production;
+                    } else if constexpr (std::is_same_v<T, common::types::module::Habitat>) {
+                        module.module_type = common::types::module::ModuleType::habitat;
+                    } else if constexpr (std::is_same_v<T, common::types::module::Storage>) {
+                        module.module_type = common::types::module::ModuleType::storage;
+                    } else if constexpr (std::is_same_v<T, common::types::module::Dock>) {
+                        module.module_type = common::types::module::ModuleType::dock;
+                    } else if constexpr (std::is_same_v<T, common::types::module::Pierr>) {
+                        module.module_type = common::types::module::ModuleType::pier;
+                    }
                 } catch (const std::out_of_range &e) {
                     spdlog::error("No match for module {} build cost", module.id);
                     throw;

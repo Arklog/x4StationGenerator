@@ -39,10 +39,10 @@ category_tabs{} {
 WaresSelector::~WaresSelector() { delete ui; }
 
 void WaresSelector::populateGroup(QWidget *group_widget, const std::vector<common::types::Ware *> &wares) {
-    for (const auto &ware: wares) {
-        const auto &widget = new QPushButton(QString::fromStdString(ware->name), group_widget);
+    for (const auto ware: wares) {
+        const auto widget = new QPushButton(QString::fromStdString(ware->name), group_widget);
 
-        connect(widget, &QPushButton::clicked, [this, &ware] {
+        connect(widget, &QPushButton::clicked, [this, ware] {
             spdlog::info("ware {} clicked", ware->name);
             this->wareSelected(ware->id);
         });
