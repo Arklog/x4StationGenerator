@@ -27,7 +27,7 @@ void extractor::X4Patchable::patch(const std::filesystem::path & xml_diff_exec, 
     auto is_this_lang_file = [](const std::filesystem::path &path) -> bool {
         std::vector<std::regex> lang_file_reg
                 {std::regex{"t/0001-[lL]044.xml"}, std::regex{"t/0001.xml"}};
-        return std::any_of(std::begin(lang_file_reg), std::end(lang_file_reg), [&path](const std::regex &reg) {
+        return std::ranges::any_of(lang_file_reg, [&path](const std::regex &reg) {
             return std::regex_search(path.string(), reg);
         });
     };
@@ -57,12 +57,14 @@ void extractor::X4Patchable::insert_patchable(const Extension *extension, std::v
         return;
     }
 
+    spdlog::info("Listing patchable files from {}", extension->output_tmp.string());
+
     std::filesystem::recursive_directory_iterator it(extension->output_tmp);
     auto do_we_want_to_patch_this = [](const std::filesystem::path &path) -> bool {
         std::vector<std::regex> lang_file_reg{std::regex{"t/0001-[Ll]044.xml"}, std::regex{"t/0001.xml"}};
         lang_file_reg.insert_range(lang_file_reg.begin(), X4Extractable::extraction_targets);
 
-        return std::any_of(std::begin(lang_file_reg), std::end(lang_file_reg), [&path](const std::regex &reg) {
+        return std::ranges::any_of(lang_file_reg, [&path](const std::regex &reg) {
             return std::regex_search(path.string(), reg);
         });
     };
@@ -90,12 +92,15 @@ void extractor::X4Patchable::patch_diff(const std::filesystem::path &xml_diff_ex
 }
 
 void extractor::X4Patchable::patch_lang(LangFile &lang_file) {
-    auto t = rfl::xml::load<models::T>(in);
-    if (!t.has_value()) {
-        spdlog::warn("Could not parse file {}: {}", in.string(), t.error().what());
-        return;
-    }
+    auto      t     = rfl::xml::load<models::T>(in);
+    auto      tdiff = rfl::xml::load<models::TDiff>(in);
+    models::T v{};
 
-    lang_file.add_t(std::move(t.value()));
+    if (tdiff.has_value())
+        v = tdiff.value().add;
+    else
+        v = t.value();
+
+    lang_file.add_t(std::move(v));
     spdlog::info("Translation file {} patched", in.string());
 }

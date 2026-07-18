@@ -66,6 +66,7 @@ namespace extractor {
                     pool.enqueue(task);
                 }
                 pool.wait();
+                patchables.clear();
             }
             lang_file = std::move(lang);
         } catch (const std::exception &e) {

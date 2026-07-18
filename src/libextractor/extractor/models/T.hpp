@@ -21,6 +21,10 @@ namespace extractor::models {
 
         std::vector<Page> page;
     };
+
+    struct TDiff {
+        T add;
+    };
 } // extractor
 
 #endif //X4STATIONGENERATOR__T_HPP

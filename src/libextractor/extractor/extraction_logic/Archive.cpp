@@ -23,12 +23,15 @@ namespace extractor {
             return;
         }
 
-        if (!load_cat_content() || !validate()) {
+        // archive does not contain valid files, cache it and exit
+        if (!validate()) {
+            spdlog::info("Archive {} does not contain valid files, skipping", path.string());
             cache.register_entry(path.string(), true);
             cache.save();
             return;
         }
 
+        // extract archive content and add to cache
         cache.register_entry(path.string(), false);
         cache.save();
 
@@ -47,15 +50,23 @@ namespace extractor {
     }
 
     bool Archive::validate() {
-        for (auto &reg: extraction_targets) {
-            if (std::regex_search(cat_content, reg, std::regex_constants::match_any))
-                return true;
+        load_cat_content();
+
+        auto ret = std::ranges::any_of(extraction_targets, [this](const auto &target) -> bool {
+            return std::regex_search(this->cat_content, target);
+        });
+
+        if (!ret) {
+            spdlog::info("Archive {} does not contain valid files, skipping", path.string());
         }
 
-        return false;
+        return ret;
     }
 
     bool Archive::load_cat_content() {
+        if (!cat_content.empty())
+            return true;
+
         auto cat_file = path;
         cat_file.replace_extension(".cat");
 

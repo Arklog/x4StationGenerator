@@ -11,12 +11,14 @@
 namespace extractor {
     struct Archive;
     struct Extension;
-    
+
     struct FileDetector {
         FileDetector(const std::filesystem::path &x4_root, const std::filesystem::path &output_dir,
                      const std::filesystem::path &XRCatTool);
 
-        std::vector<Archive *>   archives; // base games archives
+        ~FileDetector();
+
+        std::vector<Archive *>   archives;   // base games archives
         std::vector<Extension *> extensions; // mods and dlc
 
     private:

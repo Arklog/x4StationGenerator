@@ -16,9 +16,10 @@ namespace extractor {
     struct X4Extractable {
         static const std::vector<std::regex> extraction_targets; // list of files or directory we want to extract
 
-        std::filesystem::path                               path;    // path of the file or folder
-        std::filesystem::path                               output;  // output directory
+        std::filesystem::path path; // path of the file or folder
+        std::filesystem::path output; // output directory
         std::reference_wrapper<const std::filesystem::path> x4RTool; // path to XRCatTool
+        bool should_extract; // whether or not this extension should be extracted
 
         X4Extractable(const std::filesystem::path &file, const std::filesystem::path &output,
                       const std::filesystem::path &x4RTool);
@@ -26,6 +27,8 @@ namespace extractor {
         virtual ~X4Extractable() = default;
 
         virtual void extract(CacheFile<std::string, bool> &) = 0;
+
+        virtual bool validate() = 0;
     };
 }
 
