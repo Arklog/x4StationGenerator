@@ -28,11 +28,15 @@ namespace extractor {
          * Check if the archive contains files that we should extract
          * @return
          */
-        virtual bool validate();
+        virtual bool validate() override;
 
         std::string cat_content;
 
     private:
+        /**
+         * Load related cat file into memory, cat file contains list of files contained into dat archive
+         * @return true if loaded, false else
+         */
         bool load_cat_content();
     };
 

@@ -13,13 +13,20 @@ namespace extractor {
 
         void extract(CacheFile<std::string, bool> &cache);
 
+        virtual bool validate() override;
+
         std::filesystem::path output_tmp;
-        std::vector<Archive>  archives;
+
+        std::vector<Archive> archives;
 
     private:
         void extract_archives(CacheFile<std::string, bool> &cache);
 
         void extract_copy(CacheFile<std::string, bool> &cache);
+
+        bool validate_archives();
+
+        bool validate_files();
     };
 } // namespace extractor
 

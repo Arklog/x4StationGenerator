@@ -21,6 +21,7 @@ namespace extractor {
     void LangFile::add_t(models::T &&t_file) {
         std::lock_guard lock(_translations_mutex);
         auto            csize = _translations.size();
+
         for (auto &page: t_file.page) {
             auto page_id = std::move(page.id.value());
 
@@ -28,6 +29,10 @@ namespace extractor {
                 auto t_id = std::move(translation.id.value());
                 auto key  = fmt::format("{},{}", page_id, t_id);
 
+                if (_translations.contains(key)) {
+                    spdlog::error("Translation already exists for {}:\n - existing: {}\n - new : {}", key,
+                                  _translations.at(key), translation.xml_content);
+                }
                 _translations.emplace(std::move(key), std::move(translation.xml_content));
             }
         }
