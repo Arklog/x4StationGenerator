@@ -81,7 +81,7 @@ else ()
     set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
 endif ()
 
-if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(DEBUG_COMPILE_FLAGS -O0 -g -fno-dce -fno-dse -fno-tree-dce -fno-tree-dse -fno-inline)
     message(STATUS "DEBUG_COMPILE_FLAGS: ${DEBUG_COMPILE_FLAGS}")
 endif ()
