@@ -43,7 +43,7 @@ translations(std::move(translations)) {
     if (!std::filesystem::exists(modulegroups_path))
         throw std::runtime_error(fmt::format("Modulegroups file {} does not exist", modulegroups_path.string()));
 
-    auto wares_ = rfl::xml::load<models::Wares>(wares_path);
+    auto wares_ = rfl::xml::load<models::Wares>(wares_path.string());
     if (!wares_.has_value()) {
         auto &err = wares_.error();
         spdlog::error("Failed to load wares: {}", wares_.error().what());
@@ -51,7 +51,7 @@ translations(std::move(translations)) {
     }
     this->wares = std::move(wares_.value());
 
-    auto waregroups_ = rfl::xml::load<models::Waregroups>(waregroups_path);
+    auto waregroups_ = rfl::xml::load<models::Waregroups>(waregroups_path.string());
     if (!waregroups_.has_value()) {
         spdlog::error("Failed to load waregroups: {}", waregroups_.error().what());
         throw std::runtime_error("Failed to load waregroups");
@@ -86,7 +86,7 @@ void extractor::models::ModelStore::_load_production_modules(const path &path) {
             if (!item.is_regular_file() || item.path().extension() != ".xml")
                 continue;
 
-            auto prod_module = rfl::xml::load<models::Structure>(item.path());
+            auto prod_module = rfl::xml::load<models::Structure>(item.path().string());
             if (!prod_module) {
                 std::string fcontent = read_file(item.path());
                 spdlog::error("Failed to load {}: {}\n{}", item.path().string(), prod_module.error().what(), fcontent);
