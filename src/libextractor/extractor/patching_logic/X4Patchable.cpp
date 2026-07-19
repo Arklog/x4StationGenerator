@@ -92,8 +92,8 @@ void extractor::X4Patchable::patch_diff(const std::filesystem::path &xml_diff_ex
 }
 
 void extractor::X4Patchable::patch_lang(LangFile &lang_file) {
-    auto      t     = rfl::xml::load<models::T>(in);
-    auto      tdiff = rfl::xml::load<models::TDiff>(in);
+    auto      t     = rfl::xml::load<models::T>(in.string());
+    auto      tdiff = rfl::xml::load<models::TDiff>(in.string());
     models::T v{};
 
     if (tdiff.has_value())
