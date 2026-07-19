@@ -36,7 +36,7 @@ namespace common::data {
                     spdlog::warn("Not a valid file {}", item.path().string());
                 }
 
-                auto data = rfl::json::load<T>(item.path());
+                auto data = rfl::json::load<T>(item.path().string());
                 if (data.has_value())
                     _store.add(std::move(data.value()));
                 else
