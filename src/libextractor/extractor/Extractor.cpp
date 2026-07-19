@@ -88,7 +88,7 @@ namespace extractor {
                     auto path = _settings.OutputDirPath / "wares";
                     std::filesystem::create_directories(path);
                     path /= fmt::format("{}.json", i.id);
-                    rfl::json::save(path, i);
+                    rfl::json::save(path.string(), i);
                 };
                 pool.enqueue(new common::Task(fn));
             }
