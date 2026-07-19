@@ -22,7 +22,6 @@ jobs:
       QT_ARCHITECTURE: win64_msvc2022_64
       DIST_DIRECTORY: ${{ github.workspace }}\dist
       SCCACHE_GHA_ENABLED: "true"
-      BRANCH_NAME: ${{ github.ref_name }}
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -61,12 +60,8 @@ jobs:
           echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
           echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
-      - name: Setup cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.strings.outputs.build-output-dir }}
-          key: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
-          restore-keys: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
+      - name: Set up sccache
+        uses: mozilla-actions/sccache-action@v0.0.9
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -87,7 +82,7 @@ jobs:
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}
 
@@ -97,13 +92,9 @@ jobs:
         # Build your program  with the given configuration. Note that --config is needed because the default  Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -j 4
 
-      - name: Save cache
-        if: ${{ failure() }}
-        uses: actions/cache@v3
-        id: cache
-        with:
-          key: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
-          path: ${{ steps.strings.outputs.build-output-dir }}
+      - name: Show sccache statistics
+        if: ${{ always() }}
+        run: sccache --show-stats
 
       - name: Copy Qt DLLs
         env:
