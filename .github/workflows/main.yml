@@ -98,7 +98,11 @@ jobs:
 
       - name: Save cache
         if: ${{ failure() }}
-        uses: actions/cache/save
+        uses: actions/cache@v3
+        id: cache
+        with:
+          key: ${{ matrix.os }}-build-${{ github.base_ref }}
+          path: ${{ steps.strings.outputs.build-output-dir }}
 
       - name: Copy Qt DLLs
         env:
