@@ -63,16 +63,19 @@ jobs:
           echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
       - name: Setup cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.strings.outputs.build-output-dir }}
-          key: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}-${{ env.RUN_ID }}
+          key: ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-${{ env.RUN_ID }}
           restore-keys: |
-            ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}-
-            ${{ matrix.os }}-build-
+            ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-
+            ${{ matrix.os }}-ninja-build-
+
+      - name: Set up MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
 
       - name: Set up sccache
-        uses: mozilla-actions/sccache-action@v0.0.9
+        uses: mozilla-actions/sccache-action@v0.0.10
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -91,10 +94,11 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -G "Ninja Multi-Config"
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_C_COMPILER_LAUNCHER=sccache
           -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -S ${{ github.workspace }}
 
 
