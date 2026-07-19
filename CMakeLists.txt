@@ -15,6 +15,11 @@ set(REFLECTCPP_JSON ON)
 include(FetchContent)
 
 FetchContent_Declare(
+        pugixml
+        GIT_REPOSITORY https://github.com/zeux/pugixml.git
+        GIT_TAG v1.16
+)
+FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog
         GIT_TAG v1.15.3
@@ -39,19 +44,13 @@ FetchContent_Declare(
 )
 
 FetchContent_Declare(
-        xsd
-        GIT_REPOSITORY https://github.com/codesynthesis-com/xsd
-        GIT_TAG v4.2.0
-)
-
-FetchContent_Declare(
         reflect_cpp
         GIT_REPOSITORY https://github.com/getml/reflect-cpp.git
         GIT_TAG v0.25.0
 )
 
 FetchContent_MakeAvailable(
-        xsd
+        pugixml
         spdlog
         argparse
         nlohmann_json
