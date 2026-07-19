@@ -17,12 +17,12 @@ namespace common::data {
     template<typename T>
     struct Aggregate {
         using data_type = T;
-        std::deque<T>                        datas;
-        std::unordered_map<std::string, T *> by_id;
-        std::unordered_map<std::string, T *> by_name;
+        std::deque<T>              datas;
+        std::map<std::string, T *> by_id;
+        std::map<std::string, T *> by_name;
 
         T &add(T &&data) {
-            auto &item                       = datas.emplace_back(std::move(data));
+            auto &item                        = datas.emplace_back(std::move(data));
             by_id[item.module.value().id]     = &item;
             by_name[item.module.value().name] = &item;
             return item;
@@ -33,8 +33,8 @@ namespace common::data {
     struct Aggregate<types::module::ProductionModule> {
         using data_type = types::module::ProductionModule;
         std::deque<types::module::ProductionModule>                                               datas;
-        std::unordered_map<std::string, types::module::ProductionModule *>                        by_id;
-        std::unordered_map<std::string, types::module::ProductionModule *>                        by_name;
+        std::map<std::string, types::module::ProductionModule *>                                  by_id;
+        std::map<std::string, types::module::ProductionModule *>                                  by_name;
         std::unordered_map<types::Ware::ware_id, std::vector<types::module::ProductionModule *> > producing;
 
         types::module::ProductionModule &add(data_type &&value) {
@@ -54,11 +54,11 @@ namespace common::data {
     template<>
     struct Aggregate<types::Ware> {
         using data_type = types::Ware;
-        std::deque<types::Ware>                                                     datas;
-        std::unordered_map<std::string, types::Ware *>                              by_id;
-        std::unordered_map<std::string, types::Ware *>                              by_name;
-        std::unordered_map<size_t, std::vector<types::Ware *> >                     by_tier;
-        std::unordered_map<types::Ware::ware_group_id, std::vector<types::Ware *> > by_waregroup;
+        std::deque<types::Ware>                                           datas;
+        std::map<std::string, types::Ware *>                              by_id;
+        std::map<std::string, types::Ware *>                              by_name;
+        std::map<size_t, std::vector<types::Ware *> >                     by_tier;
+        std::map<types::Ware::ware_group_id, std::vector<types::Ware *> > by_waregroup;
 
         types::Ware &add(types::Ware &&data) {
             auto &item         = datas.emplace_back(std::move(data));
@@ -85,12 +85,12 @@ namespace common::data {
 
     template<>
     struct Aggregate<types::module::ModuleWrapper> {
-        std::deque<types::module::ModuleWrapper>                        datas;
-        std::unordered_map<std::string, types::module::ModuleWrapper *> by_id;
-        std::unordered_map<std::string, types::module::ModuleWrapper *> by_name;
+        std::deque<types::module::ModuleWrapper>              datas;
+        std::map<std::string, types::module::ModuleWrapper *> by_id;
+        std::map<std::string, types::module::ModuleWrapper *> by_name;
 
         types::module::ModuleWrapper &add(types::module::ModuleWrapper &&m) {
-            auto &item                       = datas.emplace_back(std::move(m));
+            auto &item                      = datas.emplace_back(std::move(m));
             by_id[item.module.get().id]     = &item;
             by_name[item.module.get().name] = &item;
             return item;
