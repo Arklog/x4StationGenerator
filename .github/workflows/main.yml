@@ -23,6 +23,7 @@ jobs:
       DIST_DIRECTORY: ${{ github.workspace }}\dist
       SCCACHE_GHA_ENABLED: "true"
       BRANCH_NAME: ${{ github.ref_name }}
+      RUN_ID: ${{ github.run_id }}
 
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
@@ -62,11 +63,19 @@ jobs:
           echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
 
       - name: Setup cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ steps.strings.outputs.build-output-dir }}
-          key: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
-          restore-keys: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
+          key: ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-${{ env.RUN_ID }}
+          restore-keys: |
+            ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-
+            ${{ matrix.os }}-ninja-build-
+
+      - name: Set up MSVC environment
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Set up sccache
+        uses: mozilla-actions/sccache-action@v0.0.10
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
@@ -85,10 +94,11 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -G "Ninja Multi-Config"
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
-          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_C_COMPILER_LAUNCHER=sccache
+          -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
           -S ${{ github.workspace }}
 
 
@@ -97,13 +107,9 @@ jobs:
         # Build your program  with the given configuration. Note that --config is needed because the default  Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -j 4
 
-      - name: Save cache
-        if: ${{ failure() }}
-        uses: actions/cache@v3
-        id: cache
-        with:
-          key: ${{ matrix.os }}-build-${{ env.BRANCH_NAME }}
-          path: ${{ steps.strings.outputs.build-output-dir }}
+      - name: Show sccache statistics
+        if: ${{ always() }}
+        run: sccache --show-stats
 
       - name: Copy Qt DLLs
         env:
