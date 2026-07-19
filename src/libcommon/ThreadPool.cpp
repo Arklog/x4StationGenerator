@@ -4,11 +4,16 @@
 
 #include "ThreadPool.hpp"
 
+#include <algorithm>
 #include <functional>
 
 namespace common {
-    ThreadPool::ThreadPool(size_t nthreads) : _nthreads(nthreads), _should_stop(false), _tasks_mutex(), _tasks(),
-                                              _threads() {
+    ThreadPool::ThreadPool(size_t nthreads) :
+    _nthreads(nthreads),
+    _should_stop(false),
+    _tasks_mutex(),
+    _tasks(),
+    _threads() {
     }
 
     ThreadPool::~ThreadPool() {
@@ -56,7 +61,7 @@ namespace common {
         std::lock_guard<std::mutex> lock(_threads_running_mutex);
         if (_threads_running.empty())
             return false;
-        return std::any_of(_threads_running.begin(), _threads_running.end(), [](bool running) { return running; });
+        return std::ranges::any_of(_threads_running, [](bool running) { return running; });
     }
 
     void ThreadPool::_thread_loop(size_t id) {
