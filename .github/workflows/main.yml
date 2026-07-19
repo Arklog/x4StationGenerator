@@ -102,7 +102,6 @@ jobs:
 
       - name: Build
         id: build
-        # --config selects the configuration for the Ninja Multi-Config generator.
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} -j 4
 
       - name: Show sccache statistics
