@@ -54,7 +54,7 @@ namespace extractor {
 
             std::vector<X4Patchable *> patchables;
             LangFile lang;
-            auto base_t = rfl::xml::load<models::T>(_settings.ExtractionDirPath / "t/0001-l044.xml");
+            auto base_t = rfl::xml::load<models::T>((_settings.ExtractionDirPath / "t/0001-l044.xml").string());
             lang.add_t(std::move(base_t.value()));
             for (auto extension: detector.extensions) {
                 X4Patchable::insert_patchable(extension, patchables);
