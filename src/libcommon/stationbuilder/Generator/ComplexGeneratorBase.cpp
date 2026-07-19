@@ -12,81 +12,51 @@ namespace common::stationbuilder::generator {
     bool ComplexGeneratorBase::_done(const t_target_container &targets,
                                      t_target_container &      current_state,
                                      t_x4_complex &            modules) const {
-        // check all primary targets ok
-        for (auto primary_target: targets.getPrimaryTargets()) {
-            auto current_target
-                    = current_state.getPrimaryTarget(primary_target->ware_id);
+        // check primary is produced enougth
+        auto primary_check = [current_state](const WareTarget *primary) {
+            auto current_target = current_state.getPrimaryTarget(primary->ware_id);
+            return current_target->prodution >= primary->prodution;
+        };
 
-            if (current_target->prodution < primary_target->prodution) {
-                return false;
-            }
-        }
+        // check no produced secondary is in deficit
+        auto secondary_check = [this](const WareTarget *target) {
+            const auto &store = this->store_;
+            return target->prodution > 0 || !store.wares.by_id.at(target->ware_id)->produced;
+        };
 
-        // check secondary targets ok
-        for (auto secondary_target: current_state.getSecondaryTargets()) {
-            if (secondary_target->prodution < 0
-                && store_.production.producing.contains(
-                    secondary_target->ware_id)) {
-                return false;
-            }
-        }
+        bool primary_ok   = std::ranges::all_of(targets.getPrimaryTargets(), primary_check);
+        bool secondary_ok = std::ranges::all_of(current_state.getSecondaryTargets(), secondary_check);
 
-        return true;
+        return primary_ok && secondary_ok;
     }
 
-    void ComplexGeneratorBase::_step(const t_target_container &targets,
-                                     t_target_container &      current_state,
+    void ComplexGeneratorBase::_step(const t_target_container &targets, t_target_container &current_state,
                                      t_x4_complex &            modules) {
-        spdlog::info("Step: {}", current_step_);
-        // const auto &wares = store_.wares.datas;
-        // const auto &ware  = this->_nextTarget(targets, current_state, modules);
-        //
-        // const auto &module_to_add     = store_.production.by_id.at(ware->source_module);
-        // const auto &module_production = module_to_add->wares_derivative;
-        //
-        // auto amount_produced = module_production.amount;
-        // if (settings_.workforce_enables) {
-        //     amount_produced
-        //             = static_cast<long>(static_cast<double>(amount_produced)
-        //                                 * module_production.getWorkforceFactor());
-        // }
-        // if (ware->ware_id == t_ware_id{"energycells"}) {
-        //     amount_produced = static_cast<long>(
-        //         static_cast<double>(amount_produced) * settings_.sunlight);
-        // }
-        //
-        // // Update production value of all ware produced and consumed by
-        // // module_to_add
-        // spdlog::info("Module production: {}", module_production.wares);
-        // this->_updateCurrentProduction(ware->ware_id, amount_produced,
-        //                                module_production.time);
-        // for (const auto &i: module_production.wares) {
-        //     this->_updateCurrentProduction(i.id, -(i.amount),
-        //                                    module_production.time);
-        // }
-        // modules.push_back(module_to_add->id);
-        //
-        // // deal with workforce
-        // if (!settings_.workforce_enables)
-        //     return;
-        //
-        // if (!module_to_add->workforce_max)
-        //     return;
-        //
-        // auto habitat = store_.modules.by_id.at(settings_.workforce_module);
-        // auto consumption
-        //         = getWorkforceUsage(habitat->race.value(),
-        //                             module_to_add->workforce_max.value(), store_);
-        // spdlog::info("Workforce consumption: {}", consumption);
-        // for (const auto &i: consumption) {
-        //     this->_updateCurrentProduction(i.id, -(i.amount), 3600);
-        // }
-        // workforce_ -= module_to_add->workforce_max.value();
-        //
-        // while (workforce_ < 0) {
-        //     workforce_ += habitat->workforce_capacity.value();
-        //     modules.push_back(habitat->id);
-        // }
+        const auto &next        = _nextTarget(targets, current_state, modules);
+        const auto &next_module = store_.production.by_id.at(next->source_module);
+        const auto &production  = next_module->wares_produced;
+
+        // add all wares produced + adjust for workforce and sun factor
+        std::ranges::for_each(production, [this](const auto &v) {
+            auto &ware_id = v.first;
+            auto  data    = v.second;
+
+            if (settings_.workforce_enables)
+                data.amount *= data.work;
+            data.amount *= 1.0f + (settings_.sunlight * data.sun);
+            _updateCurrentProduction(ware_id, data.amount);
+        });
+
+        // add all wares consumed
+        std::ranges::for_each(next_module->wares_required, [this](const auto &v) {
+            auto &ware_id = v.first;
+            auto  amount  = v.second;
+
+            _updateCurrentProduction(ware_id, amount);
+        });
+
+        if (settings_.workforce_enables)
+            _add_workforce(next_module->required_workforce, modules);
     }
 
     WareTarget *
@@ -137,8 +107,7 @@ namespace common::stationbuilder::generator {
     }
 
     void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
-                                                        long int         value,
-                                                        long int         cycle_time) {
+                                                        long int         value) {
         if (!store_.production.producing.contains(ware_id)) {
             spdlog::info("ware {} is not produced, skipping", ware_id);
             return;
@@ -147,8 +116,6 @@ namespace common::stationbuilder::generator {
 
         auto is_produced = this->current_production_.isPrimaryTarget(ware_id)
                            || this->current_production_.isSecondaryTarget(ware_id);
-        double mult = 3600.0f / (double) (cycle_time);
-        value       *= mult;
 
         // If ware is not in the list of produced ware
         // Happens if required to produce another ware
@@ -161,6 +128,21 @@ namespace common::stationbuilder::generator {
         this->current_production_.setSecondaryTarget(ware_id);
         auto target       = this->current_production_.getSecondaryTarget(ware_id);
         target->prodution = value;
+    }
+
+    void ComplexGeneratorBase::_add_workforce(size_t amount, t_x4_complex &modules) {
+        const auto habitat = store_.habitats.by_id.at(settings_.workforce_module);
+        const auto race    = store_.workforce.by_id.at(habitat->race);
+
+        std::ranges::for_each(race->getConsumption(amount), [this](auto &item) {
+            _updateCurrentProduction(item.first, -item.second);
+        });
+
+        workforce_ -= habitat->capacity;
+        while (workforce_ < 0) {
+            workforce_ += habitat->capacity;
+            modules.push_back(habitat->module.get().id);
+        }
     }
 
     ComplexGeneratorBase::ComplexGeneratorBase(const Settings &            settings,

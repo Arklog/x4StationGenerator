@@ -16,6 +16,8 @@ namespace common::types {
 
         race_id               race;
         workforce_consumption consumption;
+
+        workforce_consumption getConsumption(unsigned int amount) const;
     };
 }
 

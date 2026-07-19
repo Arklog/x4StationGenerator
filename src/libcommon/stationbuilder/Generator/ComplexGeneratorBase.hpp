@@ -42,8 +42,8 @@ namespace common::stationbuilder::generator {
          * @param current_state The current wares produced
          * @param modules The current list of modules to be built
          */
-        virtual void _step(const t_target_container &targets,
-                           t_target_container &      current_state, t_x4_complex &modules);
+        virtual void _step(const t_target_container &targets, t_target_container &current_state,
+                           t_x4_complex &            modules);
 
         /**
          * Choose the next target to build
@@ -66,8 +66,9 @@ namespace common::stationbuilder::generator {
          * @param value The value by which to update the ware, must be negative when
          * the ware is consumed.
          */
-        void _updateCurrentProduction(const t_ware_id &ware_id, long int value,
-                                      long int         cycle_time);
+        void _updateCurrentProduction(const t_ware_id &ware_id, long int value);
+
+        void _add_workforce(size_t amount, t_x4_complex &modules);
 
         utils::WareTargetContainer &targets_;
         utils::WareTargetContainer  current_production_;
