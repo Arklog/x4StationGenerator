@@ -1,0 +1,21 @@
+name: cache-cleanup.yml
+on:
+  delete:
+
+permissions:
+  actions: write
+  contents: read
+
+jobs:
+  delete-cache:
+    if: github.ref_type == 'branch'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Delete cache for current branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          gh cache delete --ref "refs/heads/${BRANCH}" --all --confirm
