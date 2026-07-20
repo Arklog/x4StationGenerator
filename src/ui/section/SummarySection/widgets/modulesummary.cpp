@@ -17,9 +17,10 @@ namespace ui::section::summarysection::widgets {
     };
 
     ModuleSummaryPriceItem::ModuleSummaryPriceItem(ModuleSummaryItemData data) :
+    SummaryItemBase(),
     data{std::move(data)} {
         ui->text->deleteLater();
-        this->layout()->deleteLater();
+        delete this->layout();
 
         auto layout       = new QFormLayout(this);
         auto module_name  = new QLabel{QString::fromStdString(data.module.name)};

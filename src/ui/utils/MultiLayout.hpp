@@ -6,6 +6,7 @@
 #define X4STATIONGENERATOR_SRC_UI_UTILS_MULTILAYOUT_HPP
 #include <tuple>
 #include <type_traits>
+#include <spdlog/spdlog.h>
 
 namespace ui::utils {
     template<typename VType, typename... Args>

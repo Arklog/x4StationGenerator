@@ -55,6 +55,7 @@ namespace common::stationbuilder::generator {
             _updateCurrentProduction(ware_id, amount);
         });
 
+        modules.push_back(next_module->module.get().id);
         if (settings_.workforce_enables)
             _add_workforce(next_module->required_workforce, modules);
     }
