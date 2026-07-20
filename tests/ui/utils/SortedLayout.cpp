@@ -37,4 +37,22 @@ TEST_CASE("test") {
     REQUIRE(get_at(0) == l1);
     REQUIRE(get_at(1) == l2);
     REQUIRE(get_at(2) == l3);
+
+    layout.emplace("5");
+    layout.emplace("4");
+    REQUIRE(get_at(0) == l1);
+    REQUIRE(get_at(1) == l2);
+    REQUIRE(get_at(2) == l3);
+    REQUIRE(get_at(3)->text() == "4");
+    REQUIRE(get_at(4)->text() == "5");
+
+    std::vector<QLabel *> items{new QLabel{"7"}, new QLabel{"6"}};
+    layout.insert_range(items);
+    REQUIRE(get_at(5)->text() == "6");
+    REQUIRE(get_at(6)->text() == "7");
+
+    std::vector items2{"8", "9"};
+    layout.emplace_range(items2);
+    REQUIRE(get_at(7)->text() == "8");
+    REQUIRE(get_at(8)->text() == "9");
 }

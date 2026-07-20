@@ -20,6 +20,8 @@ namespace ui::utils {
         std::vector<VType *> >
     class SortedLayout {
     public:
+        using value_type = VType;
+
         LayoutType *  layout;
         ContainerType container;
 
@@ -39,8 +41,39 @@ namespace ui::utils {
             std::ranges::for_each(container, [&](auto v) {
                 layout->addWidget(v);
             });
+        }
 
-            // *layout = std::move(*nlayout);
+        template<std::ranges::range Container>
+        void insert_range(Container &container_) {
+            container.insert(container.end(), container_.begin(), container_.end());
+            std::ranges::sort(container, _fn);
+
+            layout->deleteLater();
+            layout = new LayoutType(_parent);
+            std::ranges::for_each(container, [&](auto v) {
+                layout->addWidget(v);
+            });
+        }
+
+        template<typename... Args>
+        void emplace(Args &&... args) {
+            auto item = new VType(std::forward<Args>(args)...);
+            insert(item);
+        }
+
+        template<std::ranges::range Container>
+        void emplace_range(Container &container_) {
+            std::ranges::for_each(container_, [&](auto v) {
+                auto item = new VType(std::forward<decltype(v)>(v));
+                container.emplace_back(item);
+            });
+            std::ranges::sort(container, _fn);
+
+            layout->deleteLater();
+            layout = new LayoutType(_parent);
+            std::ranges::for_each(container, [&](auto v) {
+                layout->addWidget(v);
+            });
         }
 
     private:

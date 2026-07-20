@@ -42,6 +42,7 @@ add_library(x4StationGeneratorUi
         utils/SortedLayout.hpp
         utils/modules.cpp
         utils/modules.hpp
+        utils/MultiLayout.hpp
 )
 target_include_directories(x4StationGeneratorUi
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
