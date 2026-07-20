@@ -14,7 +14,7 @@ namespace ui::utils {
         (... && std::is_same<VType, typename Args::value_type>::value);
     };
 
-    template<typename T, typename... Args>
+    template<typename... Args>
     class MultiLayout {
     public:
         std::tuple<Args...> layouts;
@@ -32,18 +32,18 @@ namespace ui::utils {
             return std::get<N>(layouts);
         }
 
-        void insert(T *item) {
-            std::apply([&](auto &... layout) -> decltype(auto) {
-                (..., layout.insert(item));
-            }, layouts);
-        }
+        // void insert(T *item) {
+        // std::apply([&](auto &... layout) -> decltype(auto) {
+        // (..., layout.insert(item));
+        // }, layouts);
+        // }
 
-        template<std::ranges::range Container>
-        void insert_range(Container &container) {
-            std::apply([&](auto &... layout) -> decltype(auto) {
-                (..., layout.insert_range(container));
-            }, layouts);
-        }
+        // template<std::ranges::range Container>
+        // void insert_range(Container &container) {
+        // std::apply([&](auto &... layout) -> decltype(auto) {
+        // (..., layout.insert_range(container));
+        // }, layouts);
+        // }
 
         template<typename... VtypeArgs>
         void emplace(VtypeArgs... args) {

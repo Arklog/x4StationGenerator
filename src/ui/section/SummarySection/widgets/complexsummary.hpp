@@ -7,6 +7,7 @@
 
 #include <QWidget>
 
+#include "modulesummary.hpp"
 #include "stationbuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"
 
@@ -29,8 +30,13 @@ namespace ui::summarysection::widgets {
 
         ~ComplexSummary() override;
 
+
+        void update(const t_x4_complex &value, const common::data::Store &store);
+
     private:
         Ui::ComplexSummary *ui;
+
+        section::summarysection::widgets::ModuleSummary *module_summary_;
 
         void _build_modules_summary(const t_x4_complex &complex);
     };

@@ -29,14 +29,14 @@
    <property name="spacing">
     <number>0</number>
    </property>
-   <item row="0" column="0">
-    <layout class="QVBoxLayout" name="modules_summary"/>
+   <item row="1" column="0" colspan="2">
+    <layout class="QVBoxLayout" name="not_used_yet"/>
    </item>
    <item row="0" column="1">
     <layout class="QVBoxLayout" name="ressource_summary"/>
    </item>
-   <item row="1" column="0" colspan="2">
-    <layout class="QVBoxLayout" name="not_used_yet"/>
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="modules_summary"/>
    </item>
   </layout>
  </widget>

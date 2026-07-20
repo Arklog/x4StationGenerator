@@ -5,6 +5,8 @@
 // You may need to build the project (run Qt uic code generator) to get "ui_ComplexSummary.h" resolved
 
 #include "complexsummary.hpp"
+
+#include "modulesummary.hpp"
 #include "ui_complexsummary.h"
 
 namespace ui::summarysection::widgets {
@@ -12,9 +14,18 @@ namespace ui::summarysection::widgets {
     QWidget(parent),
     ui(new Ui::ComplexSummary) {
         ui->setupUi(this);
+
+        auto module_summary = new section::summarysection::widgets::ModuleSummary(this);
+        ui->modules_summary->addWidget(module_summary);
     }
 
     ComplexSummary::~ComplexSummary() {
         delete ui;
+    }
+
+    void ComplexSummary::update(const t_x4_complex &value, const common::data::Store &store) {
+        if (value.empty())
+            return;
+        module_summary_->update(value, store);
     }
 } // ui::summarysection::widgets

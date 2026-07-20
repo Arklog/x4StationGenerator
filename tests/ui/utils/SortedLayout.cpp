@@ -14,7 +14,7 @@ TEST_CASE("test") {
     auto fn = [](const QLabel *l1, const QLabel *l2) {
         return l1->text().toStdString() < l2->text().toStdString();
     };
-    auto layout = ui::utils::SortedLayout<QLabel, decltype(fn), QVBoxLayout>{fn};
+    auto layout = ui::utils::SortedLayout<QLabel, decltype(fn)>{};
     auto get_at = [&](int index) {
         auto count  = layout.layout->count();
         auto item   = layout.layout->itemAt(index);

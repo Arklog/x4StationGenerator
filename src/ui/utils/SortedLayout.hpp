@@ -10,13 +10,13 @@
 
 namespace ui::utils {
     template<typename T, typename V>
-    concept comparator_fn = requires(T fn, const V *v1, const V *v2)
+    concept comparator_fn = requires(const V *v1, const V *v2)
     {
-        { fn(v1, v2) } -> std::convertible_to<bool>;
+        { T()(v1, v2) } -> std::convertible_to<bool>;
         std::is_base_of_v<QWidget, V>;
     };
 
-    template<typename VType, comparator_fn<VType> Fn, typename LayoutType = QLayout, typename ContainerType =
+    template<typename VType, comparator_fn<VType> Fn, typename LayoutType = QVBoxLayout, typename ContainerType =
         std::vector<VType *> >
     class SortedLayout {
     public:
@@ -25,16 +25,15 @@ namespace ui::utils {
         LayoutType *  layout;
         ContainerType container;
 
-        SortedLayout(Fn fn, QWidget *parent = nullptr) :
+        SortedLayout(QWidget *parent = nullptr) :
         layout(new LayoutType(parent)),
         container{},
-        _fn(fn),
         _parent(parent) {
         };
 
         void insert(VType *vtype) {
             container.push_back(vtype);
-            std::ranges::sort(container, _fn);
+            std::ranges::sort(container, Fn());
 
             layout->deleteLater();
             layout = new LayoutType(_parent);
@@ -46,7 +45,8 @@ namespace ui::utils {
         template<std::ranges::range Container>
         void insert_range(Container &container_) {
             container.insert(container.end(), container_.begin(), container_.end());
-            std::ranges::sort(container, _fn);
+
+            std::ranges::sort(container, Fn());
 
             layout->deleteLater();
             layout = new LayoutType(_parent);
@@ -67,7 +67,8 @@ namespace ui::utils {
                 auto item = new VType(std::forward<decltype(v)>(v));
                 container.emplace_back(item);
             });
-            std::ranges::sort(container, _fn);
+
+            std::ranges::sort(container, Fn());
 
             layout->deleteLater();
             layout = new LayoutType(_parent);
@@ -77,7 +78,6 @@ namespace ui::utils {
         }
 
     private:
-        Fn       _fn;
         QWidget *_parent;
     };
 }

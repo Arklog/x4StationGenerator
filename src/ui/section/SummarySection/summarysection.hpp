@@ -44,6 +44,8 @@ private:
     QChartView *       cost_view_;
     const Store &      store_;
 
+    ui::summarysection::widgets::ComplexSummary *complex_summary_;
+
     void updateCostTab(const t_module_quantity &modules);
 };
 

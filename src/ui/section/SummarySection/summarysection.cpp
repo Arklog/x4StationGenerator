@@ -33,6 +33,11 @@ ui(new Ui::SummarySection),
 store_(store) {
     ui->setupUi(this);
 
+    complex_summary_        = new ui::summarysection::widgets::ComplexSummary(this);
+    auto summary_tab_layout = new QGridLayout(ui->summary_tab);
+    summary_tab_layout->addWidget(complex_summary_, 0, 0, 1, 1);
+    ui->summary_tab->setLayout(summary_tab_layout);
+
     auto cost_chart_view = new QChartView(this);
 
     // auto revenue_chart = new QStackedBarSeries();
@@ -55,6 +60,7 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
     for (const auto &target: targets)
         modules_recap[target] += 1;
 
+    complex_summary_->update(targets, store_);
     updateCostTab(modules_recap);
 }
 

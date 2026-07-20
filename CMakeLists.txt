@@ -1,8 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 project(x4StationGenerator)
 
-include(FetchContent)
-
 set(CMAKE_CXX_STANDARD 23)
 
 set(REFLECTCPP_XML ON)

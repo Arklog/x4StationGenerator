@@ -43,6 +43,12 @@ add_library(x4StationGeneratorUi
         utils/modules.cpp
         utils/modules.hpp
         utils/MultiLayout.hpp
+        section/SummarySection/widgets/modulesummary.cpp
+        section/SummarySection/widgets/modulesummary.hpp
+        section/SummarySection/widgets/modulesummary.ui
+        section/SummarySection/widgets/summaryitembase.cpp
+        section/SummarySection/widgets/summaryitembase.hpp
+        section/SummarySection/widgets/summaryitembase.ui
 )
 target_include_directories(x4StationGeneratorUi
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
