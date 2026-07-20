@@ -49,12 +49,19 @@ FetchContent_Declare(
         GIT_TAG v0.25.0
 )
 
+FetchContent_Declare(
+        catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG v3.15.2
+)
+
 FetchContent_MakeAvailable(
         pugixml
         spdlog
         argparse
         nlohmann_json
         reflect_cpp
+        catch2
 )
 
 #################################################################################
@@ -82,7 +89,7 @@ else ()
 endif ()
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-    set(DEBUG_COMPILE_FLAGS -O0 -g -fno-dce -fno-dse -fno-tree-dce -fno-tree-dse -fno-inline)
+    set(DEBUG_COMPILE_FLAGS -O0 -g -fno-dce -fno-dse -fno-tree-dce -fno-tree-dse -fno-inline -fconcepts-diagnostics-depth=3)
     message(STATUS "DEBUG_COMPILE_FLAGS: ${DEBUG_COMPILE_FLAGS}")
 endif ()
 
@@ -115,3 +122,13 @@ target_link_libraries(x4StationGenerator PRIVATE
         x4StationGeneratorUi
 )
 
+enable_testing()
+
+function(create_test test_name test_file required_lib)
+    add_executable(${test_name} ${test_file})
+    target_link_libraries(${test_name} PRIVATE Catch2::Catch2WithMain ${required_lib})
+    target_compile_options(${test_name} PRIVATE ${DEBUG_COMPILE_FLAGS})
+    add_test(${test_name} ${test_name})
+endfunction()
+
+add_subdirectory(tests)

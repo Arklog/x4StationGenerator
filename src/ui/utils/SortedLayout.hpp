@@ -12,7 +12,7 @@ namespace ui::utils {
     template<typename T, typename V>
     concept comparator_fn = requires(T fn, const V *v1, const V *v2)
     {
-        { T(v1, v2) } -> std::convertible_to<bool>;
+        { fn(v1, v2) } -> std::convertible_to<bool>;
         std::is_base_of_v<QWidget, V>;
     };
 
@@ -34,12 +34,13 @@ namespace ui::utils {
             container.push_back(vtype);
             std::ranges::sort(container, _fn);
 
-            auto nlayout = new LayoutType(_parent);
+            // layout->deleteLater();
+            layout = new LayoutType(_parent);
             std::ranges::for_each(container, [&](auto v) {
-                nlayout->addWidget(v);
+                layout->addWidget(v);
             });
 
-            *layout = std::move(nlayout);
+            // *layout = std::move(*nlayout);
         }
 
     private:
