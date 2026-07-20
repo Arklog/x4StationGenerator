@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 #include <QMainWindow>
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/defines.hpp"
 
 class SummarySection;
 class DockAndPierrSection;
@@ -29,7 +29,10 @@ public:
 
     ~MainWindow();
 
-public slots:
+public
+    slots:
+
+
     void exportPlan();
 
     void complexUpdated();

@@ -4,7 +4,7 @@
 
 #include "WareTargetContainer.hpp"
 
-#include "../libcommon/data/WareModuleAndWorkforce.hpp"
+#include "../data/WareModuleAndWorkforce.hpp"
 
 namespace common::utils {
     WareTargetContainer::WareTargetContainer(const data::Store &store) :
@@ -16,7 +16,7 @@ namespace common::utils {
         for (const auto &ware: store.wares.datas) {
             if (!ware.produced)
                 continue;
-            
+
             const auto &modules = store.production.producing.at(ware.id);
             if (modules.empty())
                 throw std::logic_error(

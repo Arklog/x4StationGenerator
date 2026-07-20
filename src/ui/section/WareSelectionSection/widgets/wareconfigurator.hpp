@@ -8,8 +8,8 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -45,11 +45,13 @@ public:
      */
     const WareTarget *getWareTarget() const;
 
-signals:
+    signals:
     /**
      * Signal emitted when the user wants to remove this ware from the list
      * @param ware_id
      */
+
+
     void shouldRemove(t_ware_id ware_id);
 
     /**

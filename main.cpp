@@ -1,6 +1,6 @@
-#include "src/libcommon/data/Loader.hpp"
-#include "src/libcommon/data/WareModuleAndWorkforce.hpp"
-#include "ui/mainwindow.h"
+#include "data/Loader.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
+#include "mainwindow.h"
 #include <QApplication>
 
 #include "spdlog/spdlog.h"

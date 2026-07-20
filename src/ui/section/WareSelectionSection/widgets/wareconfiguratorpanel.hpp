@@ -9,8 +9,8 @@
 
 #include "ui_wareconfigurator.h"
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"
 
 #include <QGroupBox>
@@ -40,13 +40,18 @@ public:
 
     ~WareConfiguratorPanel() override;
 
-public slots:
+public
+    slots:
+
+
     void addWare(t_ware_id ware_id, bool is_secondary = false,
                  unsigned  amount                     = 0);
 
     void productionTargetUpdate();
 
-signals:
+    signals:
+
+
     void shouldUpdate(t_x4_complex complex);
 
 private:

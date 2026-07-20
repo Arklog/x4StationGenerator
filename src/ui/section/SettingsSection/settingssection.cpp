@@ -7,7 +7,7 @@
 #include "settingssection.hpp"
 #include "ui_settingssection.h"
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/defines.hpp"
 #include "spdlog/spdlog.h"
 
 #include <QLineEdit>

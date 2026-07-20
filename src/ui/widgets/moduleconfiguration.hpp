@@ -7,7 +7,7 @@
 
 #include <QWidget>
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/defines.hpp"
 
 
 struct Module;
@@ -33,7 +33,9 @@ public:
 
     common::stationbuilder::ModuleTarget getModuleTarget() const;
 
-signals:
+    signals:
+
+
     void shouldRemove(const common::stationbuilder::ModuleTarget &target);
 
     void moduleTargetUpdated(const common::stationbuilder::ModuleTarget &target);

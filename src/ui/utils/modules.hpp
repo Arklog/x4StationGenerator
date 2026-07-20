@@ -5,11 +5,11 @@
 #ifndef X4STATIONGENERATOR_MODULES_HPP
 #define X4STATIONGENERATOR_MODULES_HPP
 
-#include "libcommon/data/Store.hpp"
+#include "../../libcommon/data/Store.hpp"
 
 #include <string>
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "../../libcommon/stationbuilder/defines.hpp"
 
 struct StationSize {
     int x_plus;

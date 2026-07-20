@@ -13,7 +13,7 @@
 #include "ui_waresselector.h"
 #include "extractor/databuilder/ModuleAggregator.hpp"
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
 #include "spdlog/spdlog.h"
 
@@ -32,7 +32,7 @@ category_tabs{} {
     for (const auto &[group_id, items]: store.wares.by_waregroup) {
         if (items.empty() || !any_ware_produced(items))
             continue;
-        
+
         auto widget = new QWidget(ui->categories);
         widget->setLayout(new QVBoxLayout(widget));
         widget->layout()->setAlignment(Qt::AlignTop);

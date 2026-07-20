@@ -11,10 +11,10 @@
 
 #include "spdlog/spdlog.h"
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
-#include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
-#include "ui/section/WareSelectionSection/widgets/waresselector.hpp"
+#include "section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
+#include "section/WareSelectionSection/widgets/waresselector.hpp"
 
 WareSelectionSection::WareSelectionSection(Settings &   settings,
                                            const Store &store, QWidget *parent) :

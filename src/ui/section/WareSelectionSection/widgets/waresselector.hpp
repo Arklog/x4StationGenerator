@@ -7,7 +7,7 @@
 
 #include <QWidget>
 
-#include "libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -25,7 +25,9 @@ public:
 
     ~WaresSelector() override;
 
-signals:
+    signals:
+
+
     void wareSelected(common::types::Ware::ware_id);
 
 private:

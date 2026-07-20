@@ -8,9 +8,9 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -30,7 +30,9 @@ public:
 
     ~ModuleSelectionPanel() override;
 
-signals:
+    signals:
+
+
     void moduleSelected(const common::types::module::Module *module);
 
 private:

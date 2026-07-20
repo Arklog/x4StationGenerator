@@ -5,10 +5,11 @@
 #ifndef SUMMARYSECTION_HPP
 #define SUMMARYSECTION_HPP
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 
 #include <QWidget>
+#include "widgets/complexsummary.hpp"
 
 class QChart;
 class QChartView;

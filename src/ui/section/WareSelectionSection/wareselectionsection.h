@@ -5,13 +5,14 @@
 #ifndef WARESELECTIONSECTION_H
 #define WARESELECTIONSECTION_H
 
-#include "../../../libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 #include <QWidget>
 
 #include "stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
     class WareSelectionSection;
 }

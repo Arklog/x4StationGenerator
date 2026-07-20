@@ -3,7 +3,7 @@
 #include <QTextStream>
 #include <cmath>
 
-#include "modules.hpp"
+#include "utils/modules.hpp"
 
 #include "ui_mainwindow.h"
 

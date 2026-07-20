@@ -8,7 +8,7 @@
 #include "wareconfigurator.hpp"
 #include "ui_wareconfigurator.h"
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
 #include "spdlog/spdlog.h"
 #include "utils/WareTargetContainer.hpp"
