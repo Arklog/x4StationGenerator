@@ -34,7 +34,7 @@ namespace ui::utils {
             container.push_back(vtype);
             std::ranges::sort(container, _fn);
 
-            // layout->deleteLater();
+            layout->deleteLater();
             layout = new LayoutType(_parent);
             std::ranges::for_each(container, [&](auto v) {
                 layout->addWidget(v);
