@@ -17,7 +17,7 @@ TEST_CASE("test") {
     auto layout = ui::utils::SortedLayout<QLabel, decltype(fn), QVBoxLayout>{fn};
     auto get_at = [&](int index) {
         auto count  = layout.layout->count();
-        auto item   = layout.layout->takeAt(index);
+        auto item   = layout.layout->itemAt(index);
         auto widget = item->widget();
         return dynamic_cast<QLabel *>(widget);
     };
