@@ -10,6 +10,9 @@
 #include "ui_summarysection.h"
 
 #include "data/WareModuleAndWorkforce.hpp"
+
+#include "utils/utils.hpp"
+
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QChartView>
@@ -17,15 +20,7 @@
 #include <QStackedBarSeries>
 #include <sstream>
 
-#include "spdlog/spdlog.h"
-
-static void clearLayout(QLayout *layout) {
-    while (auto item = layout->takeAt(0)) {
-        if (auto widget = item->widget()) {
-            widget->deleteLater();
-        }
-    }
-}
+#include <spdlog/spdlog.h>
 
 SummarySection::SummarySection(const Store &store, QWidget *parent) :
 QWidget(parent),

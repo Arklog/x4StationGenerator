@@ -40,6 +40,7 @@ namespace ui::section::summarysection::widgets {
     ui(new Ui::ModuleSummary),
     layouts(price_layout{this}) {
         ui->setupUi(this);
+        this->setLayout(layouts.get<0>().layout);
     }
 
     ModuleSummary::~ModuleSummary() {
@@ -64,8 +65,7 @@ namespace ui::section::summarysection::widgets {
             list.emplace_back(std::move(data));
         });
 
+        layouts.clear();
         layouts.emplace_range(list);
-        this->layout()->deleteLater();
-        this->setLayout(layouts.get<0>().layout);
     }
 } // ui::section::summarysection::widgets

@@ -59,6 +59,12 @@ namespace ui::utils {
                 (..., layout.emplace_range(container));
             }, layouts);
         }
+
+        void clear() {
+            std::apply([&](auto &... layout) -> decltype(auto) {
+                (..., layout.clear());
+            }, layouts);
+        }
     };
 }
 

@@ -15,8 +15,8 @@ namespace ui::summarysection::widgets {
     ui(new Ui::ComplexSummary) {
         ui->setupUi(this);
 
-        auto module_summary = new section::summarysection::widgets::ModuleSummary(this);
-        ui->modules_summary->addWidget(module_summary);
+        module_summary_ = new section::summarysection::widgets::ModuleSummary(this);
+        ui->modules_summary->addWidget(module_summary_);
     }
 
     ComplexSummary::~ComplexSummary() {

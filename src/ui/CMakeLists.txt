@@ -49,6 +49,8 @@ add_library(x4StationGeneratorUi
         section/SummarySection/widgets/summaryitembase.cpp
         section/SummarySection/widgets/summaryitembase.hpp
         section/SummarySection/widgets/summaryitembase.ui
+        utils/utils.cpp
+        utils/utils.hpp
 )
 target_include_directories(x4StationGeneratorUi
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

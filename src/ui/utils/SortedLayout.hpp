@@ -8,6 +8,8 @@
 #include <utility>
 #include <QWidget>
 
+#include "utils.hpp"
+
 namespace ui::utils {
     template<typename T, typename V>
     concept comparator_fn = requires(const V *v1, const V *v2)
@@ -31,12 +33,16 @@ namespace ui::utils {
         _parent(parent) {
         };
 
+        void clear() {
+            container.clear();
+            clearLayout(layout);
+        }
+
         void insert(VType *vtype) {
             container.push_back(vtype);
             std::ranges::sort(container, Fn());
 
-            layout->deleteLater();
-            layout = new LayoutType(_parent);
+            clearLayoutNoDelete(layout);
             std::ranges::for_each(container, [&](auto v) {
                 layout->addWidget(v);
             });
@@ -48,8 +54,7 @@ namespace ui::utils {
 
             std::ranges::sort(container, Fn());
 
-            layout->deleteLater();
-            layout = new LayoutType(_parent);
+            clearLayoutNoDelete(layout);
             std::ranges::for_each(container, [&](auto v) {
                 layout->addWidget(v);
             });
@@ -65,13 +70,13 @@ namespace ui::utils {
         void emplace_range(Container &container_) {
             std::ranges::for_each(container_, [&](auto v) {
                 auto item = new VType(std::forward<decltype(v)>(v));
+                item->setParent(_parent);
                 container.emplace_back(item);
             });
 
             std::ranges::sort(container, Fn());
 
-            layout->deleteLater();
-            layout = new LayoutType(_parent);
+            clearLayoutNoDelete(layout);
             std::ranges::for_each(container, [&](auto v) {
                 layout->addWidget(v);
             });
