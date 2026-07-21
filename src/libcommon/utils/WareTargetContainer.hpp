@@ -24,6 +24,8 @@ namespace common::utils {
         ware_targets_container_t      ware_targets_secondary;
 
     public:
+        WareTargetContainer() = default;
+
         WareTargetContainer(const data::Store &store);
 
         /**

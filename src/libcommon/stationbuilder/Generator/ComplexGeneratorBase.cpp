@@ -167,19 +167,20 @@ namespace common::stationbuilder::generator {
         }
     }
 
-    t_x4_complex ComplexGeneratorBase::build() {
-        t_x4_complex result{};
+    Complex ComplexGeneratorBase::build() {
+        Complex result{};
         workforce_ = 0;
         spdlog::info("Starting complex generation");
 
         current_step_ = 0;
         sunlight_     = this->settings_.sunlight;
-        while (!_done(this->targets_, this->current_production_, result)) {
-            _step(this->targets_, this->current_production_, result);
+        while (!_done(this->targets_, this->current_production_, result.complex)) {
+            _step(this->targets_, this->current_production_, result.complex);
             ++current_step_;
         }
 
         spdlog::info("Complex generated");
+        result.wares = current_production_;
         return result;
     }
 

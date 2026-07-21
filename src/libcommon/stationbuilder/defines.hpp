@@ -2,8 +2,8 @@
 // Created by pierre on 7/20/25.
 //
 
-#ifndef DEFINES_HPP
-#define DEFINES_HPP
+#ifndef LIBCOMMON_DEFINES_HPP
+#define LIBCOMMON_DEFINES_HPP
 
 #include <string>
 #include <vector>
