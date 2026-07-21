@@ -10,6 +10,7 @@
 
 #include "summaryitembase.hpp"
 #include "common/types/Ware.hpp"
+#include "stationbuilder/Complex.hpp"
 #include "utils/MultiLayout.hpp"
 #include "utils/SortedLayout.hpp"
 #include "utils/WareTargetContainer.hpp"
@@ -70,7 +71,7 @@ namespace ui::section::summarysection::widgets {
 
         ~WareSummary() override;
 
-        void update(const common::utils::WareTargetContainer &ware_targets, const common::data::Store &store);
+        void update(const common::stationbuilder::Complex &ware_targets, const common::data::Store &store);
 
     private:
         Ui::WareSummary *ui;

@@ -15,6 +15,8 @@
 
 #include <QGroupBox>
 
+#include "stationbuilder/Complex.hpp"
+
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -41,18 +43,14 @@ public:
     ~WareConfiguratorPanel() override;
 
 public
-    slots:
-
-
+slots:
     void addWare(t_ware_id ware_id, bool is_secondary = false,
                  unsigned  amount                     = 0);
 
     void productionTargetUpdate();
 
-    signals:
-
-
-    void shouldUpdate(t_x4_complex complex);
+signals:
+    void shouldUpdate(common::stationbuilder::Complex complex);
 
 private:
     Ui::WareConfiguratorPanel *ui;

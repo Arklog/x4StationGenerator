@@ -13,6 +13,7 @@
 #include <QVBoxLayout>
 
 #include "ui_waresummary.h"
+#include "stationbuilder/Complex.hpp"
 
 namespace ui::section::summarysection::widgets {
     WareSummaryNameItem::WareSummaryNameItem(WareSummaryItemData data) :
@@ -102,8 +103,10 @@ namespace ui::section::summarysection::widgets {
         delete ui;
     }
 
-    void WareSummary::update(const common::utils::WareTargetContainer &ware_targets, const common::data::Store &store) {
+    void WareSummary::update(const common::stationbuilder::Complex &complex, const common::data::Store &store) {
+        auto &                           ware_targets = complex.wares;
         std::vector<WareSummaryItemData> data;
+        
         std::ranges::for_each(ware_targets.getTargets(), [&](auto &item) {
             WareSummaryItemData itemData{};
 

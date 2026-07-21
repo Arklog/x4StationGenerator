@@ -9,6 +9,7 @@
 
 #include "modulesummary.hpp"
 #include "waresummary.hpp"
+#include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"
 
@@ -32,8 +33,7 @@ namespace ui::summarysection::widgets {
         ~ComplexSummary() override;
 
 
-        void update(const t_x4_complex &       value, const common::utils::WareTargetContainer &ware_targets,
-                    const common::data::Store &store);
+        void update(const common::stationbuilder::Complex &complex, const common::data::Store &store);
 
     private:
         Ui::ComplexSummary *ui;

@@ -41,7 +41,7 @@ store_(store) {
                 ware_configurator_panel->addWare(ware_id, false, 0);
             });
     connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate,
-            [this](t_x4_complex complex) {
+            [this](common::stationbuilder::Complex complex) {
                 this->complex_ = std::move(complex);
                 emit complexUpdated();
             });
@@ -75,6 +75,6 @@ store_(store) {
 
 WareSelectionSection::~WareSelectionSection() { delete ui; }
 
-const common::stationbuilder::t_x4_complex &WareSelectionSection::getComplex() {
+const common::stationbuilder::Complex &WareSelectionSection::getComplex() {
     return this->complex_;
 }

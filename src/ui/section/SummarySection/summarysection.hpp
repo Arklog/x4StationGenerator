@@ -9,6 +9,8 @@
 #include "stationbuilder/defines.hpp"
 
 #include <QWidget>
+
+#include "stationbuilder/Complex.hpp"
 #include "widgets/complexsummary.hpp"
 
 class QChart;
@@ -34,7 +36,7 @@ public:
 
     ~SummarySection() override;
 
-    void updateTargetList(const t_x4_complex &targets, const common::utils::WareTargetContainer &ware_targets);
+    void updateTargetList(const common::stationbuilder::Complex &complex);
 
 private:
     Ui::SummarySection *ui;

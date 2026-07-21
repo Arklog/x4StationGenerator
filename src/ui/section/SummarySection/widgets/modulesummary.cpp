@@ -13,6 +13,7 @@
 #include <ui_summaryitembase.h>
 
 #include "ui_modulesummary.h"
+#include "stationbuilder/Complex.hpp"
 
 namespace ui::section::summarysection::widgets {
     static bool cmp_name(const ModuleSummary *a, const ModuleSummary *b) {
@@ -107,7 +108,8 @@ namespace ui::section::summarysection::widgets {
         delete ui;
     }
 
-    void ModuleSummary::update(const t_x4_complex &value, const common::data::Store &store) {
+    void ModuleSummary::update(const common::stationbuilder::Complex &complex, const common::data::Store &store) {
+        auto &                                        value = complex.complex;
         std::unordered_map<std::string, unsigned int> modules;
         std::ranges::for_each(value, [&](const auto &v) {
             modules[v] += 1;

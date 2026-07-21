@@ -11,6 +11,7 @@
 #include "modulesummary.hpp"
 #include "ui_complexsummary.h"
 #include "waresummary.hpp"
+#include "stationbuilder/Complex.hpp"
 
 namespace ui::summarysection::widgets {
     ComplexSummary::ComplexSummary(QWidget *parent) :
@@ -34,11 +35,10 @@ namespace ui::summarysection::widgets {
         delete ui;
     }
 
-    void ComplexSummary::update(const t_x4_complex &value, const common::utils::WareTargetContainer &ware_targets,
-                                const common::data::Store &store) {
-        if (value.empty())
-            return;
-        module_summary_->update(value, store);
-        ware_summary_->update(ware_targets, store);
+    void ComplexSummary::update(const common::stationbuilder::Complex &complex, const common::data::Store &store) {
+        // if (complex.value.empty())
+        // return;
+        module_summary_->update(complex, store);
+        ware_summary_->update(complex, store);
     }
 } // ui::summarysection::widgets

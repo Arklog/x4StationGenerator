@@ -9,6 +9,7 @@
 #include <QWidget>
 
 #include "summaryitembase.hpp"
+#include "stationbuilder/Complex.hpp"
 #include "utils/modules.hpp"
 #include "utils/MultiLayout.hpp"
 #include "utils/SortedLayout.hpp"
@@ -70,7 +71,7 @@ namespace ui::section::summarysection::widgets {
 
         ~ModuleSummary() override;
 
-        void update(const t_x4_complex &value, const common::data::Store &store);
+        void update(const common::stationbuilder::Complex &value, const common::data::Store &store);
 
     private:
         Ui::ModuleSummary *ui;

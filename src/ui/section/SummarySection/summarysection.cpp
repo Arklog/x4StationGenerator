@@ -47,16 +47,15 @@ store_(store) {
 
 SummarySection::~SummarySection() { delete ui; }
 
-void SummarySection::updateTargetList(const t_x4_complex &                      targets,
-                                      const common::utils::WareTargetContainer &ware_targets) {
+void SummarySection::updateTargetList(const common::stationbuilder::Complex &complex) {
     spdlog::debug("Updating summary section");
 
     t_module_quantity modules_recap{};
 
-    for (const auto &target: targets)
+    for (const auto &target: complex.complex)
         modules_recap[target] += 1;
 
-    complex_summary_->update(targets, ware_targets, store_);
+    complex_summary_->update(complex, store_);
     updateCostTab(modules_recap);
 }
 
