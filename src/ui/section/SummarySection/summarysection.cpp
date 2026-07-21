@@ -47,7 +47,8 @@ store_(store) {
 
 SummarySection::~SummarySection() { delete ui; }
 
-void SummarySection::updateTargetList(const t_x4_complex &targets) {
+void SummarySection::updateTargetList(const t_x4_complex &                      targets,
+                                      const common::utils::WareTargetContainer &ware_targets) {
     spdlog::debug("Updating summary section");
 
     t_module_quantity modules_recap{};
@@ -55,7 +56,7 @@ void SummarySection::updateTargetList(const t_x4_complex &targets) {
     for (const auto &target: targets)
         modules_recap[target] += 1;
 
-    complex_summary_->update(targets, store_);
+    complex_summary_->update(targets, ware_targets, store_);
     updateCostTab(modules_recap);
 }
 

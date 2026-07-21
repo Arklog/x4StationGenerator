@@ -1,4 +1,6 @@
 add_library(x4StationGeneratorUi
+        mainwindow.cpp
+        mainwindow.h
         mainwindow.ui
         section/DockAndPierrSection/dockandpierrsection.ui
         section/DockAndPierrSection/dockandpierrsection.cpp
@@ -15,6 +17,18 @@ add_library(x4StationGeneratorUi
         section/SummarySection/widgets/complexsummary.cpp
         section/SummarySection/widgets/complexsummary.hpp
         section/SummarySection/widgets/complexsummary.ui
+        section/SummarySection/widgets/modulesummary.cpp
+        section/SummarySection/widgets/modulesummary.hpp
+        section/SummarySection/widgets/modulesummary.ui
+        section/SummarySection/widgets/summaryitembase.cpp
+        section/SummarySection/widgets/summaryitembase.hpp
+        section/SummarySection/widgets/summaryitembase.ui
+        section/SummarySection/widgets/waresummary.cpp
+        section/SummarySection/widgets/waresummary.hpp
+        section/SummarySection/widgets/waresummary.ui
+        section/WareSelectionSection/wareselectionsection.ui
+        section/WareSelectionSection/wareselectionsection.cpp
+        section/WareSelectionSection/wareselectionsection.h
         section/WareSelectionSection/widgets/wareconfiguratorpanel.ui
         section/WareSelectionSection/widgets/waresselector.ui
         section/WareSelectionSection/widgets/wareconfigurator.ui
@@ -24,9 +38,6 @@ add_library(x4StationGeneratorUi
         section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp
         section/WareSelectionSection/widgets/waresselector.cpp
         section/WareSelectionSection/widgets/waresselector.hpp
-        section/WareSelectionSection/wareselectionsection.ui
-        section/WareSelectionSection/wareselectionsection.cpp
-        section/WareSelectionSection/wareselectionsection.h
         widgets/moduleconfiguration.ui
         widgets/moduleconfigurationpanel.ui
         widgets/moduleselectionpanel.ui
@@ -36,19 +47,11 @@ add_library(x4StationGeneratorUi
         widgets/moduleconfigurationpanel.hpp
         widgets/moduleselectionpanel.cpp
         widgets/moduleselectionpanel.hpp
-        mainwindow.cpp
-        mainwindow.h
         utils/SortedLayout.cpp
         utils/SortedLayout.hpp
         utils/modules.cpp
         utils/modules.hpp
         utils/MultiLayout.hpp
-        section/SummarySection/widgets/modulesummary.cpp
-        section/SummarySection/widgets/modulesummary.hpp
-        section/SummarySection/widgets/modulesummary.ui
-        section/SummarySection/widgets/summaryitembase.cpp
-        section/SummarySection/widgets/summaryitembase.hpp
-        section/SummarySection/widgets/summaryitembase.ui
         utils/utils.cpp
         utils/utils.hpp
 )

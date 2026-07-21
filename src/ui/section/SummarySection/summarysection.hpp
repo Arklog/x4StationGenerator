@@ -34,7 +34,7 @@ public:
 
     ~SummarySection() override;
 
-    void updateTargetList(const t_x4_complex &targets);
+    void updateTargetList(const t_x4_complex &targets, const common::utils::WareTargetContainer &ware_targets);
 
 private:
     Ui::SummarySection *ui;

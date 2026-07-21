@@ -117,5 +117,5 @@ void MainWindow::complexUpdated() {
     complex_.insert(complex_.end(), base_complex.begin(),
                     base_complex.end());
 
-    summary_section_->updateTargetList(complex_);
+    summary_section_->updateTargetList(complex_, );
 }
