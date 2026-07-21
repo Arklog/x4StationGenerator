@@ -38,6 +38,28 @@ namespace ui::section::summarysection::widgets {
         };
     };
 
+    class ModuleSummaryNameItem final : public SummaryItemBase {
+    public:
+        ModuleSummaryNameItem(ModuleSummaryItemData data);
+
+        const ModuleSummaryItemData data;
+
+        struct Comparator {
+            static bool operator()(const ModuleSummaryNameItem *a, const ModuleSummaryNameItem *b);
+        };
+    };
+
+    class ModuleSummaryCountItem final : public SummaryItemBase {
+    public:
+        ModuleSummaryCountItem(ModuleSummaryItemData data);
+
+        const ModuleSummaryItemData data;
+
+        struct Comparator {
+            static bool operator()(const ModuleSummaryCountItem *a, const ModuleSummaryCountItem *b);
+        };
+    };
+
     class ModuleSummary : public QGroupBox {
         Q_OBJECT
 
@@ -54,8 +76,14 @@ namespace ui::section::summarysection::widgets {
         Ui::ModuleSummary *ui;
 
         using price_layout = utils::SortedLayout<ModuleSummaryPriceItem, ModuleSummaryPriceItem::Comparator>;
+        using name_layout  = utils::SortedLayout<ModuleSummaryNameItem, ModuleSummaryNameItem::Comparator>;
+        using count_layout = utils::SortedLayout<ModuleSummaryCountItem, ModuleSummaryCountItem::Comparator>;
 
-        utils::MultiLayout<price_layout> layouts;
+        utils::MultiLayout<price_layout, name_layout, count_layout> layouts;
+        QLayout *                                                   content_layout;
+        int                                                         current_layout_index;
+
+        void updateDisplay_(int idx);
     };
 } // ui::section::summarysection::widgets
 

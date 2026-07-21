@@ -16,7 +16,9 @@ void clearLayout(QLayout *layout) {
 }
 
 void clearLayoutNoDelete(QLayout *layout) {
-    while (layout->count()) {
-        layout->takeAt(0);
+    while (auto item = layout->takeAt(0)) {
+        if (auto widget = item->widget()) {
+            widget->setParent(nullptr);
+        }
     }
 }

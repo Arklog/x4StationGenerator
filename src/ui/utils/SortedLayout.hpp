@@ -24,28 +24,27 @@ namespace ui::utils {
     public:
         using value_type = VType;
 
-        LayoutType *  layout;
         ContainerType container;
 
         SortedLayout(QWidget *parent = nullptr) :
-        layout(new LayoutType(parent)),
         container{},
         _parent(parent) {
         };
 
+        ~SortedLayout() {
+            clear();
+        }
+
         void clear() {
+            std::ranges::for_each(container, [](auto item) {
+                item->deleteLater();
+            });
             container.clear();
-            clearLayout(layout);
         }
 
         void insert(VType *vtype) {
             container.push_back(vtype);
             std::ranges::sort(container, Fn());
-
-            clearLayoutNoDelete(layout);
-            std::ranges::for_each(container, [&](auto v) {
-                layout->addWidget(v);
-            });
         }
 
         template<std::ranges::range Container>
@@ -53,11 +52,6 @@ namespace ui::utils {
             container.insert(container.end(), container_.begin(), container_.end());
 
             std::ranges::sort(container, Fn());
-
-            clearLayoutNoDelete(layout);
-            std::ranges::for_each(container, [&](auto v) {
-                layout->addWidget(v);
-            });
         }
 
         template<typename... Args>
@@ -75,11 +69,6 @@ namespace ui::utils {
             });
 
             std::ranges::sort(container, Fn());
-
-            clearLayoutNoDelete(layout);
-            std::ranges::for_each(container, [&](auto v) {
-                layout->addWidget(v);
-            });
         }
 
     private:
