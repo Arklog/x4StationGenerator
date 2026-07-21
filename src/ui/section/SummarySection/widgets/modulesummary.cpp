@@ -22,7 +22,7 @@ namespace ui::section::summarysection::widgets {
     ModuleSummaryPriceItem::ModuleSummaryPriceItem(ModuleSummaryItemData data) :
     SummaryItemBase(),
     data{std::move(data)} {
-        auto layout      = new QFormLayout(this);
+        auto layout      = new QGridLayout(this);
         auto module_name = new QLabel{
             QString::fromStdString(fmt::format("{} x {}", data.amount, data.module.name)), this
         };
@@ -30,9 +30,8 @@ namespace ui::section::summarysection::widgets {
             QString::fromStdString(std::to_string(data.module.price.avg * data.amount)), this
         };
 
-        layout->addRow(module_name, module_price);
-        // module_name->setAlignment(Qt::AlignLeft);
-        // module_price->setAlignment(Qt::AlignRight);
+        layout->addWidget(module_name, 0, 0, Qt::AlignLeft);
+        layout->addWidget(module_price, 0, 1, Qt::AlignRight);
 
         this->setLayout(layout);
     }
