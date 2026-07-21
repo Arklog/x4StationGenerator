@@ -12,8 +12,6 @@ namespace ui::section::summarysection::widgets {
     QWidget(parent),
     ui(new Ui::SummaryItemBase) {
         ui->setupUi(this);
-        auto test = new QLabel("fuck");
-        this->layout()->addWidget(test);
     }
 
     SummaryItemBase::~SummaryItemBase() {

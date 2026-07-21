@@ -6,7 +6,9 @@
 
 #include "modulesummary.hpp"
 
+#include <QComboBox>
 #include <QFormLayout>
+#include <QScrollArea>
 #include <ui_summaryitembase.h>
 
 #include "ui_modulesummary.h"
@@ -22,10 +24,17 @@ namespace ui::section::summarysection::widgets {
         ui->text->deleteLater();
         delete this->layout();
 
-        auto layout       = new QFormLayout(this);
-        auto module_name  = new QLabel{QString::fromStdString(data.module.name)};
-        auto module_price = new QLabel{QString::fromStdString(std::to_string(data.module.price.avg * data.amount))};
+        auto layout      = new QFormLayout(this);
+        auto module_name = new QLabel{
+            QString::fromStdString(fmt::format("{} x {}", data.amount, data.module.name)), this
+        };
+        auto module_price = new QLabel{
+            QString::fromStdString(std::to_string(data.module.price.avg * data.amount)), this
+        };
+
         layout->addRow(module_name, module_price);
+        // module_name->setAlignment(Qt::AlignLeft);
+        // module_price->setAlignment(Qt::AlignRight);
 
         this->setLayout(layout);
     }
@@ -36,11 +45,26 @@ namespace ui::section::summarysection::widgets {
     }
 
     ModuleSummary::ModuleSummary(QWidget *parent) :
-    QWidget(parent),
+    QGroupBox("Modules", parent),
     ui(new Ui::ModuleSummary),
     layouts(price_layout{this}) {
         ui->setupUi(this);
-        this->setLayout(layouts.get<0>().layout);
+
+        auto sort_selector  = new QFormLayout(this);
+        auto sort_selection = new QComboBox(this);
+        sort_selector->addRow(new QLabel("Sort by:", this), sort_selection);
+
+        auto scroll_area = new QScrollArea(this);
+        auto widget      = new QWidget(this);
+        scroll_area->setWidget(widget);
+        widget->setLayout(layouts.get<0>().layout);
+        widget->setMaximumSize(QSize(16777215, 16777215));
+        widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        scroll_area->setStyleSheet("background-color: red; border: solid 1px white;");
+
+        ui->layout->addLayout(sort_selector);
+        ui->layout->addWidget(scroll_area);
     }
 
     ModuleSummary::~ModuleSummary() {

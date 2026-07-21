@@ -6,6 +6,8 @@
 
 #include "complexsummary.hpp"
 
+#include <QGroupBox>
+
 #include "modulesummary.hpp"
 #include "ui_complexsummary.h"
 
@@ -15,8 +17,15 @@ namespace ui::summarysection::widgets {
     ui(new Ui::ComplexSummary) {
         ui->setupUi(this);
 
-        module_summary_ = new section::summarysection::widgets::ModuleSummary(this);
-        ui->modules_summary->addWidget(module_summary_);
+        auto layout = new QGridLayout(this);
+
+        module_summary_        = new section::summarysection::widgets::ModuleSummary(this);
+        auto wares_placeholder = new QGroupBox("wares", this);
+        auto other_placeholder = new QGroupBox("other", this);
+
+        layout->addWidget(module_summary_, 0, 0, 1, 1);
+        layout->addWidget(wares_placeholder, 0, 1, 1, 1);
+        layout->addWidget(other_placeholder, 1, 0, 1, 2);
     }
 
     ComplexSummary::~ComplexSummary() {

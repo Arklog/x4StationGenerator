@@ -5,6 +5,7 @@
 #ifndef X4STATIONGENERATOR_SRC_UI_SECTION_SUMMARYSECTION_WIDGETS_MODULESUMMARY_HPP
 #define X4STATIONGENERATOR_SRC_UI_SECTION_SUMMARYSECTION_WIDGETS_MODULESUMMARY_HPP
 
+#include <QGroupBox>
 #include <QWidget>
 
 #include "summaryitembase.hpp"
@@ -37,7 +38,7 @@ namespace ui::section::summarysection::widgets {
         };
     };
 
-    class ModuleSummary : public QWidget {
+    class ModuleSummary : public QGroupBox {
         Q_OBJECT
 
     public:

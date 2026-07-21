@@ -28,10 +28,10 @@ ui(new Ui::SummarySection),
 store_(store) {
     ui->setupUi(this);
 
-    complex_summary_        = new ui::summarysection::widgets::ComplexSummary(this);
-    auto summary_tab_layout = new QGridLayout(ui->summary_tab);
-    summary_tab_layout->addWidget(complex_summary_, 0, 0, 1, 1);
-    ui->summary_tab->setLayout(summary_tab_layout);
+    complex_summary_ = new ui::summarysection::widgets::ComplexSummary(this);
+    ui->summary_tab_layout->addWidget(complex_summary_, 0, 0, 1, 1);
+    ui->summary_tab_layout->setRowStretch(0, 1);
+    ui->summary_tab_layout->setColumnStretch(0, 1);
 
     auto cost_chart_view = new QChartView(this);
 
