@@ -47,10 +47,10 @@ namespace ui::section::summarysection::widgets {
     ModuleSummary::ModuleSummary(QWidget *parent) :
     QGroupBox("Modules", parent),
     ui(new Ui::ModuleSummary),
-    layouts(price_layout{this}) {
+    layouts(price_layout{}) {
         ui->setupUi(this);
 
-        auto sort_selector  = new QFormLayout(this);
+        auto sort_selector  = new QFormLayout;
         auto sort_selection = new QComboBox(this);
         sort_selector->addRow(new QLabel("Sort by:", this), sort_selection);
 
@@ -58,13 +58,10 @@ namespace ui::section::summarysection::widgets {
         auto widget      = new QWidget(this);
         scroll_area->setWidget(widget);
         widget->setLayout(layouts.get<0>().layout);
-        widget->setMaximumSize(QSize(16777215, 16777215));
-        widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-        scroll_area->setStyleSheet("background-color: red; border: solid 1px white;");
-
-        ui->layout->addLayout(sort_selector);
-        ui->layout->addWidget(scroll_area);
+        ui->layout->addLayout(sort_selector, 0, 0);
+        ui->layout->addWidget(scroll_area, 1, 0);
+        ui->layout->setRowStretch(1, 1);
     }
 
     ModuleSummary::~ModuleSummary() {
