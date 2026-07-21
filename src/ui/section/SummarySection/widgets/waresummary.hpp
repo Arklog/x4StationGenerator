@@ -31,7 +31,7 @@ namespace ui::section::summarysection::widgets {
 
     class WareSummaryNameItem : public SummaryItemBase {
     public:
-        WareSummaryNameItem(WareSummaryItemData data);
+        WareSummaryNameItem(WareSummaryItemData data_);
 
         WareSummaryItemData data;
 
@@ -42,7 +42,7 @@ namespace ui::section::summarysection::widgets {
 
     class WareSummaryPriceItem : public SummaryItemBase {
     public:
-        WareSummaryPriceItem(WareSummaryItemData data);
+        WareSummaryPriceItem(WareSummaryItemData data_);
 
         WareSummaryItemData data;
         long long           avg_price;
@@ -54,7 +54,7 @@ namespace ui::section::summarysection::widgets {
 
     class WareSummaryAmountItem : public SummaryItemBase {
     public:
-        WareSummaryAmountItem(WareSummaryItemData data);
+        WareSummaryAmountItem(WareSummaryItemData data_);
 
         WareSummaryItemData data;
 

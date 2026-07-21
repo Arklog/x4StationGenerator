@@ -27,9 +27,7 @@ namespace ui::section::summarysection::widgets {
         auto module_name = new QLabel{
             QString::fromStdString(fmt::format("{} x {}", data.amount, data.module.name)), this
         };
-        auto module_price = new QLabel{
-            QString::fromStdString(std::to_string(data.module.price.avg * data.amount)), this
-        };
+        auto module_price = new QLabel{QLocale().toString(data.module.price.avg * data.amount), this};
 
         layout->addWidget(module_name, 0, 0, Qt::AlignLeft);
         layout->addWidget(module_price, 0, 1, Qt::AlignRight);
@@ -39,7 +37,7 @@ namespace ui::section::summarysection::widgets {
 
     bool ModuleSummaryPriceItem::Comparator::operator()(const ModuleSummaryPriceItem *a,
                                                         const ModuleSummaryPriceItem *b) {
-        return a->data.module.price.avg * a->data.amount < b->data.module.price.avg * b->data.amount;
+        return a->data.module.price.avg * a->data.amount > b->data.module.price.avg * b->data.amount;
     }
 
     ModuleSummaryNameItem::ModuleSummaryNameItem(ModuleSummaryItemData data) :
@@ -60,7 +58,7 @@ namespace ui::section::summarysection::widgets {
     data{std::move(data)} {
         auto layout        = new QGridLayout;
         auto module_name   = new QLabel(QString::fromStdString(data.module.name), this);
-        auto module_amount = new QLabel(QString::fromStdString(std::to_string(data.amount)), this);
+        auto module_amount = new QLabel(QLocale().toString(data.amount), this);
 
         layout->addWidget(module_name, 0, 0, Qt::AlignLeft);
         layout->addWidget(module_amount, 0, 1, Qt::AlignRight);
@@ -70,7 +68,7 @@ namespace ui::section::summarysection::widgets {
 
     bool ModuleSummaryCountItem::Comparator::operator()(const ModuleSummaryCountItem *a,
                                                         const ModuleSummaryCountItem *b) {
-        return a->data.amount < b->data.amount;
+        return a->data.amount > b->data.amount;
     }
 
     ModuleSummary::ModuleSummary(QWidget *parent) :

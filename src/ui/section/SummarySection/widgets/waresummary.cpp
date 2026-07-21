@@ -16,11 +16,11 @@
 #include "stationbuilder/Complex.hpp"
 
 namespace ui::section::summarysection::widgets {
-    WareSummaryNameItem::WareSummaryNameItem(WareSummaryItemData data) :
+    WareSummaryNameItem::WareSummaryNameItem(WareSummaryItemData data_) :
     SummaryItemBase(),
-    data{std::move(data)} {
+    data{std::move(data_)} {
         auto layout = new QVBoxLayout(this);
-        auto text   = new QLabel{QString::fromStdString(data.ware.name), this};
+        auto text   = new QLabel{QString::fromStdString(this->data.ware.name), this};
 
         layout->addWidget(text);
         this->setLayout(layout);
@@ -30,14 +30,14 @@ namespace ui::section::summarysection::widgets {
         return a->data.ware.name < b->data.ware.name;
     }
 
-    WareSummaryPriceItem::WareSummaryPriceItem(WareSummaryItemData data) :
+    WareSummaryPriceItem::WareSummaryPriceItem(WareSummaryItemData data_) :
     SummaryItemBase(),
-    data{std::move(data)},
+    data{std::move(data_)},
     avg_price{static_cast<long long>(data.ware.price.avg) * data.amount} {
         auto layout = new QGridLayout(this);
 
         auto name  = new QLabel{QString::fromStdString(data.ware.name), this};
-        auto price = new QLabel{QString::fromStdString(std::to_string(avg_price)), this};
+        auto price = new QLabel{QLocale().toString(avg_price), this};
 
         layout->addWidget(name, 0, 0, Qt::AlignLeft);
         layout->addWidget(price, 0, 1, Qt::AlignRight);
@@ -45,16 +45,16 @@ namespace ui::section::summarysection::widgets {
     }
 
     bool WareSummaryPriceItem::Comparator::operator()(const WareSummaryPriceItem *a, const WareSummaryPriceItem *b) {
-        return a->avg_price < b->avg_price;
+        return a->avg_price > b->avg_price;
     }
 
-    WareSummaryAmountItem::WareSummaryAmountItem(WareSummaryItemData data) :
+    WareSummaryAmountItem::WareSummaryAmountItem(WareSummaryItemData data_) :
     SummaryItemBase(),
-    data{std::move(data)} {
+    data{std::move(data_)} {
         auto layout = new QGridLayout(this);
 
         auto name   = new QLabel{QString::fromStdString(data.ware.name), this};
-        auto amount = new QLabel{QString::fromStdString(std::to_string(data.amount)), this};
+        auto amount = new QLabel{QLocale().toString(data.amount), this};
 
         layout->addWidget(name, 0, 0, Qt::AlignLeft);
         layout->addWidget(amount, 0, 1, Qt::AlignRight);
@@ -62,7 +62,7 @@ namespace ui::section::summarysection::widgets {
     }
 
     bool WareSummaryAmountItem::Comparator::operator()(const WareSummaryAmountItem *a, const WareSummaryAmountItem *b) {
-        return a->data.amount < b->data.amount;
+        return a->data.amount > b->data.amount;
     }
 
     WareSummary::WareSummary(QWidget *parent) :
@@ -106,9 +106,11 @@ namespace ui::section::summarysection::widgets {
     void WareSummary::update(const common::stationbuilder::Complex &complex, const common::data::Store &store) {
         auto &                           ware_targets = complex.wares;
         std::vector<WareSummaryItemData> data;
-        
+
         std::ranges::for_each(ware_targets.getTargets(), [&](auto &item) {
             WareSummaryItemData itemData{};
+            if (item.prodution == 0)
+                return;
 
             itemData.ware   = *store.wares.by_id.at(item.ware_id);
             itemData.amount = item.prodution;
