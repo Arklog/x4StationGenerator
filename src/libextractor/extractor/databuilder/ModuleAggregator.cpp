@@ -52,7 +52,7 @@ namespace extractor::databuilder {
 
         auto &effects_ = production.effects.value().effect;
         for (auto &[type, value]: effects_) {
-            this->effects.emplace(std::move(type.value()), std::move(value.value()));
+            this->effects.emplace(std::move(type.value()), value.value());
         }
     }
 

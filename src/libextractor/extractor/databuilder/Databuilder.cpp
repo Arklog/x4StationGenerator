@@ -46,7 +46,7 @@ namespace extractor::databuilder {
                 common::types::module::ProductionModule::ProducedWare ware_production_data{
                     .amount = static_cast<size_t>(std::floor(ware_production.amount * time_factor)),
                     .work   = ware_production.effects["work"] + 1.0f,
-                    .sun    = ware_production.effects["sun"]
+                    .sun    = ware_production.effects["sunlight"]
                 };
                 finished_module.wares_produced.emplace(ware_id, std::move(ware_production_data));
 
