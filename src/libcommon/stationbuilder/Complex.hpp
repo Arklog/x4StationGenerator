@@ -9,8 +9,12 @@
 
 namespace common::stationbuilder {
     struct Complex {
+        std::string                name;
         t_x4_complex               complex;
         utils::WareTargetContainer wares;
+        size_t                     workforce;
+        size_t                     workforce_max;
+        double                     sun;
     };
 }
 

@@ -79,12 +79,6 @@ FetchContent_MakeAvailable(
 #    endif ()
 #endif ()
 
-get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
-if (_isMultiConfig)
-    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include_$<CONFIG>)
-else ()
-    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
-endif ()
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
     set(DEBUG_COMPILE_FLAGS -O0 -g -fno-dce -fno-dse -fno-tree-dce -fno-tree-dse -fno-inline -fconcepts-diagnostics-depth=3)

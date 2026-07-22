@@ -7,11 +7,21 @@
 
 #include <QWidget>
 
-#include "modulesummary.hpp"
-#include "waresummary.hpp"
-#include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
-#include "utils/WareTargetContainer.hpp"
+
+namespace ui::section::summarysection::widgets {
+    class OverviewSummary;
+    class WareSummary;
+    class ModuleSummary;
+}
+
+namespace common::data {
+    struct Store;
+}
+
+namespace common::stationbuilder {
+    struct Complex;
+}
 
 namespace ui::summarysection::widgets {
     QT_BEGIN_NAMESPACE
@@ -38,8 +48,9 @@ namespace ui::summarysection::widgets {
     private:
         Ui::ComplexSummary *ui;
 
-        section::summarysection::widgets::ModuleSummary *module_summary_;
-        section::summarysection::widgets::WareSummary *  ware_summary_;
+        section::summarysection::widgets::ModuleSummary *  module_summary_;
+        section::summarysection::widgets::WareSummary *    ware_summary_;
+        section::summarysection::widgets::OverviewSummary *overview_summary_;
 
         void _build_modules_summary(const t_x4_complex &complex);
     };

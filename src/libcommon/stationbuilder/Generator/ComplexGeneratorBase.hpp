@@ -75,7 +75,8 @@ namespace common::stationbuilder::generator {
         utils::WareTargetContainer  current_production_;
         const Settings &            settings_;
         const data::Store &         store_;
-        long int                    workforce_;
+        size_t                      workforce_max_;
+        size_t                      workforce_current_;
         size_t                      current_step_;
         double                      sunlight_;
 

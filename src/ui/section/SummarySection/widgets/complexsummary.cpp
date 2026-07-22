@@ -8,8 +8,9 @@
 
 #include <QGroupBox>
 
-#include "modulesummary.hpp"
 #include "ui_complexsummary.h"
+#include "modulesummary.hpp"
+#include "overviewsummary.hpp"
 #include "waresummary.hpp"
 #include "stationbuilder/Complex.hpp"
 
@@ -21,13 +22,13 @@ namespace ui::summarysection::widgets {
 
         auto layout = new QGridLayout(this);
 
-        module_summary_        = new section::summarysection::widgets::ModuleSummary(this);
-        ware_summary_          = new section::summarysection::widgets::WareSummary{this};
-        auto other_placeholder = new QGroupBox("other", this);
+        module_summary_   = new section::summarysection::widgets::ModuleSummary(this);
+        ware_summary_     = new section::summarysection::widgets::WareSummary{this};
+        overview_summary_ = new section::summarysection::widgets::OverviewSummary{this};
 
         layout->addWidget(module_summary_, 0, 0, 1, 1);
         layout->addWidget(ware_summary_, 0, 1, 1, 1);
-        layout->addWidget(other_placeholder, 1, 0, 1, 2);
+        layout->addWidget(overview_summary_, 1, 0, 1, 2);
         this->setLayout(layout);
     }
 
@@ -40,5 +41,6 @@ namespace ui::summarysection::widgets {
         // return;
         module_summary_->update(complex, store);
         ware_summary_->update(complex, store);
+        overview_summary_->update(complex, store);
     }
 } // ui::summarysection::widgets

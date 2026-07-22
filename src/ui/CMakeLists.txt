@@ -1,3 +1,11 @@
+set(TARGET_NAME x4StationGeneratorUi)
+get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if (_isMultiConfig)
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include_$<CONFIG>)
+else ()
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
+endif ()
+
 add_library(x4StationGeneratorUi
         mainwindow.cpp
         mainwindow.h
@@ -54,6 +62,9 @@ add_library(x4StationGeneratorUi
         utils/MultiLayout.hpp
         utils/utils.cpp
         utils/utils.hpp
+        section/SummarySection/widgets/overviewsummary.cpp
+        section/SummarySection/widgets/overviewsummary.hpp
+        section/SummarySection/widgets/overviewsummary.ui
 )
 target_include_directories(x4StationGeneratorUi
         INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>

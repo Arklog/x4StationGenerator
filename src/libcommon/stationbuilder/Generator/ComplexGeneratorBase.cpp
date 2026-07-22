@@ -139,9 +139,9 @@ namespace common::stationbuilder::generator {
             _updateCurrentProduction(item.first, -item.second);
         });
 
-        workforce_ -= habitat->capacity;
-        while (workforce_ < 0) {
-            workforce_ += habitat->capacity;
+        workforce_current_ += amount;
+        while (workforce_max_ < workforce_max_) {
+            workforce_max_ += habitat->capacity;
             modules.push_back(habitat->module.get().id);
         }
     }
@@ -169,7 +169,8 @@ namespace common::stationbuilder::generator {
 
     Complex ComplexGeneratorBase::build() {
         Complex result{};
-        workforce_ = 0;
+        workforce_max_     = 0;
+        workforce_current_ = 0;
         spdlog::info("Starting complex generation");
 
         current_step_ = 0;
@@ -180,7 +181,11 @@ namespace common::stationbuilder::generator {
         }
 
         spdlog::info("Complex generated");
-        result.wares = current_production_;
+        result.name          = settings_.name;
+        result.wares         = current_production_;
+        result.sun           = settings_.sunlight;
+        result.workforce     = workforce_current_;
+        result.workforce_max = workforce_max_;
         return result;
     }
 
