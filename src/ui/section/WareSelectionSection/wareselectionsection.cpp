@@ -26,6 +26,7 @@ store_(store) {
     auto ware_selector           = new WaresSelector(store, this);
     auto ware_configurator_panel = new WareConfiguratorPanel(settings, store, this);
 
+    this->settings_.workforce_module = store.habitats.datas[0].module.get().id;
     for (auto const &habitat: store.habitats.datas) {
         ui->habitat_input->addItem(QString::fromStdString(habitat.module.value().name));
     }
