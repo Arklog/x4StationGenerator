@@ -35,28 +35,28 @@ namespace extractor::databuilder {
 
         for (auto &[ware_id, method]: module.wares_produced) {
             try {
-                auto & ware            = store.wares.by_id.at(ware_id);
-                auto & ware_production = ware.production.at(method);
-                double time_factor     = 3600.0f / (ware_production.time * module.wares_produced.size());
+                auto &ware            = store.wares.by_id.at(ware_id);
+                auto &ware_production = ware.production.at(method);
 
                 if (ware_production.amount == 0)
                     continue;
                 ware_whitelist.insert(ware_id);
 
                 common::types::module::ProductionModule::ProducedWare ware_production_data{
-                    .amount = static_cast<size_t>(std::floor(ware_production.amount * time_factor)),
+                    .amount = static_cast<size_t>(std::floor(ware_production.amount)),
+                    .time   = ware_production.time,
                     .work   = ware_production.effects["work"] + 1.0f,
-                    .sun    = ware_production.effects["sunlight"]
+                    .sun    = ware_production.effects["sunlight"],
                 };
-                finished_module.wares_produced.emplace(ware_id, std::move(ware_production_data));
 
                 for (auto &[required_id, required_amount]: ware_production.wares_required) {
                     if (required_amount == 0)
                         continue;
                     ware_whitelist.insert(required_id);
-                    auto &required_amount_total = finished_module.wares_required[required_id];
-                    required_amount_total       -= static_cast<long long>(std::ceil(required_amount * time_factor));
+                    ware_production_data.consumed.emplace(required_id, -required_amount);
                 }
+
+                finished_module.wares_produced.emplace(ware_id, std::move(ware_production_data));
             } catch (const std::out_of_range &e) {
                 spdlog::error("No match for ware {} with production method {}: \nError originating from module {}",
                               ware_id, finished_module.production_method, finished_module.module.value().id);

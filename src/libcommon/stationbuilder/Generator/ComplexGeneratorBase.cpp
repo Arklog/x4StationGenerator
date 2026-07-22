@@ -34,21 +34,18 @@ namespace common::stationbuilder::generator {
                                      t_x4_complex &            modules) {
         const auto &next        = _nextTarget(targets, current_state, modules);
         const auto &next_module = store_.production.by_id.at(next->source_module);
-        const auto &production  = next_module->wares_produced;
+        const auto &production  = next_module->getHourlyProduction(settings_.workforce_enables, settings_.sunlight);
 
         // add all wares produced + adjust for workforce and sun factor
         std::ranges::for_each(production, [this](const auto &v) {
             auto &ware_id = v.first;
             auto  data    = v.second;
 
-            if (settings_.workforce_enables)
-                data.amount *= data.work;
-            data.amount *= 1.0f + (settings_.sunlight * data.sun);
             _updateCurrentProduction(ware_id, data.amount);
         });
 
         // add all wares consumed
-        std::ranges::for_each(next_module->wares_required, [this](const auto &v) {
+        std::ranges::for_each(next_module->getHourlyConsumption(), [this](const auto &v) {
             auto &ware_id = v.first;
             auto  amount  = v.second;
 
@@ -140,7 +137,7 @@ namespace common::stationbuilder::generator {
         });
 
         workforce_current_ += amount;
-        while (workforce_max_ < workforce_max_) {
+        while (workforce_max_ < workforce_current_) {
             workforce_max_ += habitat->capacity;
             modules.push_back(habitat->module.get().id);
         }
