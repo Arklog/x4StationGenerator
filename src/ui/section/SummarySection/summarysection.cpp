@@ -9,7 +9,10 @@
 
 #include "ui_summarysection.h"
 
-#include "../../../libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
+
+#include "utils/utils.hpp"
+
 #include <QBarCategoryAxis>
 #include <QBarSet>
 #include <QChartView>
@@ -17,21 +20,18 @@
 #include <QStackedBarSeries>
 #include <sstream>
 
-#include "spdlog/spdlog.h"
-
-static void clearLayout(QLayout *layout) {
-    while (auto item = layout->takeAt(0)) {
-        if (auto widget = item->widget()) {
-            widget->deleteLater();
-        }
-    }
-}
+#include <spdlog/spdlog.h>
 
 SummarySection::SummarySection(const Store &store, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::SummarySection),
 store_(store) {
     ui->setupUi(this);
+
+    complex_summary_ = new ui::summarysection::widgets::ComplexSummary(this);
+    ui->summary_tab_layout->addWidget(complex_summary_, 0, 0, 1, 1);
+    ui->summary_tab_layout->setRowStretch(0, 1);
+    ui->summary_tab_layout->setColumnStretch(0, 1);
 
     auto cost_chart_view = new QChartView(this);
 
@@ -47,14 +47,15 @@ store_(store) {
 
 SummarySection::~SummarySection() { delete ui; }
 
-void SummarySection::updateTargetList(const t_x4_complex &targets) {
+void SummarySection::updateTargetList(const common::stationbuilder::Complex &complex) {
     spdlog::debug("Updating summary section");
 
     t_module_quantity modules_recap{};
 
-    for (const auto &target: targets)
+    for (const auto &target: complex.complex)
         modules_recap[target] += 1;
 
+    complex_summary_->update(complex, store_);
     updateCostTab(modules_recap);
 }
 

@@ -11,10 +11,10 @@
 
 #include "spdlog/spdlog.h"
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
-#include "ui/section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
-#include "ui/section/WareSelectionSection/widgets/waresselector.hpp"
+#include "section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
+#include "section/WareSelectionSection/widgets/waresselector.hpp"
 
 WareSelectionSection::WareSelectionSection(Settings &   settings,
                                            const Store &store, QWidget *parent) :
@@ -26,6 +26,7 @@ store_(store) {
     auto ware_selector           = new WaresSelector(store, this);
     auto ware_configurator_panel = new WareConfiguratorPanel(settings, store, this);
 
+    this->settings_.workforce_module = store.habitats.datas[0].module.get().id;
     for (auto const &habitat: store.habitats.datas) {
         ui->habitat_input->addItem(QString::fromStdString(habitat.module.value().name));
     }
@@ -41,7 +42,7 @@ store_(store) {
                 ware_configurator_panel->addWare(ware_id, false, 0);
             });
     connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate,
-            [this](t_x4_complex complex) {
+            [this](common::stationbuilder::Complex complex) {
                 this->complex_ = std::move(complex);
                 emit complexUpdated();
             });
@@ -75,6 +76,6 @@ store_(store) {
 
 WareSelectionSection::~WareSelectionSection() { delete ui; }
 
-const common::stationbuilder::t_x4_complex &WareSelectionSection::getComplex() {
+const common::stationbuilder::Complex &WareSelectionSection::getComplex() {
     return this->complex_;
 }

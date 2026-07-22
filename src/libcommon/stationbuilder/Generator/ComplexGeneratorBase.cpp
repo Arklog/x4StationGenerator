@@ -55,6 +55,7 @@ namespace common::stationbuilder::generator {
             _updateCurrentProduction(ware_id, amount);
         });
 
+        modules.push_back(next_module->module.get().id);
         if (settings_.workforce_enables)
             _add_workforce(next_module->required_workforce, modules);
     }
@@ -138,9 +139,9 @@ namespace common::stationbuilder::generator {
             _updateCurrentProduction(item.first, -item.second);
         });
 
-        workforce_ -= habitat->capacity;
-        while (workforce_ < 0) {
-            workforce_ += habitat->capacity;
+        workforce_current_ += amount;
+        while (workforce_max_ < workforce_max_) {
+            workforce_max_ += habitat->capacity;
             modules.push_back(habitat->module.get().id);
         }
     }
@@ -166,19 +167,25 @@ namespace common::stationbuilder::generator {
         }
     }
 
-    t_x4_complex ComplexGeneratorBase::build() {
-        t_x4_complex result{};
-        workforce_ = 0;
+    Complex ComplexGeneratorBase::build() {
+        Complex result{};
+        workforce_max_     = 0;
+        workforce_current_ = 0;
         spdlog::info("Starting complex generation");
 
         current_step_ = 0;
         sunlight_     = this->settings_.sunlight;
-        while (!_done(this->targets_, this->current_production_, result)) {
-            _step(this->targets_, this->current_production_, result);
+        while (!_done(this->targets_, this->current_production_, result.complex)) {
+            _step(this->targets_, this->current_production_, result.complex);
             ++current_step_;
         }
 
         spdlog::info("Complex generated");
+        result.name          = settings_.name;
+        result.wares         = current_production_;
+        result.sun           = settings_.sunlight;
+        result.workforce     = workforce_current_;
+        result.workforce_max = workforce_max_;
         return result;
     }
 

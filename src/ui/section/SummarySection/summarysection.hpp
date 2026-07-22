@@ -5,10 +5,13 @@
 #ifndef SUMMARYSECTION_HPP
 #define SUMMARYSECTION_HPP
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 
 #include <QWidget>
+
+#include "stationbuilder/Complex.hpp"
+#include "widgets/complexsummary.hpp"
 
 class QChart;
 class QChartView;
@@ -33,7 +36,7 @@ public:
 
     ~SummarySection() override;
 
-    void updateTargetList(const t_x4_complex &targets);
+    void updateTargetList(const common::stationbuilder::Complex &complex);
 
 private:
     Ui::SummarySection *ui;
@@ -42,6 +45,8 @@ private:
     QChart *           cost_chart_;
     QChartView *       cost_view_;
     const Store &      store_;
+
+    ui::summarysection::widgets::ComplexSummary *complex_summary_;
 
     void updateCostTab(const t_module_quantity &modules);
 };

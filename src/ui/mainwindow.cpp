@@ -3,7 +3,7 @@
 #include <QTextStream>
 #include <cmath>
 
-#include "modules.hpp"
+#include "utils/modules.hpp"
 
 #include "ui_mainwindow.h"
 
@@ -83,7 +83,7 @@ void MainWindow::exportPlan() {
 
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
-            auto        data = genModulePlan(complex_, store_, settings_);
+            auto        data = genModulePlan(complex_.complex, store_, settings_);
 
             file.write(data.c_str());
         }
@@ -94,9 +94,8 @@ void MainWindow::complexUpdated() {
     spdlog::debug("Complex update triggered");
     this->update();
 
-    complex_.clear();
-    const auto &base_complex = this->ware_selection_section_->getComplex();
-    const auto &storages     = this->storage_section_->getModuleTargetList();
+    complex_             = this->ware_selection_section_->getComplex();
+    const auto &storages = this->storage_section_->getModuleTargetList();
     const auto &dock_and_pierr
             = this->dock_and_pierr_section_->getModuleTargetList();
 
@@ -104,18 +103,14 @@ void MainWindow::complexUpdated() {
                   dock_and_pierr.size());
     for (const auto &[module_id, amount]: dock_and_pierr) {
         for (size_t i = 0; i < amount; ++i)
-            complex_.push_back(module_id);
+            complex_.complex.insert(complex_.complex.begin(), module_id);
     }
 
     spdlog::debug("Inserting {} storage modules", storages.size());
     for (const auto &[module_id, amount]: storages) {
         for (size_t i = 0; i < amount; ++i)
-            complex_.push_back(module_id);
+            complex_.complex.insert(complex_.complex.begin(), module_id);
     }
-
-    spdlog::debug("Inserting {} modules", base_complex.size());
-    complex_.insert(complex_.end(), base_complex.begin(),
-                    base_complex.end());
 
     summary_section_->updateTargetList(complex_);
 }

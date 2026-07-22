@@ -1,11 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 #include <QMainWindow>
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/Complex.hpp"
+#include "stationbuilder/defines.hpp"
 
 class SummarySection;
 class DockAndPierrSection;
@@ -29,7 +30,8 @@ public:
 
     ~MainWindow();
 
-public slots:
+public
+slots:
     void exportPlan();
 
     void complexUpdated();
@@ -43,9 +45,9 @@ private:
     SummarySection *      summary_section_;
     SettingsSection *     settings_section_;
 
-    Settings     settings_;
-    const Store &store_;
-    t_x4_complex complex_;
+    Settings                        settings_;
+    const Store &                   store_;
+    common::stationbuilder::Complex complex_;
 };
 
 #endif // MAINWINDOW_H

@@ -10,17 +10,18 @@
 #include "moduleselectionpanel.hpp"
 #include "ui_moduleselectionpanel.h"
 
-#include "../../libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
 
-ModuleSelectionPanel::ModuleSelectionPanel(const t_module_list& module_list, QWidget *parent) :
-    QFrame(parent), ui(new Ui::ModuleSelectionPanel) {
+ModuleSelectionPanel::ModuleSelectionPanel(const t_module_list &module_list, QWidget *parent) :
+QFrame(parent),
+ui(new Ui::ModuleSelectionPanel) {
     QFrame::setFrameShape(QFrame::StyledPanel);
 
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
 
-    for (const auto& module: module_list) {
+    for (const auto &module: module_list) {
         auto module_button = new QPushButton(QString::fromStdString(module->name));
         this->layout()->addWidget(module_button);
 

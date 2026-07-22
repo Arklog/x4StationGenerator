@@ -1,0 +1,2 @@
+create_test(test_SortedLayout SortedLayout.cpp x4StationGeneratorUi)
+create_test(test_MultiLayout MultiLayout.cpp x4StationGeneratorUi)

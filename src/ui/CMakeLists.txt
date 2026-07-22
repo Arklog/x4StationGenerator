@@ -1,0 +1,83 @@
+set(TARGET_NAME x4StationGeneratorUi)
+get_property(_isMultiConfig GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
+if (_isMultiConfig)
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include_$<CONFIG>)
+else ()
+    set(AUTOGEN_INCLUDE_DIR ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}_autogen/include)
+endif ()
+
+add_library(x4StationGeneratorUi
+        mainwindow.cpp
+        mainwindow.h
+        mainwindow.ui
+        section/DockAndPierrSection/dockandpierrsection.ui
+        section/DockAndPierrSection/dockandpierrsection.cpp
+        section/DockAndPierrSection/dockandpierrsection.hpp
+        section/SettingsSection/settingssection.ui
+        section/SettingsSection/settingssection.cpp
+        section/SettingsSection/settingssection.hpp
+        section/StorageSelectionSection/storagesection.ui
+        section/StorageSelectionSection/storagesection.cpp
+        section/StorageSelectionSection/storagesection.hpp
+        section/SummarySection/summarysection.ui
+        section/SummarySection/summarysection.cpp
+        section/SummarySection/summarysection.hpp
+        section/SummarySection/widgets/complexsummary.cpp
+        section/SummarySection/widgets/complexsummary.hpp
+        section/SummarySection/widgets/complexsummary.ui
+        section/SummarySection/widgets/modulesummary.cpp
+        section/SummarySection/widgets/modulesummary.hpp
+        section/SummarySection/widgets/modulesummary.ui
+        section/SummarySection/widgets/summaryitembase.cpp
+        section/SummarySection/widgets/summaryitembase.hpp
+        section/SummarySection/widgets/summaryitembase.ui
+        section/SummarySection/widgets/waresummary.cpp
+        section/SummarySection/widgets/waresummary.hpp
+        section/SummarySection/widgets/waresummary.ui
+        section/WareSelectionSection/wareselectionsection.ui
+        section/WareSelectionSection/wareselectionsection.cpp
+        section/WareSelectionSection/wareselectionsection.h
+        section/WareSelectionSection/widgets/wareconfiguratorpanel.ui
+        section/WareSelectionSection/widgets/waresselector.ui
+        section/WareSelectionSection/widgets/wareconfigurator.ui
+        section/WareSelectionSection/widgets/wareconfigurator.cpp
+        section/WareSelectionSection/widgets/wareconfigurator.hpp
+        section/WareSelectionSection/widgets/wareconfiguratorpanel.cpp
+        section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp
+        section/WareSelectionSection/widgets/waresselector.cpp
+        section/WareSelectionSection/widgets/waresselector.hpp
+        widgets/moduleconfiguration.ui
+        widgets/moduleconfigurationpanel.ui
+        widgets/moduleselectionpanel.ui
+        widgets/moduleconfiguration.cpp
+        widgets/moduleconfiguration.hpp
+        widgets/moduleconfigurationpanel.cpp
+        widgets/moduleconfigurationpanel.hpp
+        widgets/moduleselectionpanel.cpp
+        widgets/moduleselectionpanel.hpp
+        utils/SortedLayout.cpp
+        utils/SortedLayout.hpp
+        utils/modules.cpp
+        utils/modules.hpp
+        utils/MultiLayout.hpp
+        utils/utils.cpp
+        utils/utils.hpp
+        section/SummarySection/widgets/overviewsummary.cpp
+        section/SummarySection/widgets/overviewsummary.hpp
+        section/SummarySection/widgets/overviewsummary.ui
+)
+target_include_directories(x4StationGeneratorUi
+        INTERFACE $<BUILD_INTERFACE:${AUTOGEN_INCLUDE_DIR}>
+)
+target_include_directories(x4StationGeneratorUi PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${AUTOGEN_INCLUDE_DIR})
+target_compile_options(x4StationGeneratorUi PUBLIC ${DEBUG_COMPILE_FLAGS})
+target_link_libraries(x4StationGeneratorUi PUBLIC
+        Qt6::Core
+        Qt6::Gui
+        Qt6::Widgets
+        Qt6::Charts
+        nlohmann_json::nlohmann_json
+        spdlog::spdlog
+        x4StationGeneratorCommon
+        x4StationGeneratorExtractor
+)

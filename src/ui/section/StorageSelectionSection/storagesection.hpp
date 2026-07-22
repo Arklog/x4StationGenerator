@@ -5,8 +5,8 @@
 #ifndef STORAGESELECTIONSECTION_HPP
 #define STORAGESELECTIONSECTION_HPP
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 
 #include <QWidget>
 
@@ -27,7 +27,7 @@ class StorageSection : public QWidget {
 public:
     using Store                = common::data::Store;
     using t_module_target_list = common::stationbuilder::t_module_target_list;
-    
+
     explicit StorageSection(const Store &store, QWidget *parent = nullptr);
 
     ~StorageSection() override;

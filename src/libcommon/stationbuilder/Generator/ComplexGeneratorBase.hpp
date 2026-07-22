@@ -6,6 +6,7 @@
 #define COMPLEXGENERATOR_HPP
 #include "stationbuilder/defines.hpp"
 #include "data/Store.hpp"
+#include "stationbuilder/Complex.hpp"
 #include "utils/WareTargetContainer.hpp"
 
 namespace common::stationbuilder::generator {
@@ -74,7 +75,8 @@ namespace common::stationbuilder::generator {
         utils::WareTargetContainer  current_production_;
         const Settings &            settings_;
         const data::Store &         store_;
-        long int                    workforce_;
+        size_t                      workforce_max_;
+        size_t                      workforce_current_;
         size_t                      current_step_;
         double                      sunlight_;
 
@@ -85,7 +87,7 @@ namespace common::stationbuilder::generator {
 
         virtual ~ComplexGeneratorBase() = default;
 
-        t_x4_complex build();
+        Complex build();
 
         const t_target_container &getCurrentProduction() const;
     };

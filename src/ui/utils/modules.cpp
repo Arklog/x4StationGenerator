@@ -6,9 +6,9 @@
 #include <stack>
 #include <chrono>
 #include <QUuid>
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
-#include "ui/section/DockAndPierrSection/dockandpierrsection.hpp"
+#include "section/DockAndPierrSection/dockandpierrsection.hpp"
 
 using t_x4_complex = common::stationbuilder::t_x4_complex;
 using Store        = common::data::Store;

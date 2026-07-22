@@ -5,13 +5,15 @@
 #ifndef WARESELECTIONSECTION_H
 #define WARESELECTIONSECTION_H
 
-#include "../../../libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 #include <QWidget>
 
+#include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
 
 QT_BEGIN_NAMESPACE
+
 namespace Ui {
     class WareSelectionSection;
 }
@@ -32,16 +34,16 @@ public:
 
     ~WareSelectionSection() override;
 
-    const t_x4_complex &getComplex();
+    const common::stationbuilder::Complex &getComplex();
 
 signals:
     void complexUpdated();
 
 private:
-    Ui::WareSelectionSection *ui;
-    t_x4_complex              complex_;
-    Settings &                settings_;
-    Store                     store_;
+    Ui::WareSelectionSection *      ui;
+    common::stationbuilder::Complex complex_;
+    Settings &                      settings_;
+    Store                           store_;
 };
 
 #endif // WareSelectionSection_H

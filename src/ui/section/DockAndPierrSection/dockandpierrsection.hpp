@@ -5,11 +5,11 @@
 #ifndef DOCKANDPIERRSECTION_HPP
 #define DOCKANDPIERRSECTION_HPP
 
-#include "libcommon/data/Store.hpp"
+#include "data/Store.hpp"
 
 #include <QWidget>
 
-#include "libcommon/stationbuilder/defines.hpp"
+#include "stationbuilder/defines.hpp"
 
 
 class ModuleConfigurationPanel;

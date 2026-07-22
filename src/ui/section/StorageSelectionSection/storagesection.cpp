@@ -9,10 +9,10 @@
 
 #include "ui_storagesection.h"
 
-#include "libcommon/data/WareModuleAndWorkforce.hpp"
+#include "data/WareModuleAndWorkforce.hpp"
 
-#include "ui/widgets/moduleconfigurationpanel.hpp"
-#include "ui/widgets/moduleselectionpanel.hpp"
+#include "widgets/moduleconfigurationpanel.hpp"
+#include "widgets/moduleselectionpanel.hpp"
 
 #include <QScrollArea>
 

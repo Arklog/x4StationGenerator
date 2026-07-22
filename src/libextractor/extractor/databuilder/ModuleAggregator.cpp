@@ -44,15 +44,15 @@ namespace extractor::databuilder {
     method(std::move(production.method.value())),
     time(production.time.value()),
     amount{production.amount.value()} {
+        auto &effects_ = production.effects.value().effect;
+        for (auto &[type, value]: effects_) {
+            this->effects.emplace(std::move(type.value()), value.value());
+        }
+
         if (!production.primary.has_value())
             return;
         for (auto ware: production.primary.value().ware) {
             wares_required.emplace_back(std::move(ware.ware.value()), ware.amount.value());
-        }
-
-        auto &effects_ = production.effects.value().effect;
-        for (auto &[type, value]: effects_) {
-            this->effects.emplace(std::move(type.value()), std::move(value.value()));
         }
     }
 

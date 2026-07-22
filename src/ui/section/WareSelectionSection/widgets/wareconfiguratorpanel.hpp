@@ -9,11 +9,13 @@
 
 #include "ui_wareconfigurator.h"
 
-#include "libcommon/data/Store.hpp"
-#include "libcommon/stationbuilder/defines.hpp"
+#include "data/Store.hpp"
+#include "stationbuilder/defines.hpp"
 #include "utils/WareTargetContainer.hpp"
 
 #include <QGroupBox>
+
+#include "stationbuilder/Complex.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -40,14 +42,15 @@ public:
 
     ~WareConfiguratorPanel() override;
 
-public slots:
+public
+slots:
     void addWare(t_ware_id ware_id, bool is_secondary = false,
                  unsigned  amount                     = 0);
 
     void productionTargetUpdate();
 
 signals:
-    void shouldUpdate(t_x4_complex complex);
+    void shouldUpdate(common::stationbuilder::Complex complex);
 
 private:
     Ui::WareConfiguratorPanel *ui;
