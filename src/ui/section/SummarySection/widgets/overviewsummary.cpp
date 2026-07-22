@@ -101,6 +101,18 @@ namespace ui::section::summarysection::widgets {
         widgets_.container_storage->setText(QLocale().toString(container_storage));
         widgets_.liquid_storage->setText(QLocale().toString(liquid_storage));
         widgets_.solid_storage->setText(QLocale().toString(solid_storage));
+
+        QPalette normal;
+        QPalette warning;
+
+        normal.setColor(QPalette::WindowText, Qt::white);
+        warning.setColor(QPalette::WindowText, Qt::red);
+
+        widgets_.dock_number->setPalette(dock_number ? normal : warning);
+        widgets_.pier_number->setPalette(pier_number ? normal : warning);
+        widgets_.container_storage->setPalette(container_storage ? normal : warning);
+        widgets_.liquid_storage->setPalette(liquid_storage ? normal : warning);
+        widgets_.solid_storage->setPalette(solid_storage ? normal : warning);
     }
 
     OverviewSummary::Widgets::Widgets(QWidget *parent) :
