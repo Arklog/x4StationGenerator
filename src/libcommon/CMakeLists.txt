@@ -1,19 +1,4 @@
 add_library(x4StationGeneratorCommon STATIC
-        data/Loader.cpp
-        data/Loader.hpp
-        data/Store.cpp
-        data/Store.hpp
-        data/WareModuleAndWorkforce.cpp
-        data/WareModuleAndWorkforce.hpp
-        stationbuilder/Generator/ComplexGeneratorBase.cpp
-        stationbuilder/Generator/ComplexGeneratorBase.hpp
-        stationbuilder/defines.cpp
-        stationbuilder/defines.hpp
-        utils/FmtVectorFormatter.hpp
-        utils/WareTargetContainer.cpp
-        utils/WareTargetContainer.hpp
-        ThreadPool.cpp
-        ThreadPool.hpp
         common/types/Price.cpp
         common/types/Price.hpp
         common/types/module/Module.hpp
@@ -34,10 +19,26 @@ add_library(x4StationGeneratorCommon STATIC
         common/types/Workforce.hpp
         common/types/module/ModuleWrapper.cpp
         common/types/module/ModuleWrapper.hpp
+        common/types/StationSaveFile.hpp
+        common/types/StationSaveFile.cpp
         data/Aggregate.cpp
         data/Aggregate.hpp
+        data/Loader.cpp
+        data/Loader.hpp
+        data/Store.cpp
+        data/Store.hpp
+        data/WareModuleAndWorkforce.cpp
+        data/WareModuleAndWorkforce.hpp
         stationbuilder/Complex.hpp
-        common/types/StationSaveFile.hpp
+        stationbuilder/defines.cpp
+        stationbuilder/defines.hpp
+        stationbuilder/Generator/ComplexGeneratorBase.cpp
+        stationbuilder/Generator/ComplexGeneratorBase.hpp
+        ThreadPool.cpp
+        ThreadPool.hpp
+        utils/FmtVectorFormatter.hpp
+        utils/WareTargetContainer.cpp
+        utils/WareTargetContainer.hpp
 )
 target_link_libraries(x4StationGeneratorCommon PRIVATE nlohmann_json spdlog::spdlog reflectcpp)
 target_include_directories(x4StationGeneratorCommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

@@ -111,6 +111,8 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 void WareConfiguratorPanel::productionTargetUpdate() {
     common::stationbuilder::generator::ComplexGeneratorBase test(settings_, store_, this->ware_target_container);
     auto                                                    build_result = test.build();
+    build_result.name                                                    = settings_.name;
+    build_result.habitat_id                                              = settings_.workforce_module;
 
     const auto &current_production = test.getCurrentProduction();
 

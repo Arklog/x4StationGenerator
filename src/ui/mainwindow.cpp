@@ -1,11 +1,12 @@
 #include "mainwindow.h"
 #include <QFileDialog>
 #include <QTextStream>
-#include <cmath>
+#include <QErrorMessage>
 
 #include "utils/modules.hpp"
 
 #include "ui_mainwindow.h"
+#include "common/types/StationSaveFile.hpp"
 
 #include "section/DockAndPierrSection/dockandpierrsection.hpp"
 #include "section/SettingsSection/settingssection.hpp"
@@ -13,11 +14,13 @@
 #include "section/SummarySection/summarysection.hpp"
 #include "section/WareSelectionSection/wareselectionsection.h"
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
+#include <rfl/json.hpp>
 
 MainWindow::MainWindow(const Store &store, QWidget *parent) :
 QMainWindow(parent),
 ui(new Ui::MainWindow),
+error_message_(new QErrorMessage{this}),
 settings_{},
 store_(store),
 complex_{} {
@@ -49,6 +52,7 @@ complex_{} {
             this, &MainWindow::complexUpdated);
     connect(ui->action_export, &QAction::triggered, this,
             &MainWindow::exportPlan);
+    connect(ui->actionSave, &QAction::triggered, this, &MainWindow::savePlan);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -87,6 +91,26 @@ void MainWindow::exportPlan() {
 
             file.write(data.c_str());
         }
+    }
+}
+
+void MainWindow::openPlan() {
+}
+
+void MainWindow::savePlan() {
+    using StationSaveFile = common::types::StationSaveFile;
+    try {
+        StationSaveFile save_file;
+        StationSaveFile::fromComplex(complex_, store_, save_file);
+
+        QFileDialog dialog(this, "Save file", QString::fromStdString(fmt::format("{}.json", save_file.name)));
+
+        if (dialog.exec()) {
+            auto selected_file = dialog.selectedFiles().first();
+            rfl::json::save(selected_file.toStdString(), save_file);
+        }
+    } catch (std::exception &e) {
+        error_message_->showMessage(e.what());
     }
 }
 

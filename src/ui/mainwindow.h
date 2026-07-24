@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QErrorMessage>
+
 #include "data/Store.hpp"
 
 #include <QMainWindow>
@@ -28,11 +30,15 @@ public:
 
     explicit MainWindow(const Store &store, QWidget *parent = nullptr);
 
-    ~MainWindow();
+    ~MainWindow() override;
 
 public
 slots:
     void exportPlan();
+
+    void openPlan();
+
+    void savePlan();
 
     void complexUpdated();
 
@@ -44,6 +50,7 @@ private:
     StorageSection *      storage_section_;
     SummarySection *      summary_section_;
     SettingsSection *     settings_section_;
+    QErrorMessage *       error_message_;
 
     Settings                        settings_;
     const Store &                   store_;

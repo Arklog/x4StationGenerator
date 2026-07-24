@@ -28,6 +28,10 @@ namespace common::utils {
 
         WareTargetContainer(const data::Store &store);
 
+        WareTargetContainer(const WareTargetContainer &);
+
+        WareTargetContainer &operator=(const WareTargetContainer &other);
+
         /**
          * Check if a ware is a primary target
          * @param ware_id

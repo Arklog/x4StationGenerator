@@ -24,6 +24,30 @@ namespace common::utils {
         }
     }
 
+    WareTargetContainer::WareTargetContainer(const WareTargetContainer &other) {
+        *this = other;
+    }
+
+    WareTargetContainer &WareTargetContainer::operator=(const WareTargetContainer &other) {
+        this->ware_targets = other.ware_targets;
+
+        std::ranges::for_each(other.ware_targets_primary, [&](auto n) {
+            auto &ware_id = n->ware_id;
+            this->setPrimaryTarget(ware_id);
+            auto primary = this->getPrimaryTarget(ware_id);
+            *primary     = *n;
+        });
+
+        std::ranges::for_each(other.ware_targets_secondary, [&](auto n) {
+            auto &ware_id = n->ware_id;
+            this->setSecondaryTarget(ware_id);
+            auto secondary = this->getSecondaryTarget(ware_id);
+            *secondary     = *n;
+        });
+
+        return *this;
+    }
+
     bool WareTargetContainer::isPrimaryTarget(
         const t_ware_id &                         ware_id,
         ware_targets_container_t::const_iterator *iter) const {
