@@ -37,6 +37,7 @@ add_library(x4StationGeneratorCommon STATIC
         data/Aggregate.cpp
         data/Aggregate.hpp
         stationbuilder/Complex.hpp
+        common/types/StationSaveFile.hpp
 )
 target_link_libraries(x4StationGeneratorCommon PRIVATE nlohmann_json spdlog::spdlog reflectcpp)
 target_include_directories(x4StationGeneratorCommon PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
