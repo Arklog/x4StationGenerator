@@ -31,10 +31,12 @@ store_(store) {
         ui->habitat_input->addItem(QString::fromStdString(habitat.module.value().name));
     }
 
-    ui->main_layout->setColumnStretch(0, 2);
-    ui->main_layout->setColumnStretch(1, 1);
     ui->main_layout->addWidget(ware_selector, 0, 0);
+    ui->main_layout->setColumnStretch(0, 1);
+
     ui->main_layout->addWidget(ware_configurator_panel, 0, 1);
+    ui->main_layout->setColumnStretch(1, 1);
+
     ui->habitat_input->currentTextChanged(ui->habitat_input->currentText());
 
     connect(ware_selector, &WaresSelector::wareSelected,

@@ -21,7 +21,7 @@ namespace common::stationbuilder::generator {
         // check no produced secondary is in deficit
         auto secondary_check = [this](const WareTarget *target) {
             const auto &store = this->store_;
-            return target->prodution > 0 || !store.wares.by_id.at(target->ware_id)->produced;
+            return target->prodution >= 0 || !store.wares.by_id.at(target->ware_id)->produced;
         };
 
         bool primary_ok   = std::ranges::all_of(targets.getPrimaryTargets(), primary_check);
@@ -170,6 +170,7 @@ namespace common::stationbuilder::generator {
         workforce_current_ = 0;
         spdlog::info("Starting complex generation");
 
+        // current_production_ = utils::WareTargetContainer{store_};
         current_step_ = 0;
         sunlight_     = this->settings_.sunlight;
         while (!_done(this->targets_, this->current_production_, result.complex)) {
