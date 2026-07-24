@@ -18,11 +18,9 @@ namespace common::utils {
                 continue;
             const auto &modules = store.production.producing.at(ware.id);
             if (modules.empty())
-                throw std::logic_error(
-                    fmt::format("Ware '{}':{} is not being produced", ware.name,
-                                ware.id));
+                throw std::logic_error(fmt::format("Ware '{}':{} is not being produced", ware.name, ware.id));
 
-            ware_targets.emplace_back(ware.id, (*modules.begin())->module.value().id);
+            ware_targets.emplace_back(ware.id, (*modules.begin())->module.value().id, 0, false);
         }
     }
 

@@ -26,16 +26,16 @@ ware_target_container{store},
 settings_(settings),
 store_(store) {
     ui->setupUi(this);
-    // QGroupBox::setFrameShape(QFrame::StyledPanel);
     this->setWindowTitle({"Configuration"});
 
     scroll_layout_ = new QVBoxLayout();
     scroll_layout_->setAlignment(Qt::AlignTop);
-    scroll_layout_->setSizeConstraints(QLayout::SetMinimumSize, QLayout::SetMinAndMaxSize);
 
     auto widget = new QWidget(this);
     widget->setLayout(scroll_layout_);
+
     this->setWidget(widget);
+    this->setWidgetResizable(true);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
