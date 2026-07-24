@@ -18,8 +18,9 @@
 WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
                                              const Store &   store,
                                              QWidget *       parent) :
-QGroupBox(parent),
+QScrollArea(parent),
 ui(new Ui::WareConfiguratorPanel),
+scroll_layout_(nullptr),
 ware_configurators{},
 ware_target_container{store},
 settings_(settings),
@@ -28,9 +29,13 @@ store_(store) {
     // QGroupBox::setFrameShape(QFrame::StyledPanel);
     this->setWindowTitle({"Configuration"});
 
-    auto layout = new QVBoxLayout();
-    layout->setAlignment(Qt::AlignTop);
-    this->setLayout(layout);
+    scroll_layout_ = new QVBoxLayout();
+    scroll_layout_->setAlignment(Qt::AlignTop);
+    scroll_layout_->setSizeConstraints(QLayout::SetMinimumSize, QLayout::SetMinAndMaxSize);
+
+    auto widget = new QWidget(this);
+    widget->setLayout(scroll_layout_);
+    this->setWidget(widget);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
@@ -49,12 +54,12 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 
     // If already secondary, remove secondary widget and replace by primary
     if (this->ware_target_container.isSecondaryTarget(ware_id)
-        && !is_secondary) {
+        && !is_secondary && this->ware_configurators.contains(ware_id)) {
         spdlog::info("[WareConfiguratorPanel] {} is already a secondary "
                      "target, upgrading to primary",
                      ware_id);
         auto widget = this->ware_configurators[ware_id];
-        this->layout()->removeWidget(widget);
+        scroll_layout_->removeWidget(widget);
         widget->deleteLater();
     }
 
@@ -75,7 +80,7 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 
     // Store the configurator and add it to the layout
     this->ware_configurators[ware_id] = ware_configurator;
-    this->layout()->addWidget(ware_configurator);
+    scroll_layout_->addWidget(ware_configurator);
 
     connect(ware_configurator, &WareConfigurator::shouldRemove,
             [this](t_ware_id ware_id) -> void {
@@ -86,7 +91,7 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 
                 auto widget = this->ware_configurators[ware_id];
 
-                this->layout()->removeWidget(widget);
+                scroll_layout_->removeWidget(widget);
                 this->ware_target_container.unsetPrimaryTarget(ware_id);
                 this->ware_configurators.erase(ware_id);
                 widget->deleteLater();
@@ -115,7 +120,7 @@ void WareConfiguratorPanel::productionTargetUpdate() {
         if (!widget->getWareTarget()->is_secondary)
             continue;
 
-        this->layout()->removeWidget(widget);
+        scroll_layout_->removeWidget(widget);
         widget->deleteLater();
 
         to_remove.push_back(ware_id);

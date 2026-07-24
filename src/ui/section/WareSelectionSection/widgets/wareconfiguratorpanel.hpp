@@ -14,6 +14,7 @@
 #include "utils/WareTargetContainer.hpp"
 
 #include <QGroupBox>
+#include <QScrollArea>
 
 #include "stationbuilder/Complex.hpp"
 
@@ -27,7 +28,7 @@ QT_END_NAMESPACE
 
 class WareConfigurator;
 
-class WareConfiguratorPanel : public QGroupBox {
+class WareConfiguratorPanel : public QScrollArea {
     Q_OBJECT
 
 public:
@@ -54,6 +55,7 @@ signals:
 
 private:
     Ui::WareConfiguratorPanel *ui;
+    QLayout *                  scroll_layout_;
     std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> >
     ware_configurators;
     WareTargetContainer ware_target_container;
