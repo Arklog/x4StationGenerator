@@ -41,9 +41,9 @@ namespace extractor {
     }
 
     void LangFile::translate(std::string &value) const {
-        const std::regex regex{"\\{([0-9]+,[0-9]+)\\}"};
-        const std::regex markup_reg{R"(\\033[A-Z])"};
-        std::smatch      match_results;
+        const std::regex  regex{"\\{([0-9]+,[0-9]+)\\}"};
+        const std::vector to_remove{std::regex{R"(\\033[A-Z])"}, std::regex{R"(\([^\(\)]*\))"}, std::regex("[\r\n]")};
+        std::smatch       match_results;
 
         while (std::regex_search(value, match_results, regex)) {
             auto        match = match_results[1];
@@ -60,9 +60,11 @@ namespace extractor {
             value.replace(match.first - 1, match.second + 1, translation);
         }
 
-        while (std::regex_search(value, match_results, markup_reg)) {
-            auto match = match_results[0];
-            value.erase(match.first, match.second);
-        }
+        std::ranges::for_each(to_remove, [&](const auto &reg) {
+            while (std::regex_search(value, match_results, reg)) {
+                auto match = match_results[0];
+                value.erase(match.first, match.second);
+            }
+        });
     }
 } // namespace extractor
