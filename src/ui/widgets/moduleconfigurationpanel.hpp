@@ -36,8 +36,6 @@ public:
 
     ~ModuleConfigurationPanel() override;
 
-    common::stationbuilder::t_module_target_list getModuleTargets() const;
-
 public slots:
     void addModule(const Module *module);
 

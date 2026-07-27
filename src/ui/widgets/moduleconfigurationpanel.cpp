@@ -25,27 +25,6 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-common::stationbuilder::t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
-    common::stationbuilder::t_module_target_list docks_and_pierr_list{};
-
-    for (auto i = 0; i < ui->layout->count(); ++i) {
-        auto item   = ui->layout->itemAt(i);
-        auto widget = item->widget();
-
-        if (!widget)
-            continue;
-
-        auto config = dynamic_cast<ModuleConfiguration *>(widget);
-        auto target = config->getModuleTarget();
-
-        if (target.amount == 0)
-            continue;
-        docks_and_pierr_list.push_back(config->getModuleTarget());
-    }
-
-    return docks_and_pierr_list;
-}
-
 void ModuleConfigurationPanel::addModule(const Module *module) {
     auto  managed_settings = state_.settings();
     auto  settings         = &managed_settings.get();
@@ -62,12 +41,16 @@ void ModuleConfigurationPanel::addModule(const Module *module) {
 
     connect(widget, &ModuleConfiguration::shouldRemove, [this, widget, module_target]() -> void {
         ui->layout->removeWidget(widget);
-        auto settings        = this->state_.settings();
-        auto module_targets_ = settings->docks;
+        auto  managed_settings = this->state_.settings();
+        auto  settings         = &managed_settings.get();
+        auto &module_targets_  = settings->*(this->member_);
 
         const auto iter = std::find(module_targets_.begin(), module_targets_.end(), module_target);
         module_targets_.erase(iter);
 
         delete widget;
+    });
+    connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this]() {
+        emit state_.settingsChanged(state_.settings());
     });
 }

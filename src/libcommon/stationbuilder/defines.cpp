@@ -21,6 +21,8 @@ namespace common::stationbuilder {
         return this->name == other.name
                && this->sunlight == other.sunlight
                && this->workforce_enables == other.workforce_enables
-               && this->workforce_module == other.workforce_module;
+               && this->workforce_module == other.workforce_module
+               && this->docks == other.docks
+               && this->storages == other.storages;
     }
 }

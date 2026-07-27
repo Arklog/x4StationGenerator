@@ -37,6 +37,9 @@ store_(store) {
 
     this->setWidget(widget);
     this->setWidgetResizable(true);
+
+    connect(&this->state_, &ui::utils::SharedState::settingsChanged, this,
+            &WareConfiguratorPanel::productionTargetUpdate);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
@@ -138,6 +141,14 @@ void WareConfiguratorPanel::productionTargetUpdate() {
     for (const auto &ware_target: current_production.getSecondaryTargets()) {
         this->addWare(ware_target->ware_id, true, ware_target->prodution);
     }
+
+    // add docks and storage to complex
+    auto insert_module_target = [&](const common::stationbuilder::ModuleTarget &v) {
+        for (int i = 0; i < v.amount; ++i)
+            build_result.complex.insert(build_result.complex.begin(), v.module_id);
+    };
+    std::ranges::for_each(settings->storages, insert_module_target);
+    std::ranges::for_each(settings->docks, insert_module_target);
 
     state_.complex() = std::move(build_result);
 }
