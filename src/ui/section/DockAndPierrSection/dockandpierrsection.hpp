@@ -12,6 +12,10 @@
 #include "stationbuilder/defines.hpp"
 
 
+namespace ui::utils {
+    class SharedState;
+}
+
 class ModuleConfigurationPanel;
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,18 +31,14 @@ public:
     using Store                = common::data::Store;
     using t_module_target_list = common::stationbuilder::t_module_target_list;
 
-    explicit DockAndPierrSection(const Store &store, QWidget *parent = nullptr);
+    explicit DockAndPierrSection(ui::utils::SharedState &state, const Store &store, QWidget *parent = nullptr);
 
     ~DockAndPierrSection() override;
-
-    t_module_target_list getModuleTargetList() const;
-
-signals:
-    void dockAndPierrUpdated();
 
 private:
     Ui::DockAndPierrSection *  ui;
     ModuleConfigurationPanel * dock_and_pierr_configuration_panel;
+    ui::utils::SharedState &   state_;
     const common::data::Store &store_;
 };
 

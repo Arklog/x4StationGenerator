@@ -37,15 +37,19 @@ namespace common::stationbuilder {
         bool operator==(const t_module_id &module_id) const;
     };
 
-    struct Settings {
-        std::string name;
-        double      sunlight;
-        t_module_id workforce_module;
-        bool        workforce_enables;
-    };
-
     typedef std::vector<const WareTarget *> t_target_list;
     typedef std::vector<t_module_id>        t_x4_complex;
     typedef std::vector<ModuleTarget>       t_module_target_list;
+
+    struct Settings {
+        std::string          name; // name of the station
+        double               sunlight; // sector sunlight
+        t_module_id          workforce_module; // habitat to use
+        bool                 workforce_enables; // should the complex use workforce ?
+        t_module_target_list docks; // list of docks and piers
+        t_module_target_list storages; // list of storages
+
+        bool operator==(const Settings &other) const;
+    };
 }
 #endif // DEFINES_HPP

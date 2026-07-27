@@ -7,11 +7,15 @@
 #include "moduleconfiguration.hpp"
 #include "moduleconfigurationpanel.hpp"
 #include "ui_moduleconfigurationpanel.h"
+#include "utils/SharedState.hpp"
 
 
-ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) :
+ModuleConfigurationPanel::ModuleConfigurationPanel(ui::utils::SharedState &state, module_list_target member_target,
+                                                   QWidget *               parent) :
 QFrame(parent),
-ui(new Ui::ModuleConfigurationPanel) {
+ui(new Ui::ModuleConfigurationPanel),
+state_(state),
+member_(member_target) {
     QFrame::setFrameShape(QFrame::StyledPanel);
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
@@ -31,7 +35,7 @@ common::stationbuilder::t_module_target_list ModuleConfigurationPanel::getModule
         if (!widget)
             continue;
 
-        auto config = static_cast<ModuleConfiguration *>(widget);
+        auto config = dynamic_cast<ModuleConfiguration *>(widget);
         auto target = config->getModuleTarget();
 
         if (target.amount == 0)
@@ -42,28 +46,28 @@ common::stationbuilder::t_module_target_list ModuleConfigurationPanel::getModule
     return docks_and_pierr_list;
 }
 
-void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
-    auto iter = std::find(module_targets_.begin(), module_targets_.end(), dock_or_pierr->id);
+void ModuleConfigurationPanel::addModule(const Module *module) {
+    auto  managed_settings = state_.settings();
+    auto  settings         = &managed_settings.get();
+    auto &module_targets_  = settings->*member_;
+
+    auto iter = std::find(module_targets_.begin(), module_targets_.end(), module->id);
     if (iter != module_targets_.end())
         return;
 
-    auto &module_target = this->module_targets_.emplace_back(dock_or_pierr->id, 1);
-    auto  widget        = new ModuleConfiguration(dock_or_pierr, module_target, this);
+    auto &module_target = module_targets_.emplace_back(module->id, 1);
+    auto  widget        = new ModuleConfiguration(module, module_target, this);
 
     ui->layout->addWidget(widget);
 
     connect(widget, &ModuleConfiguration::shouldRemove, [this, widget, module_target]() -> void {
         ui->layout->removeWidget(widget);
+        auto settings        = this->state_.settings();
+        auto module_targets_ = settings->docks;
+
         const auto iter = std::find(module_targets_.begin(), module_targets_.end(), module_target);
-        this->module_targets_.erase(iter);
+        module_targets_.erase(iter);
 
         delete widget;
     });
-
-    connect(widget, &ModuleConfiguration::moduleTargetUpdated,
-            [this](const common::stationbuilder::ModuleTarget &target) {
-                emit this->targetListUpdated();
-            });
-
-    emit targetListUpdated();
 }

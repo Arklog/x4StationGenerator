@@ -15,18 +15,20 @@
 
 #include "section/WareSelectionSection/widgets/wareconfiguratorpanel.hpp"
 #include "section/WareSelectionSection/widgets/waresselector.hpp"
+#include "utils/SharedState.hpp"
 
-WareSelectionSection::WareSelectionSection(Settings &   settings,
-                                           const Store &store, QWidget *parent) :
+WareSelectionSection::WareSelectionSection(ui::utils::SharedState &state,
+                                           const Store &           store, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::WareSelectionSection),
-settings_{settings},
+state_{state},
 store_(store) {
     ui->setupUi(this);
     auto ware_selector           = new WaresSelector(store, this);
-    auto ware_configurator_panel = new WareConfiguratorPanel(settings, store, this);
+    auto ware_configurator_panel = new WareConfiguratorPanel(state, store, this);
+    auto settings                = state_.settings();
 
-    this->settings_.workforce_module = store.habitats.datas[0].module.get().id;
+    settings->workforce_module = store.habitats.datas[0].module.get().id;
     for (auto const &habitat: store.habitats.datas) {
         ui->habitat_input->addItem(QString::fromStdString(habitat.module.value().name));
     }
@@ -43,41 +45,25 @@ store_(store) {
             [this, ware_configurator_panel](t_ware_id ware_id) {
                 ware_configurator_panel->addWare(ware_id, false, 0);
             });
-    connect(ware_configurator_panel, &WareConfiguratorPanel::shouldUpdate,
-            [this](common::stationbuilder::Complex complex) {
-                this->complex_ = std::move(complex);
-                emit complexUpdated();
-            });
     connect(ui->workforce_input, &QCheckBox::toggled,
-            [this, ware_configurator_panel](bool checked) {
-                this->settings_.workforce_enables = checked;
-                spdlog::debug("workforce enabled: {}",
-                              this->settings_.workforce_enables);
-                ware_configurator_panel->productionTargetUpdate();
+            [this](bool checked) {
+                this->state_.settings()->workforce_enables = checked;
+                spdlog::debug("workforce enabled: {}", this->state_.settings()->workforce_enables);
             });
     connect(ui->habitat_input, &QComboBox::currentTextChanged,
-            [this, ware_configurator_panel](QString text) {
-                auto module                      = this->store_.modules.by_name.at(text.toStdString());
-                this->settings_.workforce_module = module->module.get().id;
-                spdlog::debug("default habitat changed: {}",
-                              this->settings_.workforce_module);
-                ware_configurator_panel->productionTargetUpdate();
+            [this](QString text) {
+                auto module                               = this->store_.modules.by_name.at(text.toStdString());
+                this->state_.settings()->workforce_module = module->module.get().id;
+                spdlog::debug("default habitat changed: {}", this->state_.settings()->workforce_module);
             });
     connect(ui->sunlight_value, &QSpinBox::valueChanged,
-            [this, ware_configurator_panel](int value) {
-                double new_value         = static_cast<double>(value) / 100.0;
-                new_value                = new_value <= 0 ? 1.0f : new_value;
-                this->settings_.sunlight = new_value;
-
-                ware_configurator_panel->productionTargetUpdate();
+            [this](int value) {
+                double new_value                  = static_cast<double>(value) / 100.0;
+                new_value                         = new_value <= 0 ? 1.0f : new_value;
+                this->state_.settings()->sunlight = new_value;
             });
 
-    this->settings_.sunlight
-            = static_cast<double>(ui->sunlight_value->value()) / 100;
+    this->state_.settings()->sunlight = static_cast<double>(ui->sunlight_value->value()) / 100;
 }
 
 WareSelectionSection::~WareSelectionSection() { delete ui; }
-
-const common::stationbuilder::Complex &WareSelectionSection::getComplex() {
-    return this->complex_;
-}

@@ -12,19 +12,21 @@
 
 #include <QLineEdit>
 
+#include "utils/SharedState.hpp"
 
-SettingsSection::SettingsSection(Settings &settings, QWidget *parent) :
+
+SettingsSection::SettingsSection(ui::utils::SharedState &settings, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::SettingsSection),
 settings_(settings) {
     ui->setupUi(this);
 
-    ui->station_name_input->setText(QString::fromStdString(settings.name));
+    ui->station_name_input->setText(QString::fromStdString(settings.settings()->name));
 
     connect(ui->station_name_input, &QLineEdit::editingFinished,
             [this]() {
                 spdlog::debug("settings modified");
-                settings_.name = ui->station_name_input->text().toStdString();
+                settings_.settings()->name = ui->station_name_input->text().toStdString();
             });
 }
 

@@ -16,9 +16,10 @@
 
 #include "data/WareModuleAndWorkforce.hpp"
 
-DockAndPierrSection::DockAndPierrSection(const Store &store, QWidget *parent) :
+DockAndPierrSection::DockAndPierrSection(ui::utils::SharedState &state, const Store &store, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::DockAndPierrSection),
+state_(state),
 store_(store) {
     ui->setupUi(this);
 
@@ -32,7 +33,8 @@ store_(store) {
     }
 
     auto dock_and_pierr_selection_panel     = new ModuleSelectionPanel(dock_and_pierr_list, this);
-    auto dock_and_pierr_configuration_panel = new ModuleConfigurationPanel(this);
+    auto dock_and_pierr_configuration_panel = new ModuleConfigurationPanel(
+        state_, &common::stationbuilder::Settings::docks, this);
 
     ui->dock_and_pierr_selection_scroll_area->setWidget(dock_and_pierr_selection_panel);
     ui->dock_and_pierr_selection_scroll_area->setWidgetResizable(true);
@@ -48,13 +50,6 @@ store_(store) {
             &ModuleSelectionPanel::moduleSelected,
             dock_and_pierr_configuration_panel,
             &ModuleConfigurationPanel::addModule);
-    connect(dock_and_pierr_configuration_panel,
-            &ModuleConfigurationPanel::targetListUpdated, this,
-            &DockAndPierrSection::dockAndPierrUpdated);
 }
 
 DockAndPierrSection::~DockAndPierrSection() { delete ui; }
-
-common::stationbuilder::t_module_target_list DockAndPierrSection::getModuleTargetList() const {
-    return dock_and_pierr_configuration_panel->getModuleTargets();
-}

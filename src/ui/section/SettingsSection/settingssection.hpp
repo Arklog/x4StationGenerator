@@ -10,6 +10,10 @@
 #include "stationbuilder/defines.hpp"
 
 
+namespace ui::utils {
+    class SharedState;
+}
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
     class SettingsSection;
@@ -23,14 +27,14 @@ class SettingsSection : public QWidget {
 public:
     using Settings = common::stationbuilder::Settings;
 
-    explicit SettingsSection(Settings &settings, QWidget *parent = nullptr);
+    explicit SettingsSection(ui::utils::SharedState &settings, QWidget *parent = nullptr);
 
     ~SettingsSection() override;
 
 private:
     Ui::SettingsSection *ui;
 
-    Settings &settings_;
+    ui::utils::SharedState &settings_;
 };
 
 

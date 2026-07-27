@@ -7,8 +7,8 @@
 
 #include <QMainWindow>
 
-#include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
+#include "utils/SharedState.hpp"
 
 class SummarySection;
 class DockAndPierrSection;
@@ -52,9 +52,8 @@ private:
     SettingsSection *     settings_section_;
     QErrorMessage *       error_message_;
 
-    Settings                        settings_;
-    const Store &                   store_;
-    common::stationbuilder::Complex complex_;
+    const Store &          store_;
+    ui::utils::SharedState state;
 };
 
 #endif // MAINWINDOW_H

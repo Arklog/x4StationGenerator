@@ -16,6 +16,8 @@ namespace common::stationbuilder {
         size_t                           workforce;
         size_t                           workforce_max;
         double                           sun;
+
+        bool operator==(const Complex &other) const;
     };
 }
 

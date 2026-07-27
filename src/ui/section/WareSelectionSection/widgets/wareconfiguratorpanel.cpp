@@ -15,15 +15,16 @@
 #include "stationbuilder/Generator/ComplexGeneratorBase.hpp"
 #include <spdlog/spdlog.h>
 
-WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
-                                             const Store &   store,
-                                             QWidget *       parent) :
+#include "utils/SharedState.hpp"
+
+WareConfiguratorPanel::WareConfiguratorPanel(ui::utils::SharedState &state,
+                                             const Store &           store,
+                                             QWidget *               parent) :
 QScrollArea(parent),
 ui(new Ui::WareConfiguratorPanel),
 scroll_layout_(nullptr),
-ware_configurators{},
 ware_target_container{store},
-settings_(settings),
+state_(state),
 store_(store) {
     ui->setupUi(this);
     this->setWindowTitle({"Configuration"});
@@ -109,10 +110,11 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {
-    common::stationbuilder::generator::ComplexGeneratorBase test(settings_, store_, this->ware_target_container);
+    auto                                                    settings = state_.settings();
+    common::stationbuilder::generator::ComplexGeneratorBase test(settings, store_, this->ware_target_container);
     auto                                                    build_result = test.build();
-    build_result.name                                                    = settings_.name;
-    build_result.habitat_id                                              = settings_.workforce_module;
+    build_result.name                                                    = settings->name;
+    build_result.habitat_id                                              = settings->workforce_module;
 
     const auto &current_production = test.getCurrentProduction();
 
@@ -137,5 +139,5 @@ void WareConfiguratorPanel::productionTargetUpdate() {
         this->addWare(ware_target->ware_id, true, ware_target->prodution);
     }
 
-    emit shouldUpdate(build_result);
+    state_.complex() = std::move(build_result);
 }
