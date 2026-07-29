@@ -44,15 +44,11 @@ store_{store} {
     if (possible_source_modules.size() == 1)
         ui->production_method_combo_box->setDisabled(true);
 
-    // this->ware_target->prodution = ui->target_input->value();
-    // this->ware_target->source_module = getModuleIdFromName(
-    // ui->production_method_combo_box->currentText().toStdString());
-
     // Is triggered when the ware amount required is changed
     auto trigger_update_target = [this](int value) -> void {
         spdlog::info("{} target value changed {}",
                      this->ware_target->ware_id, value);
-        this->ware_target->prodution = value;
+        this->ware_target->production = value;
         this->shouldUpdate();
     };
 
@@ -86,7 +82,7 @@ store_{store} {
     ui->target_input->setReadOnly(true);
     ui->target_input->setDisabled(true);
     ui->remove_button->setDisabled(true);
-    ui->target_input->setValue(ware_target->prodution);
+    ui->target_input->setValue(ware_target->production);
 }
 
 WareConfigurator::~WareConfigurator() { delete ui; }

@@ -16,7 +16,7 @@ void common::types::StationSaveFile::fromComplex(const stationbuilder::Complex &
         utils::WareTarget target_{
             target->ware_id,
             target->source_module,
-            target->prodution,
+            target->production,
             target->is_secondary
         };
 

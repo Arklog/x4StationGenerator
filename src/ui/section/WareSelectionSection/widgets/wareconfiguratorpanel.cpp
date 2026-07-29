@@ -16,6 +16,7 @@
 #include <spdlog/spdlog.h>
 
 #include "utils/SharedState.hpp"
+#include "utils/utils.hpp"
 
 WareConfiguratorPanel::WareConfiguratorPanel(ui::utils::SharedState &state,
                                              const Store &           store,
@@ -40,6 +41,7 @@ store_(store) {
 
     connect(&this->state_, &ui::utils::SharedState::settingsChanged, this,
             &WareConfiguratorPanel::productionTargetUpdate);
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, this, &WareConfiguratorPanel::planLoaded);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
@@ -78,8 +80,8 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
         this->ware_target_container.setSecondaryTarget(ware_id);
         auto ware_target
                 = this->ware_target_container.getSecondaryTarget(ware_id);
-        ware_target->prodution = amount;
-        ware_configurator      = new WareConfigurator(ware_target, store_, this);
+        ware_target->production = amount;
+        ware_configurator       = new WareConfigurator(ware_target, store_, this);
     }
 
     // Store the configurator and add it to the layout
@@ -139,7 +141,7 @@ void WareConfiguratorPanel::productionTargetUpdate() {
 
     // Add secondary targets
     for (const auto &ware_target: current_production.getSecondaryTargets()) {
-        this->addWare(ware_target->ware_id, true, ware_target->prodution);
+        this->addWare(ware_target->ware_id, true, ware_target->production);
     }
 
     // add docks and storage to complex
@@ -151,4 +153,13 @@ void WareConfiguratorPanel::productionTargetUpdate() {
     std::ranges::for_each(settings->docks, insert_module_target);
 
     state_.complex() = std::move(build_result);
+}
+
+void WareConfiguratorPanel::planLoaded() {
+    clearLayout(this->scroll_layout_);
+    auto settings = state_.settings();
+
+    std::ranges::for_each(settings->ware_targets.getPrimaryAndSecondaryTargets(), [&](auto n) {
+        this->addWare(n->ware_id, n->is_secondary, n->production);
+    });
 }

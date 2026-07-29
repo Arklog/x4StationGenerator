@@ -51,6 +51,8 @@ slots:
 
     void productionTargetUpdate();
 
+    void planLoaded();
+
 private:
     Ui::WareConfiguratorPanel *ui;
     QLayout *                  scroll_layout_;

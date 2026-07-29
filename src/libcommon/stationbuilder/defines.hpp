@@ -39,7 +39,9 @@ namespace common::stationbuilder {
     typedef std::vector<ModuleTarget>              t_module_target_list;
 
     struct Settings {
-        explicit Settings(types::StationSaveFile &&save_file);
+        Settings() = default;
+
+        explicit Settings(types::StationSaveFile &&save_file, const data::Store &store);
 
         std::string                name;              // name of the station
         double                     sunlight;          // sector sunlight

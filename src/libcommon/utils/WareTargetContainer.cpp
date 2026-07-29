@@ -97,7 +97,7 @@ namespace common::utils {
             throw std::logic_error("Ware not found in ware targets");
 
         ware_iter->is_secondary = false;
-        ware_iter->prodution    = 0;
+        ware_iter->production    = 0;
         ware_targets_primary.push_back(&*ware_iter);
 
         return &*ware_iter;
@@ -109,7 +109,7 @@ namespace common::utils {
         if (!isPrimaryTarget(ware_id, &iter))
             throw std::out_of_range("Ware is not a primary target");
 
-        (*iter)->prodution    = 0;
+        (*iter)->production    = 0;
         (*iter)->is_secondary = false;
         ware_targets_primary.erase(iter);
     }
@@ -118,20 +118,20 @@ namespace common::utils {
                                                         bool            allow_primary_switch) {
         ware_targets_container_t::const_iterator iter;
         if (isSecondaryTarget(ware_id, &iter))
-            nullptr;
+            return nullptr;
 
         if (isPrimaryTarget(ware_id, &iter)) {
             if (!allow_primary_switch)
-                throw std::logic_error(
-                    "Ware is primary target, cannot set as secondary");
+                throw std::logic_error("Ware is primary target, cannot set as secondary");
+
             ware_targets_secondary.push_back(*iter);
             ware_targets_primary.erase(iter);
-            return;
+            return *iter;
         }
 
         auto ware_target          = const_cast<WareTarget *>(getTarget(ware_id));
         ware_target->is_secondary = true;
-        ware_target->prodution    = 0;
+        ware_target->production    = 0;
         ware_targets_secondary.push_back(ware_target);
 
         return ware_target;

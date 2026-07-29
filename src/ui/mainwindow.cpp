@@ -91,7 +91,7 @@ void MainWindow::openPlan() {
                 throw std::runtime_error("Could not read file: " + v.error().what());
 
             auto settings = state.settings();
-            settings      = Settings(std::move(v.value()));
+            settings      = Settings(std::move(v.value()), store_);
             emit state.saveFileLoaded();
         }
     } catch (std::exception &e) {

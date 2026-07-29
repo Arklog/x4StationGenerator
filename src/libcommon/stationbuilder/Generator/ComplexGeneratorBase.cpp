@@ -15,13 +15,13 @@ namespace common::stationbuilder::generator {
         // check primary is produced enougth
         auto primary_check = [current_state](const WareTarget *primary) {
             auto current_target = current_state.getPrimaryTarget(primary->ware_id);
-            return current_target->prodution >= primary->prodution;
+            return current_target->production >= primary->production;
         };
 
         // check no produced secondary is in deficit
         auto secondary_check = [this](const WareTarget *target) {
             const auto &store = this->store_;
-            return target->prodution >= 0 || !store.wares.by_id.at(target->ware_id)->produced;
+            return target->production >= 0 || !store.wares.by_id.at(target->ware_id)->produced;
         };
 
         bool primary_ok   = std::ranges::all_of(targets.getPrimaryTargets(), primary_check);
@@ -74,8 +74,8 @@ namespace common::stationbuilder::generator {
             auto is_base_target = targets.isPrimaryTarget(key);
             auto is_done
                     = is_base_target
-                          ? targets.getPrimaryTarget(key)->prodution <= ware->prodution
-                          : ware->prodution >= 0;
+                          ? targets.getPrimaryTarget(key)->production <= ware->production
+                          : ware->production >= 0;
 
             if (!is_done)
                 ids.push_back(key);
@@ -86,11 +86,11 @@ namespace common::stationbuilder::generator {
             const auto &a_ware = current_state.getTarget(a);
             const auto &b_ware = current_state.getTarget(b);
 
-            auto a_neg = b_ware->prodution < 0;
-            auto b_neg = a_ware->prodution < 0;
+            auto a_neg = b_ware->production < 0;
+            auto b_neg = a_ware->production < 0;
 
             if (a_neg || b_neg)
-                return a_ware->prodution < b_ware->prodution;
+                return a_ware->production < b_ware->production;
 
             const auto &wares       = this->store_.wares.by_id;
             const auto  a_ware_data = wares.at(a_ware->ware_id);
@@ -117,14 +117,14 @@ namespace common::stationbuilder::generator {
         // If ware is not in the list of produced ware
         // Happens if required to produce another ware
         if (is_produced) {
-            this->current_production_.getTarget(ware_id)->prodution += value;
+            this->current_production_.getTarget(ware_id)->production += value;
             return;
         }
 
         spdlog::debug("adding ware in list {}", ware_id);
         this->current_production_.setSecondaryTarget(ware_id);
         auto target       = this->current_production_.getSecondaryTarget(ware_id);
-        target->prodution = value;
+        target->production = value;
     }
 
     void ComplexGeneratorBase::_add_workforce(size_t amount, t_x4_complex &modules) {
@@ -159,7 +159,7 @@ namespace common::stationbuilder::generator {
         auto primary_targets = targets_.getPrimaryTargets();
         for (const auto &target: primary_targets) {
             current_production_.setPrimaryTarget(target->ware_id);
-            current_production_.getPrimaryTarget(target->ware_id)->prodution = 0;
+            current_production_.getPrimaryTarget(target->ware_id)->production = 0;
         }
     }
 

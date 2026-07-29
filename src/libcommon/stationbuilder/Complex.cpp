@@ -11,7 +11,7 @@ namespace {
     bool targetsEqual(const WareTarget &lhs, const WareTarget &rhs) {
         return lhs.ware_id == rhs.ware_id
                && lhs.source_module == rhs.source_module
-               && lhs.prodution == rhs.prodution
+               && lhs.production == rhs.production
                && lhs.is_secondary == rhs.is_secondary;
     }
 

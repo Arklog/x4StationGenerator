@@ -10,7 +10,7 @@ namespace common::utils {
     struct WareTarget {
         types::Ware::ware_id             ware_id;
         types::module::Module::module_id source_module;
-        long int                         prodution;
+        long int                         production;
         bool                             is_secondary;
     };
 
