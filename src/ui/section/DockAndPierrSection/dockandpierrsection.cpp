@@ -15,6 +15,7 @@
 #include "../../widgets/moduleselectionpanel.hpp"
 
 #include "data/WareModuleAndWorkforce.hpp"
+#include "utils/SharedState.hpp"
 
 DockAndPierrSection::DockAndPierrSection(ui::utils::SharedState &state, const Store &store, QWidget *parent) :
 QWidget(parent),
@@ -50,6 +51,9 @@ store_(store) {
             &ModuleSelectionPanel::moduleSelected,
             dock_and_pierr_configuration_panel,
             &ModuleConfigurationPanel::addModule);
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, [this]() {
+        this->dock_and_pierr_configuration_panel->loadPlan(this->store_);
+    });
 }
 
 DockAndPierrSection::~DockAndPierrSection() { delete ui; }

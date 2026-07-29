@@ -72,10 +72,11 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
     // Create a new ware configurator
     WareConfigurator *ware_configurator = nullptr;
     if (!is_secondary) {
-        this->ware_target_container.setPrimaryTarget(ware_id);
-        auto ware_target
-                = this->ware_target_container.getPrimaryTarget(ware_id);
-        ware_configurator = new WareConfigurator(ware_target, store_, this);
+        auto ware_target          = this->ware_target_container.setPrimaryTarget(ware_id);
+        ware_target->ware_id      = ware_id;
+        ware_target->production   = amount;
+        ware_target->is_secondary = is_secondary;
+        ware_configurator         = new WareConfigurator(ware_target, store_, this);
     } else {
         this->ware_target_container.setSecondaryTarget(ware_id);
         auto ware_target

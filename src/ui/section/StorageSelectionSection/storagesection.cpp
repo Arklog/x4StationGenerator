@@ -16,10 +16,13 @@
 
 #include <QScrollArea>
 
+#include "utils/SharedState.hpp"
+
 StorageSection::StorageSection(ui::utils::SharedState &state, const Store &store, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::StorageSection),
-state_(state) {
+state_(state),
+store_(store) {
     ui->setupUi(this);
 
     const auto &                modules = store.storages.datas;
@@ -44,6 +47,9 @@ state_(state) {
 
     connect(storage_selection_panel, &ModuleSelectionPanel::moduleSelected, storage_configuration_panel,
             &ModuleConfigurationPanel::addModule);
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, [this]() {
+        this->storage_configuration_panel->loadPlan(this->store_);
+    });
 }
 
 StorageSection::~StorageSection() { delete ui; }

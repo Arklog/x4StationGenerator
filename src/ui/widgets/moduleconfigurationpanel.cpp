@@ -8,6 +8,7 @@
 #include "moduleconfigurationpanel.hpp"
 #include "ui_moduleconfigurationpanel.h"
 #include "utils/SharedState.hpp"
+#include "utils/utils.hpp"
 
 
 ModuleConfigurationPanel::ModuleConfigurationPanel(ui::utils::SharedState &state, module_list_target member_target,
@@ -25,7 +26,7 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-void ModuleConfigurationPanel::addModule(const Module *module) {
+void ModuleConfigurationPanel::addModule_(const Module *module, int amount) {
     auto  managed_settings = state_.settings();
     auto  settings         = &managed_settings.get();
     auto &module_targets_  = settings->*member_;
@@ -34,7 +35,7 @@ void ModuleConfigurationPanel::addModule(const Module *module) {
     if (iter != module_targets_.end())
         return;
 
-    auto &module_target = module_targets_.emplace_back(module->id, 1);
+    auto &module_target = module_targets_.emplace_back(module->id, amount);
     auto  widget        = new ModuleConfiguration(module, module_target, this);
 
     ui->layout->addWidget(widget);
@@ -53,4 +54,22 @@ void ModuleConfigurationPanel::addModule(const Module *module) {
     connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this]() {
         emit state_.settingsChanged(state_.settings());
     });
+}
+
+void ModuleConfigurationPanel::loadPlan(const common::data::Store &store) {
+    auto  managed_settings = this->state_.settings();
+    auto  settings         = managed_settings.get();
+    auto &member_target    = settings.*member_;
+    clearLayout(ui->layout);
+
+    std::ranges::for_each(member_target, [&](auto &module_target) {
+        auto module = store.modules.by_id.at(module_target.module_id);
+        this->addModule_(&module->module.get(), module_target.amount);
+    });
+    this->update();
+    this->updateGeometry();
+}
+
+void ModuleConfigurationPanel::addModule(const Module *module) {
+    this->addModule_(module, 1);
 }

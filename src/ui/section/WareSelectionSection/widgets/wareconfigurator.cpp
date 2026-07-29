@@ -28,6 +28,7 @@ store_{store} {
     const auto &possible_source_modules = store_.production.producing.at(ware_id);
 
     ui->ware_label->setText(QString(ware_name.c_str()));
+    ui->target_input->setValue(ware_target->production);
 
     // Create combobox of possible modules
     size_t i = 0;
@@ -69,7 +70,7 @@ store_{store} {
     connect(ui->production_method_combo_box, &QComboBox::currentTextChanged,
             trigger_update_source_module);
     connect(ui->target_input, &QSpinBox::valueChanged, trigger_update_target);
-
+    
     // in case of secondary ware, we gray out the widget and disable input
     // except for the source module selection
     if (!ware_target->is_secondary)
@@ -82,7 +83,6 @@ store_{store} {
     ui->target_input->setReadOnly(true);
     ui->target_input->setDisabled(true);
     ui->remove_button->setDisabled(true);
-    ui->target_input->setValue(ware_target->production);
 }
 
 WareConfigurator::~WareConfigurator() { delete ui; }

@@ -42,6 +42,7 @@ private:
     ModuleSelectionPanel *    storage_selection_panel;
     ModuleConfigurationPanel *storage_configuration_panel;
     ui::utils::SharedState &  state_;
+    const Store &             store_;
 };
 
 

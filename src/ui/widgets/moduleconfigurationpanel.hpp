@@ -36,6 +36,8 @@ public:
 
     ~ModuleConfigurationPanel() override;
 
+    void loadPlan(const common::data::Store &store);
+
 public slots:
     void addModule(const Module *module);
 
@@ -43,6 +45,8 @@ private:
     Ui::ModuleConfigurationPanel *ui;
     ui::utils::SharedState &      state_;
     module_list_target            member_;
+
+    void addModule_(const Module *module, int amount);
 };
 
 
