@@ -100,10 +100,8 @@ void MainWindow::openPlan() {
 }
 
 void MainWindow::savePlan() {
-    using StationSaveFile = common::types::StationSaveFile;
     try {
-        StationSaveFile save_file;
-        StationSaveFile::fromComplex(state.complex(), store_, save_file);
+        auto save_file = state.toStationSaveFile();
 
         QFileDialog dialog(this, "Save file", QString::fromStdString(fmt::format("{}.json", save_file.name)));
 

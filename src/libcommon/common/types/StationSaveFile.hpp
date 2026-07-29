@@ -23,8 +23,6 @@ namespace common::types {
         std::unordered_map<std::string, unsigned int> docks;
         std::vector<utils::WareTarget>                primary_targets;
         std::vector<utils::WareTarget>                secondary_targets;
-
-        static void fromComplex(const stationbuilder::Complex &complex, const data::Store &store, StationSaveFile &);
     };
 }
 
