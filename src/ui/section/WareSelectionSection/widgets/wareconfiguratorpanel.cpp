@@ -130,13 +130,13 @@ void WareConfiguratorPanel::productionTargetUpdate() {
         if (!widget->getWareTarget()->is_secondary)
             continue;
 
-        scroll_layout_->removeWidget(widget);
-        widget->deleteLater();
-
         to_remove.push_back(ware_id);
     }
 
     for (const auto &ware_id: to_remove) {
+        auto widget = this->ware_configurators.at(ware_id);
+        scroll_layout_->removeWidget(widget);
+        widget->deleteLater();
         this->ware_configurators.erase(ware_id);
     }
 
@@ -158,9 +158,11 @@ void WareConfiguratorPanel::productionTargetUpdate() {
 
 void WareConfiguratorPanel::planLoaded() {
     clearLayout(this->scroll_layout_);
-    auto settings = state_.settings();
+    auto settings         = state_.settings();
+    ware_target_container = WareTargetContainer{store_};
+    ware_target_container.copyProductionMethods(settings->ware_targets);
 
-    std::ranges::for_each(settings->ware_targets.getPrimaryAndSecondaryTargets(), [&](auto n) {
+    std::ranges::for_each(settings->ware_targets.getPrimaryTargets(), [&](auto n) {
         this->addWare(n->ware_id, n->is_secondary, n->production);
     });
 }

@@ -46,7 +46,7 @@ private:
     ui::utils::SharedState &      state_;
     module_list_target            member_;
 
-    void addModule_(const Module *module, int amount);
+    void addModule_(const Module *module, int amount, bool ignore_if_present = false);
 };
 
 

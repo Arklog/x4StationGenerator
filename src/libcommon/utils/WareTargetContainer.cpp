@@ -187,6 +187,21 @@ namespace common::utils {
         return all_targets;
     }
 
+    void WareTargetContainer::copyProductionMethods(const WareTargetContainer &other) {
+        std::ranges::for_each(other.ware_targets, [&](auto &n) {
+            auto iter = std::ranges::find_if(this->ware_targets, [&n](auto &item) {
+                return item.ware_id == n.ware_id;
+            });
+
+            if (iter == this->ware_targets.end()) {
+                spdlog::error("Could not find ware {} in current ware container", n.ware_id);
+                return;
+            }
+
+            iter->source_module = n.source_module;
+        });
+    }
+
     const std::vector<WareTarget *> &WareTargetContainer::getPrimaryTargets() const {
         return ware_targets_primary;
     }

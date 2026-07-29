@@ -116,6 +116,13 @@ namespace common::utils {
         [[nodiscard]] const std::vector<WareTarget *> &getSecondaryTargets() const;
 
         [[nodiscard]] const std::vector<WareTarget *> getPrimaryAndSecondaryTargets() const;
+
+        /**
+         * Copy each ware production method from the other container
+         *
+         * @param other
+         */
+        void copyProductionMethods(const WareTargetContainer &other);
     };
 }
 

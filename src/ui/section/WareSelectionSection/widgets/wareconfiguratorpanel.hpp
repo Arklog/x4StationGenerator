@@ -49,8 +49,15 @@ slots:
     void addWare(t_ware_id ware_id, bool is_secondary = false,
                  unsigned  amount                     = 0);
 
+    /**
+     * Slot to be triggered when there is a need to recompute the complex
+     */
     void productionTargetUpdate();
 
+    /**
+     * Slot to be triggered when a new plan is loaded, this slot will make
+     * this widget rebuild itself in order to reach a clean state
+     */
     void planLoaded();
 
 private:

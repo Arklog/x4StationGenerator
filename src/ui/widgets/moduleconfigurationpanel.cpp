@@ -26,13 +26,13 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-void ModuleConfigurationPanel::addModule_(const Module *module, int amount) {
+void ModuleConfigurationPanel::addModule_(const Module *module, int amount, bool ignore_if_present) {
     auto  managed_settings = state_.settings();
     auto  settings         = &managed_settings.get();
     auto &module_targets_  = settings->*member_;
 
     auto iter = std::find(module_targets_.begin(), module_targets_.end(), module->id);
-    if (iter != module_targets_.end())
+    if (iter != module_targets_.end() && !ignore_if_present)
         return;
 
     auto &module_target = module_targets_.emplace_back(module->id, amount);
@@ -64,10 +64,8 @@ void ModuleConfigurationPanel::loadPlan(const common::data::Store &store) {
 
     std::ranges::for_each(member_target, [&](auto &module_target) {
         auto module = store.modules.by_id.at(module_target.module_id);
-        this->addModule_(&module->module.get(), module_target.amount);
+        this->addModule_(&module->module.get(), module_target.amount, true);
     });
-    this->update();
-    this->updateGeometry();
 }
 
 void ModuleConfigurationPanel::addModule(const Module *module) {

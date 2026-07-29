@@ -66,7 +66,16 @@ store_(store) {
         auto settings = this->state_.settings();
 
         this->ui->sunlight_value->setValue(settings->sunlight * 100.0f);
-        this->ui->workforce_input->toggled(settings->workforce_enables);
+        this->ui->workforce_input->setChecked(settings->workforce_enables);
+
+        try {
+            auto habitat_module = this->store_.habitats.by_id.at(settings->workforce_module);
+            auto index = this->ui->habitat_input->findText(QString::fromStdString(habitat_module->module.get().name));
+            this->ui->habitat_input->setCurrentIndex(index);
+        } catch (std::exception &e) {
+            spdlog::error(e.what());
+            throw;
+        }
     });
 
     this->state_.settings()->sunlight = static_cast<double>(ui->sunlight_value->value()) / 100;
