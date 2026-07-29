@@ -7,6 +7,7 @@
 #include <QObject>
 
 #include "Managed.hpp"
+#include "common/types/StationSaveFile.hpp"
 #include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
 
@@ -37,6 +38,8 @@ namespace ui::utils {
         void settingsChanged(const common::stationbuilder::Settings &);
 
         void complexChanged(const common::stationbuilder::Complex &);
+
+        void saveFileLoaded();
 
     private:
         common::stationbuilder::Settings settings_;

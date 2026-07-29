@@ -23,7 +23,7 @@ class WareConfigurator : public QFrame {
     Q_OBJECT
 
 public:
-    using WareTarget = common::stationbuilder::WareTarget;
+    using WareTarget = common::utils::WareTarget;
     using Store      = common::data::Store;
     using t_ware_id  = common::types::Ware::ware_id;
 
@@ -45,7 +45,7 @@ public:
      */
     const WareTarget *getWareTarget() const;
 
-    signals:
+signals:
     /**
      * Signal emitted when the user wants to remove this ware from the list
      * @param ware_id

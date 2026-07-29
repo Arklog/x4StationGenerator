@@ -12,8 +12,8 @@ void common::types::StationSaveFile::fromComplex(const stationbuilder::Complex &
     if (complex.habitat_id.empty())
         throw std::runtime_error{"Invalid habitat id"};
 
-    auto add_target = [&](const stationbuilder::WareTarget *target) {
-        stationbuilder::WareTarget target_{
+    auto add_target = [&](const utils::WareTarget *target) {
+        utils::WareTarget target_{
             target->ware_id,
             target->source_module,
             target->prodution,

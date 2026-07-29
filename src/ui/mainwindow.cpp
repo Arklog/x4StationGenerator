@@ -90,7 +90,9 @@ void MainWindow::openPlan() {
             if (!v.has_value())
                 throw std::runtime_error("Could not read file: " + v.error().what());
 
-            StationSaveFile save_file = std::move(v.value());
+            auto settings = state.settings();
+            settings      = Settings(std::move(v.value()));
+            emit state.saveFileLoaded();
         }
     } catch (std::exception &e) {
         error_message_->showMessage(e.what());

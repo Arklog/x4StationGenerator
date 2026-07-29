@@ -6,7 +6,7 @@
 #include <algorithm>
 
 namespace {
-    using WareTarget = common::stationbuilder::WareTarget;
+    using WareTarget = common::utils::WareTarget;
 
     bool targetsEqual(const WareTarget &lhs, const WareTarget &rhs) {
         return lhs.ware_id == rhs.ware_id
@@ -18,7 +18,7 @@ namespace {
     bool targetListsEqual(const std::vector<WareTarget *> &lhs,
                           const std::vector<WareTarget *> &rhs) {
         return std::ranges::equal(lhs, rhs, [](const WareTarget *lhs_target,
-                                              const WareTarget *rhs_target) {
+                                               const WareTarget *rhs_target) {
             return targetsEqual(*lhs_target, *rhs_target);
         });
     }

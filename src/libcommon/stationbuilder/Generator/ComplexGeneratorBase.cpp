@@ -57,10 +57,9 @@ namespace common::stationbuilder::generator {
             _add_workforce(next_module->required_workforce, modules);
     }
 
-    WareTarget *
-    ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
-                                      t_target_container &      current_state,
-                                      t_x4_complex &            modules) {
+    utils::WareTarget *ComplexGeneratorBase::_nextTarget(const t_target_container &targets,
+                                                         t_target_container &      current_state,
+                                                         t_x4_complex &            modules) {
         spdlog::debug("determining next target");
         std::vector<t_ware_id> ids{};
 

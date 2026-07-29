@@ -21,13 +21,16 @@ namespace ui::utils {
         Managed(T &v, callback fn) :
         value(v),
         fn{fn} {
-            if constexpr (call_if_modified)
-                former = v;
+            if constexpr (!call_if_modified)
+                return;
+            if (!former.contains(&v))
+                former.emplace(&v, v);
         }
 
         ~Managed() {
             if constexpr (call_if_modified) {
-                if (value != former) {
+                if (value != former.at(&value)) {
+                    former[&value] = value;
                     fn(value);
                 }
             } else {
@@ -60,8 +63,8 @@ namespace ui::utils {
         value_type &value;
 
     private:
-        callback   fn;
-        value_type former;
+        callback                                     fn;
+        std::unordered_map<value_type *, value_type> former;
     };
 }
 

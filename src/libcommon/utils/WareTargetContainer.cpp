@@ -77,9 +77,9 @@ namespace common::utils {
         return check != ware_targets_secondary.end();
     }
 
-    void WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
+    WareTarget *WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
         if (isPrimaryTarget(ware_id))
-            return;
+            return nullptr;
 
         // Check if ware is a secondary target, if so remove it from secondary
         // targets
@@ -99,6 +99,8 @@ namespace common::utils {
         ware_iter->is_secondary = false;
         ware_iter->prodution    = 0;
         ware_targets_primary.push_back(&*ware_iter);
+
+        return &*ware_iter;
     }
 
     void WareTargetContainer::unsetPrimaryTarget(const t_ware_id &ware_id) {
@@ -112,11 +114,11 @@ namespace common::utils {
         ware_targets_primary.erase(iter);
     }
 
-    void WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
-                                                 bool            allow_primary_switch) {
+    WareTarget *WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
+                                                        bool            allow_primary_switch) {
         ware_targets_container_t::const_iterator iter;
         if (isSecondaryTarget(ware_id, &iter))
-            return;
+            nullptr;
 
         if (isPrimaryTarget(ware_id, &iter)) {
             if (!allow_primary_switch)
@@ -131,6 +133,8 @@ namespace common::utils {
         ware_target->is_secondary = true;
         ware_target->prodution    = 0;
         ware_targets_secondary.push_back(ware_target);
+
+        return ware_target;
     }
 
     WareTarget *
@@ -168,8 +172,7 @@ namespace common::utils {
         return this->ware_targets;
     }
 
-    const std::vector<WareTarget *>
-    WareTargetContainer::getPrimaryAndSecondaryTargets() const {
+    const std::vector<WareTarget *> WareTargetContainer::getPrimaryAndSecondaryTargets() const {
         ware_targets_container_t all_targets{};
         all_targets.reserve(ware_targets_primary.size()
                             + ware_targets_secondary.size());
