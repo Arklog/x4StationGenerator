@@ -1,0 +1,1 @@
+create_test(test_WareTargetContainer WareTargetContainer.cpp x4StationGeneratorCommon)

@@ -115,12 +115,4 @@ target_link_libraries(x4StationGenerator PRIVATE
 )
 
 enable_testing()
-
-function(create_test test_name test_file required_lib)
-    add_executable(${test_name} ${test_file})
-    target_link_libraries(${test_name} PRIVATE Catch2::Catch2WithMain ${required_lib})
-    target_compile_options(${test_name} PRIVATE ${DEBUG_COMPILE_FLAGS})
-    add_test(${test_name} ${test_name})
-endfunction()
-
 add_subdirectory(tests)
