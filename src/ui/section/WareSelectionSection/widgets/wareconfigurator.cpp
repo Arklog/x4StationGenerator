@@ -65,12 +65,12 @@ store_{store} {
     connect(ui->remove_button, &QPushButton::clicked,
             [this, ware_id](bool clicked) {
                 spdlog::info("Removing ware {}", ware_id);
-                this->shouldRemove(this->ware_target->ware_id);
+                emit this->shouldRemove(this->ware_target->ware_id);
             });
     connect(ui->production_method_combo_box, &QComboBox::currentTextChanged,
             trigger_update_source_module);
     connect(ui->target_input, &QSpinBox::valueChanged, trigger_update_target);
-    
+
     // in case of secondary ware, we gray out the widget and disable input
     // except for the source module selection
     if (!ware_target->is_secondary)

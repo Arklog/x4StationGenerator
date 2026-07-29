@@ -30,6 +30,8 @@ namespace common::utils {
 
     WareTargetContainer &WareTargetContainer::operator=(const WareTargetContainer &other) {
         this->ware_targets = other.ware_targets;
+        this->ware_targets_primary.clear();
+        this->ware_targets_secondary.clear();
 
         std::ranges::for_each(other.ware_targets_primary, [&](auto n) {
             auto &ware_id = n->ware_id;
@@ -97,7 +99,7 @@ namespace common::utils {
             throw std::logic_error("Ware not found in ware targets");
 
         ware_iter->is_secondary = false;
-        ware_iter->production    = 0;
+        ware_iter->production   = 0;
         ware_targets_primary.push_back(&*ware_iter);
 
         return &*ware_iter;
@@ -109,7 +111,7 @@ namespace common::utils {
         if (!isPrimaryTarget(ware_id, &iter))
             throw std::out_of_range("Ware is not a primary target");
 
-        (*iter)->production    = 0;
+        (*iter)->production   = 0;
         (*iter)->is_secondary = false;
         ware_targets_primary.erase(iter);
     }
@@ -131,7 +133,7 @@ namespace common::utils {
 
         auto ware_target          = const_cast<WareTarget *>(getTarget(ware_id));
         ware_target->is_secondary = true;
-        ware_target->production    = 0;
+        ware_target->production   = 0;
         ware_targets_secondary.push_back(ware_target);
 
         return ware_target;

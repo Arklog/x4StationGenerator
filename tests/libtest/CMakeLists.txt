@@ -1,5 +1,8 @@
 set(TEST_JSON_MODELS
         "test/data/modules/json/prod_module_01.json"
+        "test/data/modules/json/prod_module_02.json"
+        "test/data/wares/json/ware_01.json"
+        "test/data/wares/json/ware_02.json"
 )
 set(TEST_JSON_MODELS_CONTENT)
 

@@ -1,0 +1,27 @@
+{
+  "id": "prod_module_01",
+  "name": "Prod Module 01",
+  "module_type": "production",
+  "price": {
+    "max": 20,
+    "min": 10,
+    "avg": 15
+  },
+  "cost": {
+    "ware_01": 10,
+    "ware_02": 10
+  },
+  "time": 0.0,
+  "required_workforce": 100,
+  "wares_produced": {
+    "ware_02": {
+      "amount": 10,
+      "time": 10,
+      "work": 1.5,
+      "sun": 0.0,
+      "consumed": {
+      }
+    }
+  },
+  "production_method": ""
+}

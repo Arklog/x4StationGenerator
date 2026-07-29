@@ -9,6 +9,8 @@
 namespace test::data::wares {
     extern common::types::Ware ware_01;
     extern common::types::Ware ware_02;
+
+    void init();
 }
 
 #endif //X4STATIONGENERATOR_TESTS_LIBTEST_DATA_WARES_WARES_HPP

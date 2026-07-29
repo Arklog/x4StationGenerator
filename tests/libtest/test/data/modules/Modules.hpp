@@ -7,8 +7,10 @@
 #include "utils/modules.hpp"
 
 namespace test::data::modules {
-    extern const common::types::module::ProductionModule prod_module_01;
-    extern const common::types::module::ProductionModule prod_module_02;
+    extern common::types::module::ProductionModule prod_module_01;
+    extern common::types::module::ProductionModule prod_module_02;
+
+    void init();
 }
 
 #endif //X4STATIONGENERATOR_TESTS_LIBTEST_DATA_MODULES_MODULES_HPP

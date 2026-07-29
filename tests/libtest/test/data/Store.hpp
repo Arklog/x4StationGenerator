@@ -8,6 +8,8 @@
 
 namespace test::data {
     extern common::data::Store store;
+
+    void init();
 }
 
 #endif //X4STATIONGENERATOR_TESTS_LIBTEST_DATA_STORE_HPP

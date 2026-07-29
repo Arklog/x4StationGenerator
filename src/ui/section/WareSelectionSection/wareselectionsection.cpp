@@ -62,6 +62,12 @@ store_(store) {
                 new_value                         = new_value <= 0 ? 1.0f : new_value;
                 this->state_.settings()->sunlight = new_value;
             });
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, [this]() {
+        auto settings = this->state_.settings();
+
+        this->ui->sunlight_value->setValue(settings->sunlight * 100.0f);
+        this->ui->workforce_input->toggled(settings->workforce_enables);
+    });
 
     this->state_.settings()->sunlight = static_cast<double>(ui->sunlight_value->value()) / 100;
 }
