@@ -15,19 +15,24 @@
 #include "utils/SharedState.hpp"
 
 
-SettingsSection::SettingsSection(ui::utils::SharedState &settings, QWidget *parent) :
+SettingsSection::SettingsSection(ui::utils::SharedState &state, QWidget *parent) :
 QWidget(parent),
 ui(new Ui::SettingsSection),
-settings_(settings) {
+state_(state) {
     ui->setupUi(this);
 
-    ui->station_name_input->setText(QString::fromStdString(settings.settings()->name));
+    ui->station_name_input->setText(QString::fromStdString(state.settings()->name));
 
     connect(ui->station_name_input, &QLineEdit::editingFinished,
             [this]() {
                 spdlog::debug("settings modified");
-                settings_.settings()->name = ui->station_name_input->text().toStdString();
+                state_.settings()->name = ui->station_name_input->text().toStdString();
             });
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, [this]() {
+        auto settings = this->state_.settings();
+
+        this->ui->station_name_input->setText(QString::fromStdString(settings->name));
+    });
 }
 
 SettingsSection::~SettingsSection() {

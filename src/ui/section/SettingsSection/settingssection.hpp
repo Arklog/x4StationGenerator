@@ -27,14 +27,14 @@ class SettingsSection : public QWidget {
 public:
     using Settings = common::stationbuilder::Settings;
 
-    explicit SettingsSection(ui::utils::SharedState &settings, QWidget *parent = nullptr);
+    explicit SettingsSection(ui::utils::SharedState &state, QWidget *parent = nullptr);
 
     ~SettingsSection() override;
 
 private:
     Ui::SettingsSection *ui;
 
-    ui::utils::SharedState &settings_;
+    ui::utils::SharedState &state_;
 };
 
 

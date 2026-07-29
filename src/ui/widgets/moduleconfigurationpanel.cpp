@@ -26,17 +26,22 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-void ModuleConfigurationPanel::addModule_(const Module *module, int amount, bool ignore_if_present) {
+void ModuleConfigurationPanel::addModule_(const Module *module, int amount, bool is_loading_plan) {
     auto  managed_settings = state_.settings();
     auto  settings         = &managed_settings.get();
     auto &module_targets_  = settings->*member_;
 
+    // if loading plan all widgets have been removed and the module to add is already in the module_target_list
     auto iter = std::find(module_targets_.begin(), module_targets_.end(), module->id);
-    if (iter != module_targets_.end() && !ignore_if_present)
+    if (iter != module_targets_.end() && !is_loading_plan)
         return;
 
-    auto &module_target = module_targets_.emplace_back(module->id, amount);
-    auto  widget        = new ModuleConfiguration(module, module_target, this);
+    auto &module_target = is_loading_plan
+                              ? *std::ranges::find_if(module_targets_, [&](auto &target) {
+                                  return target.module_id == module->id;
+                              })
+                              : module_targets_.emplace_back(module->id, amount);
+    auto widget = new ModuleConfiguration(module, module_target, this);
 
     ui->layout->addWidget(widget);
 
