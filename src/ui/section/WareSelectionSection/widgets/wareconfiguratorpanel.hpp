@@ -46,8 +46,7 @@ public:
 
 public
 slots:
-    void addWare(t_ware_id ware_id, bool is_secondary = false,
-                 unsigned  amount                     = 0);
+    void addWare(t_ware_id ware_id, bool is_secondary = false, unsigned amount = 0, bool force_add = false);
 
     /**
      * Slot to be triggered when there is a need to recompute the complex
@@ -65,7 +64,6 @@ private:
     QLayout *                  scroll_layout_;
     std::unordered_map<t_ware_id, WareConfigurator *, std::hash<std::string> >
     ware_configurators;
-    WareTargetContainer     ware_target_container;
     ui::utils::SharedState &state_;
     const Store &           store_;
 };

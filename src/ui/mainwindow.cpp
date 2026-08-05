@@ -22,7 +22,7 @@ QMainWindow(parent),
 ui(new Ui::MainWindow),
 error_message_(new QErrorMessage{this}),
 store_(store),
-state{} {
+state{store} {
     ui->setupUi(this);
 
     auto ware_selection_section = new WareSelectionSection(state, store_, this);

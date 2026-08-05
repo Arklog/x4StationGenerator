@@ -202,6 +202,22 @@ namespace common::utils {
         });
     }
 
+    bool WareTargetContainer::operator==(const WareTargetContainer &other) const {
+        return std::ranges::all_of(this->ware_targets_primary, [&](auto &n) {
+            const auto &id = n->ware_id;
+            if (!other.isPrimaryTarget(id))
+                return false;
+            auto other_target = other.getPrimaryTarget(id);
+            return n->production == other_target->production && n->source_module == other_target->source_module;
+        }) && std::ranges::all_of(this->ware_targets_secondary, [&](auto &n) {
+            const auto &id = n->ware_id;
+            if (!other.isSecondaryTarget(id))
+                return false;
+            auto other_target = other.getSecondaryTarget(id);
+            return n->source_module == other_target->source_module;
+        });
+    }
+
     const std::vector<WareTarget *> &WareTargetContainer::getPrimaryTargets() const {
         return ware_targets_primary;
     }

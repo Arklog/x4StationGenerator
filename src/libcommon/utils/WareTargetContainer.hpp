@@ -123,6 +123,8 @@ namespace common::utils {
          * @param other
          */
         void copyProductionMethods(const WareTargetContainer &other);
+
+        bool operator==(const WareTargetContainer &other) const;
     };
 }
 

@@ -41,6 +41,8 @@ namespace common::stationbuilder {
     struct Settings {
         Settings() = default;
 
+        explicit Settings(const data::Store &store);
+
         explicit Settings(types::StationSaveFile &&save_file, const data::Store &store);
 
         std::string                name;              // name of the station

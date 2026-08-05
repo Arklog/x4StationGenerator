@@ -10,6 +10,7 @@
 
 #include "data/Store.hpp"
 #include "stationbuilder/defines.hpp"
+#include "utils/SharedState.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -34,8 +35,8 @@ public:
      * @param is_secondary Is this a secondary ware (byproduct of the main
      * production)
      */
-    explicit WareConfigurator(WareTarget *ware_target, const Store &store,
-                              QWidget *   parent = nullptr);
+    explicit WareConfigurator(t_ware_id ware_target, ui::utils::SharedState &state_, const Store &store,
+                              QWidget * parent = nullptr);
 
     ~WareConfigurator() override;
 
@@ -60,9 +61,10 @@ signals:
     void shouldUpdate();
 
 private:
-    Ui::WareConfigurator *ui;
-    WareTarget *          ware_target;
-    Store                 store_;
+    Ui::WareConfigurator *  ui;
+    t_ware_id               ware_id;
+    ui::utils::SharedState &state_;
+    const Store &           store_;
 };
 
 #endif // WARECONFIGURATOR_HPP

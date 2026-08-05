@@ -4,7 +4,9 @@
 
 #include "SharedState.hpp"
 
-namespace ui {
-    namespace utils {
-    } // utils
-}     // ui
+namespace ui::utils {
+    SharedState::SharedState(const common::data::Store &store) :
+    settings_(store),
+    complex_() {
+    }
+}

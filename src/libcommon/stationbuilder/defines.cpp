@@ -19,14 +19,24 @@ namespace common::stationbuilder {
         return this->module_id == module_id;
     }
 
+    Settings::Settings(const data::Store &store) :
+    name{},
+    sunlight{1.0f},
+    workforce_module{},
+    workforce_enables{},
+    ware_targets{store},
+    docks{},
+    storages{} {
+    }
+
     Settings::Settings(types::StationSaveFile &&save_file, const data::Store &store) :
     name(std::move(save_file.name)),
     sunlight(save_file.sun),
     workforce_module(std::move(save_file.habitat_id)),
     workforce_enables(save_file.workforce),
+    ware_targets(store),
     docks{},
-    storages{},
-    ware_targets(store) {
+    storages{} {
         std::ranges::for_each(save_file.docks, [&](auto &n) {
             this->docks.emplace_back(ModuleTarget{std::move(n.first), n.second});
         });
@@ -49,6 +59,7 @@ namespace common::stationbuilder {
                && this->workforce_enables == other.workforce_enables
                && this->workforce_module == other.workforce_module
                && this->docks == other.docks
-               && this->storages == other.storages;
+               && this->storages == other.storages
+               && this->ware_targets == other.ware_targets;
     }
 }

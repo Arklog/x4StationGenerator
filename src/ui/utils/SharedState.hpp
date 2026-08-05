@@ -18,6 +18,8 @@ namespace ui::utils {
     public:
         SharedState() = default;
 
+        explicit SharedState(const common::data::Store &store);
+
         auto settings() {
             return Managed{
                 settings_, [this](common::stationbuilder::Settings &) {
