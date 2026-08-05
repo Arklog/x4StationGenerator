@@ -11,6 +11,10 @@
 #include <QWidget>
 
 
+namespace ui::utils {
+    class SharedState;
+}
+
 class ModuleSelectionPanel;
 class ModuleConfigurationPanel;
 
@@ -28,20 +32,17 @@ public:
     using Store                = common::data::Store;
     using t_module_target_list = common::stationbuilder::t_module_target_list;
 
-    explicit StorageSection(const Store &store, QWidget *parent = nullptr);
+    explicit StorageSection(ui::utils::SharedState &state, const Store &store, QWidget *parent = nullptr);
 
     ~StorageSection() override;
-
-    t_module_target_list getModuleTargetList() const;
-
-signals:
-    void storageUpdated();
 
 private:
     Ui::StorageSection *ui;
 
     ModuleSelectionPanel *    storage_selection_panel;
     ModuleConfigurationPanel *storage_configuration_panel;
+    ui::utils::SharedState &  state_;
+    const Store &             store_;
 };
 
 

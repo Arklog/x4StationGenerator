@@ -1,11 +1,12 @@
 #include "mainwindow.h"
 #include <QFileDialog>
 #include <QTextStream>
-#include <cmath>
+#include <QErrorMessage>
 
 #include "utils/modules.hpp"
 
 #include "ui_mainwindow.h"
+#include "common/types/StationSaveFile.hpp"
 
 #include "section/DockAndPierrSection/dockandpierrsection.hpp"
 #include "section/SettingsSection/settingssection.hpp"
@@ -13,20 +14,21 @@
 #include "section/SummarySection/summarysection.hpp"
 #include "section/WareSelectionSection/wareselectionsection.h"
 
-#include "spdlog/spdlog.h"
+#include <spdlog/spdlog.h>
+#include <rfl/json.hpp>
 
 MainWindow::MainWindow(const Store &store, QWidget *parent) :
 QMainWindow(parent),
 ui(new Ui::MainWindow),
-settings_{},
+error_message_(new QErrorMessage{this}),
 store_(store),
-complex_{} {
+state{store} {
     ui->setupUi(this);
 
-    auto ware_selection_section = new WareSelectionSection(settings_, store_, this);
-    auto dock_and_pierr_section = new DockAndPierrSection(store, this);
-    auto storage_section        = new StorageSection(store, this);
-    auto settings_section       = new SettingsSection(settings_, this);
+    auto ware_selection_section = new WareSelectionSection(state, store_, this);
+    auto dock_and_pierr_section = new DockAndPierrSection(state, store, this);
+    auto storage_section        = new StorageSection(state, store, this);
+    auto settings_section       = new SettingsSection(state, this);
     auto summary_section        = new SummarySection(store, this);
 
     ui->ware_selection_tab_layout->addWidget(ware_selection_section);
@@ -41,14 +43,11 @@ complex_{} {
     this->summary_section_        = summary_section;
     this->settings_section_       = settings_section;
 
-    connect(ware_selection_section_, &WareSelectionSection::complexUpdated,
-            this, &MainWindow::complexUpdated);
-    connect(storage_section_, &StorageSection::storageUpdated, this,
-            &MainWindow::complexUpdated);
-    connect(dock_and_pierr_section_, &DockAndPierrSection::dockAndPierrUpdated,
-            this, &MainWindow::complexUpdated);
-    connect(ui->action_export, &QAction::triggered, this,
-            &MainWindow::exportPlan);
+    connect(&this->state, &ui::utils::SharedState::complexChanged, this, &MainWindow::complexUpdated);
+
+    connect(ui->action_export, &QAction::triggered, this, &MainWindow::exportPlan);
+    connect(ui->actionSave, &QAction::triggered, this, &MainWindow::savePlan);
+    connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::openPlan);
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -59,6 +58,8 @@ void MainWindow::exportPlan() {
     QFileDialog dialog(this);
     dialog.setFileMode(QFileDialog::FileMode::AnyFile);
     dialog.setAcceptMode(QFileDialog::AcceptMode::AcceptSave);
+    auto complex  = state.complex();
+    auto settings = state.settings();
 
     if (dialog.exec()) {
         auto selected_file = dialog.selectedFiles().first();
@@ -66,51 +67,55 @@ void MainWindow::exportPlan() {
 
         QFile file(selected_file);
 
-        // non empty file, check with user
-        // if (file.size() != 0) {
-        // spdlog::info("non empty file, waiting for confirmation");
-        // QDialog dialog(this);
-        // dialog.setWindowFlags(Qt::Dialog);
-        // dialog.setModal(true);
-        // dialog.setWindowTitle("Non empty file");
-        // dialog.exec();
-
-        // bool ok = false;
-        // connect(dialog, &QDialog::accept, [&ok] () -> void { ok = true; });
-
-        // spdlog::info("file was accepted");
-        // }
-
         if (file.open(QIODevice::WriteOnly)) {
             QTextStream stream(&file);
-            auto        data = genModulePlan(complex_.complex, store_, settings_);
+            auto        data = genModulePlan(complex->complex, store_, settings);
 
             file.write(data.c_str());
         }
     }
 }
 
+void MainWindow::openPlan() {
+    using StationSaveFile = common::types::StationSaveFile;
+
+    try {
+        QFileDialog dialog(this, "Open file");
+        dialog.setFileMode(QFileDialog::FileMode::ExistingFile);
+
+        if (dialog.exec()) {
+            auto selected_file = dialog.selectedFiles().first();
+            auto v             = rfl::json::load<StationSaveFile>(selected_file.toStdString());
+
+            if (!v.has_value())
+                throw std::runtime_error("Could not read file: " + v.error().what());
+
+            auto settings = state.settings();
+            settings      = Settings(std::move(v.value()), store_);
+            emit state.saveFileLoaded();
+        }
+    } catch (std::exception &e) {
+        error_message_->showMessage(e.what());
+    }
+}
+
+void MainWindow::savePlan() {
+    try {
+        auto save_file = state.toStationSaveFile();
+
+        QFileDialog dialog(this, "Save file", QString::fromStdString(fmt::format("{}.json", save_file.name)));
+
+        if (dialog.exec()) {
+            auto selected_file = dialog.selectedFiles().first();
+            rfl::json::save(selected_file.toStdString(), save_file);
+        }
+    } catch (std::exception &e) {
+        error_message_->showMessage(e.what());
+    }
+}
+
 void MainWindow::complexUpdated() {
     spdlog::debug("Complex update triggered");
     this->update();
-
-    complex_             = this->ware_selection_section_->getComplex();
-    const auto &storages = this->storage_section_->getModuleTargetList();
-    const auto &dock_and_pierr
-            = this->dock_and_pierr_section_->getModuleTargetList();
-
-    spdlog::debug("Inserting {} dock and pierr modules",
-                  dock_and_pierr.size());
-    for (const auto &[module_id, amount]: dock_and_pierr) {
-        for (size_t i = 0; i < amount; ++i)
-            complex_.complex.insert(complex_.complex.begin(), module_id);
-    }
-
-    spdlog::debug("Inserting {} storage modules", storages.size());
-    for (const auto &[module_id, amount]: storages) {
-        for (size_t i = 0; i < amount; ++i)
-            complex_.complex.insert(complex_.complex.begin(), module_id);
-    }
-
-    summary_section_->updateTargetList(complex_);
+    summary_section_->updateTargetList(state.complex());
 }

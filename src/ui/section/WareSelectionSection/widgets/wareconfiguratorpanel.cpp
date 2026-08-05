@@ -15,15 +15,16 @@
 #include "stationbuilder/Generator/ComplexGeneratorBase.hpp"
 #include <spdlog/spdlog.h>
 
-WareConfiguratorPanel::WareConfiguratorPanel(const Settings &settings,
-                                             const Store &   store,
-                                             QWidget *       parent) :
+#include "utils/SharedState.hpp"
+#include "utils/utils.hpp"
+
+WareConfiguratorPanel::WareConfiguratorPanel(ui::utils::SharedState &state,
+                                             const Store &           store,
+                                             QWidget *               parent) :
 QScrollArea(parent),
 ui(new Ui::WareConfiguratorPanel),
 scroll_layout_(nullptr),
-ware_configurators{},
-ware_target_container{store},
-settings_(settings),
+state_(state),
 store_(store) {
     ui->setupUi(this);
     this->setWindowTitle({"Configuration"});
@@ -36,24 +37,32 @@ store_(store) {
 
     this->setWidget(widget);
     this->setWidgetResizable(true);
+
+    connect(&this->state_, &ui::utils::SharedState::settingsChanged, this,
+            &WareConfiguratorPanel::productionTargetUpdate, Qt::QueuedConnection);
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, this, &WareConfiguratorPanel::planLoaded);
 }
 
 WareConfiguratorPanel::~WareConfiguratorPanel() { delete ui; }
 
-void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
-                                    unsigned  amount) {
+void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary, unsigned amount, bool force_add) {
     spdlog::debug(
         "[WareConfiguratorPanel] adding ware {} as {} target with amount {}",
         ware_id, is_secondary ? "secondary" : "primary", amount);
+    auto  settings              = this->state_.settings();
+    auto &ware_target_container = settings->ware_targets;
 
     // Skip adding secondary target if already primary
-    if (this->ware_target_container.isPrimaryTarget(ware_id)) {
-        spdlog::info("{} is already a primary target, skipping", ware_id);
+    if (ware_target_container.isPrimaryTarget(ware_id) && is_secondary) {
+        spdlog::warn("{} is already a primary target, cannot downgrade to secondary, skipping", ware_id);
+        return;
+    } else if (ware_target_container.isPrimaryTarget(ware_id) && !is_secondary && !force_add) {
+        spdlog::warn("{} is already a primary target, cannot add it twice", ware_id);
         return;
     }
 
     // If already secondary, remove secondary widget and replace by primary
-    if (this->ware_target_container.isSecondaryTarget(ware_id)
+    if (ware_target_container.isSecondaryTarget(ware_id)
         && !is_secondary && this->ware_configurators.contains(ware_id)) {
         spdlog::info("[WareConfiguratorPanel] {} is already a secondary "
                      "target, upgrading to primary",
@@ -66,16 +75,17 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
     // Create a new ware configurator
     WareConfigurator *ware_configurator = nullptr;
     if (!is_secondary) {
-        this->ware_target_container.setPrimaryTarget(ware_id);
-        auto ware_target
-                = this->ware_target_container.getPrimaryTarget(ware_id);
-        ware_configurator = new WareConfigurator(ware_target, store_, this);
+        ware_target_container.setPrimaryTarget(ware_id);
+        auto ware_target          = ware_target_container.getPrimaryTarget(ware_id);
+        ware_target->ware_id      = ware_id;
+        ware_target->production   = amount;
+        ware_target->is_secondary = is_secondary;
+        ware_configurator         = new WareConfigurator(ware_id, state_, store_, this);
     } else {
-        this->ware_target_container.setSecondaryTarget(ware_id);
-        auto ware_target
-                = this->ware_target_container.getSecondaryTarget(ware_id);
-        ware_target->prodution = amount;
-        ware_configurator      = new WareConfigurator(ware_target, store_, this);
+        ware_target_container.setSecondaryTarget(ware_id);
+        auto ware_target        = ware_target_container.getSecondaryTarget(ware_id);
+        ware_target->production = amount;
+        ware_configurator       = new WareConfigurator(ware_id, state_, store_, this);
     }
 
     // Store the configurator and add it to the layout
@@ -84,7 +94,10 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 
     connect(ware_configurator, &WareConfigurator::shouldRemove,
             [this](t_ware_id ware_id) -> void {
-                if (!this->ware_target_container.isPrimaryTarget(ware_id)) {
+                auto  settings              = this->state_.settings();
+                auto &ware_target_container = settings->ware_targets;
+
+                if (!ware_target_container.isPrimaryTarget(ware_id)) {
                     spdlog::error("Ware {} is not a primary target, cannot remove", ware_id);
                     throw std::logic_error("Ware is not a primary target, cannot remove");
                 }
@@ -92,7 +105,7 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
                 auto widget = this->ware_configurators[ware_id];
 
                 scroll_layout_->removeWidget(widget);
-                this->ware_target_container.unsetPrimaryTarget(ware_id);
+                ware_target_container.unsetPrimaryTarget(ware_id);
                 this->ware_configurators.erase(ware_id);
                 widget->deleteLater();
 
@@ -109,8 +122,11 @@ void WareConfiguratorPanel::addWare(t_ware_id ware_id, bool is_secondary,
 }
 
 void WareConfiguratorPanel::productionTargetUpdate() {
-    common::stationbuilder::generator::ComplexGeneratorBase test(settings_, store_, this->ware_target_container);
+    auto                                                    settings = state_.settings();
+    common::stationbuilder::generator::ComplexGeneratorBase test(settings, store_, settings->ware_targets);
     auto                                                    build_result = test.build();
+    build_result.name                                                    = settings->name;
+    build_result.habitat_id                                              = settings->workforce_module;
 
     const auto &current_production = test.getCurrentProduction();
 
@@ -120,20 +136,40 @@ void WareConfiguratorPanel::productionTargetUpdate() {
         if (!widget->getWareTarget()->is_secondary)
             continue;
 
-        scroll_layout_->removeWidget(widget);
-        widget->deleteLater();
-
         to_remove.push_back(ware_id);
     }
 
     for (const auto &ware_id: to_remove) {
+        auto widget = this->ware_configurators.at(ware_id);
+        scroll_layout_->removeWidget(widget);
+        widget->deleteLater();
         this->ware_configurators.erase(ware_id);
     }
 
     // Add secondary targets
     for (const auto &ware_target: current_production.getSecondaryTargets()) {
-        this->addWare(ware_target->ware_id, true, ware_target->prodution);
+        this->addWare(ware_target->ware_id, true, ware_target->production);
     }
 
-    emit shouldUpdate(build_result);
+    // add docks and storage to complex
+    auto insert_module_target = [&](const common::stationbuilder::ModuleTarget &v) {
+        for (int i = 0; i < v.amount; ++i)
+            build_result.complex.insert(build_result.complex.begin(), v.module_id);
+    };
+    std::ranges::for_each(settings->storages, insert_module_target);
+    std::ranges::for_each(settings->docks, insert_module_target);
+
+    state_.complex() = std::move(build_result);
+}
+
+void WareConfiguratorPanel::planLoaded() {
+    clearLayout(this->scroll_layout_);
+    this->ware_configurators.clear();
+    auto settings = state_.settings();
+    // ware_target_container = WareTargetContainer{store_};
+    // ware_target_container.copyProductionMethods(settings->ware_targets);
+
+    std::ranges::for_each(settings->ware_targets.getPrimaryTargets(), [&](auto n) {
+        this->addWare(n->ware_id, n->is_secondary, n->production, true);
+    });
 }

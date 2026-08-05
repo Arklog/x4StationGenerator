@@ -8,6 +8,14 @@
 #include <QFrame>
 #include <QWidget>
 
+namespace ui::utils {
+    class SharedState;
+}
+
+namespace common::stationbuilder {
+    struct Settings;
+}
+
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -20,23 +28,25 @@ class ModuleConfigurationPanel : public QFrame {
     Q_OBJECT
 
 public:
-    using Module = common::types::module::Module;
+    using Module             = common::types::module::Module;
+    using module_list_target = common::stationbuilder::t_module_target_list common::stationbuilder::Settings::*;
 
-    explicit ModuleConfigurationPanel(QWidget *parent = nullptr);
+    explicit ModuleConfigurationPanel(ui::utils::SharedState &state, module_list_target target,
+                                      QWidget *               parent = nullptr);
 
     ~ModuleConfigurationPanel() override;
 
-    common::stationbuilder::t_module_target_list getModuleTargets() const;
+    void loadPlan(const common::data::Store &store);
 
 public slots:
-    void addModule(const Module *dock_or_pierr);
-
-signals:
-    void targetListUpdated();
+    void addModule(const Module *module);
 
 private:
-    Ui::ModuleConfigurationPanel *                    ui;
-    std::vector<common::stationbuilder::ModuleTarget> module_targets_{};
+    Ui::ModuleConfigurationPanel *ui;
+    ui::utils::SharedState &      state_;
+    module_list_target            member_;
+
+    void addModule_(const Module *module, int amount, bool is_loading_plan = false);
 };
 
 

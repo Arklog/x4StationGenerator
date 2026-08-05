@@ -109,11 +109,11 @@ namespace ui::section::summarysection::widgets {
 
         std::ranges::for_each(ware_targets.getTargets(), [&](auto &item) {
             WareSummaryItemData itemData{};
-            if (item.prodution == 0)
+            if (item.production == 0)
                 return;
 
             itemData.ware   = *store.wares.by_id.at(item.ware_id);
-            itemData.amount = item.prodution;
+            itemData.amount = item.production;
 
             data.push_back(std::move(itemData));
         });

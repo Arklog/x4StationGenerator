@@ -1,0 +1,13 @@
+{
+  "id": "ware_01",
+  "name": "Ware 01",
+  "group": "group_01",
+  "group_name": "Group 01",
+  "tier": 1,
+  "price": {
+    "max": 648,
+    "min": 432,
+    "avg": 540
+  },
+  "produced": true
+}

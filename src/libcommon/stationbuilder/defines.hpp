@@ -8,8 +8,12 @@
 #include <string>
 #include <vector>
 
-#include "common/types/Ware.hpp"
 #include "common/types/module/Module.hpp"
+#include "utils/WareTargetContainer.hpp"
+
+namespace common::types {
+    struct StationSaveFile;
+}
 
 namespace common::stationbuilder {
     using t_module_id = types::module::Module::module_id;
@@ -21,13 +25,6 @@ namespace common::stationbuilder {
         extern const std::string habitat;
     } // namespace ModuleType
 
-    struct WareTarget {
-        types::Ware::ware_id             ware_id;
-        types::module::Module::module_id source_module;
-        long int                         prodution;
-        bool                             is_secondary;
-    };
-
     struct ModuleTarget {
         t_module_id module_id;
         size_t      amount;
@@ -37,15 +34,26 @@ namespace common::stationbuilder {
         bool operator==(const t_module_id &module_id) const;
     };
 
-    struct Settings {
-        std::string name;
-        double      sunlight;
-        t_module_id workforce_module;
-        bool        workforce_enables;
-    };
+    typedef std::vector<const utils::WareTarget *> t_target_list;
+    typedef std::vector<t_module_id>               t_x4_complex;
+    typedef std::vector<ModuleTarget>              t_module_target_list;
 
-    typedef std::vector<const WareTarget *> t_target_list;
-    typedef std::vector<t_module_id>        t_x4_complex;
-    typedef std::vector<ModuleTarget>       t_module_target_list;
+    struct Settings {
+        Settings() = default;
+
+        explicit Settings(const data::Store &store);
+
+        explicit Settings(types::StationSaveFile &&save_file, const data::Store &store);
+
+        std::string                name;              // name of the station
+        double                     sunlight;          // sector sunlight
+        t_module_id                workforce_module;  // habitat to use
+        bool                       workforce_enables; // should the complex use workforce ?
+        utils::WareTargetContainer ware_targets;
+        t_module_target_list       docks;    // list of docks and pi
+        t_module_target_list       storages; // list of storages
+
+        bool operator==(const Settings &other) const;
+    };
 }
 #endif // DEFINES_HPP

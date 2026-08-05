@@ -88,7 +88,7 @@ namespace ui::section::summarysection::widgets {
 
         std::ranges::for_each(complex.wares.getTargets(), [&](const auto &ware_target) {
             auto ware  = store.wares.by_id.at(ware_target.ware_id);
-            ware_price += ware->price.avg * ware_target.prodution;
+            ware_price += ware->price.avg * ware_target.production;
         });
 
         widgets_.station_name->setText(QString::fromStdString(complex.name));

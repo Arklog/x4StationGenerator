@@ -7,11 +7,16 @@
 #include "moduleconfiguration.hpp"
 #include "moduleconfigurationpanel.hpp"
 #include "ui_moduleconfigurationpanel.h"
+#include "utils/SharedState.hpp"
+#include "utils/utils.hpp"
 
 
-ModuleConfigurationPanel::ModuleConfigurationPanel(QWidget *parent) :
+ModuleConfigurationPanel::ModuleConfigurationPanel(ui::utils::SharedState &state, module_list_target member_target,
+                                                   QWidget *               parent) :
 QFrame(parent),
-ui(new Ui::ModuleConfigurationPanel) {
+ui(new Ui::ModuleConfigurationPanel),
+state_(state),
+member_(member_target) {
     QFrame::setFrameShape(QFrame::StyledPanel);
     ui->setupUi(this);
     ui->layout->setAlignment(Qt::AlignTop);
@@ -21,49 +26,53 @@ ModuleConfigurationPanel::~ModuleConfigurationPanel() {
     delete ui;
 }
 
-common::stationbuilder::t_module_target_list ModuleConfigurationPanel::getModuleTargets() const {
-    common::stationbuilder::t_module_target_list docks_and_pierr_list{};
+void ModuleConfigurationPanel::addModule_(const Module *module, int amount, bool is_loading_plan) {
+    auto  managed_settings = state_.settings();
+    auto  settings         = &managed_settings.get();
+    auto &module_targets_  = settings->*member_;
 
-    for (auto i = 0; i < ui->layout->count(); ++i) {
-        auto item   = ui->layout->itemAt(i);
-        auto widget = item->widget();
-
-        if (!widget)
-            continue;
-
-        auto config = static_cast<ModuleConfiguration *>(widget);
-        auto target = config->getModuleTarget();
-
-        if (target.amount == 0)
-            continue;
-        docks_and_pierr_list.push_back(config->getModuleTarget());
-    }
-
-    return docks_and_pierr_list;
-}
-
-void ModuleConfigurationPanel::addModule(const Module *dock_or_pierr) {
-    auto iter = std::find(module_targets_.begin(), module_targets_.end(), dock_or_pierr->id);
-    if (iter != module_targets_.end())
+    // if loading plan all widgets have been removed and the module to add is already in the module_target_list
+    auto iter = std::find(module_targets_.begin(), module_targets_.end(), module->id);
+    if (iter != module_targets_.end() && !is_loading_plan)
         return;
 
-    auto &module_target = this->module_targets_.emplace_back(dock_or_pierr->id, 1);
-    auto  widget        = new ModuleConfiguration(dock_or_pierr, module_target, this);
+    auto &module_target = is_loading_plan
+                              ? *std::ranges::find_if(module_targets_, [&](auto &target) {
+                                  return target.module_id == module->id;
+                              })
+                              : module_targets_.emplace_back(module->id, amount);
+    auto widget = new ModuleConfiguration(module, module_target, this);
 
     ui->layout->addWidget(widget);
 
     connect(widget, &ModuleConfiguration::shouldRemove, [this, widget, module_target]() -> void {
         ui->layout->removeWidget(widget);
+        auto  managed_settings = this->state_.settings();
+        auto  settings         = &managed_settings.get();
+        auto &module_targets_  = settings->*(this->member_);
+
         const auto iter = std::find(module_targets_.begin(), module_targets_.end(), module_target);
-        this->module_targets_.erase(iter);
+        module_targets_.erase(iter);
 
         delete widget;
     });
+    connect(widget, &ModuleConfiguration::moduleTargetUpdated, [this]() {
+        emit state_.settingsChanged(state_.settings());
+    });
+}
 
-    connect(widget, &ModuleConfiguration::moduleTargetUpdated,
-            [this](const common::stationbuilder::ModuleTarget &target) {
-                emit this->targetListUpdated();
-            });
+void ModuleConfigurationPanel::loadPlan(const common::data::Store &store) {
+    auto  managed_settings = this->state_.settings();
+    auto  settings         = managed_settings.get();
+    auto &member_target    = settings.*member_;
+    clearLayout(ui->layout);
 
-    emit targetListUpdated();
+    std::ranges::for_each(member_target, [&](auto &module_target) {
+        auto module = store.modules.by_id.at(module_target.module_id);
+        this->addModule_(&module->module.get(), module_target.amount, true);
+    });
+}
+
+void ModuleConfigurationPanel::addModule(const Module *module) {
+    this->addModule_(module, 1);
 }

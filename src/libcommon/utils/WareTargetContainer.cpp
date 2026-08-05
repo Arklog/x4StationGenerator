@@ -24,6 +24,32 @@ namespace common::utils {
         }
     }
 
+    WareTargetContainer::WareTargetContainer(const WareTargetContainer &other) {
+        *this = other;
+    }
+
+    WareTargetContainer &WareTargetContainer::operator=(const WareTargetContainer &other) {
+        this->ware_targets = other.ware_targets;
+        this->ware_targets_primary.clear();
+        this->ware_targets_secondary.clear();
+
+        std::ranges::for_each(other.ware_targets_primary, [&](auto n) {
+            auto &ware_id = n->ware_id;
+            this->setPrimaryTarget(ware_id);
+            auto primary = this->getPrimaryTarget(ware_id);
+            *primary     = *n;
+        });
+
+        std::ranges::for_each(other.ware_targets_secondary, [&](auto n) {
+            auto &ware_id = n->ware_id;
+            this->setSecondaryTarget(ware_id);
+            auto secondary = this->getSecondaryTarget(ware_id);
+            *secondary     = *n;
+        });
+
+        return *this;
+    }
+
     bool WareTargetContainer::isPrimaryTarget(
         const t_ware_id &                         ware_id,
         ware_targets_container_t::const_iterator *iter) const {
@@ -53,9 +79,9 @@ namespace common::utils {
         return check != ware_targets_secondary.end();
     }
 
-    void WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
+    WareTarget *WareTargetContainer::setPrimaryTarget(const t_ware_id &ware_id) {
         if (isPrimaryTarget(ware_id))
-            return;
+            return nullptr;
 
         // Check if ware is a secondary target, if so remove it from secondary
         // targets
@@ -73,8 +99,10 @@ namespace common::utils {
             throw std::logic_error("Ware not found in ware targets");
 
         ware_iter->is_secondary = false;
-        ware_iter->prodution    = 0;
+        ware_iter->production   = 0;
         ware_targets_primary.push_back(&*ware_iter);
+
+        return &*ware_iter;
     }
 
     void WareTargetContainer::unsetPrimaryTarget(const t_ware_id &ware_id) {
@@ -83,30 +111,32 @@ namespace common::utils {
         if (!isPrimaryTarget(ware_id, &iter))
             throw std::out_of_range("Ware is not a primary target");
 
-        (*iter)->prodution    = 0;
+        (*iter)->production   = 0;
         (*iter)->is_secondary = false;
         ware_targets_primary.erase(iter);
     }
 
-    void WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
-                                                 bool            allow_primary_switch) {
+    WareTarget *WareTargetContainer::setSecondaryTarget(const t_ware_id ware_id,
+                                                        bool            allow_primary_switch) {
         ware_targets_container_t::const_iterator iter;
         if (isSecondaryTarget(ware_id, &iter))
-            return;
+            return nullptr;
 
         if (isPrimaryTarget(ware_id, &iter)) {
             if (!allow_primary_switch)
-                throw std::logic_error(
-                    "Ware is primary target, cannot set as secondary");
+                throw std::logic_error("Ware is primary target, cannot set as secondary");
+
             ware_targets_secondary.push_back(*iter);
             ware_targets_primary.erase(iter);
-            return;
+            return *iter;
         }
 
         auto ware_target          = const_cast<WareTarget *>(getTarget(ware_id));
         ware_target->is_secondary = true;
-        ware_target->prodution    = 0;
+        ware_target->production   = 0;
         ware_targets_secondary.push_back(ware_target);
+
+        return ware_target;
     }
 
     WareTarget *
@@ -144,8 +174,7 @@ namespace common::utils {
         return this->ware_targets;
     }
 
-    const std::vector<WareTarget *>
-    WareTargetContainer::getPrimaryAndSecondaryTargets() const {
+    const std::vector<WareTarget *> WareTargetContainer::getPrimaryAndSecondaryTargets() const {
         ware_targets_container_t all_targets{};
         all_targets.reserve(ware_targets_primary.size()
                             + ware_targets_secondary.size());
@@ -156,6 +185,37 @@ namespace common::utils {
                            ware_targets_secondary.end());
 
         return all_targets;
+    }
+
+    void WareTargetContainer::copyProductionMethods(const WareTargetContainer &other) {
+        std::ranges::for_each(other.ware_targets, [&](auto &n) {
+            auto iter = std::ranges::find_if(this->ware_targets, [&n](auto &item) {
+                return item.ware_id == n.ware_id;
+            });
+
+            if (iter == this->ware_targets.end()) {
+                spdlog::error("Could not find ware {} in current ware container", n.ware_id);
+                return;
+            }
+
+            iter->source_module = n.source_module;
+        });
+    }
+
+    bool WareTargetContainer::operator==(const WareTargetContainer &other) const {
+        return std::ranges::all_of(this->ware_targets_primary, [&](auto &n) {
+            const auto &id = n->ware_id;
+            if (!other.isPrimaryTarget(id))
+                return false;
+            auto other_target = other.getPrimaryTarget(id);
+            return n->production == other_target->production && n->source_module == other_target->source_module;
+        }) && std::ranges::all_of(this->ware_targets_secondary, [&](auto &n) {
+            const auto &id = n->ware_id;
+            if (!other.isSecondaryTarget(id))
+                return false;
+            auto other_target = other.getSecondaryTarget(id);
+            return n->source_module == other_target->source_module;
+        });
     }
 
     const std::vector<WareTarget *> &WareTargetContainer::getPrimaryTargets() const {

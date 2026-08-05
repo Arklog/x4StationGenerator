@@ -1,12 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QErrorMessage>
+
 #include "data/Store.hpp"
 
 #include <QMainWindow>
 
-#include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
+#include "utils/SharedState.hpp"
 
 class SummarySection;
 class DockAndPierrSection;
@@ -28,11 +30,15 @@ public:
 
     explicit MainWindow(const Store &store, QWidget *parent = nullptr);
 
-    ~MainWindow();
+    ~MainWindow() override;
 
 public
 slots:
     void exportPlan();
+
+    void openPlan();
+
+    void savePlan();
 
     void complexUpdated();
 
@@ -44,10 +50,10 @@ private:
     StorageSection *      storage_section_;
     SummarySection *      summary_section_;
     SettingsSection *     settings_section_;
+    QErrorMessage *       error_message_;
 
-    Settings                        settings_;
-    const Store &                   store_;
-    common::stationbuilder::Complex complex_;
+    const Store &          store_;
+    ui::utils::SharedState state;
 };
 
 #endif // MAINWINDOW_H

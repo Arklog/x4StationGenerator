@@ -10,6 +10,7 @@
 
 #include "data/Store.hpp"
 #include "stationbuilder/defines.hpp"
+#include "utils/SharedState.hpp"
 
 QT_BEGIN_NAMESPACE
 
@@ -23,7 +24,7 @@ class WareConfigurator : public QFrame {
     Q_OBJECT
 
 public:
-    using WareTarget = common::stationbuilder::WareTarget;
+    using WareTarget = common::utils::WareTarget;
     using Store      = common::data::Store;
     using t_ware_id  = common::types::Ware::ware_id;
 
@@ -34,8 +35,8 @@ public:
      * @param is_secondary Is this a secondary ware (byproduct of the main
      * production)
      */
-    explicit WareConfigurator(WareTarget *ware_target, const Store &store,
-                              QWidget *   parent = nullptr);
+    explicit WareConfigurator(t_ware_id ware_target, ui::utils::SharedState &state_, const Store &store,
+                              QWidget * parent = nullptr);
 
     ~WareConfigurator() override;
 
@@ -45,7 +46,7 @@ public:
      */
     const WareTarget *getWareTarget() const;
 
-    signals:
+signals:
     /**
      * Signal emitted when the user wants to remove this ware from the list
      * @param ware_id
@@ -60,9 +61,10 @@ public:
     void shouldUpdate();
 
 private:
-    Ui::WareConfigurator *ui;
-    WareTarget *          ware_target;
-    Store                 store_;
+    Ui::WareConfigurator *  ui;
+    t_ware_id               ware_id;
+    ui::utils::SharedState &state_;
+    const Store &           store_;
 };
 
 #endif // WARECONFIGURATOR_HPP

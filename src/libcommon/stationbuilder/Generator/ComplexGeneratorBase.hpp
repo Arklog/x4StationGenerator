@@ -16,7 +16,8 @@ namespace common::stationbuilder::generator {
      */
     class ComplexGeneratorBase {
     public:
-        using t_ware_id = types::Ware::ware_id;
+        using t_ware_id  = types::Ware::ware_id;
+        using WareTarget = common::utils::WareTarget;
         typedef std::unordered_map<t_ware_id, WareTarget, std::hash<std::string> >
         t_target_map;
 

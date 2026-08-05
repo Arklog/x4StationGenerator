@@ -5,10 +5,15 @@
 #ifndef X4STATIONGENERATOR_WARETARGETCONTAINER_H
 #define X4STATIONGENERATOR_WARETARGETCONTAINER_H
 #include "data/Loader.hpp"
-#include "stationbuilder/defines.hpp"
 
 namespace common::utils {
-    using WareTarget = common::stationbuilder::WareTarget;
+    struct WareTarget {
+        types::Ware::ware_id             ware_id;
+        types::module::Module::module_id source_module;
+        long int                         production;
+        bool                             is_secondary;
+    };
+
     /**
      * Container for ware targets, allows to manage primary and secondary targets
      * and ensure that a ware is not both a primary and secondary target
@@ -27,6 +32,10 @@ namespace common::utils {
         WareTargetContainer() = default;
 
         WareTargetContainer(const data::Store &store);
+
+        WareTargetContainer(const WareTargetContainer &);
+
+        WareTargetContainer &operator=(const WareTargetContainer &other);
 
         /**
          * Check if a ware is a primary target
@@ -53,7 +62,7 @@ namespace common::utils {
          * Set a ware as primary target
          * @return
          */
-        void setPrimaryTarget(const t_ware_id &ware_id);
+        WareTarget *setPrimaryTarget(const t_ware_id &ware_id);
 
         /**
          * Unset a ware as primary target, if the ware is not a primary target throw
@@ -70,8 +79,8 @@ namespace common::utils {
          * @param ware_id
          * @param allow_primary_switch
          */
-        void setSecondaryTarget(t_ware_id ware_id,
-                                bool      allow_primary_switch = false);
+        WareTarget *setSecondaryTarget(t_ware_id ware_id,
+                                       bool      allow_primary_switch = false);
 
         /**
          * Get a primary target by ware id, if the ware is not a primary target
@@ -106,8 +115,16 @@ namespace common::utils {
 
         [[nodiscard]] const std::vector<WareTarget *> &getSecondaryTargets() const;
 
-        [[nodiscard]] const std::vector<WareTarget *>
-        getPrimaryAndSecondaryTargets() const;
+        [[nodiscard]] const std::vector<WareTarget *> getPrimaryAndSecondaryTargets() const;
+
+        /**
+         * Copy each ware production method from the other container
+         *
+         * @param other
+         */
+        void copyProductionMethods(const WareTargetContainer &other);
+
+        bool operator==(const WareTargetContainer &other) const;
     };
 }
 

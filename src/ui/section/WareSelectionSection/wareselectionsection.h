@@ -12,6 +12,10 @@
 #include "stationbuilder/Complex.hpp"
 #include "stationbuilder/defines.hpp"
 
+namespace ui::utils {
+    class SharedState;
+}
+
 QT_BEGIN_NAMESPACE
 
 namespace Ui {
@@ -26,24 +30,20 @@ class WareSelectionSection : public QWidget {
 public:
     using Store        = common::data::Store;
     using t_x4_complex = common::stationbuilder::t_x4_complex;
-    using Settings     = common::stationbuilder::Settings;
     using t_ware_id    = common::types::Ware::ware_id;
 
-    explicit WareSelectionSection(Settings &settings, const Store &store,
-                                  QWidget * parent = nullptr);
+    explicit WareSelectionSection(ui::utils::SharedState &settings, const Store &store,
+                                  QWidget *               parent = nullptr);
 
     ~WareSelectionSection() override;
-
-    const common::stationbuilder::Complex &getComplex();
 
 signals:
     void complexUpdated();
 
 private:
-    Ui::WareSelectionSection *      ui;
-    common::stationbuilder::Complex complex_;
-    Settings &                      settings_;
-    Store                           store_;
+    Ui::WareSelectionSection *ui;
+    ui::utils::SharedState &  state_;
+    Store                     store_;
 };
 
 #endif // WareSelectionSection_H

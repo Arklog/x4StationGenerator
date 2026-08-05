@@ -16,9 +16,13 @@
 
 #include <QScrollArea>
 
-StorageSection::StorageSection(const Store &store, QWidget *parent) :
+#include "utils/SharedState.hpp"
+
+StorageSection::StorageSection(ui::utils::SharedState &state, const Store &store, QWidget *parent) :
 QWidget(parent),
-ui(new Ui::StorageSection) {
+ui(new Ui::StorageSection),
+state_(state),
+store_(store) {
     ui->setupUi(this);
 
     const auto &                modules = store.storages.datas;
@@ -28,8 +32,9 @@ ui(new Ui::StorageSection) {
         storage_list.insert(&module.module.get());
     }
 
-    auto storage_selection_panel      = new ModuleSelectionPanel(storage_list, this);
-    auto storage_configuration_panel  = new ModuleConfigurationPanel(this);
+    auto storage_selection_panel     = new ModuleSelectionPanel(storage_list, this);
+    auto storage_configuration_panel = new ModuleConfigurationPanel(state_, &common::stationbuilder::Settings::storages,
+                                                                    this);
     this->storage_selection_panel     = storage_selection_panel;
     this->storage_configuration_panel = storage_configuration_panel;
 
@@ -40,15 +45,11 @@ ui(new Ui::StorageSection) {
     ui->configuration_scroll_area->setWidgetResizable(true);
     ui->configuration_scroll_area->setLayoutDirection(Qt::RightToLeft);
 
-    connect(storage_selection_panel, &ModuleSelectionPanel::moduleSelected,
-            storage_configuration_panel, &ModuleConfigurationPanel::addModule);
-    connect(storage_configuration_panel,
-            &ModuleConfigurationPanel::targetListUpdated, this,
-            &StorageSection::storageUpdated);
+    connect(storage_selection_panel, &ModuleSelectionPanel::moduleSelected, storage_configuration_panel,
+            &ModuleConfigurationPanel::addModule);
+    connect(&this->state_, &ui::utils::SharedState::saveFileLoaded, [this]() {
+        this->storage_configuration_panel->loadPlan(this->store_);
+    });
 }
 
 StorageSection::~StorageSection() { delete ui; }
-
-common::stationbuilder::t_module_target_list StorageSection::getModuleTargetList() const {
-    return this->storage_configuration_panel->getModuleTargets();
-}
