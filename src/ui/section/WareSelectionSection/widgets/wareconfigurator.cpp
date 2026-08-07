@@ -26,11 +26,14 @@ store_{store} {
     ui->setupUi(this);
     QFrame::setFrameShape(QFrame::StyledPanel);
 
-    auto        settings                = state.settings();
-    auto        ware_target             = settings->ware_targets.getTarget(ware_target_id);
-    const auto &ware                    = store_.wares.by_id.at(ware_target_id);
-    const auto &ware_name               = ware->name;
-    const auto &possible_source_modules = store_.production.producing.at(ware_target_id);
+    auto        settings    = state.settings();
+    auto        ware_target = settings->ware_targets.getTarget(ware_target_id);
+    const auto &ware        = store_.wares.by_id.at(ware_target_id);
+    const auto &ware_name   = ware->name;
+
+    decltype(store_.production.producing)::value_type::second_type possible_source_modules{};
+    if (store_.production.producing.contains(ware_target_id))
+        possible_source_modules = store_.production.producing.at(ware_target_id);
 
     ui->ware_label->setText(QString(ware_name.c_str()));
     ui->target_input->setValue(ware_target->production);
@@ -47,7 +50,7 @@ store_{store} {
         ++i;
     }
 
-    if (possible_source_modules.size() == 1)
+    if (possible_source_modules.size() <= 1)
         ui->production_method_combo_box->setDisabled(true);
 
     // Is triggered when the ware amount required is changed

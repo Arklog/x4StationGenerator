@@ -14,13 +14,13 @@ namespace common::utils {
         ware_targets.reserve(store.wares.datas.size());
 
         for (const auto &ware: store.wares.datas) {
-            if (!ware.produced)
-                continue;
-            const auto &modules = store.production.producing.at(ware.id);
-            if (modules.empty())
-                throw std::logic_error(fmt::format("Ware '{}':{} is not being produced", ware.name, ware.id));
+            decltype(store.production.producing)::value_type::second_type modules{};
 
-            ware_targets.emplace_back(ware.id, (*modules.begin())->module.value().id, 0, false);
+            if (store.production.producing.contains(ware.id))
+                modules = store.production.producing.at(ware.id);
+
+            ware_targets.emplace_back(ware.id, modules.empty() ? "" : (*modules.begin())->module.value().id, 0,
+                                      false);
         }
     }
 

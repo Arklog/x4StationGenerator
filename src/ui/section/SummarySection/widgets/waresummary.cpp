@@ -39,6 +39,9 @@ namespace ui::section::summarysection::widgets {
         auto name  = new QLabel{QString::fromStdString(data.ware.name), this};
         auto price = new QLabel{QLocale().toString(avg_price), this};
 
+        if (avg_price < 0)
+            price->setPalette(SummaryItemBase::palette_warn);
+
         layout->addWidget(name, 0, 0, Qt::AlignLeft);
         layout->addWidget(price, 0, 1, Qt::AlignRight);
         this->setLayout(layout);

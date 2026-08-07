@@ -24,6 +24,8 @@ namespace ui::section::summarysection::widgets {
 
         ~SummaryItemBase() override;
 
+        static QPalette palette_warn;
+
     protected:
         Ui::SummaryItemBase *ui;
     };

@@ -7,6 +7,13 @@
 #include "summaryitembase.hpp"
 #include "ui_summaryitembase.h"
 
+static auto create_palette = []() {
+    QPalette palette;
+
+    palette.setColor(QPalette::WindowText, Qt::red);
+    return palette;
+};
+
 namespace ui::section::summarysection::widgets {
     SummaryItemBase::SummaryItemBase(QWidget *parent) :
     QWidget(parent),
@@ -17,4 +24,6 @@ namespace ui::section::summarysection::widgets {
     SummaryItemBase::~SummaryItemBase() {
         delete ui;
     }
+
+    QPalette SummaryItemBase::palette_warn{create_palette()};
 } // ui::section::summarysection::widget
