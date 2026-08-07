@@ -105,10 +105,6 @@ namespace common::stationbuilder::generator {
 
     void ComplexGeneratorBase::_updateCurrentProduction(const t_ware_id &ware_id,
                                                         long int         value) {
-        if (!store_.production.producing.contains(ware_id)) {
-            spdlog::info("ware {} is not produced, skipping", ware_id);
-            return;
-        }
         spdlog::debug("update current production {}", ware_id);
 
         auto is_produced = this->current_production_.isPrimaryTarget(ware_id)
@@ -123,7 +119,7 @@ namespace common::stationbuilder::generator {
 
         spdlog::debug("adding ware in list {}", ware_id);
         this->current_production_.setSecondaryTarget(ware_id);
-        auto target       = this->current_production_.getSecondaryTarget(ware_id);
+        auto target        = this->current_production_.getSecondaryTarget(ware_id);
         target->production = value;
     }
 

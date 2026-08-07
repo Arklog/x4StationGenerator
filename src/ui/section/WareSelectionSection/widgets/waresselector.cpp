@@ -47,6 +47,9 @@ WaresSelector::~WaresSelector() { delete ui; }
 
 void WaresSelector::populateGroup(QWidget *group_widget, const std::vector<common::types::Ware *> &wares) {
     for (const auto ware: wares) {
+        if (!ware->produced)
+            continue;
+
         const auto widget = new QPushButton(QString::fromStdString(ware->name), group_widget);
 
         connect(widget, &QPushButton::clicked, [this, ware] {
