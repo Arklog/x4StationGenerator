@@ -67,7 +67,7 @@ void MainWindow::exportPlan() {
 
 #ifdef WIN32
     auto           home   = getenv("USERPROFILE");
-    auto constexpr OUTDIR = fmt::format("{}/Documents/Egosoft/X4/1234567890");
+    auto constexpr OUTDIR = fmt::format("{}/Documents/Egosoft/X4/1234567890", home);
 #else
     auto home   = getenv("HOME");
     auto OUTDIR = fmt::format("{}/.config/EgoSoft/X4/371399543/constructionplan", home);
