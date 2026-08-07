@@ -55,11 +55,29 @@ MainWindow::~MainWindow() { delete ui; }
 void MainWindow::exportPlan() {
     spdlog::info("Exporting plan");
 
-    QFileDialog dialog(this);
-    dialog.setFileMode(QFileDialog::FileMode::AnyFile);
-    dialog.setAcceptMode(QFileDialog::AcceptMode::AcceptSave);
     auto complex  = state.complex();
     auto settings = state.settings();
+
+    auto filename = complex->name;
+    std::ranges::transform(complex->name, filename.begin(), [](auto c) {
+        if (std::isspace(c))
+            return '_';
+        return static_cast<char>(std::tolower(c));
+    });
+
+#ifdef WIN32
+    auto           home   = getenv("USERPROFILE");
+    auto constexpr OUTDIR = fmt::format("{}/Documents/Egosoft/X4/1234567890");
+#else
+    auto home   = getenv("HOME");
+    auto OUTDIR = fmt::format("{}/.config/EgoSoft/X4/371399543/constructionplan", home);
+#endif
+
+    spdlog::info(std::filesystem::canonical(OUTDIR).string());
+    QFileDialog dialog(this, "Export plan",
+                       QString::fromStdString(fmt::format("{}/{}.xml", OUTDIR, filename)));
+    dialog.setFileMode(QFileDialog::FileMode::AnyFile);
+    dialog.setAcceptMode(QFileDialog::AcceptMode::AcceptSave);
 
     if (dialog.exec()) {
         auto selected_file = dialog.selectedFiles().first();
@@ -101,9 +119,15 @@ void MainWindow::openPlan() {
 
 void MainWindow::savePlan() {
     try {
-        auto save_file = state.toStationSaveFile();
+        auto        save_file      = state.toStationSaveFile();
+        std::string save_file_name = save_file.name;
+        std::ranges::transform(save_file_name, save_file_name.begin(), [](auto c) {
+            if (std::isspace(c))
+                return '_';
+            return static_cast<char>(std::tolower(c));
+        });
 
-        QFileDialog dialog(this, "Save file", QString::fromStdString(fmt::format("{}.json", save_file.name)));
+        QFileDialog dialog(this, "Save file", QString::fromStdString(fmt::format("{}.json", save_file_name)));
 
         if (dialog.exec()) {
             auto selected_file = dialog.selectedFiles().first();
