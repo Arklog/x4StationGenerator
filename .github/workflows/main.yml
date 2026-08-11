@@ -16,7 +16,7 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: self-hosted
     env:
       QT_VERSION: 6.9.0
       QT_ARCHITECTURE: win64_msvc2022_64
