@@ -73,6 +73,7 @@ jobs:
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
         env:
           CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
+          Qt6_DIR: "C:\Qt\6.11.1\mingw_64\lib\cmake\Qt6"
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
           -G "Ninja Multi-Config"
