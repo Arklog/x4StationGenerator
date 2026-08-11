@@ -59,8 +59,8 @@ jobs:
         id: strings
         shell: PowerShell
         run: |
-          echo "build-output-dir=${{ github.workspace }}\build" >> "$GITHUB_OUTPUT"
-          echo "qt-dir=${{ github.workspace }}\Qt" >> "$GITHUB_OUTPUT"
+          echo "build-output-dir=${{ github.workspace }}\build" >> "$env:GITHUB_OUTPUT"
+          echo "qt-dir=${{ github.workspace }}\Qt" >> "$env:GITHUB_OUTPUT"
 
       - name: Setup cache
         uses: actions/cache@v4
