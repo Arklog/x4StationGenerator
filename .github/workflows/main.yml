@@ -62,15 +62,6 @@ jobs:
           echo "build-output-dir=${{ github.workspace }}\build" >> "$env:GITHUB_OUTPUT"
           echo "qt-dir=${{ github.workspace }}\Qt" >> "$env:GITHUB_OUTPUT"
 
-      - name: Setup cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.strings.outputs.build-output-dir }}
-          key: ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-${{ env.RUN_ID }}
-          restore-keys: |
-            ${{ matrix.os }}-ninja-build-${{ env.BRANCH_NAME }}-
-            ${{ matrix.os }}-ninja-build-
-
       - name: Set up MSVC environment
         uses: ilammy/msvc-dev-cmd@v1
 
