@@ -81,7 +81,7 @@ jobs:
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_C_COMPILER_LAUNCHER=sccache
           -DCMAKE_CXX_COMPILER_LAUNCHER=sccache
-          -DCMAKE_CXX_FLAGS="/Z__cplusplus"
+          -DCMAKE_CXX_FLAGS="/Zc:__cplusplus"
           -S ${{ github.workspace }}
 
 
