@@ -115,8 +115,8 @@ jobs:
         env:
           QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\msvc2022_64\bin
         run: |
-          mkdir -p ${{ env.DIST_DIRECTORY }} &&
-          mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }} &&
+          mkdir -p ${{ env.DIST_DIRECTORY }}
+          mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }}
           ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
       #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
