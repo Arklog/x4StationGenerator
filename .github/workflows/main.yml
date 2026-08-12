@@ -72,9 +72,10 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.10
 
       - name: Setup Cache
-        shell: powershell
-        run: |
-          echo "test ${{ env.BUILD_DIRECTORY }}"
+        uses: j3hempsey-actions/local-cache@v1
+        with:
+          path: ${{ env.BUILD_DIRECTORY }}
+          key: ${{ matrix.os }}-${{ matrix.build_type }}
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
@@ -83,7 +84,7 @@ jobs:
           CMAKE_PREFIX_PATH: ${{ env.Qt5_Dir }}
           Qt6_DIR: "C:\\Qt\\6.11.1\\msvc2022_64\\lib\\cmake\\Qt6"
         run: >
-          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          cmake -B ${{ env.BUILD_DIRECTORY }}
           -G "Ninja Multi-Config"
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
@@ -95,7 +96,7 @@ jobs:
       - name: Build
         id: build
         # Build your program  with the given configuration. Note that --config is needed because the default  Windows generator is a multi-config generator (Visual Studio generator).
-        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --parallel
+        run: cmake --build ${{ env.BUILD_DIRECTORY }} --config ${{ matrix.build_type }} --parallel
 
       - name: Show sccache statistics
         if: ${{ always() }}
@@ -104,18 +105,18 @@ jobs:
       - name: Copy Qt DLLs
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }}
-          mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }}
+          mv ${{ env.BUILD_DIRECTORY }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }}
           ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
 
       - name: Test
-        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        working-directory: ${{ env.BUILD_DIRECTORY }}
         # Execute tests defined by the CMake configuration. Note that --build-config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
         run: ctest --build-config ${{ matrix.build_type }}
 
       - name: Compress Binary
         env:
-          BIN_DIR: ${{ steps.strings.outputs.build-output-dir }}\Release
+          BIN_DIR: ${{ env.BUILD_DIRECTORY }}\Release
         run: 7z a -tzip ${{ env.DIST_DIRECTORY}}\x4StationGenerator.zip ${{ env.DIST_DIRECTORY }}\* ${{ github.workspace }}\assets
 
       - name: Release binary
