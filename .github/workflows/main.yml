@@ -73,7 +73,7 @@ jobs:
       - name: Setup Cache
         uses: j3hempsey-actions/local-cache@v1
         with:
-          path: "${{ github.workspace }}\\build"
+          path: "${{ github.workspace }}\build"
           key: ${{ matrix.os }}-${{ matrix.build_type }}
 
       - name: Configure CMake
