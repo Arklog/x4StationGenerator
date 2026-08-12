@@ -18,10 +18,11 @@ jobs:
   build:
     runs-on: [ self-hosted, "${{ matrix.os }}" ]
     env:
-      QT_VERSION: 6.9.0
+      QT_VERSION: 6.11.1
       QT_ARCHITECTURE: win64_msvc2022_64
       QT_BIN_DIR: "C:\\Qt\\6.11.1\\msvc2022_64\\bin"
       DIST_DIRECTORY: ${{ github.workspace }}\dist
+      CACHE_DIR: "C:\cache_dir"
       SCCACHE_GHA_ENABLED: "true"
       BRANCH_NAME: ${{ github.ref_name }}
       RUN_ID: ${{ github.run_id }}
@@ -95,13 +96,10 @@ jobs:
         run: sccache --show-stats
 
       - name: Copy Qt DLLs
-        env:
-          QT_BIN_DIR: ${{ steps.strings.outputs.qt-dir }}\Qt\${{env.QT_VERSION}}\msvc2022_64\bin
         run: |
           mkdir -p ${{ env.DIST_DIRECTORY }}
           mv ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe ${{ env.DIST_DIRECTORY }}
           ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ env.DIST_DIRECTORY }}\x4StationGenerator.exe
-      #        run: ${{ env.QT_BIN_DIR }}\windeployqt.exe ${{ steps.strings.outputs.build-output-dir }}\Release\x4StationGenerator.exe
 
       - name: Test
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
