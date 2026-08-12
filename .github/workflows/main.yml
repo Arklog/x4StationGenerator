@@ -70,6 +70,13 @@ jobs:
       - name: Set up sccache
         uses: mozilla-actions/sccache-action@v0.0.10
 
+      - name: Setup Cache
+        uses: MasterworksIO/action-local-cache@2
+        with:
+          path: ${{ github.workspace }}
+          key: ${{ matrix.os }}-${{ matrix.build_type }}
+          strategy: 'move'
+
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
         # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
