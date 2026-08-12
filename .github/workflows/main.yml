@@ -71,11 +71,10 @@ jobs:
         uses: mozilla-actions/sccache-action@v0.0.10
 
       - name: Setup Cache
-        uses: corca-ai/local-cache@v2
+        uses: j3hempsey-actions/local-cache@v1
         with:
           path: "${{ github.workspace }}\\build"
           key: ${{ matrix.os }}-${{ matrix.build_type }}
-          base: "C:\\cache-dir"
 
       - name: Configure CMake
         # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
