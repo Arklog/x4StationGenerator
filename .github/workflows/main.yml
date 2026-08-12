@@ -73,7 +73,7 @@ jobs:
       - name: Setup Cache
         uses: MasterworksIO/action-local-cache@2
         with:
-          path: ${{ github.workspace }}
+          path: "${{ github.workspace }}\\build"
           key: ${{ matrix.os }}-${{ matrix.build_type }}
           strategy: 'move'
 
